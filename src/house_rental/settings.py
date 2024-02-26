@@ -15,6 +15,8 @@ from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
-    'crispy_forms',
+    'users.apps.UsersConfig',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -139,7 +144,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Login Settings
-LOGIN_REDIRECT_URL = 'home/'
+LOGIN_REDIRECT_URL = 'master/'
 LOGIN_URL = 'login/'
 
 # Messages Settings
@@ -156,6 +161,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
