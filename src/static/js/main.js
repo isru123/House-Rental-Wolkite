@@ -130,6 +130,33 @@
     });
 
 
+    //my account
+    var accountTrigger = document.getElementById('accountTrigger');
+    var accountDropdown = document.getElementById('accountDropdown');
+  
+    accountTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      accountDropdown.classList.toggle('show');
+    });
+  
+    // Close the dropdown when user clicks outside of it
+    window.addEventListener('click', function(e) {
+      if (!accountTrigger.contains(e.target) && !accountDropdown.contains(e.target)) {
+        accountDropdown.classList.remove('show');
+      }
+    });
+  
+    function googleTranslateElementInit(){
+        new google.translate.TranslateElement(
+            {pageLanguage: 'en', defaultLanguage: 'en'},
+            'google_translate_element'
+        );
+       } 
+    // Prevent the dropdown from closing when clicking inside it
+    accountDropdown.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
 
     // Product Quantity
     $('.quantity button').on('click', function () {
@@ -149,23 +176,4 @@
 
 })(jQuery);
 
-// for drop down
-var accountTrigger = document.getElementById('accountTrigger');
-var accountDropdown = document.getElementById('accountDropdown');
 
-accountTrigger.addEventListener('click', function(e) {
-  e.preventDefault();
-  accountDropdown.classList.toggle('show');
-});
-
-// Close the dropdown when user clicks outside of it
-window.addEventListener('click', function(e) {
-  if (!accountTrigger.contains(e.target) && !accountDropdown.contains(e.target)) {
-    accountDropdown.classList.remove('show');
-  }
-});
-
-// Prevent the dropdown from closing when clicking inside it
-accountDropdown.addEventListener('click', function(e) {
-  e.stopPropagation();
-});
