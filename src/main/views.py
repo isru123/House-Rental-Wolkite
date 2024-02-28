@@ -22,9 +22,9 @@ def master_view(request):
 
 
 def detail_list_view(request):
- 
- return render(request, 'components/detail_list_view.html')
+    return render(request, 'components/detail_list_view.html')
 
+ 
 
 
 
