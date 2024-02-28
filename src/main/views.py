@@ -22,6 +22,12 @@ def master_view(request):
     return render(request, 'main/major/master.html', {'listings': listings})
 
 
+def detail_list_view(request):
+ 
+ return render(request, 'components/detail_list_view.html')
+
+
+
 
 
 
