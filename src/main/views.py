@@ -10,6 +10,7 @@ from users.forms import LocationForm
 from importlib import reload
 
 
+
 def main_view(request):
     return render(request, 'main/homepage/home.html', {'name': 'home'})
 
@@ -34,6 +35,7 @@ def dashboard_view(request):
 
 def listing_view(request):
     return render(request, 'main/owner/listing.html')
+
 
 
 

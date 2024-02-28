@@ -14,7 +14,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
-
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -139,6 +140,7 @@ STATICFILES_DIR = [os.path.join(BASE_DIR, 'staticfiles')]
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # crispy_forms
 
