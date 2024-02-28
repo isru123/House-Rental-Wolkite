@@ -30,6 +30,7 @@
 
         <!-- Template Stylesheet -->
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        
     </head>
 
     <body>
@@ -40,7 +41,7 @@
         </div>
         <!-- Spinner End -->
 
-  {% block 'header' %}
+  
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -70,6 +71,7 @@
                             <a href="" class="nav-item nav-link">Pricing</a>
                             <a href="" class="nav-item nav-link">Help</a>
                             <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+
                             <a href="{% url 'register' %}" class="nav-item nav-link">Signup</a>
                             <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
                         </div>
@@ -95,15 +97,19 @@
             </div>
         </div>
         <!-- Navbar End -->
- {% endblock %}
+
 
         
-       {% block 'body' %}
+       {% block content %}
+
+
+
+
        {% endblock %}
        
 
 
-         {% block 'footer' %}
+      
 
 
 
@@ -176,7 +182,6 @@
         </div>
         <!-- Footer End -->
 
-        {% endblock %}
 
 
         <!-- Copyright Start -->
