@@ -6,7 +6,11 @@
 
     <head>
         <meta charset="utf-8">
+
+        {% block 'title' %}
         <title>Wolkite City House Rent</title>
+        {% endblock %}
+       
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -24,7 +28,11 @@
         <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
         <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
 
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+		<link rel="stylesheet" href="{% static 'css2/style2.css' %}">
         <!-- Customized Bootstrap Stylesheet -->
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -41,7 +49,7 @@
         </div>
         <!-- Spinner End -->
 
-  
+       {% block 'header' %}
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -74,6 +82,8 @@
 
                             <a href="{% url 'register' %}" class="nav-item nav-link">Signup</a>
                             <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
+                            <a href="{% url 'owner' %}" class="nav-item nav-link">House Owner</a>
+
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -91,27 +101,28 @@
                               <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
                             </div>
                           </div>
-                          <div id="google_translate_element"></div>
+                          {% comment %} <div id="google_translate_element"></div> {% endcomment %}
 
                 </nav>
             </div>
         </div>
         <!-- Navbar End -->
+     {% endblock %}
 
 
+
+
+        {% block 'body' %}
+
+        {% endblock %}
         
-       {% block content %}
 
 
 
-
-       {% endblock %}
-       
 
 
       
-
-
+        {% block 'footer' %}
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -182,7 +193,7 @@
         </div>
         <!-- Footer End -->
 
-
+        {% endblock %}
 
         <!-- Copyright Start -->
         <div class="container-fluid copyright bg-dark py-4">
@@ -213,8 +224,12 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
-
-    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="{% static 'js2/jquery.min.js' %}"></script>
+    <script src="{% static 'js2/popper.js' %}"></script>
+    <script src="{% static 'js2/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js2/main.js' %}"></script>
+    
+    {% comment %} <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
 
    function googleTranslateElementInit(){
@@ -224,7 +239,8 @@
     );
    } 
 </script>
-  
+   {% endcomment %}
     </body>
 
 </html>
+

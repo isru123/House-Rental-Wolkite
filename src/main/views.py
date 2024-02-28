@@ -23,8 +23,18 @@ def master_view(request):
 
 
 def detail_list_view(request):
+    return render(request, 'components/detail_list_view.html')
+
  
- return render(request, 'components/detail_list_view.html')
+def owner_view(request):
+    return render(request, 'main/owner/first.html')
+
+
+def dashboard_view(request):
+    return render(request, 'main/owner/dashboard.html')
+
+def listing_view(request):
+    return render(request, 'main/owner/listing.html')
 
 
 
