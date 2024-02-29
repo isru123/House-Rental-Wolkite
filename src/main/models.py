@@ -120,13 +120,14 @@ class RentalConditions(models.Model):
         ('basic price', 'Basic Price'),
         ('advanced price', 'Advanced Price'),
     ]
+    
     contract = models.CharField(max_length=24, choices=RADIO_CHOICES, verbose_name='Contract Type')
     cancellation = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Cancellation Option')
     price = models.CharField(max_length=24, choices=RADIO_CHOICES3, verbose_name='Price')
     utility_costs = models.CharField(max_length=24)
     
     def __str__(self):
-        return self.daily_contract
+        return self.contract
     
 
 class RulesAndPreferences(models.Model):
@@ -170,83 +171,5 @@ class RulesAndPreferences(models.Model):
     
     
     
-    def __str__(self):
-        return f'{self.house_mate_no}\'s List space overview '
     
-    
-    
-    
-class ListArea(models.Model):
-    # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    # listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    # owner = models.ForeignKey(Profile, on_delete = models.CASCADE)
-    kitchen = models.CharField(max_length=25)
-    toilet  = models.CharField(max_length=25)
-    bathroom = models.CharField(max_length=25)
-    living_room = models.CharField(max_length=25)
-    garden = models.CharField(max_length=25)
-    
-    
-    def __str__(self):
-        return f'{self.kitchen}\'s List area'
-    
-
-class ListAmenities(models.Model):
-    # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    # listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    # owner = models.ForeignKey(Profile, on_delete = models.CASCADE)
-    bed= models.CharField(max_length=25)
-    wifi = models.CharField(max_length=25)
-    desk = models.CharField(max_length=25)
-    living_room_furnished = models.CharField(max_length=25)
-    
-    
-    def __str__(self):
-        return f'{self.bed}\'s List amenities '
-    
-    
-    
-
-class ListRentalConditions(models.Model):
-    # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    # listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    # owner = models.ForeignKey(Profile, on_delete = models.CASCADE)
-    daily_contract = models.CharField(max_length=25)
-    fortnight_contract = models.CharField(max_length=25)
-    monthly_contract = models.CharField(max_length=25)
-    strict_cancellation = models.CharField(max_length=25)
-    flexible_cancellation = models.CharField(max_length=25)
-    basic_price = models.CharField(max_length=25)
-    advanced_price = models.CharField(max_length=30)
-    
-    
-    
-    def __str__(self):
-        return f'{self.daily_contract}\'s List rental conditions'
-    
-
-
-
-
-class ListRulesPreferences(models.Model):
-    # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    # listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    # owner = models.ForeignKey(Profile, on_delete = models.CASCADE)
-    gender = models.CharField(max_length=25)
-    min_age = models.CharField(max_length=25)
-    max_age = models.CharField(max_length=25)
-    any_tenant = models.CharField(max_length=25)
-    student_tenant = models.CharField(max_length=25)
-    working_pro_tenant = models.CharField(max_length=25)
-    proof_of_identity = models.CharField(max_length=25)
-    proof_of_occupation = models.CharField(max_length=25)
-    proof_of_income = models.CharField(max_length=25)
-    
-    
-    def __str__(self):
-        return f'{self.gender}\'s List rules and preferences'
-    
-    
-
-
-    
+ 
