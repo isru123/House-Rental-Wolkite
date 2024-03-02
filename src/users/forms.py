@@ -3,7 +3,7 @@ from .models import Location, Profile
 from localflavor.us.forms import USZipCodeField
 
 from django.contrib.auth.models import User
-from .widgests import CustomPictureImageFieldWidget
+from .widgets import CustomPictureImageFieldWidget
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(disabled=True)
