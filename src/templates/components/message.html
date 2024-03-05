@@ -1,0 +1,246 @@
+{% extends "partials/base.html" %}
+
+{% load static %}
+
+      {% block content %}
+   
+<head>
+    <style>
+        body {
+            background-color: #ecedee;
+        }
+        
+        .card {
+            border: none;
+            overflow: hidden;
+            margin-top: 150px; 
+        }
+        
+        .thumbnail_images ul {
+            list-style: none;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-top: 50px; /* Adjusted margin-top value */
+        }
+        
+        .thumbnail_images ul li {
+            margin: 5px;
+            padding: 10px;
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+        
+        .thumbnail_images ul li:hover {
+            border: 2px solid #000;
+        }
+        
+        .main_image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            height: 270px;
+            width: 90%;
+            overflow: hidden;
+        }
+        
+     
+        
+        .content p {
+            font-size: 12px;
+        }
+        
+       
+        
+        .colors {
+            margin-top: 5px;
+        }
+        
+        .colors ul {
+            list-style: none;
+            display: flex;
+            padding-left: 0px;
+        }
+        
+        .colors ul li {
+            height: 20px;
+            width: 20px;
+            display: flex;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .colors ul li:nth-child(1) {
+            background-color: #6c704d;
+        }
+        
+        .colors ul li:nth-child(2) {
+            background-color: #96918b;
+        }
+        
+        .colors ul li:nth-child(3) {
+            background-color: #68778e;
+        }
+        
+        .colors ul li:nth-child(4) {
+            background-color: #263f55;
+        }
+        
+        .colors ul li:nth-child(5) {
+            background-color: black;
+        }
+        
+        .right-side {
+            position: relative;
+        }
+        
+     
+        
+        .buttons .btn {
+            height: 20px;
+            width: 5px;
+            border-radius: 5px !important;
+        }
+        .buttons {
+            margin-top: 50px; /* Add some top margin */
+        }
+    
+        .buttons .btn {
+            height: 30px;
+            width: 70px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #ff416c, #ff4b2b); /* Use gradient for button background */
+            color: #ffffff;
+            border: none; /* Remove border for button */
+            transition: all 0.3s ease; /* Add transition for smooth hover effect */
+        }
+        
+        .buttons .btn:hover {
+            background: linear-gradient(to right, #ff4b2b, #ff416c); /* Change gradient on hover */
+        }
+        
+        .stage {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ccc;
+            text-align: center;
+            line-height: 60px;
+            position: relative;
+            margin: 0 20px;
+          }
+          .stage.completed {
+            background-color: #4caf50;
+          }
+          .stage.active {
+            background-color: #f5f5f5;
+          }
+          .line {
+            position: absolute;
+            width:40px;
+            height: 2px;
+            background-color: #ccc;
+            top: 29px;
+            left: 83px;
+            background-color: #4caf50;
+
+          }
+          .line.active {
+            background-color: #4caf50;
+          }
+    </style>
+
+</head>
+<div class="container mt-5 mb-5">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-6" style="border: 1px solid #ccc; max-height: 900px; overflow-y: auto;">
+                <!-- Messaging Frame -->
+
+                <div class="stage completed">
+                    <span>1</span>
+                  </div>
+                  <div class="line"></div>
+                  <div class="stage">
+                    <span>2</span>
+                  </div>
+                  <div class="line"></div>
+                  <div class="stage">
+                    <span>3</span>
+                  </div>
+                <div class="p-3">
+                    <h3>Messaging</h3>
+                    <!-- Display the messaging content within a textarea -->
+                    <textarea id="messageTextArea" class="form-control" rows="10"></textarea>
+                </div>
+                <!-- Reset Message Button -->
+                <div class="d-flex justify-content-start align-items-center p-3">
+                    <button id="resetButton" class="btn btn-outline-dark">Reset Message</button>
+                </div>
+                <div class="buttons d-flex justify-content-center mt-3 gap-3">
+                    <a href="{% url 'core:message' %}" style="display: block;margin-left: 450px; width: 500px; margin-top: 50px; color: white;">
+                        <button class="btn btn-outline-dark">BACK</button>
+                    </a>
+                    <a href="{% url 'core:book' %}" style="display: block; width: 500px; margin-top: 50px; color: black;">
+                        <button class="btn btn-outline-dark">SEND</button>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6" style="border: 1px solid #ccc; max-height: 600px; overflow-y: auto;">
+                <div class="p-3 right-side">
+                    <div class="d-flex flex-column justify-content-center">
+                        <div class="main_image">
+                            <img src="{% static 'img/vila.jpg' %}" id="main_product_image" width="340">
+                        </div>
+                    </div>
+                    <div class="p-3 right-side">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3>Wolkite</h3>
+                        </div>
+                        <h3>430.99 birr/month</h3>
+                    </div>
+                    <div class="mt-2 p-3 content">
+                        <div class="form-group">
+                            <label for="moveInDate"> Your Move-in Date: </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="moveOutDate">Your Move-out Date:</label>
+                          
+                        </div>
+                    </div>
+                
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to set the initial message content
+    window.onload = function() {
+        setMessageContent("This is the initial message content.");
+    };
+
+    // Function to set the content of the textarea
+    function setMessageContent(content) {
+        document.getElementById("messageTextArea").value = content;
+    }
+
+    // Add event listener to the reset button
+    document.getElementById("resetButton").addEventListener("click", function() {
+        setMessageContent(""); // Reset message content
+    });
+
+    setTimeout(() => {
+        document.getElementsByClassName("stage")[1].classList.add("completed");
+        document.getElementsByClassName("line")[0].classList.add("active");
+        document.getElementsByClassName("stage")[2].classList.add("active");
+      }, 2000);
+</script>
+
+  {% endblock content%}
