@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Listing
 from .forms import ListingForm
-from users.forms import LocationForm
+from .forms import ListingSpaceOverviewForm,ListingHouseAreaForm,ListingHouseAmenitiesForm,RentalConditionsForm, RulesAndPreferencesForm
+from django.core.files.storage import DefaultStorage
 from importlib import reload
+from formtools.wizard.views import SessionWizardView
 
 
 def main_view(request):
@@ -22,9 +24,31 @@ def master_view(request):
 
 
 def detail_list_view(request):
- 
- return render(request, 'components/detail_list_view.html')
+    return render(request, 'components/detail_list_view.html')
 
+ 
+def owner_view(request):
+    return render(request, 'main/owner/first.html')
+
+
+def dashboard_view(request):
+    return render(request, 'main/owner/dashboard.html')
+
+def listing_view(request):
+    return render(request, 'main/owner/listing.html')
+
+
+
+class multistepformsubmission(SessionWizardView):
+    file_storage = DefaultStorage()
+    template_name = 'main/owner/listing.html'
+    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm]
+    
+    
+    def done(self, form_list, **kwargs):
+        return HttpResponse('form submitted!')
+    
+    
 
 
 

@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = {'username', 'first_name', 'last_name'}
         
 
 
@@ -20,7 +20,7 @@ class ProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile
-        fields = ('photo', 'bio', 'phone_number')
+        fields = {'photo', 'bio', 'phone_number'}
         
     
 
@@ -31,7 +31,7 @@ class LocationForm(forms.ModelForm):
     
     class Meta:
         model = Location
-        fields ={'address_1', 'address_2', 'city'}
+        fields = {'address_1', 'address_2', 'city'}
     
     
 
