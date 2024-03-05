@@ -1,11 +1,19 @@
 from django.urls import path
-from .views import main_view, master_view
+from .views import main_view,detail_list_view,owner_view,dashboard_view,listing_view,multistepformsubmission
+
+
+# file_storage = FileSystemStorage(location= 'media/listings')
 
 urlpatterns = [
      path("", main_view, name="home"), 
-     path('master/', master_view , name='master'),
-     
+     path('owner/', owner_view , name='owner'),
+     path('dashboard/', dashboard_view, name='dashboard'),
+     path('listing/', listing_view, name='listing'),
+     path('detail-view/', detail_list_view, name='detail_product_view'), 
+     path('multistepformsubmission/', multistepformsubmission.as_view(), name='multistepformsubmission') 
 ]
+
+
 
 
 
