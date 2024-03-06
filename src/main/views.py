@@ -49,6 +49,8 @@ def dashboard_view(request):
 def listing_view(request):
     return render(request, 'main/owner/listing.html')
 
+def owner_second_view(request):
+    return render(request, 'main/owner/second.html')
 
 
 class multistepformsubmission(SessionWizardView):

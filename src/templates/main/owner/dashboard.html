@@ -8,7 +8,7 @@
 {% block 'header'%}
 <!-- Navbar start -->
 <div class="container-fluid fixed-top">
-    <div class="container topbar bg-primary d-none d-lg-block">
+    {% comment %} <div class="container topbar bg-primary d-none d-lg-block">
         <div class="d-flex justify-content-between">
             <div class="top-info ps-2">
                 <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
@@ -20,7 +20,7 @@
                 <a href="#" class="text-white"><small class="text-white ms-2">Rent and Refunds</small></a>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
             <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
@@ -60,72 +60,102 @@
         </nav>
     </div>
 </div>
+
+<br>
+<br>
+<br>
+<br>
 <!-- Navbar End -->
 {% endblock %}
 
 
 {% block 'body' %}
-
+<hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
   <body>
-		 <!-- Single Page Header start -->
-    <div class="bg-danger container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Shop</li>
-        </ol>
-    </div>
+		
+     <div class="bg-secondary vh-100" style="width:200px">
+      <br>
+    <div class="d-flex align-items-start">
+      <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <button style="width:200px; color:white" class=" mr-3 nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+          <i class="fas fa-home fa-fw me-3"></i><span>Home</span></button>
+        <button style="width:200px; color:white" class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+          <i class="fas fa-fire fa-fw me-3"></i><span>Trending</span></button>
 
-    
-		<div class="wrapper d-flex align-items-stretch">
-			<nav id="sidebar">
-				<div class="custom-menu">
-					<button type="button" id="sidebarCollapse" class="btn btn-primary">
-	        </button>
-        </div>
-	  		<div class="img bg-wrap text-center py-4" style="background-image: url(images/bg_1.jpg);">
-	  			<div class="user-logo">
-	  				<div class="img" style="background-image: url(images/logo.jpg);"></div>
-	  				<h3>Catriona Henderson</h3>
-	  			</div>
-	  		</div>
-
-        <ul class="list-unstyled components mb-5">
-          <li class="active">
-            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
-          </li>
-          <li>
-              <a href="#"><span class="fa fa-download mr-3 notif"><small class="d-flex align-items-center justify-content-center">5</small></span> Download</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-gift mr-3"></span> Gift Code</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-trophy mr-3"></span> Top Review</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-cog mr-3"></span> Settings</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-support mr-3"></span> Support</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
-          </li>
-        </ul>
-
-    	</nav>
-
-        <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-5 pt-5">
-        <h2 class="mb-4">Sidebar #09</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <button style="width:200px; color:white" class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+          <i class="fas fa-thumbs-up fa-fw me-3"></i><span>Liked</span></button>
+        <button style="width:200px; color:white" class=" mr-3  nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+      <i class="fas fa-history fa-fw me-3"></i><span>History</span></button>
       </div>
-		</div>
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+      </div>
+    </div>
+  </div> 
+  <br>
 
 
+
+{% comment %} <!--Main Navigation-->
+<div class="bg-secondary vh-100" style="width:200px">
+  <!-- Sidenav -->
+  <div id="sidenav-1" class="sidenav" data-mdb-color="dark" role="navigation" data-mdb-hidden="false"
+    data-mdb-accordion="true">
+    <ul class="sidenav-menu">
+      <li class="sidenav-item">
+        
+        <a class="sidenav-link active">
+          <i class="fas fa-home fa-fw me-3"></i><span>Home</span>
+        </a>
+      </li>
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="fas fa-fire fa-fw me-3"></i><span>Trending</span>
+        </a>
+      </li>
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="fab fa-youtube-square fa-fw me-3"></i><span>Subscriptions</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="sidenav-menu">
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="fas fa-caret-square-right fa-fw me-3"></i><span>Library</span>
+        </a>
+      </li>
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="fas fa-history fa-fw me-3"></i><span>History</span>
+        </a>
+      </li>
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="far fa-caret-square-right fa-fw me-3"></i><span>Your videos</span>
+        </a>
+      </li>
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="fas fa-clock fa-fw me-3"></i><span>Watch later</span>
+        </a>
+      </li>
+      <li class="sidenav-item">
+        <a class="sidenav-link">
+          <i class="fas fa-thumbs-up fa-fw me-3"></i><span>Liked videos</span>
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <p class="small text-muted ps-4">© 2020 MDBootstrap</p>
+  </div>
+</div> {% endcomment %}
   </body>
+
 {% endblock %}
 
+{% block 'footer' %}
+{% endblock %}

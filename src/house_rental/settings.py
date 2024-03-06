@@ -133,17 +133,17 @@ USE_TZ = True
 
 
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIR = [os.path.join(BASE_DIR, 'staticfiles')]
+# STATICFILES_DIR = [os.path.join(BASE_DIR, 'staticfiles')]
 
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # crispy_forms
@@ -165,3 +165,18 @@ MESSAGE_TAGS={
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# Media files (Uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

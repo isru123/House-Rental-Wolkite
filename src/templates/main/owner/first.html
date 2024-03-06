@@ -2,7 +2,10 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
+
 {% block 'header' %}
+
+
  <!-- Navbar start -->
  <div class="container-fluid fixed-top">
     <div class="container topbar bg-primary d-none d-lg-block">
@@ -18,6 +21,7 @@
             </div>
         </div>
     </div>
+     
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
             <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
@@ -34,7 +38,7 @@
 
                     <a href="{% url 'register' %}" class="nav-item nav-link">Signup</a>
                     <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
-                    <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a>
+                    {% comment %} <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a> {% endcomment %}
 
                 </div>
                 <div class="d-flex m-3 me-0">
@@ -61,12 +65,139 @@
 <!-- Navbar End -->
 
 {% endblock %}
-
+<br>
+<br>
+<br>
 {% block 'body' %}
 
+<div>
+<img src="{% static 'images/bg_1.jpg' %}" class="img-fluid " style="width:2000px; height:500px;" alt="image">
+
+</div>
+<div>
+    <h1 class="text-center">List your property for free.</h1>
+</div>
+<br>
+<br>
+
+<div class="container text-center">       
+<div style="align-center">
+<a href="{% url 'second' %}"  class="btn btn-success my-2">Get started</a>
+</div>
+</div>
+
+<div class="container text-center">
+    <div class="row justify-content-around">
+    <div class"col-6">
+        <h1 class="text-center">50.000+</h1>
+        <p class="text-center">properties</p>
+    </div>
+    <div class="col-6">
+        <h1 class="text-center">100.000+</h1>
+        <p class="text-center">bookings</p>
+    </div>
+</div>
+</div>
+
+
+
+<div class="bg-info-subtle  container-fluid page-header py-5" style="height:500px">
+    <div class="container text-center">
+        <div>
+            <h1 class="text-center">Everything you need to maximise your earnings.</h1>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="row justify-content-around">
+          <div class="col-6">
+            <h3 class="text-center" style="color:white">Protection from last-minute cancellations</h3>
+            <p>To reserve accommodation, the tenant pays one month's rent in advance.
+                 Has the tenant cancelled after confirmation? 
+                 HousingAnywhere guarantees the first month's rent.</p>
+          </div>
+          <br>
+          <br>
+          <br>
+          <div class="col-6">
+            <h3 class="text-center" style="color:white">Find your perfect tenant with ease</h3>
+            <p>Save time by only talking to those that you're interested in. 
+                Set the preferences for your ideal tenant, 
+                and receive messages from verified users who meet your criteria.</p>
+          </div>
+          <br>
+            <br>
+            <br>
+        </div>
+        <div class="row justify-content-around">
+            <div class="col-6">
+                <h3 class="text-center" style="color:white">Access to local and international tenants</h3>
+                <p>Publish once and reuse whenever you need. 
+                    Set custom prices, adjust availability, and block-off time for maintenance.
+                     Enjoy complete control over your listings.</p>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="col-6">
+                <h3 class="text-center" style="color:white">Get bookings months in advance</h3>
+                <p>Publish once and reuse whenever you need. 
+                    Set custom prices, adjust availability, and block-off time for maintenance.
+                     Enjoy complete control over your listings.</p>
+            </div>
+            <br>
+            <br>
+            <br>
+          </div>
+      </div>
+<br>
+<br>
+<br>
+<div>
+    <img src="{% static 'images/et.jpg' %}" class="img-fluid " style="width:700px; height:700px;" alt="image">
+ </div>
+<br>
+<br>
+<div>
+    <h5 class="text-center">Pricing</h5>
+</div>
+<br>
+<div>
+    <h1 class="text-center">One price, all-inclusive.</h1>
+</div>
+<br>
+<div>
+    <h5 style="color:brown" class="text-center">Get all the essentials plus advanced features to power your growth.</h5>
+</div>
+<br>
+<br>
+<br>
+<div class="container text-center col-lg-4">
+    <div class="card mb-4 rounded-3 shadow-sm ">
+      <div class="card-header py-3 bg-dark">
+       <h1 style="color:white" class="my-0 fw-normal">25% fee*</h1>
+       <p style="color:white">Per booking</p>
+      </div>
+      <br>
+      <br>
+      <div class="card-body">
+        <p>Simple pricing. No hidden costs. Only pay when you see results.</p>
+       {% comment %} <button class="w-100  btn-lg btn-outline-primary my-3">
+          Send Email
+       </button> {% endcomment %}
+       <div style="align-center">
+        <a href="{% url 'second' %}"  class="btn btn-primary my-2">Get started</a>
+        </div>
+
+      </div>
+    </div>
+     </div>
 {% endblock %}
 
 
-{% block 'footer' %}
+{% block 'footer2' %}
+
 {% endblock %}
+
+
 
