@@ -13,7 +13,7 @@
 
 
 {% block 'body' %}
- <!-- Single Page Header start -->
+ {% comment %} <!-- Single Page Header start -->
  <div class="bg-success container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Post</h1>
     <ol class="breadcrumb justify-content-center mb-0">
@@ -21,16 +21,24 @@
         <li class="breadcrumb-item"><a href="#">Pages</a></li>
         <li class="breadcrumb-item active text-white">Shop</li>
     </ol>
-</div>
+</div> {% endcomment %}
 
 <br>
 <br>
 <br>
-
-
+<div class="col d-flex align-items-start">
+    <div>
+       <h2 class="mb-3 border-bottom" style="color: black">List</h2>
+    </div>
+ </div>
+<section class="vh-50" style="background-color: #eee;">
+    <div class="container align-left w-150 py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-right h-100">
+        <div class="col col-xl-6">
+          <div class="card d-flex align-items-center" style="border-radius: 1rem;">
                 <div class="row">
-                    <div class="col-6">
-                        <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+                    <div class="col-12">
+                        <h1 style="color:black;">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h1>
   <form action="" method="post">{% csrf_token %}
   <table>
   {{ wizard.management_form }}
@@ -47,11 +55,16 @@
   <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% translate "first step" %}</button>
   <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% translate "prev step" %}</button>
   {% endif %}
-  <input type="submit" value="{% translate "submit" %}"/>
+  <input class="btn btn-success my-2 align-item-end" type="submit" value="{% translate "submit" %}"/>
   </form>
 </div>
 </div>
-
+</div>
+</div>
+</div>
+</div>
+</section>
+   
 <br>
 <br>
 <br>

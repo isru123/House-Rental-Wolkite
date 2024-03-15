@@ -31,12 +31,13 @@ SECRET_KEY = 'django-insecure-+_h$xf_@(x##v1%)b4a3d60k)gbuaxd3orkuah9padcdf2l+y=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,9 +47,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
+    'django.contrib.humanize',
     'formtools',
     "crispy_forms",
     "crispy_bootstrap5",
+    'conversation',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +72,7 @@ ROOT_URLCONF = 'house_rental.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR,'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +86,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'house_rental.wsgi.application'
-
+ASGI_APPLICATION = 'house_rental.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -95,6 +98,11 @@ DATABASES = {
     }
 }
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -130,17 +138,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
 
-STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_URL = 'static/'
 
-STATICFILES_DIR = [os.path.join(BASE_DIR, 'staticfiles')]
 
-MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# STATICFILES_DIR = [os.path.join(BASE_DIR, 'staticfiles')]
+
+# MEDIA_URL = '/media/'
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # crispy_forms
@@ -164,6 +174,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -176,4 +187,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Media files (Uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-

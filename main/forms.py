@@ -1,14 +1,12 @@
 from  django import forms  
 
-from .models import Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
+from .models import Booking,Review,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
 
 class ListingForm(forms.ModelForm):
     
     class Meta:
         model = Listing
-        fields = {'brand', 'model', 'vin', 'mileage', 'color', 'description', 
-                  'engine', 'transmission', 'image'}
-        
+        fields = {'title','description','price','available_start','available_end'}
         
 
 class ListingSpaceOverviewForm(forms.ModelForm):
@@ -44,3 +42,18 @@ class RulesAndPreferencesForm(forms.ModelForm):
          model = RulesAndPreferences
          fields = '__all__'
     
+
+ 
+ 
+class ReviewForm(forms.ModelForm):
+     class Meta:
+         model =  Review
+         fields = '__all__'
+
+
+class BookingForm(forms.ModelForm):
+     class Meta:
+         model = Booking
+         fields = '__all__'
+         
+         

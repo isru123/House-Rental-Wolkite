@@ -22,5 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('', include('users.urls')),
+<<<<<<< HEAD
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+    path('', include('conversation.urls')),
+]
+>>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
 
