@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block 'body' %}
+
+
+<div class="text-center">
+
+
+    <div class="login-page">
+    <div class="form">
+      <div class="login">
+        <div class="login-header">
+          <h3>House Rental</h3>
+          <p></p>
+        </div>
+      </div>
+      <form class="login-form" action="/sendotp/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+        {% if msg %}
+        <center style='color: red;'>{{msg}}</center>
+        {% endif %}
+       <input type="text" placeholder="UserName" name="username" required/>
+       
+        <button>SEND OTP</button>
+        <p class="message">Not registered? <a href="/sign/">Create an account</a></p>
+      </form>
+    </div>
+    </div>
+
+
+</div>
+
+  
+{% endblock %}
+
+{% block 'header' %}
+{% endblock%}
+
+{% block 'footer' %}
+{% endblock %}
