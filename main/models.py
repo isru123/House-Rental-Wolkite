@@ -3,36 +3,6 @@ import uuid
 
 from users.models import Profile,Location
 
-<<<<<<< HEAD
-from .constants import CAR_BRANDS,TRANSMISSION_OPTIONS,MAXIMUM_AGE, MINMUM_AGE
-from .utils import user_listing_path
-
-
-
-
-
-class Listing(models.Model):
-    id = models.UUIDField(primary_key = True, default = uuid.uuid4, unique=True, editable=False)
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)
-    seller = models.ForeignKey(Profile, on_delete = models.CASCADE)
-    brand = models.CharField(max_length=24, choices=CAR_BRANDS, default=None)
-    model = models.CharField(max_length=64,)
-    vin = models.CharField(max_length=17,)
-    mileage = models.IntegerField(default=0)
-    color = models.CharField(max_length=24, default='white')
-    description = models.TextField()
-    engine = models.CharField(max_length=24,)
-    transmission = models.CharField(max_length=24, choices=TRANSMISSION_OPTIONS, default=None)
-    location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(upload_to=user_listing_path)
-    
-    
-    def __str__(self):
-        return f'{self.seller.user.username}\'s Listings - {self.model}'
-    
-
-=======
 from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
 from .utils import user_listing_path
 
@@ -69,7 +39,6 @@ class ListingHouseAmenities(models.Model):
     
 
 
->>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
 class ListingSpaceOverview(models.Model):
     RADIO_CHOICES = [
         ('yes', 'Yes'),
@@ -83,18 +52,12 @@ class ListingSpaceOverview(models.Model):
     
     def __str__(self):
         return f'{self.house_size}'
-<<<<<<< HEAD
-    
-
-class ListingHouseArea(models.Model):
-=======
 
 
 
 
 class ListingHouseArea(models.Model):
     
->>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
     RADIO_CHOICES = [
         ('yes', 'Yes'),
         ('no', 'No'),
@@ -125,42 +88,10 @@ class ListingHouseArea(models.Model):
         return self.kitchen
     
 
-<<<<<<< HEAD
-class ListingHouseAmenities(models.Model):
-    RADIO_CHOICES = [
-        ('yes', 'Yes'),
-        ('no', 'No'),
-    ]
-    RADIO_CHOICES2 = [
-        ('yes', 'Yes'),
-        ('no', 'No'),
-    ]
-    RADIO_CHOICES3 = [
-        ('yes', 'Yes'),
-        ('no', 'No')
-    ]
-    RADIO_CHOICES4 = [
-        ('yes', 'Yes'),
-        ('no', 'No'),
-    ]
-    
-    bed = models.CharField(max_length=24, choices=RADIO_CHOICES, verbose_name='Bed') 
-    wifi = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Wifi')
-    desk = models.CharField(max_length=24, choices=RADIO_CHOICES3, verbose_name='Desk')
-    living_room_furnished = models.CharField(max_length=24, choices=RADIO_CHOICES4, verbose_name='Living Room Furnished')
-    
-    def __str__(self):
-        return self.bed
-    
-    
-
-class RentalConditions(models.Model):
-=======
     
 
 class RentalConditions(models.Model):
     
->>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
     RADIO_CHOICES =[
         ('daily', 'Daily'),
         ('monthly', 'Monthly'),
@@ -186,10 +117,7 @@ class RentalConditions(models.Model):
     
 
 class RulesAndPreferences(models.Model):
-<<<<<<< HEAD
-=======
     
->>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
     RADIO_CHOICES = [
         ('male', 'Male'),
         ('female', 'Female'),
@@ -219,8 +147,6 @@ class RulesAndPreferences(models.Model):
     def __str__(self):
         return self.gender
     
-<<<<<<< HEAD
-=======
 
 # This model is used to store information about rooms within properties
 # class Room(models.Model):
@@ -306,17 +232,11 @@ class Booking(models.Model):
     
     def __str__(self):
          return f'{self.listing.title}\' listing booked'
->>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
     
     
     
     
 
-<<<<<<< HEAD
-    
-    
-     
-=======
 # # This model is used to store details of room bookings within a general booking
 # class RoomBooking(models.Model):
 #     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
@@ -382,7 +302,6 @@ class Rules(models.Model):
      rules_and = models.ForeignKey(RulesAndPreferences, on_delete=models.CASCADE, default=None, related_name='rules_and_preferences')
     
       
->>>>>>> 2293d66db9847ce3491b3a05c0e2ecab94a3eed7
     
     
     
