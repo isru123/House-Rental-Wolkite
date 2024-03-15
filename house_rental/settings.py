@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-+_h$xf_@(x##v1%)b4a3d60k)gbuaxd3orkuah9padcdf2l+y=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -93,8 +93,12 @@ ASGI_APPLICATION = 'house_rental.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+          'ENGINE': 'django.db.backends.sqlite3',
+          'NAME': BASE_DIR / 'db.sqlite3',
+        #   'ENGINE': 'django.db.backends.postgresql',
+        #   'NAME': 'house_rental',
+        #   'USER': 'isru',
+        #   'PASSSWORD': 'isru',
     }
 }
 

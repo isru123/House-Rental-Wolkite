@@ -1,14 +1,20 @@
 from django.contrib import admin
 
-from .models import Profile, Location
+from .models import UserProfile, Location,OTP
 
-class ProfileAdmin(admin.ModelAdmin):
-    pass
 
 class LocationAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Profile , ProfileAdmin)
+class UserAdmin(admin.ModelAdmin):
+    list_display=['id','user']
+    
+    
+class OTPAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(UserProfile,UserAdmin)
+admin.site.register(OTP,OTPAdmin)
 admin.site.register(Location, LocationAdmin)
 
 

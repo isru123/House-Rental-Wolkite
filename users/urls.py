@@ -1,14 +1,18 @@
 from django.urls import path
-from .views import login_view, logout_view, ProfileView, RegisterView
+from .views import LoginPage, Logout, ProfileView, SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword
 from main.views import master_view
 
 
 urlpatterns = [
-    path('login/', login_view, name='login'),
     path('master/', master_view , name='master'),
-    path('register/', RegisterView.as_view() , name='register'),
-    path('logout/', logout_view, name='logout'),  
     path('profile/', ProfileView.as_view(), name='profile'),
+    path('login/', LoginPage, name='login'),
+    path('sign/', SignPage , name='sign'),
+    path('owner-sign/', OwnerSign, name='owner-sign'),
+    path('sendotp/', SendEmailForForgotPassword, name='sendotp'),
+    path('forgot/',ForgotPage),
+    path('forgotpassword/', ForgotPassword  , name='forgotpassword'),
+    path('logout/', Logout, name='logout'),
 ]
 
 

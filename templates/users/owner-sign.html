@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block 'header' %}
+{% endblock %}
+
+{% block 'body' %}
+
+
+<div class="text-center">
+    <section  style="background-color:white; height:1050px">
+      <div class="container py-5" >
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col col-xl-10">
+            <div class="card" style="border-radius: 1rem; width:500px">
+              <div class="row g-0">
+                <div class="login-page">
+    <div class="form">
+        <div class="login">
+            <div class="login-header">
+                <h3><a href="/">Home</a></h3>
+                <h3>SignUp</h3>
+                <p>Please enter your credentials.</p>
+            </div>
+        </div>
+        <div class="row register-form">
+            <form action="/owner-sign/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if msg %}
+                <center style="color: red;">{{msg}}</center>
+                {% endif %}
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="text" class="form-control" placeholder="First Name *" value=""
+                            name="first_name" required />
+                    </div>
+                    </div>
+                    <br>
+
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="text" class="form-control" placeholder="Last Name *" value=""
+                            name="last_name" required />
+                    </div>
+                    </div>
+                    <br>
+
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="email" class="form-control" placeholder="Email *" value="" name="email"
+                            required />
+                    </div>
+                    </div>
+
+                    <br>
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="number" min="10" minlength="10" maxlength="10" name="contact"
+                            class="form-control" placeholder="Your Phone " value="" required />
+                    </div>
+                    </div> 
+                    <br>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group ">
+                            <input  style="width:300px" type="text" class="form-control" placeholder="Address*" value="" name="address"
+                                required />
+                        </div>
+                    </div>
+                    <br>
+                   
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="text" class="form-control" placeholder="User Name*" value=""
+                            name="username" required />
+                    </div>
+                    </div>
+
+                    <br>
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="password" minlength="4" maxlength="10" class="form-control"
+                            placeholder="Password*" value="" name="pass1" required />
+                    </div>
+                    </div>
+
+                    <br>
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input  style="width:300px" type="password" class="form-control" placeholder="Confirm Password*" value=""
+                            name="pass2" required />
+                    </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <input style="width:300px" type="file" name="pic" class="form-control" placeholder="upload your photo"
+                            value="" required />
+                    </div> 
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                    <input type="submit" style="color: white; width:400px" value="Register" class="btn btn-danger">
+                    <!--  <input type="submit" class="btnRegister"  value="Register"/> -->
+                    </div>
+                </div>
+                <br>
+        </div>
+        <p class="message"> Already have an Account??<a href="/login/">Login here..</a></p>
+    </div>
+  
+
+
+</div>
+</div>
+</div>
+</div>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}
+
