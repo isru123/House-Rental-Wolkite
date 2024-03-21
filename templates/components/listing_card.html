@@ -1,11 +1,11 @@
 <div class="card shadow-sm ">
-    <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.model}}" role="img" arial-label="placeholder: Thumbnail"
+    <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image.url}}" role="img" arial-label="placeholder: Thumbnail"
     focusable="false">
     <div class="card-body rounded position-relative fruite-item">
-     <h4 class="card-text">{{listing.model}}</h4>
+     <h4 class="card-text">{{listing.title}}</h4>
        <div class="row justify-content-start align-items-center">
         <div class="col-1">
-            {% if listing.owner.photo %}
+            {% if listing.seller.photo %}
                 <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="30" width="30" style="object-fit: cover;">
             {% else %}
                 <!-- Placeholder image or alternative content when 'photo' is not available -->

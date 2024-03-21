@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>House Rental</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'AdminStatic/images/favicon.png' %}">
+    <!-- Pignose Calender -->
+    <link href="{% static 'AdminStatic/plugins/pg-calendar/css/pignose.calendar.min.css' %}" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="{% static 'AdminStatic/plugins/chartist/css/chartist.min.css' %}">
+    <link rel="stylesheet" href="{% static 'AdminStatic/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css' %}">
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'AdminStatic/css/style.css' %}" rel="stylesheet">
+    <style>
+        tr,td,th{
+            padding-left: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="/">
+                <span class="brand-title">
+                    
+                        <h4 style="padding: 30px;" class="text-white">HOUSE</h4>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content clearfix">
+
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        
+                        <form action="/rent-house/" method="POST">
+                            {% csrf_token %}
+                            <input type="text" name="search" class="form-control" placeholder="Search By City...">
+                        </form>
+                        <div class="drop-down animated flipInX d-md-none">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <ul class="clearfix">
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative" data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                {% if request.user.userprofile_set.first.profilePicture %}
+                                <img src="{{request.user.userprofile_set.first.profilePicture.url}}" style="border-radius: 50%;" height="100" width="100" alt="">
+                                {% else %}
+                                <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="/profile/"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="/change-password/"><i class="icon-lock"></i> <span>Change Password</span></a>
+                                        </li>
+                                        <li><a href="/logout/"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">
+            <div class="">
+                <ul class="metismenu" id="menu">
+                    <li>
+                        <a href="/dashboard/" aria-expanded="false">
+                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    {% if request.user.userprofile_set.first.userType == "Public" %}
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">User</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/rent-house/">Rent House</a></li>
+                            <li><a href="/my-booking/">My Booking</a></li>
+                            <li><a href="/helpdesk/">User Helpdesk</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if request.user.userprofile_set.first.userType == "Owner" %}
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" >
+                            <i class="icon-envelope menu-icon"></i> 
+                            <span class="nav-text">House Owner</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/rent-house/">My House</a></li>
+                            <li><a href="/customer-request/">Customer Request</a></li>
+                            <li><a  href="/approved-customer/">Approved Customers</a></li>
+                            <li><a href="/admin-helpdesk/">Help Desk</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if request.user.userprofile_set.first.userType == "Admin" %}
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow">
+                            <i class="icon-screen-tablet menu-icon"></i>
+                            <span class="nav-text">Admin</span>
+                        </a>
+                        <ul>
+                            <li><a href="/all-user/">All User</a></li>
+                            {% if request.user.userprofile_set.first.verified == True %}
+                            <li><a href="/approve-owner/">Approve Owner</a></li>
+                            
+                            <li><a href="/approve-admin/">Approve Admin</a></li>
+                            {% endif %}
+                            <li><a href="/rent-house/">House</a></li>
+                            <li>
+                                <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        
+        <script src="{% static 'AdminStatic/plugins/common/common.min.js '%}"></script>
+        <script src="{% static 'AdminStatic/js/custom.min.js '%}"></script>
+        <script src="{% static 'AdminStatic/js/settings.js '%}"></script>
+        <script src="{% static 'AdminStatic/js/gleek.js '%}"></script>
+        <script src="{% static 'AdminStatic/js/styleSwitcher.js '%}"></script>
+
+        <!-- Chartjs -->
+        <script src="{% static 'AdminStatic/plugins/chart.js/Chart.bundle.min.js' %}"></script>
+        <!-- Circle progress -->
+        <script src="{% static 'AdminStatic/plugins/circle-progress/circle-progress.min.js' %}"></script>
+        <!-- Datamap -->
+        <script src="{% static 'AdminStatic/plugins/d3v3/index.js' %}"></script>
+        <script src="{% static 'AdminStatic/plugins/topojson/topojson.min.js' %}"></script>
+        <script src="{% static 'AdminStatic/plugins/datamaps/datamaps.world.min.js' %}"></script>
+        <!-- Morrisjs -->
+        <script src="{% static 'AdminStatic/plugins/raphael/raphael.min.js' %}"></script>
+        <script src="{% static 'AdminStatic/plugins/morris/morris.min.js' %}"></script>
+        <!-- Pignose Calender -->
+        <script src="{% static 'AdminStatic/plugins/moment/moment.min.js' %}"></script>
+        <script src="{% static 'AdminStatic/plugins/pg-calendar/js/pignose.calendar.min.js' %}"></script>
+        <!-- ChartistJS -->
+        <script src="{% static 'AdminStatic/plugins/chartist/js/chartist.min.js' %}"></script>
+        <script src="{% static 'AdminStatic/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js' %}"></script>
+
+
+
+        <script src="{% static 'AdminStatic/js/dashboard/dashboard-1.js' %}"></script>
+        {% block content%} {% endblock %}
+</body>
+
+</html>

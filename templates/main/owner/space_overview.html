@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+
+
+{% block head %}
+ 
+{% comment %} {{ wizard.form.media }} {% endcomment %}
+
+{% endblock %}
+
+
+
+{% block 'body' %}
+ {% comment %} <!-- Single Page Header start -->
+ <div class="bg-success container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Post</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Shop</li>
+    </ol>
+</div> {% endcomment %}
+
+<br>
+<br>
+<br>
+<div class="col d-flex align-items-start">
+    <div>
+       <h2 class="mb-3 border-bottom" style="color: black">List</h2>
+    </div>
+ </div>
+<section class="vh-50" style="background-color: #eee;">
+    <div class="container align-left w-150 py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-right h-100">
+        <div class="col col-xl-6">
+          <div class="card d-flex align-items-center" style="border-radius: 1rem;">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                             <div class="col-6">
+                               {{listing_form|crispy}}
+                             </div>
+                            <button href="" class="btn btn-lg btn-danger" type="submit">
+                             Continue
+                            </button>
+                         </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+   
+<br>
+<br>
+<br>
+{% endblock %}
+
+
+{% block 'footer' %}
+{% endblock %}
