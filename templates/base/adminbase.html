@@ -24,6 +24,25 @@
 </head>
 
 <body>
+
+    
+
+ 
+
+{% if messages %}
+{% for message in messages %}
+<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+    {{ message }}
+    {{ message.tags }}
+</div>
+{% endfor %}
+{% endif %}
+
+
+{% block 'body' %}
+
+{% endblock %}
+
     <div id="main-wrapper">
 
         <!--**********************************
@@ -189,7 +208,8 @@
 
 
         <script src="{% static 'AdminStatic/js/dashboard/dashboard-1.js' %}"></script>
-        {% block content%} {% endblock %}
+
+      
 </body>
 
 </html>

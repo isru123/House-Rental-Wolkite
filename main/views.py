@@ -198,10 +198,8 @@ def owner_second_view(request):
 
 
 
-    
-    
-def single_house_view(request):
-    return render(request, 'components/single_house_view.html')
+   
+
 
 
 
@@ -218,7 +216,7 @@ def list_view(request):
                 listing.seller = request.user.profile
                 listing_location = listing_location
                 listing.save()
-                messages.info(request, f'{listing.model} Listing Posted Successfully!')
+                messages.info(request, f'{listing.title} Listing Posted Successfully!')
                 return redirect('master')
         except Exception as e:
             print(e)
@@ -230,9 +228,22 @@ def list_view(request):
         location_form = LocationForm()
         
         return render(request, 'main/owner/listing.html', {'listing_form': listing_form, 'location_form': location_form})
-        
+    
 
 
+ 
+@login_required  
+def single_house_view(request, id):
+    try:
+        listing = Listing.objects.get(id=id)
+        if listing is None:
+            raise Exception
+        return render(request, 'components/single_house_view.html',{'listing': listing})
+    except Exception as e:
+        messages.error(request, f'Invalid UID {id} was provided for listing')
+        return redirect('home')
+    
+      
 def like_listing_view(request, id):
     listing = get_object_or_404(Listing, id=id)
     

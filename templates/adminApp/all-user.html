@@ -1,0 +1,122 @@
+{% extends 'base/adminbase.html' %}
+{% load static %}
+{% block 'body' %}
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+
+<div class="container-fluid mt-3">
+    <div class="container" style="margin-left: 200px;">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="width: 1200px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4 col-">
+                                <h4 class="page-title" style="margin-left: 20px; float: left;">Manage User</h4>
+                                <form action="/all-user/" method="POST" style="float: right;" class="form-group">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control" name="search"
+                                        placeholder="Search First Name.." required>
+                                </form>
+
+                            </div>
+
+                            <div class="col-sm-8 col-9 text-right m-b-20">
+
+                                {% if request.user.userprofile_set.first.verified == True %}
+                                <a href="/add-admin/" class="btn btn-primary btn-rounded float-right"><i
+                                        class="fa fa-plus"></i> Add Admin</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>DOB</th>
+                                        <th>Contact No.</th>
+                                        <th>Address</th>
+                                        <th>Gender</th>
+                                        <th>User Type</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if user %}
+                                    {% for u in user %}
+                                    <tr>
+                                        <td>{{u.id}}</td>
+                                        <td>{{u.user.first_name}} {{u.user.last_name}}</td>
+                                        <td>{{u.user.email}}</td>
+                                        <td>{{u.contact_No}}</td>
+                                        <td>{{u.address}}</td>
+                                        <td>{{u.userType}}</td>
+                                        <td>
+                                            <a href="/view-user/{{u.id}}/" class="btn btn-success text-white"
+                                                title="View"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a href="/edit-profile/{{u.id}}/" class="btn btn-info text-white"
+                                                title="Edit"><i class="fa fa-pencil-square-o"
+                                                    aria-hidden="true"></i></a>
+                                            {% if request.user.userprofile_set.first.verified == True %}
+                                            <a href="/delete-user/{{u.user.id}}/" title="Delete"
+                                                class="btn btn-danger text-white"><i class="fa fa-trash"
+                                                    aria-hidden="true"></i></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    No User Found..
+                                    {% endif %}
+                                </tbody>
+                            </table>
+
+                            {% if user.has_other_pages %}
+                            <ul class="pagination">
+                                {% if user.has_previous %}
+                                <li><a href="?page={{ user.previous_page_number }}" class="btn btn-primary">&laquo;</a>
+                                </li>
+                                {% else %}
+                                <li class="disabled btn btn-primary"><span>&laquo;</span></li>
+                                {% endif %}
+                                {% for i in user.paginator.page_range %}
+                                {% if user.number == i %}
+                                <li class="active btn btn-primary"><span>{{ i }} <span
+                                            class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li><a href="?page={{ i }}" class="btn btn-primary">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if user.has_next %}
+                                <li><a href="?page={{ user.next_page_number }}" class="btn btn-primary">&raquo;</a></li>
+                                {% else %}
+                                <li class="disabled btn btn-primary"><span>&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+{% endblock %}
