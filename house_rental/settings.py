@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
+    'adminApp.apps.AdminappConfig',
     'django.contrib.humanize',
     'formtools',
     "crispy_forms",
@@ -92,9 +93,11 @@ DATABASES = {
           'ENGINE': 'django.db.backends.sqlite3',
           'NAME': BASE_DIR / 'db.sqlite3',
         #   'ENGINE': 'django.db.backends.postgresql',
-        #   'NAME': 'house_rental',
-        #   'USER': 'isru',
-        #   'PASSSWORD': 'isru',
+        #   'NAME': 'mydb',
+        #   'USER': 'israel',
+        #   'PASSSWORD': '326598',
+        #   'HOST': 'localhost',
+        #   'PORT': '5431', 
     }
 }
 

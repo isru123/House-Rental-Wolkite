@@ -1,15 +1,13 @@
 from django.db import models
 import uuid
 
-from users.models import UserProfile,Location
+from users.models import Location,Profile
 
 from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
 from .utils import user_listing_path
 
 
-    
 
-# This model is used to store different types of amenities
 
 class ListingHouseAmenities(models.Model):
     RADIO_CHOICES = [
@@ -196,14 +194,14 @@ class Listing(models.Model):
       id = models.UUIDField(primary_key = True, default = uuid.uuid4, unique=True, editable=False)
       created_at = models.DateTimeField(auto_now_add =True)
       updated_at = models.DateTimeField(auto_now =True)
-      seller = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
+      seller = models.ForeignKey(Profile, on_delete = models.CASCADE)
       location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
       title = models.CharField(max_length=200)
       description = models.TextField()
       price = models.PositiveSmallIntegerField()
       available_start = models.DateTimeField(null=True)
       available_end = models.DateTimeField(null=True)
-      # photos = models.ManyToManyField('Image')
+      image = models.ImageField(upload_to=user_listing_path)
     #   rooms = models.ManyToManyField(Room)
       amenities = models.ManyToManyField(ListingHouseAmenities, through='Amenity')
       listing_space_overview = models.ManyToManyField(ListingSpaceOverview, through='ListingSpace')
@@ -222,7 +220,7 @@ class Listing(models.Model):
     
 # This model is used to store booking information made by guests
 class Booking(models.Model):
-    guest = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     check_in_date = models.DateTimeField(default=None)
     check_out_date = models.DateTimeField(default=None)
@@ -255,7 +253,7 @@ class Booking(models.Model):
 
 # This model is used to store reviews made by users for properties
 class Review(models.Model):
-    reviewer = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
     review_text = models.TextField()
     rating = models.PositiveSmallIntegerField()
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
@@ -267,7 +265,7 @@ class Review(models.Model):
     
 
 class LikedListing(models.Model):
-    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     like_date = models.DateTimeField(default=None)
     

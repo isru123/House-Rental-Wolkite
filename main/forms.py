@@ -6,7 +6,7 @@ class ListingForm(forms.ModelForm):
     
     class Meta:
         model = Listing
-        fields = {'title','description','price','available_start','available_end'}
+        fields = {'title','description','price','available_start','available_end','image'}
         
 
 class ListingSpaceOverviewForm(forms.ModelForm):

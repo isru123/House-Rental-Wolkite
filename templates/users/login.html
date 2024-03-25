@@ -36,7 +36,9 @@
                         <center style="color: red;">{{msg}}</center>
                         {% endif %}
                         <br>
-                        <div class="form-group" style="width:400px">
+
+                        {{ login_form |crispy }}
+                        {% comment %} <div class="form-group" style="width:400px">
                           <input type="text" class="form-control" placeholder="User Name*" value=""
                               name="username" required />
                       </div>
@@ -44,7 +46,7 @@
                         <div class="form-group" style="width:400px">
                           <input type="password" minlength="4" maxlength="10" class="form-control"
                               placeholder="Password*" value="" name="pass1" required />
-                      </div>
+                      </div> {% endcomment %}
                         <br>
                         <br>
                         <button type="submit" class="btn btn-danger" style="color:white; width:400px">Login</button>

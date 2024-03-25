@@ -9,7 +9,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from .forms import UserForm,ProfileForm,LocationForm
 from main.models import Listing,LikedListing
-from .models import UserProfile,OTP
+from .models import Profile,OTP
 from django.contrib.auth.models import User
 
 
@@ -18,16 +18,24 @@ def LoginPage(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('login')
-    msg=''    
-    if request.method=='POST':
-        uname=request.POST.get('username')
-        pwd=request.POST.get('password')
-        data=authenticate(username=uname,password=pwd)
-        if data != None:
-            login(request,data)
-            return redirect('polls')
-        msg='Incorrect Username or Password'  
-    return render(request, 'users/login.html',{"msg":msg}) 
+    
+    if request.method == 'POST':
+        login_form = AuthenticationForm(request=request, data=request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data.get('username')
+            password = login_form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'You are now logged in as {username}')
+                return redirect('home')
+            else:
+                messages.error(request, f'error occured during tying to login')
+        else:
+             messages.error(request, f'error occured during tying to login')
+    elif request.method == 'GET':
+        login_form = AuthenticationForm()
+    return render(request, 'users/login.html', {'login_form': login_form})
 
 
 def Logout(request):
@@ -65,7 +73,7 @@ def SignPage(request):
         except:
             msg='Usename already exist.'
             return render(request,'users/sign.html',{'msg':msg})
-        UserProfile.objects.create(
+        Profile.objects.create(
             user=user,
             # profilePicture=profile_pic,
             contact_No=contact,
@@ -85,7 +93,7 @@ def OwnerSign(request):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         contact = request.POST.get('contact')
-        profile_pic = request.FILES.get('pic')
+        photo = request.FILES.get('pic')
         address= request.POST.get('address')
         
         if pass1!=pass2:
@@ -105,9 +113,9 @@ def OwnerSign(request):
         except:
             msg='Usename already exist.'
             return render(request,'users/owner-sign.html',{'msg':msg})
-        UserProfile.objects.create(
+        Profile.objects.create(
             user=user,
-            profilePicture=profile_pic,
+            photo=photo,
             contact_No=contact,
             address=address,
             userType="Owner"
