@@ -6,8 +6,8 @@ from django.conf import settings
 # Create your views here.
 
 
-def admin_sign_view(request):
-    return render(request, 'adminApp/add-admin.html')
+def admin_view(request):
+    return render(request, 'adminApp/adminHome.html')
     
 def AllUser(request):
     u = Profile.objects.filter(verified=True).exclude(user=request.user)

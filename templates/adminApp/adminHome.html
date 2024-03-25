@@ -1,0 +1,326 @@
+{% extends 'base/adminbase.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+
+{% block 'header' %}
+<div id="main-wrapper">
+
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <div class="brand-logo">
+            <a href="/">
+            <span class="brand-title">
+                
+                    <h4 style="padding: 30px;" class="text-white">HOUSE</h4>
+                </span>
+            </a>
+
+        </div>
+    </div>
+    <!--**********************************
+        Nav header end
+    ***********************************-->
+
+    <!--**********************************
+        Header start
+    ***********************************-->
+    <div class="header">
+        <div class="header-content clearfix">
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="toggle-icon"><i class="icon-menu"></i></span>
+                </div>
+            </div>
+            <div class="header-left">
+                <div class="input-group icons">
+                    
+                    <form action="/rent-house/" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="search" class="form-control" placeholder="Search By City...">
+                    </form>
+                    <div class="drop-down animated flipInX d-md-none">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <ul class="clearfix">
+                    <li class="icons dropdown">
+                        <div class="user-img c-pointer position-relative" data-toggle="dropdown">
+                            <span class="activity active"></span>
+                            {% comment %} {% if request.user.userprofile_set.first.profilePicture %}
+                            <img src="{{request.user.userprofile_set.first.profilePicture.url}}" style="border-radius: 50%;" height="100" width="100" alt="">
+                            {% else %} {% endcomment %}
+                            <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                            {% comment %} {% endif %} {% endcomment %}
+                        </div>
+                        <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                            <div class="dropdown-content-body">
+                                <ul>
+                                    <li>
+                                        <a href="/profile/"><i class="icon-user"></i> <span>Profile</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/change-password/"><i class="icon-lock"></i> <span>Change Password</span></a>
+                                    </li>
+                                    <li><a href="/logout/"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Header end ti-comment-alt
+    ***********************************-->
+{% endblock %}
+
+{% block 'body' %}
+
+
+    
+ 
+        
+<!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <div class="container-fluid mt-5">
+                <div class="row">
+                    {% comment %} {% if request.user.userprofile_set.first.userType == "Public" %} {% endcomment %}
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">My Total Booking</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{my_booking}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Available Room</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{available_house}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} {% endif %}
+                    {% if request.user.userprofile_set.first.userType == "Owner" %} {% endcomment %}
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">My House</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{my_house}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Available Room</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{my_available_house}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} {% endif %}
+                    {% if request.user.userprofile_set.first.userType == "Admin" %} {% endcomment %}
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total No. of Verified House Owner</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{total_verified_owner}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total No. of Unverified House Owner</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{total_unverified_owner}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Available Room</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{available_house}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Booked Room</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{booked_house}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total verified Admin</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{total_verified_admin}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Unverified Admin</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">{{total_unverified_admin}}</h2>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} {% endif %} {% endcomment %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+         <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">
+            <div class="">
+                <ul class="metismenu" id="menu">
+                    <li>
+                        <a href="/dashboard/" aria-expanded="false">
+                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    {% comment %} {% if request.user.userprofile_set.first.userType == "Public" %} {% endcomment %}
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">User</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/rent-house/">Rent House</a></li>
+                            <li><a href="/my-booking/">My Booking</a></li>
+                            <li><a href="/helpdesk/">User Helpdesk</a></li>
+                        </ul>
+                    </li>
+                    {% comment %} {% endif %}
+                    {% if request.user.userprofile_set.first.userType == "Owner" %} {% endcomment %}
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" >
+                            <i class="icon-envelope menu-icon"></i> 
+                            <span class="nav-text">House Owner</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/rent-house/">My House</a></li>
+                            <li><a href="/customer-request/">Customer Request</a></li>
+                            <li><a  href="/approved-customer/">Approved Customers</a></li>
+                            <li><a href="/admin-helpdesk/">Help Desk</a></li>
+                        </ul>
+                    </li>
+                    {% comment %} {% endif %}
+                    {% if request.user.userprofile_set.first.userType == "Admin" %} {% endcomment %}
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow">
+                            <i class="icon-screen-tablet menu-icon"></i>
+                            <span class="nav-text">Admin</span>
+                        </a>
+                        <ul>
+                            <li><a href="/all-user/">All User</a></li>
+                            {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                            <li><a href="/approve-owner/">Approve Owner</a></li>
+                            
+                            <li><a href="/approve-admin/">Approve Admin</a></li>
+                            {% comment %} {% endif %} {% endcomment %}
+                            <li><a href="/rent-house/">House</a></li>
+                            <li>
+                                <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    {% comment %} {% endif %} {% endcomment %}
+                </ul>
+            </div>
+        </div>
+        
+
+    
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright bg-dark py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>OHR</a>, All right reserved.</span>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+        
+
+{% endblock %}
+
+
+
+
+
+
+
+      
+
