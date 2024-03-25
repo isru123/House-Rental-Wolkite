@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block 'body' %}
+ {% comment %} <!-- Single Page Header start -->
+ <div class="bg-success container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Post</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Shop</li>
+    </ol>
+</div> {% endcomment %}
+
+<br>
+<br>
+<br>
+<div class="col d-flex align-items-start">
+    <div>
+       <h2 class="mb-3 border-bottom" style="color: black">List</h2>
+    </div>
+ </div>
+<section class="vh-50" style="background-color: #eee;">
+    <div class="container align-left w-150 py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-right h-100">
+        <div class="col col-xl-6">
+          <div class="card d-flex align-items-center" style="border-radius: 1rem;">
+                <div class="row">
+                    <div class="col-12">
+                        <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <table>
+                                {{ wizard.management_form }}
+                                {% if wizard.form.forms %}
+                                    {{ wizard.form.management_form }}
+                                    {% for form in wizard.form.forms %}
+                                        {{ form.as_table }}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ wizard.form }}
+                                {% endif %}
+                                </table>
+                                {% if wizard.steps.prev %}
+                                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% translate "first step" %}</button>
+                                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% translate "prev step" %}</button>
+                                {% endif %}
+                                <input type="submit" value="{% translate "submit" %}"/>
+                         </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="col-6">
+  {{location_form|crispy}}
+</div> 
+<br>
+<br>
+<br> 
+
+{% endblock %}
+
+
+{% block 'footer' %}
+{% endblock %}

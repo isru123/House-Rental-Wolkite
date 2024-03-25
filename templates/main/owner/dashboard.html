@@ -80,105 +80,87 @@
         <button style="width:200px; color:white" class=" mr-3 nav-link active btn btn-primary my-2" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
           <i class="fas fa-key fa-fw me-4"></i><span>Dashboard</span></button>
           
-        <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+        <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-bookings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bookings" type="button" role="tab" aria-controls="v-pills-bookings" aria-selected="false">
           <i class="fas fa-calendar-alt fa-fw me-4"></i><span>Bookings</span></button>
         
-          <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-            <i class="fas fa-home fa-fw me-4"></i><span>Listings</span></button>
+          <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-listings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-listings" type="button" role="tab" aria-controls="v-pills-listings" aria-selected="false">
+              <i class="fas fa-home fa-fw me-4"></i><span>Listings</span></button>
           
-        <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-          <i class="fas fa-credit-card fa-fw me-4"></i><span>Payemnts</span></button>
+            <a href="{% url 'payement' %}" style="text-decoration: none;"><button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-payemnts-tab" data-bs-toggle="pill" data-bs-target="#v-pills-payemnts" type="button" role="tab" aria-controls="v-pills-payemnts" aria-selected="false">
+       <i class="fas fa-credit-card fa-fw me-4"></i><span>Payemnts</span></button></a>
          
-          <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-            <i class="fas fa-envelope fa-fw me-4"></i><span>Messages</span></button>
+          <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+      <i class="fas fa-envelope fa-fw me-4"></i><span>Messages</span></button>
           
-        <button style="width:200px; color:white" class=" mr-3  nav-link btn btn-primary my-2" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-      <i class="fas fa-star fa-fw me-4"></i><span>Review</span></button>
+        <button style="width:200px; color:white" class=" mr-3  nav-link btn btn-primary my-2" id="v-pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reviews" type="button" role="tab" aria-controls="v-pills-reviews" aria-selected="false">
+      <i class="fas fa-star fa-fw me-4"></i><span>Reviews</span></button>
       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
       </div>
       <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-          {% include "includes/dash-board.html" %}
+      
+        
         </div>
-        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-          {% include "includes/booking.html" %}
+
+
+
+        <div class="tab-pane fade" id="v-pills-bookings" role="tabpanel" aria-labelledby="v-pills-bookings-tab">
+        
+          <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
+            <div class="card-body" role="button">
+                <h5 class="card-title"><input id="meerkat" type="radio"> <label
+                        for="meerkat">Meerkat</label></h5>
+                <p class="card-text">It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at its layout.</p>
+            </div>
+        </div>
+        </div>
+        <div class="tab-pane fade" id="v-pills-listings" role="tabpanel" aria-labelledby="v-pills-listings-tab">
+         
+         
+
+        </div>
+
+
+          <div class="tab-pane fade" id="v-pills-payemnts" role="tabpanel" aria-labelledby="v-pills-payemnts-tab">
+         
+          <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
+            <div class="card-body" role="button">
+                <h5 class="card-title"><input id="meerkat" type="radio"> <label
+                        for="meerkat">Meerkat</label></h5>
+                <p class="card-text">It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at its layout.</p>
+            </div>
+        </div>
         </div>
         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-         {% include "includes/liked.html" %} 
+       
+         <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
+          <div class="card-body" role="button">
+              <h5 class="card-title"><input id="meerkat" type="radio"> <label
+                      for="meerkat">Meerkat</label></h5>
+              <p class="card-text">It is a long established fact that a reader will be
+                  distracted by the readable content of a page when looking at its layout.</p>
+          </div>
+      </div>
         </div>
-        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-          {% include "includes/history.html " %}
+        
+        <div class="tab-pane fade" id="v-pills-reviews" role="tabpanel" aria-labelledby="v-pills-reviews-tab">
+       
+          <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
+            <div class="card-body" role="button">
+                <h5 class="card-title"><input id="meerkat" type="radio"> <label
+                        for="meerkat">Meerkat</label></h5>
+                <p class="card-text">It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at its layout.</p>
+            </div>
+        </div>
+      
         </div>
       </div>
     </div>
   </div> 
   <br>
-
-
-
-
-
-
-{% comment %} <!--Main Navigation-->
-<div class="bg-secondary vh-100" style="width:200px">
-  <!-- Sidenav -->
-  <div id="sidenav-1" class="sidenav" data-mdb-color="dark" role="navigation" data-mdb-hidden="false"
-    data-mdb-accordion="true">
-    <ul class="sidenav-menu">
-      <li class="sidenav-item">
-        
-        <a class="sidenav-link active">
-          <i class="fas fa-home fa-fw me-3"></i><span>Home</span>
-        </a>
-      </li>
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="fas fa-fire fa-fw me-3"></i><span>Trending</span>
-        </a>
-      </li>
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="fab fa-youtube-square fa-fw me-3"></i><span>Subscriptions</span>
-        </a>
-      </li>
-    </ul>
-    <ul class="sidenav-menu">
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="fas fa-caret-square-right fa-fw me-3"></i><span>Library</span>
-        </a>
-      </li>
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="fas fa-history fa-fw me-3"></i><span>History</span>
-        </a>
-      </li>
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="far fa-caret-square-right fa-fw me-3"></i><span>Your videos</span>
-        </a>
-      </li>
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="fas fa-clock fa-fw me-3"></i><span>Watch later</span>
-        </a>
-      </li>
-      <li class="sidenav-item">
-        <a class="sidenav-link">
-          <i class="fas fa-thumbs-up fa-fw me-3"></i><span>Liked videos</span>
-        </a>
-      </li>
-    </ul>
-    <hr>
-    <p class="small text-muted ps-4">© 2020 MDBootstrap</p>
-  </div>
-</div> {% endcomment %}
-
-
-
-  
-
-
 
 
   </body>

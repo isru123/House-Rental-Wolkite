@@ -4,15 +4,8 @@
 {% load i18n %}
 
 
-{% block head %}
- 
-{% comment %} {{ wizard.form.media }} {% endcomment %}
-
-{% endblock %}
-
-
-
 {% block 'body' %}
+ 
 <div class="container-fluid text-center py-5">
   <div class="container px-4 py-5" id="hanging-icons">
     <div class="row g-4">
@@ -22,17 +15,15 @@
          </div>
       </div>
     </div>
-    <form action="" method="post" enctype="multipart/form-data">
-       {% csrf_token %}
-       <div class="row">
-        <div class="col-6">
-          {{listing_space_form|crispy}}
-        </div>
-       </div>
-       <button href="{% url 'master' %}" class="btn btn-lg btn-primary" type="submit">
-       Continue
-       </button>
-    </form>
+    <h1>MultiStep Form Submission</h1>
+   <div>
+    {% for d in data %}
+        {{ d.title }}
+        {{ d.description }}
+        {{ d.price }}
+   {% endfor %} 
+  
+   </div>
   </div>
 </div>
 {% endblock %}

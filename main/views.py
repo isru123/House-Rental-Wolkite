@@ -105,27 +105,6 @@ def owner_second_view(request):
     
     
 
-# def SpaceOverview(request):
-#     if request.method == 'POST':
-#         listing_space_form = ListingSpaceOverviewForm(request.POST)
-        
-#         if listing_space_form.is_valid():
-            
-#             request.session['space_overview_data'] = listing_space_form.cleaned_data
-            
-#             return redirect('listing_house_area')
-        
-#         else:
-            
-#             listing_space_form = ListingSpaceOverviewForm()
-            
-#     else:
-        
-#         listing_space_form = ListingSpaceOverviewForm()
-            
-#         return render(request, 'space_overview.html', {'form': listing_space_form})
-    
-    
 # def ListingHouseView(request):
 #     if request.method == 'POST':
 #         form = ListingHouseAreaForm(request.POST)
@@ -204,32 +183,70 @@ def owner_second_view(request):
 
 
 
-@login_required
-def list_view(request):
-    if request.method == 'POST':
-        try:
-            listing_form = ListingForm(request.POST, request.FILES)
-            location_form = LocationForm(request.POST, )
-            if listing_form.is_valid() and location_form.is_valid():
-                listing = listing_form.save(commit=False)
-                listing_location = location_form.save()
-                listing.seller = request.user.profile
-                listing_location = listing_location
-                listing.save()
-                messages.info(request, f'{listing.title} Listing Posted Successfully!')
-                return redirect('master')
-        except Exception as e:
-            print(e)
-            messages.error(
-                request, 'An error occured while posting the listing.'
-            )
-    elif request.method == 'GET':
-        listing_form = ListingForm()
-        location_form = LocationForm()
+# @login_required(login_url='/login/')
+# def list_view(request):
+#     if request.method == 'POST':
+#         try:
+#             listing_form = ListingForm(request.POST, request.FILES)
+#             location_form = LocationForm(request.POST, )
+#             if listing_form.is_valid() and location_form.is_valid():
+#                 listing = listing_form.save(commit=False)
+#                 listing_location = location_form.save(commit=False)
+#                 listing_location = location_form.save()
+#                 listing.seller = request.user.profile
+#                 listing_location = listing_location
+#                 listing.save()
+               
+#                 return redirect('listing_space_overview')
+#                 # messages.info(request, f'{listing.title} Listing Posted Successfully!')
+#                 # return redirect('master')
+            
+#             else:
+#                 listing_form = ListingForm()
+#                 location_form = LocationForm()
+                
+#         except Exception as e:
+#             print(e)
+#             messages.error(
+#                 request, 'An error occured while posting the listing.'
+#             )
+#     elif request.method == 'GET':
+#         listing_form = ListingForm()
+#         location_form = LocationForm()
         
-        return render(request, 'main/owner/listing.html', {'listing_form': listing_form, 'location_form': location_form})
+#         return render(request, 'main/owner/listing.html', {'listing_form': listing_form, 'location_form': location_form})
     
 
+
+
+
+
+# def SpaceOverview(request):
+#       if request.method == 'POST':
+#           listing_space_form = ListingSpaceOverviewForm(request.POST,request.FILES)
+        
+#           if listing_space_form.is_valid():
+#               listing_space_overview = listing_space_form.save(commit=False)
+#               listing_space_overview.seller = request.user.profile
+#               listing_space_overview.save()
+#             #   request.session['space_overview_data'] = listing_space_form.cleaned_data
+            
+#               return redirect('listing_house_area')
+        
+#           else:
+            
+#               listing_space_form = ListingSpaceOverviewForm()
+            
+#       else:
+        
+#           listing_space_form = ListingSpaceOverviewForm()
+            
+#           return render(request, 'main/owner/space_overview.html', {'listing_space_form': listing_space_form})
+    
+    
+    
+    
+    
 
  
 @login_required  
@@ -242,8 +259,10 @@ def single_house_view(request, id):
     except Exception as e:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         return redirect('home')
-    
-      
+
+
+
+
 def like_listing_view(request, id):
     listing = get_object_or_404(Listing, id=id)
     
@@ -265,47 +284,75 @@ def like_listing_view(request, id):
 
 
 
-
-
-
-
-
-
-
-
-
-# class multistepformsubmission(SessionWizardView):
-#     file_storage = DefaultStorage()
-#     template_name = 'main/owner/listing.html'
-#     form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm]
+class multistepformsubmission(SessionWizardView):
+    file_storage = DefaultStorage()
+    template_name = 'main/owner/multistep.html'
+    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm]
     
     
-#     def done(self, form_list, **kwargs):
-#          # Retrieve form data from the form_list
-#         form_data = [form.cleaned_data for form in form_list]
+    def done(self, form_list, **kwargs):
+     
+        form_data = [form.cleaned_data for form in form_list]
+        seller = self.request.user.profile 
+        listing = Listing(title = form_data[0]['title'], description = form_data[0]['description'],
+                          price = form_data[0]['price'], available_start = form_data[0]['available_start'],
+                          available_end = form_data[0]['available_end'] , image = form_data[0]['image'],
+                          seller=seller )
+        listing.save()
         
-#         # # Extract seller_id from the form data
-#         # # seller_id = form_data[0]['seller']
-#         # listing = ListingForm.cleaned_data.get()
-#         # # Create instances of the model objects
-#         # listing = Listing.objects.create(**form_data[0])
-#         # space_overview = ListingSpaceOverview.objects.create(**form_data[1])
-#         # house_area = ListingHouseArea.objects.create(**form_data[2])
-#         # house_amenities = ListingHouseAmenities.objects.create(**form_data[3])
-#         # rental_conditions = RentalConditions.objects.create(**form_data[4])
-#         # rules_preferences = RulesAndPreferences.objects.create(**form_data[5])
+        listing_space = ListingSpaceOverview(house_size = form_data[1]['house_size'],
+                                             house_mate_no = form_data[1]['house_mate_no'],
+                                            bedroom_size = form_data[1]['bedroom_size'] ,
+                                            bedroom_furnished = form_data[1]['bedroom_furnished'])
+        
+        listing_space.save()
+        
+        listing_house = ListingHouseArea(kitchen = form_data[2]['kitchen'],
+                                        toilet = form_data[2]['toilet'],
+                                        bathroom = form_data[2]['bathroom'],
+                                        living_room = form_data[2]['living_room'],
+                                        garden = form_data[2]['garden'])
+        
+        listing_house.save()
+        
+        
+        listing_amenities = ListingHouseAmenities(
+            bed = form_data[3]['bed'],
+            wifi = form_data[3]['wifi'],
+            desk = form_data[3]['desk'],
+            living_room_furnished = form_data[3]['living_room_furnished']
+        )
+        
+        listing_amenities.save()
+        
+        
+        rental_condition = RentalConditions(
+            contract = form_data[4]['contract'],
+            cancellation = form_data[4]['cancellation'],
+            price = form_data[4]['price'],
+            utility_costs = form_data[4]['utility_costs']
+        )
+        
+        rental_condition.save()
+        
+        
+        rules_preferences = RulesAndPreferences(
+            gender =  form_data[5]['gender'],
+            minimum_age = form_data[5]['minimum_age'],
+            maximum_age = form_data[5]['maximum_age'],
+            tenant = form_data[5]['tenant'],
+            proof = form_data[5]['proof']
+        )
+        
+        rules_preferences.save()
+        
+        
+        data = Listing.objects.all()
+        
+        
+        return render(self.request, 'main/owner/done.html', {'data': data})
+    
+    
+def payement(request):
+    return render(request, 'includes/payemnts.html')
 
-#         # # Save the model instances to the database
-#         # listing.save()
-#         # space_overview.save()
-#         # house_area.save()
-#         # house_amenities.save()
-#         # rental_conditions.save()
-#         # rules_preferences.save()
-        
-#         listing_instance = form_list[0].save()  # Assuming ListingForm is the first form
-#         space_overview_instance = form_list[1].save(commit=False)
-#         space_overview_instance.listing = listing_instance
-#         space_overview_instance.save()
-        
-#         return HttpResponse('form submitted!')
