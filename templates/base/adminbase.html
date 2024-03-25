@@ -23,41 +23,135 @@
     </style>
 </head>
 
+
 <body>
 
-    {% block 'header' %}
+    {% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+        {{ message }}
+        {{ message.tags }}
+    </div>
+    {% endfor %}
+    {% endif %}
+          
+        <!-- Spinner Start -->
+        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
+
+       {% block 'header' %}
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header bg-info">
+            <div class="brand-logo">
+                <a href="/">
+                <span class="brand-title">
+                    
+                        <h4 style="padding: 30px;" class="text-white icon-home"> <span>Home</span></h4>
+                    </span>
+                </a>
+             
+            </div>
+            
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
     
-    {% endblock %}
-
- 
-
-{% if messages %}
-{% for message in messages %}
-<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-    {{ message }}
-    {{ message.tags }}
-</div>
-
-{% endfor %}
-{% endif %}
-
- <!-- Spinner Start -->
- <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-    <div class="spinner-grow text-primary" role="status"></div>
-</div>
-<!-- Spinner End -->
-
-
-
-
-
-{% block 'body' %}
-
-{% endblock %}
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content clearfix">
     
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i  class="icon-menu"></i></span>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        
+                        <form action="/rent-house/" method="POST">
+                            {% csrf_token %}
+                            {% block 'search' %}
+                            <input type="text" name="search" class="form-control" placeholder="Search By City...">
+                            {% endblock %}
+                        </form>
+                        <div class="drop-down animated flipInX d-md-none">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <ul class="clearfix">
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative" data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                {% comment %} {% if request.user.userprofile_set.first.profilePicture %}
+                                <img src="{{request.user.userprofile_set.first.profilePicture.url}}" style="border-radius: 50%;" height="100" width="100" alt="">
+                                {% else %} {% endcomment %}
+                                <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                                {% comment %} {% endif %} {% endcomment %}
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="/profile/"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="/change-password/"><i class="icon-lock"></i> <span>Change Password</span></a>
+                                        </li>
+                                        <li><a href="/logout/"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+     {% endblock %}
 
 
 
+
+        {% block 'body' %}
+
+        {% endblock %}
+        
+
+
+
+
+
+      
+        {% block 'footer2' %}
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright bg-info py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <span class="text-white"><a href="#"><i class="fas fa-copyright text-white me-2"></i>OHR</a>, All right reserved.</span>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+     {% endblock %}
+
+
+
+       
 
         <script src="{% static 'AdminStatic/plugins/common/common.min.js '%}"></script>
         <script src="{% static 'AdminStatic/js/custom.min.js '%}"></script>
