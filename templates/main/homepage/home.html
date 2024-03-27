@@ -160,15 +160,35 @@
 
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
-                   <div class="row g-4">
-                    {% for listing in listings %}
-                    <div class="col">
-                        <div class="hover-zoom">
-                            {% include "components/listing_card.html"  %}
+                    <div class="album py-5 bg-light">
+                        <div class="container">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                {% for listing in listing_filter.qs %}
+                                <div class="col">
+                                    <div class="hover-zoom">
+                                        {% include "components/home_page_list_card.html"  %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                    {% endfor %}
-           
+                    
+                    <div class="col-lg-9">
+                        <div class="row g-4 justify-content-center">
+                            <div class="album py-5 bg-light ">
+                                <div class="container ">
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 ">
+                                        {% for listing in listing_filter.qs %}
+                                        <div class="col">
+                                        {% include "components/home_page_list_card.html"  %}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                             </div> 
+                           
+                        </div>
                     </div>
                 </div>
             </div>

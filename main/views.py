@@ -35,7 +35,19 @@ from .forms import (
 
 
 def main_view(request):
-    return render(request, 'main/homepage/home.html', {'name': 'home'})
+    listings = Listing.objects.all()
+    listing_filter = ListingFilter(request.GET, queryset=listings)
+    
+    if hasattr(request.user, 'profile'):
+        
+        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
+    
+        liked_listings_ids = [l[0] for l in user_liked_listings ]
+    else:
+        liked_listings_ids = []
+    
+    return render(request, 'main/homepage/home.html',  {'listing_filter': listing_filter,
+                                               'liked_listings_ids': liked_listings_ids})
 
 
 
