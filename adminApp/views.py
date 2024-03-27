@@ -9,6 +9,16 @@ from django.conf import settings
 def admin_view(request):
     return render(request, 'adminApp/adminHome.html')
     
+    
+def dashboard_view(request):
+    return render(request, 'adminApp/dashboard.html')
+
+
+def approve_owner_view(request):
+    return render(request, 'adminApp/approve-owner.html')
+
+
+
 def AllUser(request):
     u = Profile.objects.filter(verified=True).exclude(user=request.user)
     if request.method == "POST":
