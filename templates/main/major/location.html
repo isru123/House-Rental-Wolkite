@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Map</title>
+    {% comment %} <script src="https://maps.googleapis.com/maps/api/js"></script> {% endcomment %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ opencage_api_key }}"></script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 0, lng: 0},
+                zoom: 10
+            });
+
+            {% for listing in listings %}
+                var marker{{ house.id }} = new google.maps.Marker({
+                    position: {lat: {{ listing.latitude }}, lng: {{ listing.longitude }}},
+                    map: map,
+                    title: "{{ listing.address }}"
+                });
+            {% endfor %}
+        }
+    </script>
+</head>
+<body>
+    <div id="map" style="height: 400px;"></div>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ opencage_api_key }}&callback=initMap"></script>
+</body>
+</html>
