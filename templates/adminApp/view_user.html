@@ -1,0 +1,80 @@
+{% extends 'base/adminbase.html' %}
+{% load static %}
+{% block 'body' %}
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+       
+<div class="content-body">
+    <!-- <h1>user data</h1> -->
+    <form class="form-group pt-5 mt-5" style="padding-left: 300px; height: 100vh;">
+        <div>
+            <center>
+                {% if user.profilePicture %}
+                <img src="{{user.profilePicture.url}}" style="margin-left: -330px; margin-bottom: 20px; border-radius: 50%;" height="100" width="100" alt="">
+                {% else %}
+                <img src="{% static 'AdminStatic/images/user.png' %}" style="margin-left: -330px; margin-bottom: 20px;" height="100" width="100" alt="">
+                {% endif %}
+            </center>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <label>Name</label>
+                <input type="text" value="{{user.user.first_name}} {{user.user.last_name}}" placeholder="Enter name" class="form-control"
+                    style="border:1px solid rgb(175, 174, 174);" disabled>
+            </div>
+            <div class="col-lg-4">
+                <label>Contact No.</label>
+                <input type="number" value="{{user.contact_No}}" placeholder="Enter number" class="form-control"
+                    style="border:1px solid rgb(175, 174, 174);" disabled>
+            </div>
+        </div>
+
+        <div class="row pt-5">
+            <div class="col-lg-4">
+                <label>Date of Birth</label>
+                <input type="date" value="{{user.DOB | date:'Y-m-d'}}" placeholder="Enter dob" class="form-control"
+                    style="border:1px solid rgb(175, 174, 174);" disabled>
+            </div>
+            <div class="col-lg-4">
+                <label>Address</label>
+                <input type="text" value="{{user.address}}" placeholder="Enter address" class="form-control"
+                    style="border:1px solid rgb(175, 174, 174);" disabled>
+            </div>
+        </div>
+
+        <div class="row pt-5">
+            <div class="col-lg-4">
+                <label>E-Mail</label>
+                <input type="email" value="{{user.user.email}}" placeholder="Enter email" class="form-control"
+                    style="border:1px solid rgb(175, 174, 174);" disabled>
+            </div>
+            <div class="col-lg-4">
+                <label>Gender</label>
+                <input type="text" value="{{user.gender}}" placeholder="Enter password" class="form-control"
+                    style="border:1px solid rgb(175, 174, 174);" disabled>
+            </div>
+        </div>
+
+
+
+    </form>
+
+</div>
+<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+{% endblock %}
+
+{% block 'header' %}
+
+{% endblock %}
+
