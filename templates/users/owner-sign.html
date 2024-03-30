@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -22,6 +23,8 @@
                 <h3><a href="/">Home</a></h3>
                 <h3>SignUp</h3>
                 <p>Please enter your credentials.</p>
+                <h1>{% trans "Welcome to our website!" %}</h1>
+                <p>{% trans "Please log in to continue." %}</p>
             </div>
         </div>
         <div class="row register-form">

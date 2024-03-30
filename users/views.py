@@ -11,7 +11,7 @@ from .forms import UserForm,ProfileForm,LocationForm
 from main.models import Listing,LikedListing
 from .models import Profile,OTP
 from django.contrib.auth.models import User
-
+from django.utils.translation import gettext as _
 
 
 def LoginPage(request):
@@ -57,10 +57,10 @@ def SignPage(request):
         address= request.POST.get('address')
         
         if pass1!=pass2:
-            msg='Password should be same.'
+            msg= _('Password should be same.')
             return render(request,'sign.html',{'msg':msg})
         if len(contact)!=10:
-            msg='Contact should be 10 digit.'
+            msg= _('Contact should be 10 digit.')
             return render(request,'users/sign.html',{'msg':msg})
         try:
             user=User.objects.create_user(
@@ -71,7 +71,7 @@ def SignPage(request):
                 last_name=last_name
                 )
         except:
-            msg='Usename already exist.'
+            msg= _('Usename already exist.')
             return render(request,'users/sign.html',{'msg':msg})
         Profile.objects.create(
             user=user,
@@ -97,10 +97,10 @@ def OwnerSign(request):
         address= request.POST.get('address')
         
         if pass1!=pass2:
-            msg='Password should be same.'
+            msg= _('Password should be same.')
             return render(request,'users/owner-sign.html',{'msg':msg})
         if len(contact)!=10:
-            msg='Contact should be 10 digit.'
+            msg= _('Contact should be 10 digit.')
             return render(request,'users/owner-sign.html',{'msg':msg})
         try:
             user=User.objects.create_user(
@@ -111,7 +111,7 @@ def OwnerSign(request):
                 last_name=last_name
                 )
         except:
-            msg='Usename already exist.'
+            msg= _('Usename already exist.')
             return render(request,'users/owner-sign.html',{'msg':msg})
         Profile.objects.create(
             user=user,

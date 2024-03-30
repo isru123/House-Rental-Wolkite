@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'AdminStatic/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css' %}">
     <!-- Custom Stylesheet -->
     <link href="{% static 'AdminStatic/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
         tr,td,th{
             padding-left: 15px;
@@ -35,29 +36,26 @@
     {% endfor %}
     {% endif %}
           
-        <!-- Spinner Start -->
-        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" role="status"></div>
-        </div>
-        <!-- Spinner End -->
+       
 
        {% block 'header' %}
 
         <!--**********************************
             Nav header start
         ***********************************-->
-        <div class="nav-header bg-info">
+        <div class="nav-header bg-primary">
             <div class="brand-logo">
                 <a href="/">
-                <span class="brand-title">
+                <span class="brand-title align-item-start">
                     
-                        <h4 style="padding: 30px;" class="text-white icon-home"> <span>Home</span></h4>
+                        <h4 style="padding: 10px;" class="text-white  icon-home"> <span>HOME</span></h4>
                     </span>
                 </a>
              
             </div>
             
         </div>
+        
         <!--**********************************
             Nav header end
         ***********************************-->
@@ -116,6 +114,7 @@
                 </div>
             </div>
         </div>
+        
         <!--**********************************
             Header end ti-comment-alt
         ***********************************-->
@@ -136,7 +135,7 @@
       
         {% block 'footer2' %}
         <!-- Copyright Start -->
-        <div class="container-fluid copyright bg-info py-4">
+        <div class="container-fluid copyright bg-dark py-4">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

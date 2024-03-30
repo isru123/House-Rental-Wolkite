@@ -377,6 +377,136 @@
         </div>
     </div>
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+
+            <div class="container-fluid" style="background-color: rgb(145, 187, 241);height: 150vh;">
+        
+        
+                <div class="container pt-5">
+                    <div class="card-deck">
+                        <div class="card bg-light">
+                            <div class="card-body text-center" style="padding-top: 100px;">
+                                <p class="card-text"><b>OWNER NAME:</b> {{house_details.user.user.first_name}}
+                                    {{house_details.user.user.last_name}}</p>
+                                <p class="card-text"><b>HOUSE NO.:</b> {{house_details.house_no}}</p>
+                                <p class="card-text"><b>OWNER CONTACT NO.:</b> {{house_details.user.contact_No}}</p>
+                                <p class="card-text"><b>ROOM SIZE:</b> {{house_details.room_size}}</p>
+                                <p class="card-text"><b>AREA:</b> {{house_details.area}}</p>
+                                <p class="card-text"><b>CITY:</b> {{house_details.city}}</p>
+                                <p class="card-text"><b>PINCODE:</b> {{house_details.pincode}}</p>
+                                <p class="card-text"><b>STATUS:</b> {{house_details.status}}</p>
+                                <p class="card-text"><b>PRICE:</b> {{house_details.price}}</p>
+                            </div>
+                        </div>
+        
+                        <div id="wrapper">
+        
+                            <div id="slider-wrap">
+                                <ul id="slider">
+                                    <li data-color="#1abc9c">
+                                        <img src="{{house_details.image1.url}}" style="height: 250px; width: 500px;">
+                                    </li>
+                                    <br>
+                                    <li data-color="#3498db">
+                                        <img src="{{house_details.image2.url}}" style="height: 250px; width: 500px;">
+                                    </li>
+        
+        
+        
+        
+                                </ul>
+        
+                                <!--controls-->
+        
+                                <!--controls-->
+        
+                            </div>
+        
+                        </div>
+                    </div>
+        
+                    <div class="row" style="margin-left: 450px;">
+                        {% if request.user.userprofile_set.first.userType == "Public" %}
+                        {% if house_details.status == "Available" %}
+                        <div class="text-center pt-5">
+                            <a href="/book-house/{{house_details.id}}/">
+                                <button class="btn btn-primary submit-btn"
+                                    style="margin-bottom: 10px; border-radius: 20px;">Book Now</button>
+                            </a>
+                        </div>&nbsp;&nbsp;&nbsp;
+                        {% endif %}
+                        {% endif %}
+                        {% if request.user.userprofile_set.first.userType == "Owner" %}
+                        {% if house_details.status == "Booked" %}
+        
+                        <div class="text-center pt-5">
+                            <a href="/available-house/{{house_details.id}}/">
+                                <button class="btn btn-primary submit-btn"
+                                    style="margin-bottom: 10px; border-radius: 20px;">Available Now</button>
+                            </a>
+                        </div>&nbsp;&nbsp;&nbsp;
+                        {% endif %}
+                        <div class="text-center pt-5">
+                            <a href="/edit-house/{{house_details.id}}/">
+                                <button class="btn btn-primary submit-btn"
+                                    style="margin-bottom: 10px; border-radius: 20px;">Edit House</button>
+                            </a>
+                        </div>&nbsp;&nbsp;&nbsp;
+                        {% endif %}
+                        <div class="text-center pt-5">
+                            <a href="/location/{{house_details.location}}" target="_blank">
+                                <button class="btn btn-primary submit-btn" style="margin-bottom: 10px; border-radius: 20px;">See
+                                    Location</button>
+                            </a>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+        
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+                Main wrapper end
+            ***********************************-->
+        
+        <!--**********************************
+                Scripts
+            ***********************************-->
+
+
+
+
+
+
+
+
+
+
+
     </main>
 
 {% endblock %}

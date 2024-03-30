@@ -15,7 +15,7 @@ from django.contrib.messages import constants as messages
 import os
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,6 +136,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+<<<<<<< HEAD
+=======
+# LOCALE_PATHS = [
+#     os.path.join(BASE_DIR, 'locale')
+# ]
+
+OPENCAGE_API_KEY = '48277b56842b40d0af342b24c3833c15'
+
+>>>>>>> 3e8008586e88bcfb61de742fc22eb5c8fe01afd4
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 

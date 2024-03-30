@@ -1,21 +1,96 @@
 from django.shortcuts import render,redirect
-from users.models import Profile
+from users.models import Profile,Location
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
+from .forms import AdminProfileForm
+from users.forms import LocationForm,UserForm
 # Create your views here.
 
 
 def admin_view(request):
     return render(request, 'adminApp/adminHome.html')
+
+
     
-    
-def dashboard_view(request):
-    return render(request, 'adminApp/dashboard.html')
+def Dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    total_verified_owner = Profile.objects.filter(userType="Owner", verified=True).count()
+    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+
+    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
+    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+
+    # available_house = House.objects.filter(status="Available").count()
+    # booked_house = House.objects.filter(status="Booked").count()
+
+    # customer_request = BookingRequest.objects.filter(status="Pending").count()
+
+    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
+
+    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+
+    Dict = {
+        "total_verified_owner":total_verified_owner,
+        "total_unverified_owner":total_unverified_owner,
+        "total_verified_admin":total_verified_admin,
+        "total_unverified_admin":total_unverified_admin,
+        # "available_house":available_house,
+        # "booked_house":booked_house,
+        # "customer_request":customer_request,
+
+        # "my_house": my_house,
+        # "my_available_house":my_available_house,
+
+        # "my_booking":my_booking
+    }
+    return render(request, 'adminApp/board.html',Dict)
+
 
 
 def approve_owner_view(request):
     return render(request, 'adminApp/approve-owner.html')
+
+def manage_customer_view(request):
+    return render(request, 'adminApp/manage-customer.html')
+
+def ViewUser(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    u = Profile.objects.get(id=id)
+
+    return render(request, 'adminApp/view_user.html',{'user':u})
+
+
+def DeleteUser(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    u = User.objects.get(id=id)
+    u.delete()
+    return redirect('all-user')
+
+
+def add_admin_view(request):
+    if request.method == 'GET':
+        user_form = UserForm()
+        profile_form = AdminProfileForm()
+        location_form = LocationForm()
+    
+        return render(request, 'adminApp/add-admin.html', {'user_form':user_form,'profile_form': profile_form, 'location_form': location_form})
+    
+    elif request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = AdminProfileForm(request.POST, request.FILES)
+        location_form = LocationForm(request.POST)
+        
+        return render(request, 'adminApp/add-admin.html', {'user_form':user_form,'profile_form': profile_form, 'location_form': location_form})
+
+        
+        
+        
+ 
 
 
 

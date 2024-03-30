@@ -10,12 +10,15 @@
 <!--**********************************
             Content body start
         ***********************************-->
+        <section class="vh-100" style="background-color: #eee;">
+            <br>
+            <br>
         <div class="content-body">
-
-            <div class="container-fluid mt-5">
+             
+            <div class="container-fluid mt-5" style="margin-left: 10px; margin-right: 10px">
                 <div class="row">
                     {% comment %} {% if request.user.userprofile_set.first.userType == "Public" %} {% endcomment %}
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-2">
                             <div class="card-body">
                                 <h3 class="card-title text-white">My Total Booking</h3>
@@ -26,10 +29,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-1">
                             <div class="card-body">
-                                <h3 class="card-title text-white">Total Available Room</h3>
+                                <h3 class="card-title text-white" style="font-family: Arial, sans-serif;font-size: 24px;">Total Available Room</h3>
                                 <div class="d-inline-block">
                                     <h2 class="text-white">{{available_house}}</h2>
                                 </div>
@@ -39,10 +42,10 @@
                     </div>
                     {% comment %} {% endif %}
                     {% if request.user.userprofile_set.first.userType == "Owner" %} {% endcomment %}
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-2">
                             <div class="card-body">
-                                <h3 class="card-title text-white">My House</h3>
+                                <h3 class="card-title text-white" >My House</h3>
                                 <div class="d-inline-block">
                                     <h2 class="text-white">{{my_house}}</h2>
                                 </div>
@@ -50,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-1">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total Available Room</h3>
@@ -63,7 +66,7 @@
                     </div>
                     {% comment %} {% endif %}
                     {% if request.user.userprofile_set.first.userType == "Admin" %} {% endcomment %}
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-2">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total No. of Verified House Owner</h3>
@@ -74,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-2">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total No. of Unverified House Owner</h3>
@@ -85,7 +88,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-1">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total Available Room</h3>
@@ -96,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-3">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total Booked Room</h3>
@@ -107,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-3">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total verified Admin</h3>
@@ -118,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6">
+                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-3">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Total Unverified Admin</h3>
@@ -135,6 +138,54 @@
             </div>
         </div>
     </div>
+</section>
+
+
+
+    <section style="height:50px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       <div class="nk-sidebar">
+           <div class="">
+               <br>
+               <ul class="metismenu" id="menu">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm">
+                       <a class="has-arrow">
+                           <i class="icon-screen-tablet menu-icon"></i>
+                           <span class="nav-text">Admin</span>
+                       </a>
+                       <ul>
+                        <li><a href="/all-user/">All User</a></li>
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                        
+                        <li><a href="/approve-admin/">Admin Panel</a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        
+                        <li><a href="/rent-house/">Manage Owner</a></li>
+                        <li><a href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        <li>
+                            <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'add-admin' %}">Add admin</a>
+                        </li>
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
     {% endblock %}
 
     

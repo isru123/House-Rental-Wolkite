@@ -38,14 +38,15 @@ class ListingHouseAmenities(models.Model):
 
 
 class ListingSpaceOverview(models.Model):
-    RADIO_CHOICES = [
+   
+    RADIO_CHOICES2 = [
         ('yes', 'Yes'),
         ('no', 'No'),
     ]
     house_size = models.CharField(max_length=24)
     house_mate_no = models.CharField(max_length=24)
-    bedroom_size = models.CharField(max_length=24, choices=RADIO_CHOICES, verbose_name='Bedroom Size')
-    bedroom_furnished = models.CharField(max_length=24)
+    bedroom_size = models.CharField(max_length=24, verbose_name='Bedroom Size')
+    bedroom_furnished = models.CharField(max_length=24, choices=RADIO_CHOICES2)
     
     
     def __str__(self):
@@ -191,18 +192,27 @@ class RulesAndPreferences(models.Model):
 #         return f'{self.seller.user.username}\'s Listings - {self.model}'
     
 class Listing(models.Model):
+      RADIO_CHOICES = [
+        ('private_room', 'Private Room'),
+        ('shared_room', 'Shared Room'),
+      ]
       id = models.UUIDField(primary_key = True, default = uuid.uuid4, unique=True, editable=False)
       created_at = models.DateTimeField(auto_now_add =True)
       updated_at = models.DateTimeField(auto_now =True)
       seller = models.ForeignKey(Profile, on_delete = models.CASCADE)
       location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
-      title = models.CharField(max_length=200)
+      house_kind = models.CharField(max_length=200,choices=RADIO_CHOICES, verbose_name='House Kind')
       description = models.TextField()
       price = models.PositiveSmallIntegerField()
       available_start = models.DateTimeField(null=True)
       available_end = models.DateTimeField(null=True)
       image = models.ImageField(upload_to=user_listing_path)
     #   rooms = models.ManyToManyField(Room)
+      minimum_rental_period = models.CharField(max_length=200,choices=TRANSMISSION_OPTIONS)
+      maximum_rental_period = models.CharField(max_length=200,choices=CAR_BRANDS)
+      address = models.CharField(max_length=255)
+      latitude = models.FloatField(blank=True, null=True)
+      longitude = models.FloatField(blank=True, null=True)
       amenities = models.ManyToManyField(ListingHouseAmenities, through='Amenity')
       listing_space_overview = models.ManyToManyField(ListingSpaceOverview, through='ListingSpace')
       listing_house_area = models.ManyToManyField(ListingHouseArea, through='HouseArea')

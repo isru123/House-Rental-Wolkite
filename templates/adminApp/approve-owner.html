@@ -22,11 +22,13 @@
         <!--**********************************
             Content body start
         ***********************************-->
-
+<section class="vh-100" style="background-color: #eee;">
         <div class="container-fluid mt-3">
             <div class="container" style="margin-left: 300px;">
                 <div class="row">
                     <div class="col-12" style="height: 400px;">
+                        <br>
+                        <br>
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Approve Owner</h4>
@@ -75,6 +77,7 @@
 
         </div>
     </div>
+</section>
     <!--**********************************
         Main wrapper end
     ***********************************-->
@@ -83,7 +86,7 @@
         Scripts
     ***********************************-->
 
-    <section style="height:700px ">
+    <section style="height:50px ">
         <!--**********************************
            Sidebar start
        ***********************************-->
@@ -92,55 +95,33 @@
                <br>
                <ul class="metismenu" id="menu">
                    <li>
-                       <a href="{% url 'dashboard2' %}" aria-expanded="false">
+                       <a href="{% url 'board' %}" aria-expanded="false">
                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                        </a>
                    </li>
-                   {% comment %} {% if request.user.userprofile_set.first.userType == "Public" %} {% endcomment %}
-                   {% comment %} <li class="mega-menu mega-menu-sm">
-                       <a class="has-arrow" href="javascript:void()">
-                           <i class="icon-globe-alt menu-icon"></i><span class="nav-text">User</span>
-                       </a>
-                       <ul aria-expanded="false">
-                           <li><a href="/rent-house/">Rent House</a></li>
-                           <li><a href="/my-booking/">My Booking</a></li>
-                           <li><a href="/helpdesk/">User Helpdesk</a></li>
-                       </ul>
-                   </li> {% endcomment %}
-                   {% comment %} {% endif %}
-                   {% if request.user.userprofile_set.first.userType == "Owner" %} {% endcomment %}
-                   {% comment %} <li class="mega-menu mega-menu-sm">
-                       <a class="has-arrow" >
-                           <i class="icon-envelope menu-icon"></i> 
-                           <span class="nav-text">House Owner</span>
-                       </a>
-                       <ul aria-expanded="false">
-                           <li><a href="/rent-house/">My House</a></li>
-                           <li><a href="/customer-request/">Customer Request</a></li>
-                           <li><a  href="/approved-customer/">Approved Customers</a></li>
-                           <li><a href="/admin-helpdesk/">Help Desk</a></li>
-                       </ul>
-                   </li> {% endcomment %}
-                   {% comment %} {% endif %}
-                   {% if request.user.userprofile_set.first.userType == "Admin" %} {% endcomment %}
                    <li class="mega-menu mega-menu-sm">
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
                            <span class="nav-text">Admin</span>
                        </a>
                        <ul>
-                           <li><a href="/all-user/">All User</a></li>
-                           {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                           <li><a href="{% url 'approve-owner' %}">Approve Owner</a></li>
-                           
-                           <li><a href="/approve-admin/">Approve Admin</a></li>
-                           {% comment %} {% endif %} {% endcomment %}
-                           <li><a href="/rent-house/">House</a></li>
-                           <li>
-                               <a href="/admin-helpdesk/">Admin Helpdesk</a>
-                           </li>
+                        <li><a href="/all-user/">All User</a></li>
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                        
+                        <li><a href="/approve-admin/">Admin Panel</a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        
+                        <li><a href="/rent-house/">Manage Owner</a></li>
+                        <li><a href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        <li>
+                            <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                        </li>
 
-                       </ul>
+                        <li>
+                            <a href="{% url 'add-admin' %}">Add admin</a>
+                        </li>
+                       </ul> 
                    </li>
                    {% comment %} {% endif %} {% endcomment %}
                </ul>
@@ -149,3 +130,5 @@
        <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
    </section>
     {% endblock %}
+
+    

@@ -25,7 +25,7 @@
 
                     <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
                     <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
-                    <a href="{% url 'dashboard' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
+                    <a href="{% url 'dashboard_owner' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
 
                 </div>
                 <div class="d-flex m-3 me-0">
@@ -77,18 +77,17 @@
                                   <div id="elephant-card" class="row-4 card mb-4 active">
                                       <div class="card-body" role="button">
                                           <h5 class="card-title"><input id="elephant" type="radio" checked="">
-                                              <label for="elephant">Elephant</label></h5>
-                                          <p class="card-text">It is a long established fact that a reader will be
-                                              distracted by the readable content of a page when looking at its layout.</p>
+                                              <label for="elephant">Create new listing</label></h5>
+                                          <p class="card-text">Select this option to create a new listing from scratch.</p>
                                       </div>
                                   </div>
                                   
                                   <div id="meerkat-card" class="card mb-4 row-4 ">
                                       <div class="card-body" role="button">
                                           <h5 class="card-title"><input id="meerkat" type="radio"> <label
-                                                  for="meerkat">Meerkat</label></h5>
-                                          <p class="card-text">It is a long established fact that a reader will be
-                                              distracted by the readable content of a page when looking at its layout.</p>
+                                                  for="meerkat">Duplicate an existing listing</label></h5>
+                                          <p class="card-text">Select this option if you want to create 
+                                            a listing that is quite similar to a listing that you already listed.</p>
                                       </div>
                                   </div>
                               </div>

@@ -6,5 +6,5 @@ class ListingFilter(django_filters.FilterSet):
     
     class Meta:
         model = Listing
-        fields = {'price': {'exact'}, 'title':{'icontains'}}
+        fields = {'price': {'exact'}, 'house_kind':{'icontains'}}
         

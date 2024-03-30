@@ -22,6 +22,7 @@
           <div class="btn-group">
            <a type="button" class="btn btn-sm btn-outline-primary" 
            href="{% url 'single_house_view' id=listing.id  %}">View</a>
+           <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'map_view' %}">Map</a>
            {% if listing.seller.user == request.user %}
           <a href=""  type="button" class="btn btn-sm btn-outline-primary">Edit</a>
           {% endif %}

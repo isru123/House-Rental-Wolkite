@@ -11,7 +11,9 @@ from django.core.files.storage import DefaultStorage
 from importlib import reload
 from formtools.wizard.views import SessionWizardView
 from .filters import ListingFilter
-
+from users.forms import UserForm,ProfileForm,LocationForm
+from opencage.geocoder import OpenCageGeocode
+from django.conf import settings
 
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
@@ -84,6 +86,35 @@ def dashboard_view(request):
 
 def owner_second_view(request):
     return render(request, 'main/owner/second.html')
+
+
+
+
+def map_view(request):
+    listings = Listing.objects.all()
+    geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
+
+    for listing in listings:
+        if not listing.latitude or not listing.longitude:
+            results = geocoder.geocode(listing.address)
+            if results and len(results):
+                first_result = results[0]
+                listing.latitude = first_result['geometry']['lat']
+                listing.longitude = first_result['geometry']['lng']
+                listing.save()
+
+    context = {
+        'listings': listings,
+        'opencage_api_key': settings.OPENCAGE_API_KEY,
+    }
+    
+    return render(request, 'main/major/location.html', context)
+
+
+   
+    
+    
+
 
 
 # def ListingView(request):
@@ -262,14 +293,14 @@ def owner_second_view(request):
  
 @login_required  
 def single_house_view(request, id):
-    try:
-        listing = Listing.objects.get(id=id)
-        if listing is None:
-            raise Exception
-        return render(request, 'components/single_house_view.html',{'listing': listing})
-    except Exception as e:
-        messages.error(request, f'Invalid UID {id} was provided for listing')
-        return redirect('home')
+    # try:
+    #     listing = Listing.objects.get(id=id)
+    #     if listing is None:
+    #         raise Exception
+        return render(request, 'components/single_house_view.html')
+    # except Exception as e:
+    #     messages.error(request, f'Invalid UID {id} was provided for listing')
+    #     return redirect('home')
 
 
 
@@ -305,9 +336,12 @@ class multistepformsubmission(SessionWizardView):
      
         form_data = [form.cleaned_data for form in form_list]
         seller = self.request.user.profile 
-        listing = Listing(title = form_data[0]['title'], description = form_data[0]['description'],
+        listing = Listing(house_kind = form_data[0]['house_kind'], address = form_data[0]['address'],
                           price = form_data[0]['price'], available_start = form_data[0]['available_start'],
-                          available_end = form_data[0]['available_end'] , image = form_data[0]['image'],
+                          available_end = form_data[0]['available_end'] , 
+                          minimum_rental_period = form_data[0]['minimum_rental_period'],
+                          maximum_rental_period = form_data[0]['maximum_rental_period'],
+                          image = form_data[0]['image'],
                           seller=seller )
         listing.save()
         
@@ -364,6 +398,42 @@ class multistepformsubmission(SessionWizardView):
         return render(self.request, 'main/owner/done.html', {'data': data})
     
     
+    
+    
+    
+    
 def payement(request):
-    return render(request, 'includes/payemnts.html')
+    if request.method == 'POST':
+        user_listings = Listing.objects.filter(seller=request.user.profile)
+        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm()
+        location_form = LocationForm()
+        
+        
+        return render(request, 'includes/payemnts.html', {'user_form': user_form, 
+                                                      'profile_form': profile_form,
+                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
+        
+    
+    elif request.method == 'GET':
+        user_listings = Listing.objects.filter(seller=request.user.profile)
+        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        location_form = LocationForm(request.POST, instance=request.user.profile.location)
+        
+        if user_form.is_valid() and profile_form.is_valid() and location_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            location_form.save()
+            messages.success(request, 'Profile Updated successfully!')
+            
+        else:
+            messages.error(request, 'Error updating profile')
+
+        return render(request, 'includes/payemnts.html', {'user_form': user_form, 'profile_form': profile_form, 
+                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
+        
+    
 
