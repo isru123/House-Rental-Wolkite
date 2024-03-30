@@ -1,13 +1,11 @@
-
 from django.urls import path
-from main.views import master_view
-from .views import message_view
-
-
+from . import views
 
 urlpatterns = [
-    path('master/', master_view , name='master'),
-    path('message/', message_view , name='message'),
+    path('message', views.home, name="home"),
+    path('<str:room>/', views.room, name="room"),
+    path('checkview', views.checkview, name="checkview"),
+    path('send', views.send, name="send"),
+    path('getMessages/<str:room>/', views.getMessages, name="getMessages")
+
 ]
-
-
