@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from .widgets import CustomPictureImageFieldWidget
 
 class UserForm(forms.ModelForm):
-     username = forms.CharField(disabled=True)
+     username = forms.CharField(disabled=False)
     
      class Meta:
          model = User

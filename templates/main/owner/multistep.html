@@ -8,32 +8,36 @@
 {% endblock %}
 
 {% block 'body' %}
- {% comment %} <!-- Single Page Header start -->
- <div class="bg-success container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Post</h1>
-    <ol class="breadcrumb justify-content-center mb-0">
+
+
+  <!-- Single Page Header start -->
+ <div class="container-fluid page-header py-5" style="background-color: #1877F2; height:50px">
+    <h1 class="text-center text-white display-6">Post House</h1>
+    <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
         <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active text-white">Shop</li>
+        <li class="breadcrumb-item active">Post</li>
     </ol>
-</div> {% endcomment %}
+</div> 
 
 <br>
 <br>
-<br>
-<div class="col d-flex align-items-start">
+
+{% comment %} <div class="col d-flex align-items-start"> {% endcomment %}
     <div>
-       <h2 class="mb-3 border-bottom" style="color: black">List</h2>
+       <h2 class="mb-3 border-bottom align-items-right" style="color: black; font-size: 30px;">Create your listing</h2>
     </div>
- </div>
-<section class="vh-50" style="background-color: #eee;">
+ {% comment %} </div> {% endcomment %}
+<section class="vh-50" style="background-color: #eee; background-image: url('{% static 'images/house1.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
     <div class="container align-left w-150 py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-right h-100">
+      <div class="row d-flex justify-content-start align-items-right h-100">
         <div class="col col-xl-6">
-          <div class="card d-flex align-items-center" style="border-radius: 1rem;">
-                <div class="row">
+          <div class="card d-flex align-items-center" style="border-radius: 1rem; margin: 0 auto; width: 0px;height: 0px;">
+                <div class="row" style="width:500px">
                     <div class="col-12">
-                        <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+                        <br>
+                        <h1 style="font-family: Arial, sans-serif;font-size: 30px; color:black">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h1>
+                        <br>
                         <form action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <table>
@@ -41,17 +45,17 @@
                                 {% if wizard.form.forms %}
                                     {{ wizard.form.management_form }}
                                     {% for form in wizard.form.forms %}
-                                        {{ form.as_table }}
+                                        {{ form.as_table|crispy}}
                                     {% endfor %}
                                 {% else %}
-                                    {{ wizard.form }}
+                                    {{ wizard.form|crispy }}
                                 {% endif %}
                                 </table>
                                 {% if wizard.steps.prev %}
-                                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% translate "first step" %}</button>
-                                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% translate "prev step" %}</button>
+                                <button class="btn btn-primary my-2 align-end"  name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% translate "first step" %}</button><br>
+                                <button class="btn btn-primary my-2 align-end" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% translate "prev step" %}</button>
                                 {% endif %}
-                                <input type="submit" value="{% translate "submit" %}"/>
+                                <input class="btn btn-primary my-2 align-end" type="submit" value="{% translate "submit" %}"/>
                          </form>
 </div>
 </div>
@@ -60,9 +64,6 @@
 </div>
 </div>
 </section>
-<div class="col-6">
-  {{location_form|crispy}}
-</div> 
 <br>
 <br>
 <br> 
@@ -71,4 +72,5 @@
 
 
 {% block 'footer' %}
+
 {% endblock %}

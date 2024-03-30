@@ -1,6 +1,11 @@
 {% extends 'base/base.html' %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 {% load static %}
+
+
+
+
 
 {% block 'header' %}
 {% endblock %}
@@ -27,7 +32,8 @@
                           <h3><a href="/">Home</a></h3>
                           <h3>LOGIN</h3>
                           <p>Please enter your credentials to login.</p>
-                          
+                          <h1>{% trans "Welcome to our website!" %}</h1>
+                          <p>{% trans "Please log in to continue." %}</p>
                         </div>
                       </div>
                       <form class="login-form" method="POST" action="/login/" enctype="multipart/form-data">
