@@ -1,8 +1,8 @@
-{% extends "partials/base.html" %}
+{% extends "base/base.html" %}
 
 {% load static %}
 
-      {% block content %}
+{% block 'body' %}
    
 <head>
     <style>
@@ -182,10 +182,10 @@
                     <button id="resetButton" class="btn btn-outline-dark">Reset Message</button>
                 </div>
                 <div class="buttons d-flex justify-content-center mt-3 gap-3">
-                    <a href="{% url 'core:message' %}" style="display: block;margin-left: 450px; width: 500px; margin-top: 50px; color: white;">
+                    <a href="" style="display: block;margin-left: 450px; width: 500px; margin-top: 50px; color: white;">
                         <button class="btn btn-outline-dark">BACK</button>
                     </a>
-                    <a href="{% url 'core:book' %}" style="display: block; width: 500px; margin-top: 50px; color: black;">
+                    <a href="" style="display: block; width: 500px; margin-top: 50px; color: black;">
                         <button class="btn btn-outline-dark">SEND</button>
                     </a>
                 </div>
@@ -243,4 +243,4 @@
       }, 2000);
 </script>
 
-  {% endblock content%}
+  {% endblock %}

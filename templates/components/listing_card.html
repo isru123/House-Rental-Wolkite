@@ -1,6 +1,6 @@
 <div class="card shadow-sm ">
-    <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image.url}}" role="img" arial-label="placeholder: Thumbnail"
-    focusable="false">
+    {% comment %} <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image.url}}" role="img" arial-label="placeholder: Thumbnail"
+    focusable="false"> {% endcomment %}
     <div class="card-body rounded position-relative fruite-item">
      <h4 class="card-text">{{listing.title}}</h4>
        <div class="row justify-content-start align-items-center">
@@ -22,13 +22,14 @@
           <div class="btn-group">
            <a type="button" class="btn btn-sm btn-outline-primary" 
            href="{% url 'single_house_view' id=listing.id  %}">View</a>
-           <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'map_view' %}">Map</a>
-           {% if listing.seller.user == request.user %}
+           {% comment %} <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'map_view' %}">Map</a> {% endcomment %}
+           {% comment %} {% if listing.seller.user == request.user %}
           <a href=""  type="button" class="btn btn-sm btn-outline-primary">Edit</a>
           {% endif %}
+           {% endcomment %}
           </div>
            <small class="text-muted">{{listing.updated_at}}</small>
-           <button id="like_{{listing.id}}" type="button" value="like" class="btn btn-secondary">
+           {% comment %} <button id="like_{{listing.id}}" type="button" value="like" class="btn btn-secondary">
           {% if listing.id in liked_listings_ids %}
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart"
                     viewBox="0 0 16 16">
@@ -44,14 +45,14 @@
                     </path>
          </svg>
          {% endif %}
-         </button>
+         </button> {% endcomment %}
        </div>
     </div>
     
 </div>
 
 <script>
-    $("#like_{{listing.id}}").click(function () {
+    {% comment %} $("#like_{{listing.id}}").click(function () {
         $.ajax({
             type: "POST",
             url: "{% url 'like_listing' id=listing.id  %}",
@@ -64,7 +65,7 @@
                 alert(e);
             }
         } );
-    })
+    }) {% endcomment %}
 </script>
 
 

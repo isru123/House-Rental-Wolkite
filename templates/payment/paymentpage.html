@@ -1,0 +1,56 @@
+  
+
+{% extends 'base/base.html' %}
+{% load static %}
+{% block 'title' %}
+<title>
+    Housing In Wolkite , Home
+</title>
+{% block 'header' %}
+{% endblock %}
+
+
+
+{% endblock %}
+
+
+{% block 'body' %}
+
+
+<head>
+    <style>
+        body {
+            background-color: #ecedee;
+        }
+        
+    </style>
+</head>
+
+<div class="container mt-5 mb-5">
+    <div class="card d-flex justify-content-center align-items-center">
+        <div class="card-body text-center">
+            <h1 class="card-title">Payment  Details</h1>
+
+            <p class="card-text">"Making a payment with us is as smooth as a perfectly choreographed dance routine. With just a few clicks, </p>
+            <p class="card-text">you'll be whisked away to a world of secure transactions and seamless checkout experiences. </p>
+            <p class="card-text">So, get ready to make your payment effortlessly and enjoy the show!</p>
+            <p class="card-text">Experience the convenience and security of PayPal, </p>
+            <p class="card-text">the trusted global leader in online payments</p>
+            <p class="card-text">Price: ${{ product.price }}</p>
+
+            <!-- Add other product details as needed -->
+
+            <form action="{% url 'checkout' product_id=product.id %}" method="post">
+                {% csrf_token %}
+                {{ paypal.as_p }}
+                <button type="submit" class="btn btn-primary">Checkout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}
+

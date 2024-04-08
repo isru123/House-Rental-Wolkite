@@ -358,7 +358,36 @@
               <button class="w-100  btn-lg btn-outline-primary my-3">
                  Send Email
               </button>
-             </div>
+              {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' product_id=product.id %}'">
+                message now
+            </button> {% endcomment %}
+              <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
+                Pay now
+            </button>
+
+            
+
+            {% comment %} {% if request.user == list.seller %}
+            
+            <a href="{% url 'message:new' list.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact seller</a>
+            {% endif %} {% endcomment %}
+            
+            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'new' product_id=product.id %}'">
+               Contact now
+            </button>
+
+            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
+                see messages now
+            </button>
+            <div class="space-x-6">
+            
+
+                {% comment %} {% if request.user.is_authenticated %}
+                    <a href="{% url 'inbox' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
+              
+                    
+                {% endif %} {% endcomment %}
+            </div>
            </div>
             </div>
         </div>

@@ -12,8 +12,9 @@ from importlib import reload
 from formtools.wizard.views import SessionWizardView
 from .filters import ListingFilter
 from users.forms import UserForm,ProfileForm,LocationForm
-from opencage.geocoder import OpenCageGeocode
+#from opencage.geocoder import OpenCageGeocode
 from django.conf import settings
+import uuid
 
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
@@ -40,16 +41,17 @@ def main_view(request):
     listings = Listing.objects.all()
     listing_filter = ListingFilter(request.GET, queryset=listings)
     
-    if hasattr(request.user, 'profile'):
+    # if hasattr(request.user, 'profile'):
         
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
+    #     user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
     
-        liked_listings_ids = [l[0] for l in user_liked_listings ]
-    else:
-        liked_listings_ids = []
+    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
+    # else:
+    #     liked_listings_ids = []
     
     return render(request, 'main/homepage/home.html',  {'listing_filter': listing_filter,
-                                               'liked_listings_ids': liked_listings_ids})
+                                            #    'liked_listings_ids': liked_listings_ids
+                                            })
 
 
 
@@ -57,16 +59,17 @@ def master_view(request):
     listings = Listing.objects.all()
     listing_filter = ListingFilter(request.GET, queryset=listings)
     
-    if hasattr(request.user, 'profile'):
+    # if hasattr(request.user, 'profile'):
         
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
+    #     # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
     
-        liked_listings_ids = [l[0] for l in user_liked_listings ]
-    else:
-        liked_listings_ids = []
+    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
+    # else:
+    #     liked_listings_ids = []
     
-    return render(request, 'main/major/master.html',  {'listing_filter': listing_filter,
-                                               'liked_listings_ids': liked_listings_ids})
+    return render(request, 'main/major/master.html',  {'listing_filter': listing_filter
+                                            #    'liked_listings_ids': liked_listings_ids
+                                            })
 
    
 
@@ -90,25 +93,28 @@ def owner_second_view(request):
 
 
 
-def map_view(request):
-    listings = Listing.objects.all()
-    geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
 
-    for listing in listings:
-        if not listing.latitude or not listing.longitude:
-            results = geocoder.geocode(listing.address)
-            if results and len(results):
-                first_result = results[0]
-                listing.latitude = first_result['geometry']['lat']
-                listing.longitude = first_result['geometry']['lng']
-                listing.save()
 
-    context = {
-        'listings': listings,
-        'opencage_api_key': settings.OPENCAGE_API_KEY,
-    }
+
+# def map_view(request):
+#     listings = Listing.objects.all()
+#     geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
+
+#     for listing in listings:
+#         if not listing.latitude or not listing.longitude:
+#             results = geocoder.geocode(listing.address)
+#             if results and len(results):
+#                 first_result = results[0]
+#                 listing.latitude = first_result['geometry']['lat']
+#                 listing.longitude = first_result['geometry']['lng']
+#                 listing.save()
+
+#     context = {
+#         'listings': listings,
+#         'opencage_api_key': settings.OPENCAGE_API_KEY,
+#     }
     
-    return render(request, 'main/major/location.html', context)
+#     return render(request, 'main/major/location.html', context)
 
 
    
@@ -292,34 +298,49 @@ def map_view(request):
 
  
 @login_required  
+# def single_house_view(request, id):
+#     # try:
+#     #     listing = Listing.objects.get(id=id)
+#     #     if listing is None:
+#     #         raise Exception
+#      #   return render(request, 'payment/single_house_view.html')
+#     # except Exception as e:
+#     #     messages.error(request, f'Invalid UID {id} was provided for listing')
+#     #     return redirect('home')
+#      product = Listing.objects.get(id=id)
+#      context = {
+#         'product': product
+#      }
+#      return render(request, 'components/single_house_view.html', context)
+
+
 def single_house_view(request, id):
-    # try:
-    #     listing = Listing.objects.get(id=id)
-    #     if listing is None:
-    #         raise Exception
-        return render(request, 'components/single_house_view.html')
-    # except Exception as e:
-    #     messages.error(request, f'Invalid UID {id} was provided for listing')
-    #     return redirect('home')
-
-
-
-
-def like_listing_view(request, id):
-    listing = get_object_or_404(Listing, id=id)
-    
-    liked_listing, created  = LikedListing.objects.get_or_create(profile=request.user.profile, listing=listing)
-    
-    if not created:
-        liked_listing.delete()
-    else:
-        liked_listing.save()
-    
-    return JsonResponse(
-        {
-            'is_liked_by_user': created,
+    try:
+        product = Listing.objects.get(id=id)
+        conversation_id = uuid.uuid4()  # Generate a UUID
+        context = {
+            'product': product,
+            'conversation_id': conversation_id
         }
-    )
+        return render(request, 'components/single_house_view.html', context)
+    except Listing.DoesNotExist:
+        messages.error(request, f'Invalid UID {id} was provided for listing')
+        return redirect('home')
+# def like_listing_view(request, id):
+#     listing = get_object_or_404(Listing, id=id)
+    
+#     liked_listing, created  = LikedListing.objects.get_or_create(profile=request.user.profile, listing=listing)
+    
+#     if not created:
+#         liked_listing.delete()
+#     else:
+#         liked_listing.save()
+    
+#     return JsonResponse(
+#         {
+#             'is_liked_by_user': created,
+#         }
+#     )
 
 
 
@@ -405,7 +426,7 @@ class multistepformsubmission(SessionWizardView):
 def payement(request):
     if request.method == 'POST':
         user_listings = Listing.objects.filter(seller=request.user.profile)
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
+        # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm()
         location_form = LocationForm()
@@ -413,12 +434,13 @@ def payement(request):
         
         return render(request, 'includes/payemnts.html', {'user_form': user_form, 
                                                       'profile_form': profile_form,
-                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
+                                                    #   'location_form': location_form, 'user_listings': user_listings
+                                                    })
         
     
     elif request.method == 'GET':
         user_listings = Listing.objects.filter(seller=request.user.profile)
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
+        # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         location_form = LocationForm(request.POST, instance=request.user.profile.location)
@@ -433,7 +455,8 @@ def payement(request):
             messages.error(request, 'Error updating profile')
 
         return render(request, 'includes/payemnts.html', {'user_form': user_form, 'profile_form': profile_form, 
-                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
+                                                    #   'location_form': location_form, 'user_listings': user_listings, 
+                                                    })
         
     
 

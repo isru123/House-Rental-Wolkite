@@ -1,0 +1,9 @@
+<!-- payment/product_list.html -->
+<h1>Product List</h1>
+<ul>
+  {% for product in products %}
+    <li>
+      <a href="{% url 'product-view' product_id=product.id %}">{{ product.description }}</a>
+    </li>
+  {% endfor %}
+</ul>

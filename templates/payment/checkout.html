@@ -1,0 +1,215 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'body' %}
+<head>
+    <style>
+        body {
+            background-color: #ecedee;
+        }
+        
+        .card {
+            border: none;
+            overflow: hidden;
+            margin-top: 150px; 
+        }
+        
+        .thumbnail_images ul {
+            list-style: none;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-top: 50px; /* Adjusted margin-top value */
+        }
+        
+        .thumbnail_images ul li {
+            margin: 5px;
+            padding: 10px;
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+        
+        .thumbnail_images ul li:hover {
+            border: 2px solid #000;
+        }
+        
+        .main_image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            height: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .heart {
+            height: 29px;
+            width: 29px;
+            background-color: #eaeaea;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .content p {
+            font-size: 12px;
+        }
+        
+        .ratings span {
+            font-size: 14px;
+            margin-left: 12px;
+        }
+        
+        .colors {
+            margin-top: 5px;
+        }
+        
+        .colors ul {
+            list-style: none;
+            display: flex;
+            padding-left: 0px;
+        }
+        
+        .colors ul li {
+            height: 20px;
+            width: 20px;
+            display: flex;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .colors ul li:nth-child(1) {
+            background-color: #6c704d;
+        }
+        
+        .colors ul li:nth-child(2) {
+            background-color: #96918b;
+        }
+        
+        .colors ul li:nth-child(3) {
+            background-color: #68778e;
+        }
+        
+        .colors ul li:nth-child(4) {
+            background-color: #263f55;
+        }
+        
+        .colors ul li:nth-child(5) {
+            background-color: black;
+        }
+        
+        .right-side {
+            position: relative;
+        }
+
+        .buttons .btn {
+            height: 50px;
+            width: 150px;
+            border-radius: 10px !important;
+        }
+        .buttons {
+            margin-top: 50px; /* Add some top margin */
+        }
+    
+        .buttons .btn {
+            height: 50px;
+            width: 150px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #ff416c, #ff4b2b); /* Use gradient for button background */
+            color: #ffffff;
+            border: none; /* Remove border for button */
+            transition: all 0.3s ease; /* Add transition for smooth hover effect */
+        }
+        
+        .buttons .btn:hover {
+            background: linear-gradient(to right, #ff4b2b, #ff416c); /* Change gradient on hover */
+        }
+      
+    </style>
+
+</head>
+<div class="container mt-5 mb-5">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-6 border-end">
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="main_image">
+                        <img src="{% static 'img/vila.jpg' %}" id="main_product_image" width="350">
+                    </div>
+                    <div class="thumbnail_images">
+                        <ul id="thumbnail">
+                            <li><img onclick="changeImage(this)" src="{% static 'img/img9.jpg' %}" width="70"></li>
+                            <li><img onclick="changeImage(this)" src="{% static 'img/vila.jpg' %}" width="70"></li>
+                            <li><img onclick="changeImage(this)" src="{% static 'img/img10.jpg' %}" width="70"></li>
+                            <li><img onclick="changeImage(this)" src="{% static 'img/img1.jpg' %}" width="70"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="additional-info mt-3">
+                    <h5>Features:</h5>
+                    <ul>
+                        <li>3 Bedrooms</li>
+                        <li>2 Bathrooms</li>
+                        <li>Swimming Pool</li>
+                        <li>Garden Area</li>
+                    </ul>
+                    <h5>Amenities:</h5>
+                    <ul>
+                        <p>rules_and_preferences: {{product.rules_and_preferences}}</p>
+
+                    </ul>
+                    <h5>Location:</h5>
+                    <p>location: {{product.location}}</p>
+
+                </div>
+            </div>
+            <div class="col-md-6" style="border: 1px solid #ccc; max-height: 600px; overflow-y: auto;">
+                
+            
+                <h1>Checkout for Lists: {{product.seller}}</h1>
+    <div class="product-container">
+        <div class="products">
+            <img class="img" src="{{product.image}}" alt="">
+            <p>{{product.seller}}</p>
+            <p>{{product.maximum_rental_period}}</p>
+
+            
+            <p>Price: $ {{product.price}}</p>
+            <p>Description: {{product.description}}</p>
+            <!-- <button>Purchase</button> -->
+            {{paypal.render}}
+        </div>  
+    </div>
+   
+            </div>
+            
+
+
+
+
+
+
+
+
+
+
+
+            
+        </div>
+    </div>
+</div>
+
+
+    </div><script>
+    function changeImage(element) {
+
+        var main_prodcut_image = document.getElementById('main_product_image');
+        main_prodcut_image.src = element.src;
+
+    }
+</script>
+{% endblock %}

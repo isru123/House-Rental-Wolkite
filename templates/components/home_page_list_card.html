@@ -1,6 +1,6 @@
 <div class="card shadow-sm ">
-    <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image.url}}" role="img" arial-label="placeholder: Thumbnail"
-    focusable="false">
+    {% comment %} <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image.url}}" role="img" arial-label="placeholder: Thumbnail"
+    focusable="false"> {% endcomment %}
     <div class="card-body rounded position-relative fruite-item">
      <h4 class="card-text">{{listing.title}}</h4>
        
@@ -38,7 +38,7 @@
 </div>
 
 <script>
-    $("#like_{{listing.id}}").click(function () {
+    {% comment %} $("#like_{{listing.id}}").click(function () {
         $.ajax({
             type: "POST",
             url: "{% url 'like_listing' id=listing.id  %}",
@@ -51,7 +51,7 @@
                 alert(e);
             }
         } );
-    })
+    }) {% endcomment %}
 </script>
 
 

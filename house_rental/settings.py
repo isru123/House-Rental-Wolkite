@@ -51,7 +51,10 @@ INSTALLED_APPS = [
     'formtools',
     "crispy_forms",
     "crispy_bootstrap5",
-    'conversation',
+    'message',
+     'paymnet',
+    'paypal.standard.ipn',
+
 ]
 
 MIDDLEWARE = [
@@ -136,15 +139,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-<<<<<<< HEAD
-=======
 # LOCALE_PATHS = [
 #     os.path.join(BASE_DIR, 'locale')
 # ]
 
 OPENCAGE_API_KEY = '48277b56842b40d0af342b24c3833c15'
 
->>>>>>> 3e8008586e88bcfb61de742fc22eb5c8fe01afd4
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -176,3 +176,6 @@ MESSAGE_TAGS = {
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
+PAYPAL_TEST = True  # Set to False for production
