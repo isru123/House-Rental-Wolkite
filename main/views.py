@@ -326,6 +326,25 @@ def single_house_view(request, id):
     except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         return redirect('home')
+
+
+def single_house_view(request, id):
+    try:
+        product = Listing.objects.get(id=id)
+        conversation_id = uuid.uuid4()  # Generate a UUID
+
+        # Check if the current user is the seller
+        user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
+
+        context = {
+            'product': product,
+            'conversation_id': conversation_id,
+            'user_is_seller': user_is_seller
+        }
+        return render(request, 'components/single_house_view.html', context)
+    except Listing.DoesNotExist:
+        messages.error(request, f'Invalid UID {id} was provided for listing')
+        return redirect('home')        
 # def like_listing_view(request, id):
 #     listing = get_object_or_404(Listing, id=id)
     

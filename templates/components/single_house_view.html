@@ -352,18 +352,16 @@
               <ul class="list-unstyled mt-3 mb-4">
                 <li>{{ listing.location.address_1 }} , {{ listing.location.address_2 }} , {{ listing.location.city }}</li>
               </ul>
-              <button class="w-100 btn-lg btn-outline-primary my-3">
+              {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3">
                 {{ listing.seller.contact_No }}
-              </button>
+              </button> {% endcomment %}
               <button class="w-100  btn-lg btn-outline-primary my-3">
                  Send Email
               </button>
               {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' product_id=product.id %}'">
                 message now
             </button> {% endcomment %}
-              <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
-                Pay now
-            </button>
+           
 
             
 
@@ -372,14 +370,22 @@
             <a href="{% url 'message:new' list.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact seller</a>
             {% endif %} {% endcomment %}
             
-            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'new' product_id=product.id %}'">
-               Contact now
-            </button>
-
+            {% if user_is_seller %}
+            <!-- Display "See Messages" button for sellers -->
             <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
-                see messages now
+                See Messages
             </button>
-            <div class="space-x-6">
+        {% else %}
+        <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
+            Pay now
+        </button>
+            <!-- Display "Contact now" button for non-sellers -->
+            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'new' product_id=product.id %}'">
+                Contact now
+            </button>
+        {% endif %}
+        
+        
             
 
                 {% comment %} {% if request.user.is_authenticated %}

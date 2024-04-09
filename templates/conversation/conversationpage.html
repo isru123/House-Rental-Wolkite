@@ -1,5 +1,7 @@
-{% extends 'base/base.html' %}
 
+
+{% extends 'base/base.html' %}
+{% comment %} 
 {% block title %}Conversation{% endblock %}
 
 {% block 'body' %}
@@ -21,6 +23,34 @@
 
     {{ form.as_p }}
 
-    <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Send</button>
+    <button class="w-23 btn-lg btn-outline-primary my-3">Send</button>
 </form>
+{% endblock %} {% endcomment %}
+
+
+
+
+{% block title %}Conversation{% endblock %}
+
+{% block 'body' %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-3xl">Conversation</h1>
+
+    <div class="space-y-6">
+        {% for message in conversation.messages.all %}
+        <div class="p-4 {% if message.created_by == request.user %}bg-primary text-white{% else %}bg-light{% endif %} rounded-lg shadow-sm">
+            <p class="mb-2"><strong>{{ message.created_by.username }}</strong> @ {{ message.created_at }}</p>
+            <p>{{ message.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+        <div class="input-group mt-4">
+            {{ form.content }}
+            <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
