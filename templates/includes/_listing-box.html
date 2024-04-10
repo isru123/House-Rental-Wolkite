@@ -1,0 +1,117 @@
+{% load static %}
+{% load humanize %}
+
+<div class="col-md-4 col-lg-3 mb-1 " >
+
+
+  <div class="card listing-preview rounded position-relative fruite-item " style="width:300px; height:500px;">
+
+    {% comment %} <a href="{% url 'listing' listing.id %}" class="stretched-link"> {% endcomment %}
+      <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-body rounded" data-bs-ride="true">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            {% for image in listing.image.all %}
+            <img style="width:100px;height:200px;" src="{{ image.image1.url }}" class="d-block w-100" alt="...">
+            {% endfor %}
+          </div>
+          <div class="carousel-item">
+            {% for image in listing.image.all %}
+            <img style="width:100px;height:200px;" src="{{ image.image2.url }}" class="d-block w-100" alt="...">
+            {% endfor %}
+          </div>
+          <div class="carousel-item">
+            {% for image in listing.image.all %}
+            <img style="width:100px;height:200px;" src="{{ image.image3.url }}" class="d-block w-100" alt="...">
+            {% endfor %}
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      {% comment %} <img class="card-img-top listing-img bd-placeholder-img card-img-top"  width="100%" src="{{ listing.photo.url }}" role="img" arial-label="placeholder: Thumbnail"
+      focusable="false"> {% endcomment %}
+{% comment %} 
+      {% if listing.seller.photo %}
+      <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
+  {% else %}
+      <!-- Placeholder image or alternative content when 'photo' is not available -->
+      <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
+  {% endif %} {% endcomment %}
+
+      <div class="card-img-overlay">
+        <h2>
+          <span class="badge badge-success">${{ listing.price | intcomma }}</span>
+
+        </h2>
+      </div>
+      {% comment %} <div class="card-body mb-1">
+        <div class="listing-heading text-start max-box">
+          <h4 class="text-primary">{{ listing.house_kind }}</h4>
+        </div> {% endcomment %}
+    </a>
+    <hr>
+    <div>
+      <p>
+        <i style="margin-left: 5px;" class="fas fa-map-marker text-success"></i>
+        <strong style="margin-left: 5px;">{{ listing.location.city }}</strong>
+      </p>
+    </div>
+    <div class="row py-2">
+      <div class="col-6">
+        <strong style="margin-left: 5px;">{{ _("House Size") }}:</strong><br>
+        {% for space_overview in listing.listing_space_overview.all %}
+        <i style="margin-left: 5px;">{{ space_overview.house_size }} m²</i>
+        {% endfor %}
+        
+    </div>
+      <div class="col-6">
+        <strong> {{ _("Available From") }}:</strong><br>
+        <i > {{ listing.available_start }}</div></i>
+    </div>
+    <div class="row py-2">
+      <div class="col-6">
+        <strong style="margin-left: 5px;">{{ _("Cancellation") }}:</strong><br>
+        {% for condtion in listing.rental_condtion.all %}
+        <i style="margin-left: 5px;">{{ condtion.cancellation }}</i>
+        {% endfor %}
+      </div>
+      <div class="col-6">
+        <strong>{{ _("Available To") }}:</strong> <br>
+        {{ listing.available_end }}
+      </div>
+    </div>
+    <div class="btn-group">
+      {% if request.user.profile.userType == "Owner" and listing.seller.user == request.user or request.user.profile.userType == "Public" %}
+      <a type="button" class="btn btn-sm bg-success text-white btn-outline-success" 
+      href="{% url 'single_house_view' id=listing.id  %}">View</a>
+      {% endif %}
+      <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'map_view' %}">Map</a>
+      {% if listing.seller.user == request.user %}
+     <a href=""  type="button" class="btn btn-sm bg-secondary text-white btn-outline-secondary">Edit</a>
+     {% endif %}
+     </div>
+    {% comment %} <a href="{% url 'listing' listing.id %}" class="btn btn-secondary btn-block">{{ _("More Info") }}</a> {% endcomment %}
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+    
