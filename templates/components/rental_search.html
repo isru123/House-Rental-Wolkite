@@ -1,0 +1,15 @@
+<form method="post" action="{% url 'rental_search' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+  </form>
+  
+  {% for listing in filtered_listings %}
+      <h3>{{ listing.title }}</h3>
+      <p>Available From: {{ listing.available_from }}</p>
+      <p>Available To: {{ listing.available_to }}</p>
+      <!-- Other listing details -->
+  {% empty %}
+      <p>No listings found.</p>
+  {% endfor %}
+</form>
