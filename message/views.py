@@ -5,7 +5,10 @@ from main.models import Listing
 from django.urls import reverse
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
+from .forms import ConversationMessageForm
+from .models import ConversationMessage
 from .forms import ConversationMessageForm
 from .models import Conversation
 
@@ -67,25 +70,25 @@ def inbox(request, conversation_id):
 
 
 
-def detail(request, conversation_id):
-    conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
+# def detail(request, conversation_id):
+#     conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
 
-    if request.method == 'POST':
-        form = ConversationMessageForm(request.POST)
+#     if request.method == 'POST':
+#         form = ConversationMessageForm(request.POST)
 
-        if form.is_valid():
-            conversation_message = form.save(commit=False)
-            conversation_message.conversation = conversation
-            conversation_message.created_by = request.user
-            conversation_message.save()
+#         if form.is_valid():
+#             conversation_message = form.save(commit=False)
+#             conversation_message.conversation = conversation
+#             conversation_message.created_by = request.user
+#             conversation_message.save()
 
-            return redirect('detail', conversation_id=conversation_id)
-    else:
-        form = ConversationMessageForm()
-        context = {
-          'conversation': conversation,
-        'form': form}
-    return render(request, 'conversation/conversationpage.html', context)
+#             return redirect('detail', conversation_id=conversation_id)
+#     else:
+#         form = ConversationMessageForm()
+#         context = {
+#           'conversation': conversation,
+#         'form': form}
+#     return render(request, 'conversation/conversationpage.html', context)
 
 # def detail(request, conversation_id):
 #     conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
@@ -121,3 +124,50 @@ def detail(request, conversation_id):
 #             'form': form
 #         }
 #     return render(request, 'conversation/conversationpage.html', context)
+
+
+
+def detail(request, conversation_id):
+    conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
+
+    if request.method == 'POST':
+        form = ConversationMessageForm(request.POST)
+        if form.is_valid():
+            conversation_message = form.save(commit=False)
+            conversation_message.conversation = conversation
+            conversation_message.created_by = request.user
+            conversation_message.save()
+            return redirect('detail', conversation_id=conversation_id)
+    else:
+        form = ConversationMessageForm()
+    context = {'conversation': conversation, 'form': form}
+    return render(request, 'conversation/conversationpage.html', context)
+
+def edit_message(request, message_id):
+    if request.method == 'POST':
+        new_content = request.POST.get('new_content')
+        if new_content is not None:  # Check if new content is not None
+            message = get_object_or_404(ConversationMessage, pk=message_id)
+            message.content = new_content
+            message.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'New content is empty'}, status=400)
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+def delete_message(request, message_id):
+    if request.method == 'POST':
+        message = get_object_or_404(ConversationMessage, pk=message_id)
+        message.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+def delete_message(request, message_id):
+    if request.method == 'POST':
+        message = get_object_or_404(ConversationMessage, pk=message_id)
+        message.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
