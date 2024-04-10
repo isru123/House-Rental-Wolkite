@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Listing,LikedListing
-from .forms import ListingForm
+from .forms import ListingForm,RentalFilterForm
 from users.forms import LocationForm
 from django.core.files.storage import DefaultStorage
 from importlib import reload
@@ -14,7 +14,12 @@ from .filters import ListingFilter
 from users.forms import UserForm,ProfileForm,LocationForm
 from opencage.geocoder import OpenCageGeocode
 from django.conf import settings
-
+from django.db.models import Q
+from decimal import Decimal
+from django.utils.html import format_html
+from django.utils.decorators import method_decorator
+from conversation.models import ChatMessage,Contact
+from django.utils.translation import gettext_lazy as _
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -24,6 +29,7 @@ from .models import (
     ListingHouseAmenities,
     RentalConditions,
     RulesAndPreferences,
+    Image,
 )
 
 from .forms import (
@@ -33,6 +39,7 @@ from .forms import (
     ListingHouseAmenitiesForm,
     RentalConditionsForm,
     RulesAndPreferencesForm,
+    ImageForm,
 )
 
 
@@ -41,10 +48,12 @@ def main_view(request):
 
 
 
-@login_required
 def master_view(request):
-    listings = Listing.objects.all()
-    listing_filter = ListingFilter(request.GET, queryset=listings)
+    all_listings  = Listing.objects.all()
+    listing_filter  = ListingFilter(request.GET, queryset=all_listings )
+   
+    # listings = listings.prefetch_related('rules_and_preferences')
+    
     
     if hasattr(request.user, 'profile'):
         
@@ -53,9 +62,19 @@ def master_view(request):
         liked_listings_ids = [l[0] for l in user_liked_listings ]
     else:
         liked_listings_ids = []
-    
+        
+        
+     # Fetch related data using prefetch_related
+    filtered_listings = listing_filter.qs.prefetch_related(
+        'rules_and_preferences',
+        'amenities',
+        'listing_space_overview',
+        'listing_house_area',
+        'rental_condition',
+        'image'
+    )
     return render(request, 'main/major/master.html',  {'listing_filter': listing_filter,
-                                               'liked_listings_ids': liked_listings_ids})
+                                               'liked_listings_ids': liked_listings_ids, 'listings': filtered_listings})
 
    
 
@@ -103,113 +122,6 @@ def map_view(request):
    
     
     
-
-
-
-# def ListingView(request):
-    
-#     if request.method == 'POST':
-        
-#         listing_form = ListingForm(request.POST)
-        
-#         if listing_form.is_valid():
-            
-#             request.session['listing_data'] = listing_form.cleaned_data
-            
-#             return redirect('listing_space_overview')
-        
-#         else:
-            
-#             listing_form = ListingForm()
-            
-#     else:
-        
-#         listing_form = ListingForm()
-             
-#         return render(request, 'main/owner/listing.html', {'listing_form': listing_form})
-    
-#     # # Serialize the data, handling datetime objects
-#     # serialized_data = serialize('json', data, default=handle_datetime)
-
-#     # # Return the serialized data as an HTTP response
-#     # return HttpResponse(serialized_data, content_type='application/json')
-    
-    
-
-# def ListingHouseView(request):
-#     if request.method == 'POST':
-#         form = ListingHouseAreaForm(request.POST)
-        
-#         if form.is_valid():
-            
-#             request.session['listing_house_data'] = form.cleaned_data
-            
-#             return redirect('listing_house_amenities')
-        
-#         else:
-            
-#             form = ListingHouseAreaForm()
-            
-#         return render(request, 'listing_house.html', {'form': form})
-    
-# def ListingAmenitiesView(request):
-    
-#     if request.method == 'POST':
-#         form = ListingHouseAmenitiesForm(request.POST)
-        
-#         if form.is_valid():
-            
-#             request.session['listing_amenities_data'] = form.cleaned_data
-            
-#         return redirect('listing_rental_condition')
-    
-#     else:
-        
-#         form = ListingHouseAmenitiesForm()
-        
-#     return render(request, 'listing_amenities.html', {'form': form})
-
-# def ListingRentalConditionView(request):
-    
-#     if request.method == 'POST':
-        
-#         form = RentalConditionsForm(request.POST)
-        
-#         if form.is_valid():
-            
-#             request.session['listing_rental_condition_data'] = form.cleaned_data
-            
-#         return redirect('listing_preferences')
-    
-#     else:
-        
-#         form = RentalConditionsForm()
-    
-#     return render(request, 'listing_rental_condition.html', {'form': form})
-
-
-# def ListingRulesView(request):
-    
-#     if request.method == 'POST':
-        
-#         form = RulesAndPreferencesForm(request.POST)
-        
-#         if form.is_valid():
-            
-#             request.session['listing_preferences_data'] = form.changed_data
-        
-#         return redirect('listing_images')
-    
-#     else:
-        
-#         form = RulesAndPreferencesForm()
-        
-#     return render(request, 'listing_preferences.html', {'form': form})
-
-
-
-   
-
 
 
 
@@ -282,14 +194,55 @@ def map_view(request):
  
 @login_required  
 def single_house_view(request, id):
-    # try:
-    #     listing = Listing.objects.get(id=id)
-    #     if listing is None:
-    #         raise Exception
-        return render(request, 'components/single_house_view.html')
-    # except Exception as e:
-    #     messages.error(request, f'Invalid UID {id} was provided for listing')
-    #     return redirect('home')
+    filtered_listings = None 
+    if request.method == 'POST':
+        form = RentalFilterForm(request.POST)
+        if form.is_valid():
+            move_in_date = form.cleaned_data['move_in_date']
+            move_out_date = form.cleaned_data['move_out_date']
+            filtered_listings = Listing.objects.filter(
+                Q(available_start=move_in_date, available_end=move_in_date) |
+                Q(available_start=move_out_date, available_end=move_out_date)
+            )
+            # Render the filtered listings in the template
+    else:
+        form = RentalFilterForm()
+    # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
+
+    try:
+        listing = Listing.objects.get(id=id)
+        if listing is None:
+             raise Exception
+        return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form , 'filtered_listings':filtered_listings})
+    except Exception as e:
+        messages.error(request, f'Invalid UID {id} was provided for listing')
+        return redirect('home')
+
+
+
+
+@login_required  
+def booking(request,id):
+    listing = Listing.objects.get(id=id)
+    contact = listing.contact
+    if request.method == 'POST':
+        contact_id = request.POST['contact_id']
+        user_id = request.POST['user_id']
+        message = request.POST['message']
+
+        obj = ChatMessage(contact_id=contact_id, message=message,
+                          user_id=user_id)
+
+        obj.save()
+
+        messages.success(
+            request, (_("Your request has been submitted, a realtor will ' \
+                        'get back to you soon")))
+        return redirect('chat-history', pk=contact_id)
+    listing = Listing.objects.get(id=id)
+    return render(request, 'components/booking.html',{'listing':listing, 'contact':contact})
+
+
 
 
 
@@ -314,11 +267,12 @@ def like_listing_view(request, id):
 
 
 
-
+        
+@method_decorator(login_required, name='dispatch')
 class multistepformsubmission(SessionWizardView):
     file_storage = DefaultStorage()
     template_name = 'main/owner/multistep.html'
-    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm]
+    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm,ImageForm]
     
     
     def done(self, form_list, **kwargs):
@@ -330,14 +284,14 @@ class multistepformsubmission(SessionWizardView):
                           available_end = form_data[0]['available_end'] , 
                           minimum_rental_period = form_data[0]['minimum_rental_period'],
                           maximum_rental_period = form_data[0]['maximum_rental_period'],
-                          image = form_data[0]['image'],
                           seller=seller )
         listing.save()
         
         listing_space = ListingSpaceOverview(house_size = form_data[1]['house_size'],
                                              house_mate_no = form_data[1]['house_mate_no'],
                                             bedroom_size = form_data[1]['bedroom_size'] ,
-                                            bedroom_furnished = form_data[1]['bedroom_furnished'])
+                                            bedroom_furnished = form_data[1]['bedroom_furnished'],
+                                            seller=seller)
         
         listing_space.save()
         
@@ -345,7 +299,8 @@ class multistepformsubmission(SessionWizardView):
                                         toilet = form_data[2]['toilet'],
                                         bathroom = form_data[2]['bathroom'],
                                         living_room = form_data[2]['living_room'],
-                                        garden = form_data[2]['garden'])
+                                        garden = form_data[2]['garden'],
+                                        seller=seller)
         
         listing_house.save()
         
@@ -354,7 +309,8 @@ class multistepformsubmission(SessionWizardView):
             bed = form_data[3]['bed'],
             wifi = form_data[3]['wifi'],
             desk = form_data[3]['desk'],
-            living_room_furnished = form_data[3]['living_room_furnished']
+            living_room_furnished = form_data[3]['living_room_furnished'],
+            seller=seller
         )
         
         listing_amenities.save()
@@ -364,7 +320,8 @@ class multistepformsubmission(SessionWizardView):
             contract = form_data[4]['contract'],
             cancellation = form_data[4]['cancellation'],
             price = form_data[4]['price'],
-            utility_costs = form_data[4]['utility_costs']
+            utility_costs = form_data[4]['utility_costs'],
+            seller=seller
         )
         
         rental_condition.save()
@@ -375,16 +332,108 @@ class multistepformsubmission(SessionWizardView):
             minimum_age = form_data[5]['minimum_age'],
             maximum_age = form_data[5]['maximum_age'],
             tenant = form_data[5]['tenant'],
-            proof = form_data[5]['proof']
+            proof = form_data[5]['proof'],
+            seller=seller
         )
         
         rules_preferences.save()
         
+        images = Image(
+            image1 =  form_data[6]['image1'],
+            image2 = form_data[6]['image2'],
+            image3 = form_data[6]['image3'],
+            image4 = form_data[6]['image4'],
+            image5 = form_data[6]['image5'],
+            description = form_data[6]['description'],
+            seller=seller
+        )
         
-        data = Listing.objects.all()
+        images.save()
         
+        # data = Listing.objects.all()
+        # return render(self.request, 'main/owner/done.html', {'data': data})
         
-        return render(self.request, 'main/owner/done.html', {'data': data})
+        return redirect('master')
+    
+
+
+# def upload_image(request):
+#     if request.method == 'POST':
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('success')
+#     else:
+#         form = ImageForm()
+    
+#     return render(request, 'main/owner/images.html', {'form': form})
+    
+def search(request):
+    res = Listing.objects.order_by('-created')
+
+    keywords = request.GET.get('keywords', "")
+    city = request.GET.get('city', "")
+    state = request.GET.get('state', "")
+    listing_type = request.GET.get('listing_type', 0)
+    min_sqft = request.GET.get('sqft', 0)
+    max_price = request.GET.get('price', Decimal(10000000))
+    min_bedrooms = request.GET.get('bedrooms', 0)
+    min_bathrooms = request.GET.get('bathrooms', 0)
+
+    if not min_sqft:
+        min_sqft = 0
+    if not max_price:
+        max_price = 1000000000
+    if not min_bedrooms:
+        min_bedrooms = 0
+    if not min_bathrooms:
+        min_bathrooms = 0
+
+    queryset_list = res.filter(
+        (Q(description__icontains=keywords) |
+         Q(title__icontains=keywords)),
+        address__city__icontains=city,
+        bedrooms__gte=min_bedrooms,
+        bathrooms__gte=min_bathrooms,
+        sqft__gte=min_sqft,
+        price__lte=max_price,
+    )
+
+    try:
+        if isinstance(int(listing_type), int):
+            queryset_list = queryset_list.filter(listing_type=listing_type)
+    except Exception:
+        pass
+
+    try:
+        if isinstance(int(state), int):
+            queryset_list = queryset_list.filter(address__state=state)
+    except Exception:
+        pass
+
+    context = {
+        'states': State.objects.all(),
+        'list_types': ListingType.objects.all(),
+        'listings': queryset_list,
+        'values': request.GET
+    }
+
+    return render(request, 'listings/_partials/_search.html', context)
+    
+    
+    
+    
+    
+    
+def edit_listing_view(request):
+    return render(request, 'main/owner/edit_listing.html')
+
+
+    
+    
+    
+    
+    
     
     
     

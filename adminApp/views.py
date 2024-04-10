@@ -5,6 +5,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from .forms import AdminProfileForm
 from users.forms import LocationForm,UserForm
+from django.db import models
+from django.conf import settings
+
 # Create your views here.
 
 
@@ -159,3 +162,12 @@ def AddAdmin(request):
 #     if not request.user.is_authenticated:
 #         return redirect('login')
 #     return render(request,'profile.html')
+
+
+
+
+
+
+
+
+        

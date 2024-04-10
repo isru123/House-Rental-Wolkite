@@ -3,7 +3,7 @@
 <head>
     <title>House Map</title>
     {% comment %} <script src="https://maps.googleapis.com/maps/api/js"></script> {% endcomment %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ opencage_api_key }}"></script>
+    {% comment %} <script src="https://maps.googleapis.com/maps/api/js?key={{ opencage_api_key }}"></script>
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -19,10 +19,9 @@
                 });
             {% endfor %}
         }
-    </script>
+    </script> {% endcomment %}
 </head>
 <body>
-    <div id="map" style="height: 400px;"></div>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ opencage_api_key }}&callback=initMap"></script>
+    <iframe src="https://www.google.com/maps/d/embed?mid=1u3uCYNWix9PKR1BIuNrF3DDZDbyb6D0&ehbc=2E312F" width="1550" height="750"></iframe>
 </body>
 </html>

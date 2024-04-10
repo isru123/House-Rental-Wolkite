@@ -1,0 +1,83 @@
+{% load filters %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-3">
+  <div class="card mb-3" style="width:400px">
+    {% if listing.seller.photo %}
+                <img src="{{ listing.seller.photo.url }}" class="rounded-rectangle" height="40" width="40" style="object-fit: cover;">
+            {% else %}
+                <!-- Placeholder image or alternative content when 'photo' is not available -->
+                <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
+            {% endif %}
+    {% comment %} <img class="card-img-top p-3" src="{{ listing.seller.photo.url }}" alt=""> {% endcomment %}
+
+    {% if user.is_authenticated %}
+    {% if request.user.profile.userType == "Public" %}
+    <div class="card-body">
+      <h5 class="card-title">{{ _("House Owner") }}</h5>
+      <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
+
+      <hr>
+    
+      <form method="post" action="{% url 'booking' id=listing.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button style="width:350px" class="btn btn-primary my-2" type="submit">Contact {{listing.seller.user.username}}</button>
+      </form>
+      <h5 class="p-2 text-green text-center">
+        <b>{{ _("Get in touch") }}</b>
+      </h5>
+    {% elif request.user.profile.userType == "Owner" and listing.seller.user == request.user %}
+    <div class="card-body">
+      <h5 class="card-title">{{ _("House Owner") }}</h5>
+      <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
+     
+      <hr>
+        <button style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button>
+
+      {% endif %}
+      {% with listing.id|listing_exists as contact %}
+      {% if contact %}
+      {% include 'includes/user_contact_form.html' %}
+      {% else %}
+      <h5 class="p-2 text-green text-center">
+        <b>{{ _("Get in touch") }}</b>
+      </h5>
+      {% include 'includes/user_inquiry_form.html' %}
+      {% endif %}
+      {% endwith %}
+
+
+      {% else %}
+      <h5 class="p-2 text-green text-center">
+        <b>{{ _("Please login or register to get in touch") }}</b>
+      </h5>
+
+      <a href="{% url 'login' %}" target="_blank" class="btn btn-block btn-secondary text-white">
+        Login
+      </a>
+      <hr>
+      <a href="{% url 'register' %}" target="_blank" class="btn btn-block btn-outline-secondary">
+        Register
+      </a>
+      {% endif %}
+    </form>
+    
+    
+
+      {% comment %} {% with listing.id|listing_exists as contact %}
+      {% if contact %}
+      {% include 'includes/user_contact_form.html' %}
+      {% else %} {% endcomment %}
+      
+       {% comment %} {% include 'includes/user_inquiry_form.html' %}
+      {% endif %}
+      {% endwith %} {% endcomment %}
+
+      
+
+
+
+    </div>
+  </div>
+</div>

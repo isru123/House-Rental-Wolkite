@@ -1,17 +1,50 @@
 from django.db import models
+from datetime import datetime
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+# from main.models import Listing
+from users.models import User
 
-from users.models import Profile
+class Contact(models.Model):
+    # listing = models.ForeignKey('main.Listing',
+    #                             on_delete=models.DO_NOTHING,
+    #                             verbose_name=_("Listing"))
+    user = models.ForeignKey(User,
+                             on_delete=models.PROTECT, verbose_name=_("User"))
+    phone = models.CharField(max_length=100, verbose_name=_("Phone"))
+    message = models.TextField(blank=True, verbose_name=_("Message"))
+    contact_date = models.DateTimeField(default=datetime.now, blank=True,
+                                        verbose_name=_("Contact date"))
+    can_access_documents = models.BooleanField(default=False,
+                                               verbose_name=_("Docs access"))
 
-class Message(models.Model):
-    body = models.TextField()
-    sent_by = models.CharField(max_length=255)
-    created_at  = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(Profile, blank=True, null=True, on_delete=models.SET_NULL)
-    
-    
     class Meta:
-        ordering = ('created_at',)
-        
-    
+        ordering = ['-contact_date']
+
     def __str__(self):
-        return f"{self.sent_by}"
+        return f"{self.listing} - {self.user}"
+
+    def get_full_name(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+    get_full_name.short_description = _("Client")
+
+    def get_email(self):
+        return f"{self.user.email}"
+    get_email.short_description = _("Email")
+
+
+    
+class ChatMessage(models.Model):
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT,
+                                verbose_name=_("Contact listing"))
+    user = models.ForeignKey(User,
+                             on_delete=models.PROTECT, verbose_name=_("User"))
+    message = models.TextField(null=True, blank=False)
+    timestamp = models.DateTimeField(default=datetime.now, blank=True,
+                                     verbose_name=_("Date and iime"))
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"{self.contact} - {self.user} - {self.message}"

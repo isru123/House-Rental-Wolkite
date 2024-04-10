@@ -26,12 +26,13 @@ class Profile(models.Model):
       bio = models.CharField(max_length=140, blank=True)
       address = models.TextField()
       contact_No = models.IntegerField()
+      email = models.CharField(max_length=50) 
       userType = models.CharField(max_length=10, choices=USER_TYPES, default='Public')
       verified = models.BooleanField(default=False)
       created_at = models.DateTimeField(auto_now_add=True)
       updated_at = models.DateTimeField(auto_now=True)
       location = models.OneToOneField(Location, on_delete = models.SET_NULL, null=True)
-    
+      
     
     
     
