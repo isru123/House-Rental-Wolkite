@@ -1,0 +1,150 @@
+
+
+{% extends 'base/base.html' %}
+{% comment %} 
+{% block title %}Conversation{% endblock %}
+
+{% block 'body' %}
+<h1 class="mb-6 text-3xl">Conversation</h1>
+
+<div class="space-y-6">
+    {% for message in conversation.messages.all %}
+        <div class="p-6 flex {% if message.created_by == request.user %}bg-blue-100{% else %}bg-gray-100{% endif %} rounded-xl">
+            <div>
+                <p class="mb-4"><strong>{{ message.created_by.username }}</strong> @ {{ message.created_at }}</p>
+                <p>{{ message.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<form method="post" action="." class="mt-6">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button class="w-23 btn-lg btn-outline-primary my-3">Send</button>
+</form>
+{% endblock %} {% endcomment %}
+
+
+
+
+{% block 'body' %}
+<div class="container mt-5" style="max-width: 50%;">
+    <h1 class="mb-4 text-3xl">Conversation</h1>
+
+    <div id="conversation-content">
+        <div class="space-y-4">
+            {% for message in conversation.messages.all %}
+            <div class="p-3 {% if message.created_by == request.user %}bg-primary text-white{% else %}bg-light{% endif %} rounded-lg shadow-sm">
+                <p class="mb-1"><strong>{{ message.created_by.username }}</strong> @ {{ message.created_at }}</p>
+                <p class="mb-0">{{ message.content }}</p>
+                {% if message.created_by == request.user %}
+                <div class="mt-2">
+                    <button class="btn btn-primary btn-sm mr-2 edit-btn" data-message-id="{{ message.id }}"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-message-id="{{ message.id }}"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <form id="write-form" method="post" action="{% url 'detail' conversation_id=conversation.id %}" style="display: none;">
+        {% csrf_token %}
+        <div class="input-group mt-2" style="width: 100%;">
+            {{ form.content }}
+        </div>
+        <button type="submit" class="btn btn-primary mt-3 btn-width">Send</button>
+    </form>
+
+    <button id="start-writing-btn" class="btn btn-primary mt-3" style="display: inline-block;">Start Writing</button>
+    <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button>
+</div>
+
+<style>
+    .btn-width {
+        width: calc(30% - 5px); /* Adjust the percentage as needed */
+        margin-right: 10px;
+    }
+</style>
+
+<script>
+    var csrfToken = "{{ csrf_token }}";
+
+    var isWriting = false;
+
+    document.getElementById('start-writing-btn').addEventListener('click', function() {
+        if (!isWriting) {
+            document.getElementById('write-form').style.display = 'block';
+            document.getElementById('start-writing-btn').style.display = 'none';
+            document.getElementById('cancel-btn').style.display = 'inline-block';
+            isWriting = true;
+        } else {
+            document.getElementById('write-form').style.display = 'none';
+            document.getElementById('start-writing-btn').style.display = 'inline-block';
+            document.getElementById('cancel-btn').style.display = 'none';
+            isWriting = false;
+        }
+    });
+
+    var editButtons = document.querySelectorAll('.edit-btn');
+editButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+        var messageId = this.getAttribute('data-message-id');
+        var newContent = prompt("Edit your message:");
+        if (newContent !== null && newContent.trim() !== '') {
+            fetch(`/edit-message/${messageId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ new_content: newContent })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Message edited successfully.');
+                    // Perform any necessary UI updates
+                } else {
+                    console.error('Failed to edit message.');
+                }
+            })
+            .catch(error => {
+                console.error('Error editing message:', error);
+            });
+        }
+    });
+});
+
+    var deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var messageId = this.getAttribute('data-message-id');
+            var confirmDelete = confirm("Are you sure you want to delete this message?");
+            if (confirmDelete) {
+                fetch(`/delete-message/${messageId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Message deleted successfully.');
+                        // Perform any necessary UI updates
+                    } else {
+                        console.error('Failed to delete message.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting message:', error);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
+

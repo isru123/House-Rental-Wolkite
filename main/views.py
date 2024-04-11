@@ -20,6 +20,8 @@ from django.utils.html import format_html
 from django.utils.decorators import method_decorator
 from conversation.models import ChatMessage,Contact
 from django.utils.translation import gettext_lazy as _
+import uuid
+
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -44,7 +46,20 @@ from .forms import (
 
 
 def main_view(request):
-    return render(request, 'main/homepage/home.html', {'name': 'home'})
+    listings = Listing.objects.all()
+    listing_filter = ListingFilter(request.GET, queryset=listings)
+    
+    # if hasattr(request.user, 'profile'):
+        
+    #     user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
+    
+    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
+    # else:
+    #     liked_listings_ids = []
+    
+    return render(request, 'main/homepage/home.html',  {'listing_filter': listing_filter,
+                                            #    'liked_listings_ids': liked_listings_ids
+                                            })
 
 
 
@@ -55,13 +70,13 @@ def master_view(request):
     # listings = listings.prefetch_related('rules_and_preferences')
     
     
-    if hasattr(request.user, 'profile'):
+    # if hasattr(request.user, 'profile'):
         
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
+    #     # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
     
-        liked_listings_ids = [l[0] for l in user_liked_listings ]
-    else:
-        liked_listings_ids = []
+    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
+    # else:
+    #     liked_listings_ids = []
         
         
      # Fetch related data using prefetch_related
@@ -74,7 +89,14 @@ def master_view(request):
         'image'
     )
     return render(request, 'main/major/master.html',  {'listing_filter': listing_filter,
-                                               'liked_listings_ids': liked_listings_ids, 'listings': filtered_listings})
+                                               'filtered_listings': filtered_listings})
+    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
+    # else:
+    #     liked_listings_ids = []
+    
+    # return render(request, 'main/major/master.html',  {'listing_filter': listing_filter
+    #                                         #    'liked_listings_ids': liked_listings_ids
+    #                                         })
 
    
 
@@ -94,6 +116,9 @@ def dashboard_view(request):
 
 def owner_second_view(request):
     return render(request, 'main/owner/second.html')
+
+
+
 
 
 
@@ -192,7 +217,23 @@ def map_view(request):
     
 
  
-@login_required  
+# @login_required  
+# def single_house_view(request, id):
+#     # try:
+#     #     listing = Listing.objects.get(id=id)
+#     #     if listing is None:
+#     #         raise Exception
+#      #   return render(request, 'payment/single_house_view.html')
+#     # except Exception as e:
+#     #     messages.error(request, f'Invalid UID {id} was provided for listing')
+#     #     return redirect('home')
+#      product = Listing.objects.get(id=id)
+#      context = {
+#         'product': product
+#      }
+#      return render(request, 'components/single_house_view.html', context)
+
+
 def single_house_view(request, id):
     filtered_listings = None 
     if request.method == 'POST':
@@ -208,12 +249,18 @@ def single_house_view(request, id):
     else:
         form = RentalFilterForm()
     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
-
+   
     try:
+        product = Listing.objects.get(id=id)
+        conversation_id = uuid.uuid4()  # Generate a UUID
+        listing = Listing.objects.get(id=id)
+        # Check if the current user is the seller
+        user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
         listing = Listing.objects.get(id=id)
         if listing is None:
              raise Exception
-        return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form , 'filtered_listings':filtered_listings})
+        return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
+                                        'filtered_listings':filtered_listings,'conversation_id':conversation_id,'user_is_seller':user_is_seller})
     except Exception as e:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         return redirect('home')
@@ -247,21 +294,8 @@ def booking(request,id):
 
 
 
-def like_listing_view(request, id):
-    listing = get_object_or_404(Listing, id=id)
-    
-    liked_listing, created  = LikedListing.objects.get_or_create(profile=request.user.profile, listing=listing)
-    
-    if not created:
-        liked_listing.delete()
-    else:
-        liked_listing.save()
-    
-    return JsonResponse(
-        {
-            'is_liked_by_user': created,
-        }
-    )
+  
+
 
 
 
@@ -357,16 +391,7 @@ class multistepformsubmission(SessionWizardView):
     
 
 
-# def upload_image(request):
-#     if request.method == 'POST':
-#         form = ImageForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('success')
-#     else:
-#         form = ImageForm()
-    
-#     return render(request, 'main/owner/images.html', {'form': form})
+
     
 def search(request):
     res = Listing.objects.order_by('-created')
@@ -443,7 +468,7 @@ def edit_listing_view(request):
 def payement(request):
     if request.method == 'POST':
         user_listings = Listing.objects.filter(seller=request.user.profile)
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
+        # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm()
         location_form = LocationForm()
@@ -451,12 +476,13 @@ def payement(request):
         
         return render(request, 'includes/payemnts.html', {'user_form': user_form, 
                                                       'profile_form': profile_form,
-                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
+                                                    #   'location_form': location_form, 'user_listings': user_listings
+                                                    })
         
     
     elif request.method == 'GET':
         user_listings = Listing.objects.filter(seller=request.user.profile)
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
+        # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         location_form = LocationForm(request.POST, instance=request.user.profile.location)
@@ -471,7 +497,8 @@ def payement(request):
             messages.error(request, 'Error updating profile')
 
         return render(request, 'includes/payemnts.html', {'user_form': user_form, 'profile_form': profile_form, 
-                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
+                                                    #   'location_form': location_form, 'user_listings': user_listings, 
+                                                    })
         
     
 

@@ -33,8 +33,12 @@
       <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
      
       <hr>
-        <button style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button>
-
+        <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
+        See Messages
+       </button>
+        <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
+          Pay now
+        </button>
       {% endif %}
       {% with listing.id|listing_exists as contact %}
       {% if contact %}

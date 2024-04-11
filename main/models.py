@@ -274,33 +274,6 @@ class LikedListing(models.Model):
     
 
 
-# This model is used to link amenities to properties
-# class Amenity(models.Model):
-#      Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='property_amenities')
-#      amenity_type = models.ForeignKey(ListingHouseAmenities, on_delete=models.CASCADE, default=None, related_name='amenity_type')
-
-
-# class ListingSpace(models.Model):
-#      Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listing_spaces')
-#      space_overview = models.ForeignKey(ListingSpaceOverview, on_delete=models.CASCADE, default=None, related_name='space_overview')
-    
-# class HouseArea(models.Model):
-#      Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='Listing_house_area')
-#      house_area = models.ForeignKey(ListingHouseArea, on_delete=models.CASCADE, default=None, related_name='house_area')
-    
-# class RentalCondition(models.Model):
-#      Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='rental_conditions')
-#      rental_conditions = models.ForeignKey(RentalConditions, on_delete=models.CASCADE,default=None, related_name='rental_conditions')
-
-# class Rules(models.Model):
-#      Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='Listing_rules')
-#      rules_and = models.ForeignKey(RulesAndPreferences, on_delete=models.CASCADE, default=None, related_name='rules_and_preferences')
-    
-# class images(models.Model):
-#     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='Listing_images')
-#     images_of_listing = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='images_of_listing')
-    
-    
     
     
     

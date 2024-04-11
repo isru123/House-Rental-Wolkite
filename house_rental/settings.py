@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-
 from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
@@ -39,7 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "daphne",
+    # "daphne",
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +53,10 @@ INSTALLED_APPS = [
     'formtools',
     "crispy_forms",
     "crispy_bootstrap5",
-    'conversation',
+    'message',
+     'paymnet',
+    'paypal.standard.ipn',
+
 ]
 
 MIDDLEWARE = [
@@ -66,9 +68,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-
-
 
 ROOT_URLCONF = 'house_rental.urls'
 
@@ -131,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -152,26 +150,20 @@ OPENCAGE_API_KEY = '48277b56842b40d0af342b24c3833c15'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# STATIC_URL = 'static/'
-
-
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# STATICFILES_DIR = [os.path.join(BASE_DIR, 'staticfiles')]
-
-# MEDIA_URL = '/media/'
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+# Media files (Uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # crispy_forms
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Login Settings
@@ -179,26 +171,13 @@ LOGIN_REDIRECT_URL = 'master/'
 LOGIN_URL = 'login/'
 
 # Messages Settings
-MESSAGE_TAGS={
+MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
-
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-# Media files (Uploaded files)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
+PAYPAL_TEST = True  # Set to False for production
