@@ -17,6 +17,8 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -52,9 +54,10 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'message',
-     'paymnet',
+    'paymnet',
     'paypal.standard.ipn',
-
+    'verify_email',
+    'crum',
 ]
 
 MIDDLEWARE = [
@@ -180,6 +183,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
 PAYPAL_TEST = True  # Set to False for production
 
+<<<<<<< HEAD
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'lematadese670@gmail.com'
@@ -193,3 +197,12 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER ='fikefiresew1234@gmail.com'
 EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'
+=======
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'israelbeyene92@gmail.com'  # Replace with your Outlook.com email address
+EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+>>>>>>> 1df5e8e2daafd2d9a0a6dd5fe4a063fbbd70ec40

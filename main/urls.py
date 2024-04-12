@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,owner_second_view
-from .views import multistepformsubmission,payement
+from .views import multistepformsubmission,payement,map_view,edit_listing_view,search
 
 
 urlpatterns = [
@@ -16,8 +16,12 @@ urlpatterns = [
      
      # path('listing/<str:id>/like/', like_listing_view , name='like_listing'),
      path('multistepformsubmission/', multistepformsubmission.as_view(), name='multistepformsubmission'),
-     #path('location/', map_view , name='map_view'),
-     # path('space_overview/', SpaceOverview   , name='listing_space_overview'),
+     path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
+
+     path('location/', map_view , name='map_view'),
+     path('search', search, name='search'),
+     # path('booking/<str:id>/', booking , name='booking'),
+    
 ]
 
 

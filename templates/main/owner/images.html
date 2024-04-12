@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+
+
+{% block 'body' %}
+ 
+<div class="container-fluid text-center py-5">
+  <div class="container px-4 py-5" id="hanging-icons">
+    <div class="row g-4">
+      <div class="col d-flex align-items-start">
+         <div>
+            <h2 class="mb-3 border-bottom" style="color: black">List</h2>
+         </div>
+      </div>
+    </div>
+    <h1>Upload house images</h1>
+   <div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+      </form>
+   </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block 'footer' %}
+{% endblock %}

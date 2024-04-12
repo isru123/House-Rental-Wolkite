@@ -10,8 +10,12 @@ from django.core.mail import send_mail
 from .forms import UserForm,ProfileForm,LocationForm
 from main.models import Listing,LikedListing
 from .models import Profile,OTP
-from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
+from email_validator import validate_email, EmailNotValidError
+from django.contrib.auth.models import User
+
+
+
 
 
 def LoginPage(request):
@@ -44,6 +48,9 @@ def Logout(request):
 
 
 
+
+        
+
 def SignPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -53,35 +60,50 @@ def SignPage(request):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         contact = request.POST.get('contact')
-        # profile_pic = request.FILES.get('pic')
-        address= request.POST.get('address')
-        
-        if pass1!=pass2:
-            msg= _('Password should be same.')
-            return render(request,'sign.html',{'msg':msg})
-        if len(contact)!=10:
-            msg= _('Contact should be 10 digit.')
-            return render(request,'users/sign.html',{'msg':msg})
+        address = request.POST.get('address')
+
+        if pass1 != pass2:
+            msg = _('Password should be same.')
+            return render(request, 'users/sign.html', {'msg': msg})
+        if len(contact) != 10:
+            msg = _('Contact should be 10 digits.')
+            return render(request, 'users/sign.html', {'msg': msg})
+
         try:
-            user=User.objects.create_user(
+            email_object = validate_email(email)
+        except EmailNotValidError as e:
+            messages.warning(request, f'{e}')
+            return render(request, 'users/sign.html', {'msg': f'{e}'})
+
+        try:
+            user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=pass1,
                 first_name=first_name,
                 last_name=last_name
-                )
+            )
         except:
-            msg= _('Usename already exist.')
-            return render(request,'users/sign.html',{'msg':msg})
+            msg = _('Username already exists.')
+            return render(request, 'users/sign.html', {'msg': msg})
+
         Profile.objects.create(
             user=user,
-            # profilePicture=profile_pic,
             contact_No=contact,
             address=address,
-            verified=True
-            )
+            verified=False
+        )
+
+    
         return redirect('login')
     return render(request, 'users/sign.html')
+
+
+
+    
+    
+    
+
 
 
 def OwnerSign(request):
@@ -223,5 +245,22 @@ class ProfileView(View):
                                                       'location_form': location_form, 'user_listings': user_listings,'user_liked_listings': user_liked_listings })
         
 
+
+
+
+
+
+
+
+# def send_verification_code(phone_number, verification_code):
+#     client = Client(key=settings.VONAGE_API_KEY, secret=settings.VONAGE_API_SECRET)
+#     sms = Sms(client)
+    
+    
+#     response = sms.send_message({
+#         "from": settings.VONAGE_PHONE_NUMBER,
+#         "to": phone_number,
+#         "text": f"Your verification code is: {verification_code}"
+#     })
 
 

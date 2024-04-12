@@ -16,10 +16,10 @@ from .models import Conversation
 
 
 
-def new_conversation(request, product_id):
-    listing = get_object_or_404(Listing, id=product_id)
+def new_conversation(request,id):
+    listing = get_object_or_404(Listing, id=id)
 
-    if request.user == listing.seller:
+    if request.user.profile.userType == "Owner" and listing.seller.user == request.user:
         return redirect('main:home')
 
     conversations = Conversation.objects.filter(item=listing).filter(members__in=[request.user.id])

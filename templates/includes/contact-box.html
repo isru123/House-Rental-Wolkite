@@ -1,0 +1,61 @@
+
+{% load crispy_forms_tags %}
+
+<div class="col-md-3">
+  <div class="card mb-3" style="width:400px">
+    {% if listing.seller.photo %}
+                <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
+            {% else %}
+                <!-- Placeholder image or alternative content when 'photo' is not available -->
+                <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
+            {% endif %}
+    
+
+    {% if user.is_authenticated %}
+    {% if request.user.profile.userType == "Public" %}
+    <div class="card-body">
+      <h5 class="card-title">{{ _("House Owner") }}</h5>
+      <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
+
+      <hr>
+    
+      <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button href="" style="width:350px" class="btn btn-primary my-2" type="submit">Contact {{listing.seller.user.username}}</button>
+      </form>
+      {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
+            Pay now
+        </button> {% endcomment %}
+      <h5 class="p-2 text-green text-center">
+        <b>{{ _("Get in touch") }}</b>
+      </h5>
+    {% elif request.user.profile.userType == "Owner" and listing.seller.user == request.user %}
+    <div class="card-body">
+      <h5 class="card-title">{{ _("House Owner") }}</h5>
+      <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
+     
+      <hr>
+        <button href="{% url 'inbox-view' conversation_id=conversation_id %}" style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button>
+         {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
+                See Messages
+            </button> {% endcomment %}
+      {% endif %}
+      {% else %}
+      <h5 class="p-2 text-green text-center">
+        <b>{{ _("Please login or register to get in touch") }}</b>
+      </h5>
+
+      <a href="{% url 'login' %}" target="_blank" class="btn btn-block btn-secondary text-white">
+        Login
+      </a>
+      <hr>
+      <a href="{% url 'register' %}" target="_blank" class="btn btn-block btn-outline-secondary">
+        Register
+      </a>
+      {% endif %}
+    </form>
+    </div>
+  </div>
+</div>
+

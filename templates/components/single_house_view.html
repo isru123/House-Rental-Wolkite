@@ -4,552 +4,276 @@
 {% load humanize %}
 
 {% block 'body' %}
-<div class="car-details-page content-area-6">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-12 col-xs-12">
-                <div class="car-details-section">
-                    <!-- Heading start -->
-                    <div class="heading-car clearfix">
-                      {% comment %} {% include 'includes/messages.html' %} {% endcomment %}
-                        <div class="pull-left">
-                            <h3>{{listing.brand}}</h3>
-                            <h6>
-                                <i class="flaticon-pin"></i>{{listing.location.address_1}}, {{listing.location.city}}
-                            </h6>
-                        </div>
-                        <div class="pull-right">
-                            <h3><span>$ {{listing.model | intcomma}}</span></h3>
-                        </div>
-                    </div>
-                    <div id="carDetailsSlider" class="carousel car-details-sliders slide mb-40">
-                        <!-- main slider carousel items -->
-                        <div class="carousel-inner">
-                            <div class="active item carousel-item" data-slide-number="0">
-                                <img src="{{listing.img.urll}}" class="img-fluid" alt="slider-car">
-                            </div>
-                            {% if listing.img %}
-                            <div class="item carousel-item" data-slide-number="1">
-                                <img src="{{listing.img.urll}}" class="img-fluid" alt="slider-car">
-                            </div>
-                            {% endif %}
-                            {% if listing.img %}
-                            <div class="item carousel-item" data-slide-number="2">
-                                <img src="{{listing.img.url}}" class="img-fluid" alt="slider-car">
-                            </div>
-                            {% endif %}
-                            {% if listing.img %}
-                            <div class="item carousel-item" data-slide-number="4">
-                                <img src="{{listing.img.url}}" class="img-fluid" alt="slider-car">
-                            </div>
-                            {% endif %}
-                            {% if listing.img %}
-                            <div class="item carousel-item" data-slide-number="5">
-                                <img src="{{listing.img.url}}" class="img-fluid" alt="slider-car">
-                            </div>
-                            {% endif %}
-                        </div><!-- Log on to codeastro.com for more projects -->
-                        <!-- main slider carousel nav controls -->
-                        <div class="carousel-indicators-section clearfix">
-                            <ul class="carousel-indicators car-properties list-inline nav nav-justified">
-                                <li class="list-inline-item active">
-                                    <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#carDetailsSlider">
-                                        <img src="{{listing.img.url}}" class="img-fluid" alt="small-car">
-                                    </a>
-                                </li>
-                                {% if listing.img %}
-                                <li class="list-inline-item">
-                                    <a id="carousel-selector-1" data-slide-to="1" data-target="#carDetailsSlider">
-                                        <img src="{{listing.img.url}}" class="img-fluid" alt="small-car">
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if listing.img %}
-                                <li class="list-inline-item">
-                                    <a id="carousel-selector-2" data-slide-to="2" data-target="#carDetailsSlider">
-                                        <img src="{{single_car.car_photo_2.url}}" class="img-fluid" alt="small-car">
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if listing.img %}
-                                <li class="list-inline-item">
-                                    <a id="carousel-selector-3" data-slide-to="3" data-target="#carDetailsSlider">
-                                        <img src="{{single_car.car_photo_3.url}}" class="img-fluid" alt="small-car">
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if listing.img %}
-                                <li class="list-inline-item">
-                                    <a id="carousel-selector-4" data-slide-to="4" data-target="#carDetailsSlider">
-                                        <img src="{{listing.img.url}}" class="img-fluid" alt="small-car">
-                                    </a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-					<!-- Log on to codeastro.com for more projects -->
-                    <!-- Tabbing box start -->
-                    <div class="tabbing tabbing-box mb-40">
-                        <ul class="nav nav-tabs" id="carTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one" aria-selected="false">Vehicle overview</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="two" aria-selected="false">Features</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="carTabContent">
-                            <div class="tab-pane fade active show" id="one" role="tabpanel" aria-labelledby="one-tab">
-                                <div class="car-description mb-50">
-                                    <h3 class="heading-2">
-                                        Description
-                                    </h3>
-                                    <p>
-                                      {{listing.description | safe }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="two" role="tabpanel" aria-labelledby="two-tab">
-                                <div class="features-info mb-50">
-                                    <h3 class="heading-2">Features</h3>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                            <ul>
-                                                <li>
-                                                    {{listing.vin}}
-                                                </li>
-
-                                            </ul>
-                                        </div>
 
 
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-					<!-- Log on to codeastro.com for more projects -->
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="sidebar-right">
-                    <!-- Advanced search start -->
-                    <div class="widget advanced-search d-none-992">
-                        <button class="btn btn-danger bomd btn-block btn-lg" data-toggle="modal" data-target="#inquiryModal">Send a Message</button>
 
 
-                        <br>
-                        <h3 class="sidebar-title">Car Specs</h3>
-                        <ul>
-                            <li>
-                                <span><b>Color:</b> </span>{{listing.color}}
-                            </li>
-                            <li>
-                                <span><b>Model:</b> </span>{{listing.model}}
-                            </li>
-                            <li>
-                                <span><b>Year:</b> </span>{{listing.created_at}}
-                            </li>
-                            {% comment %} <li>
-                                <span><b>Condition:</b> </span>{{single_car.condition}}
-                            </li>
-                            <li>
-                                <span><b>Body Style:</b> </span>{{single_car.body_style}}
-                            </li> {% endcomment %}
-                            <li>
-                                <span><b>Engine:</b> </span>{{listing.engine}}
-                            </li>
-                            <li>
-                                <span><b>Transmission:</b> </span>{{listing.transmission}}
-                            </li>
-                            
-                            <li>
-                                <span><b>Mileage:</b> </span>{{listing.milage}}
-                            </li>
-                        </ul>
-                    </div>
+{% include 'includes/showcase_section.html' %}
 
-                    <!-- Inquiry Modal -->
-                    <div class="modal fade" id="inquiryModal" role="dialog">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="contact-dealer modal-header">
-                            <!-- <h5 class="modal-title" id="inquiryModalLabel">Contact Dealer</h5> -->
-                            <center><img src="{% static 'img/logos/cardealerLogo.png' %}"></center>
-                            <button type="button" class="close" data-dismiss="modal">
-                              <span>&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <form action="" method="POST">
-                              {% csrf_token %}
 
-                              {% if user.is_authenticated %}
-                                <input type="hidden" name="user_id" value="{{user.id}}">
-                              {% else %}
-                                <input type="hidden" name="user_id" value="0">
-                              {% endif %}
 
-                              <input type="hidden" name="car_id" value="{{listing.id}}">
-                                <div class="form-group">
-                                  <label for="name" class="col-form-label">Hello, My Name is</label>
-                                  <div class="row">
-                                    <div class="col">
-                                      <input type="text" name="first_name" class="form-control" placeholder="First Name"
-                                      {% if user.is_authenticated %} value="{{listing.owner.user.username}}"  {% endif %} required>
-                                    </div>
-                                    <div class="col">
-                                      <input type="text" name="last_name" class="form-control" placeholder="Last Name"
-                                       {% if user.is_authenticated %} value="{{listing.owner.user.username}}"  {% endif %} required>
-                                    </div>
-                                  </div>
-                                </div>
-                                  <div class="form-group">
-                                      <select class="form-control" id="sel1" name="customer_need">
-                                        <option value="I'm interested in this">I'm interested in this</option>
-                                        <option value="I'd like to know your best price for this">I'd like to know your best price for this</option>
-                                        <option value="I'd like to Schedule a Test Drive">I'd like to Schedule a Test Drive</option>
-                                        <option value="Check home delivery options">Check home delivery options</option>
-                                        <option value="I'd like a history report for this">I'd like a history report for this</option>
-                                        <option value="Discuss Financing">Discuss Financing</option>
-                                        <option value="Others [Mention Below]">Others [Mention Below]</option>
-                                      </select>
-                                    </div>
-									<!-- Log on to codeastro.com for more projects -->
-                                <div class="form-group">
-                                  <input type="text" name="car_title" class="form-control" value="{{ listing.brand }}" readonly>
-                                </div>
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+         <a href="{% url 'home' %}">{{ _("Home") }}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+        </li>
+        <li class="breadcrumb-item active">{{ listing.house_kind }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
 
-                                <div class="form-group">
-                                  <label for="name" class="col-form-label">I live in</label>
-                                  <div class="row">
-                                    <div class="col">
-                                      <input type="text" name="city" class="form-control" placeholder="City" required>
-                                    </div>
-                                    <div class="col">
-                                      <input type="text" name="state" class="form-control" placeholder="State" required>
-                                    </div>
-                                  </div>
-                                </div>
+<!-- Alerts -->
+{% include 'includes/_alerts.html' %}
 
-                                <div class="form-group">
-                                  <div class="row">
-                                    <div class="col">
-                                        <label for="name" class="col-form-label">You can reach me by email at</label>
-                                      <input type="email" name="email" class="form-control" placeholder="Email Address"
-                                       {% comment %} {% if user.is_authenticated %} value="{{user.email}}"  {% endif %} required> {% endcomment %}
-                                    </div>
-                                    <div class="col">
-                                        <label for="phone" class="col-form-label">or by cell at</label>
-                                      <input type="text" name="phone" placeholder="Phone Number (optional)" class="form-control">
-                                    </div>
-                                  </div>
-                                </div>
+<!-- Listing -->
+<section id="listing" class="py-4">
+  <div class="container">
 
-                                <div class="form-group">
-                                  <label for="message" class="col-form-label">Additional Messages</label>
-                                  <textarea name="message" class="form-control" placeholder="Enter your message here (optional)"></textarea>
-                                </div>
-                                <hr>
-                                <input type="submit" value="Submit" class="btn btn-block btn-dark">
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                <!-- Question start -->
-                <div class="widget question">
-                    <h5 class="sidebar-title">Got Any Question?</h5>
-                    <ul class="contact-info">
-                        <li>
-                            <i class="flaticon-pin"></i>47 Clement Street, Atlanta
-                        </li>
-                        <li>
-                            <i class="flaticon-mail"></i><a href="mailto:info@carweb.cm">info@carweb.cm</a>
-                        </li>
-                        <li>
-                            <i class="flaticon-phone"></i><a href="tel:+0477-85x6-552">+0477 1506 525</a>
-                        </li>
-                    </ul>
-                    <div class="social-list clearfix">
-                        <ul>
-                            <li><a href="https://codeastro.com/" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="https://codeastro.com/" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="https://codeastro.com/" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="https://codeastro.com/" class="rss-bg"><i class="fa fa-rss"></i></a></li>
-                            <li><a href="https://codeastro.com/" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="row col-12 px-0">
+      <div class="col-8">
+        <a href="{% url 'master' %}" class="btn btn-primary mb-4">{{ _("Back To Listings") }}</a>
+      </div>
+      <div class="col-2 text-right mr-0 pr-0">
 
-            </div>
-        </div>
+	{% if user.is_authenticated %}
+          {% if listing.seller.user == request.user %}
+          
+        <a href="{% url 'edit_listing'   id=listing.id %}" target="_blank"
+          class="btn btn-primary text-white mr-2 ">
+          Edit
+        </a>
+	{% endif %}
+	{% endif%}
+      </div>
     </div>
-</div>
-</div><!-- Log on to codeastro.com for more projects -->
-<!-- Properties details page end -->
-<main>
-    <section class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-            <div class="col-10 col-sm-8 col-lg-6">
-             <img src="{{ listing.image.url }}" class="d-block mx-lg-auto img-fluid" width="1920" height="1080" loading="lazy">
-            </div> 
-            <div class="col-lg-6">
-                <h1 class="display-5 fw-bold lh-1 mb-3">
-                    {{ listing.title }}
-                </h1>
-                <p class="lead">
-                    {{ listing.seller.user.username }} - {{ listing.updated_at}}
-                </p>
+ <br>
+    <div class="row">
+      <div class="col-md-9">
+        <!-- Home Main Image -->
+        <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-body rounded" data-bs-ride="true">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              {% for image in listing.image.all %}
+              <img style="width:100px;height:400px;" src="{{ image.image1.url }}" class="d-block w-100" alt="...">
+              {% endfor %}
             </div>
+            <div class="carousel-item">
+              {% for image in listing.image.all %}
+              <img style="width:100px;height:400px;" src="{{ image.image2.url }}" class="d-block w-100" alt="...">
+              {% endfor %}
+            </div>
+            <div class="carousel-item">
+              {% for image in listing.image.all %}
+              <img style="width:100px;height:400px;" src="{{ image.image3.url }}" class="d-block w-100" alt="...">
+              {% endfor %}
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-    </section>
-    <div class="bg-light">
-        <div class="container px-4 py-5">
-        <h2 class="mb-3 border-bottom" style="color: black">Auto Information</h2>
-        <div class="row row-cols-1 row-cols-md-3 text-center">
-            <div class="col-lg-8">
-             <div class="table-responsive">
-                <table class="table text-center">
-                  <tbody>
-                    <tr>
-                        <th scope="row" class="text-start">Title</th>
-                        <td> {{ listing.title|capfirst }} </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="text-start">Price</th>
-                        <td> {{ listing.price }} </td>
-                    </tr>
-                    {% comment %} <tr>
-                        <th scope="row" class="text-start">Mileage</th>
-                        <td> {{ listing.mileage }} </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="text-start">Color</th>
-                        <td> {{ listing.color }} </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="text-start">Engine</th>
-                        <td> {{ listing.engine }} </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="text-start">Transmission</th>
-                        <td> {{ listing.transmission|capfirst }} </td>
-                    </tr> {% endcomment %}
-                  </tbody>
-                </table>
-             </div>
-            </div>
-            <div class="col-lg-4">
-           <div class="card mb-4 rounded-3 shadow-sm">
-             <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">Location</h4>
-             </div>
-             <div class="card-body">
-              <ul class="list-unstyled mt-3 mb-4">
-                <li>{{ listing.location.address_1 }} , {{ listing.location.address_2 }} , {{ listing.location.city }}</li>
-              </ul>
-              {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3">
-                {{ listing.seller.contact_No }}
-              </button> {% endcomment %}
-              <button class="w-100  btn-lg btn-outline-primary my-3">
-                 Send Email
-              </button>
-              {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' product_id=product.id %}'">
-                message now
-            </button> {% endcomment %}
-           
+        {% comment %} {% for image in listing.image.all %}
+        <img class="bd-placeholder-img card-img-top" style="width:800px; height:400px"
+         src="{{ image.image2.url }}" class="img-main img-fluid mb-3">
+          {% endfor %}  {% endcomment %}
+        <!-- Thumbnails -->
+        <br>
+        <div class="row thumbs listing-second-title">
+          {% for img in listing.image.all %}
+          <div class="row">
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing">
+              </div>
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
+              </div>
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+              </div>
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+              </div>
+            <div class="col-2">
+             
+             <a href="{{ img.image2.url }}" data-lightbox="home-images">
+              <img src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing" style="width:250px;height:130px;">
+            </a> 
+          </div>
+          </div>
+          <br>
+          {% endfor%}
+        </div>
 
-            
 
-            {% comment %} {% if request.user == list.seller %}
-            
-            <a href="{% url 'message:new' list.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact seller</a>
-            {% endif %} {% endcomment %}
-            
-            {% if user_is_seller %}
-            <!-- Display "See Messages" button for sellers -->
-            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
-                See Messages
-            </button>
-        {% else %}
-        <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
-            Pay now
-        </button>
-            <!-- Display "Contact now" button for non-sellers -->
-            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'new' product_id=product.id %}'">
-                Contact now
-            </button>
-        {% endif %}
-        
-        
-            
 
-                {% comment %} {% if request.user.is_authenticated %}
-                    <a href="{% url 'inbox' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
+
+        <!-- Fields -->
+        <div class="row fields">
+          <div class="col-12 ">
+
+            <h2 class="listing-second-title mt-3 mb-3">
+              {{ listing.house_kind }}
+            </h2>
+
+            <span class="mb-3">
+              <i class="fas fa-map-marker text-secondary mb-5"></i>
+              {{ listing.address }}
+            </span>
+
+          </div>
+
+
+          <!-- Description -->
+          <div class="col-md-12 mb-5">
+            <h5 class="mb-3">{{ _("Description") }}</h5>
+            <p class="mb-2">{{ listing.description }}</p>
+
+            {% if listing.protected %}
+            <small class="uppercase">
+              {{ _("This object is listed") }}
+            </small>
+
+            {% else %}
+
+            <small>
+              {{ _("This object is not listed") }}
+            </small>
+
+            {% endif %}
+
+          </div>
+
+
+          <div class="col-md-6 p-0">
+            <ul class="list-group list-group-flush">
+
+
+              <li class="list-group-item">
+                <i class="fas fa-bed text-secondary pr-2"></i> {{ _("Bedrooms") }}:
+                <span class="float-right">{{ listing.bedrooms }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <i class="fas fa-bath text-secondary pr-2"></i> {{ _("Bathrooms") }}:
+                <span class="float-right">{{ listing.bathrooms }}</span>
+              </li>
+
+
+              <li class="list-group-item">
+                <i class="fas fa-arrows-alt-v text-secondary pr-2"></i> {{ _("Ceiling height") }}:
+                <span class="float-right">{{ listing.ceiling_height }} {{ _("m") }}
+                </span>
+              </li>
               
-                    
-                {% endif %} {% endcomment %}
-            </div>
-           </div>
-            </div>
+              <li class="list-group-item">
+                <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Available From") }}:
+                <span class="float-right">{{ listing.available_start }}</span>
+              </li>
+             
+
+
+            </ul>
+          </div>
+
+
+          <div class="col-md-6 p-0">
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item">
+                <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("Price") }}
+                <span class="float-right">{{ listing.price | intcomma }} €</span>
+              </li>
+
+              <li class="list-group-item">
+                <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Square Feet") }}:
+                <span class="float-right">{{ listing.sqft }} {{ _("m²") }}
+
+                </span>
+              </li>
+             
+              <li class="list-group-item">
+                <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Free from") }}:
+                <span class="float-right">{{ listing.free_date }}</span>
+              </li>
+             
+              <li class="list-group-item">
+                <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Available To") }}:
+                <span class="float-right">{{ listing.available_end }}</span>
+              </li>
+
+
+            </ul>
+
+          </div>
+
+
+          <div class="col-12 px-3 my-5">
+            <div id="map" style="width:100%;height:400px;"></div>
+          </div>
+
         </div>
+
+        <div>
+          <small>{{ _("Object from the ") }}
+            <span>{{ listing.created|date:"d M Y" }}</span>
+
+          </small>
         </div>
-        <div class="container px-4 py-5" >
-         <div class="row g-4 py-5"> 
-           <div class="col d-flex align-items-start">
-            <div class="col d-flex align-items-start">
-             <div >
-              <h2 class="mb-3 border-bottom" style="color: black">Description</h2>
-              <p>{{ listing.description }}</p>
-             </div>
-            </div>
-           </div>
-         </div>
-        </div>
+
+      </div>
+
+
+      {% include 'includes/contact-box.html' %}
+
     </div>
-    
+  </div>
+</section>
+
+{% comment %} 
+<script>
+  function myMap() {
+    const myLatLng = {
+      lat: {{ listing.get_coordinates.latitude|stringformat:"f"}},
+      lng: {{ listing.get_coordinates.longitude|stringformat:"f" }}
+    };
+  var mapProp = { center: new google.maps.LatLng(myLatLng), zoom: 14 };
+  var map = new google.maps.Map(document.getElementById("map"), mapProp);
+  const marker = new google.maps.Marker({
+    position: myLatLng,
+    map,
+    title: "{{ listing.get_coordinates.address }}"
+  });
+  }
+
+</script>
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=[YOUR-API-KEY]&callback=myMap"></script> {% endcomment %}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--**********************************
-            Sidebar end
-        ***********************************-->
-
-<!--**********************************
-            Content body start
-        ***********************************-->
-        <div class="content-body">
-
-
-            <div class="container-fluid" style="background-color: rgb(145, 187, 241);height: 150vh;">
-        
-        
-                <div class="container pt-5">
-                    <div class="card-deck">
-                        <div class="card bg-light">
-                            <div class="card-body text-center" style="padding-top: 100px;">
-                                <p class="card-text"><b>OWNER NAME:</b> {{house_details.user.user.first_name}}
-                                    {{house_details.user.user.last_name}}</p>
-                                <p class="card-text"><b>HOUSE NO.:</b> {{house_details.house_no}}</p>
-                                <p class="card-text"><b>OWNER CONTACT NO.:</b> {{house_details.user.contact_No}}</p>
-                                <p class="card-text"><b>ROOM SIZE:</b> {{house_details.room_size}}</p>
-                                <p class="card-text"><b>AREA:</b> {{house_details.area}}</p>
-                                <p class="card-text"><b>CITY:</b> {{house_details.city}}</p>
-                                <p class="card-text"><b>PINCODE:</b> {{house_details.pincode}}</p>
-                                <p class="card-text"><b>STATUS:</b> {{house_details.status}}</p>
-                                <p class="card-text"><b>PRICE:</b> {{house_details.price}}</p>
-                            </div>
-                        </div>
-        
-                        <div id="wrapper">
-        
-                            <div id="slider-wrap">
-                                <ul id="slider">
-                                    <li data-color="#1abc9c">
-                                        <img src="{{house_details.image1.url}}" style="height: 250px; width: 500px;">
-                                    </li>
-                                    <br>
-                                    <li data-color="#3498db">
-                                        <img src="{{house_details.image2.url}}" style="height: 250px; width: 500px;">
-                                    </li>
-        
-        
-        
-        
-                                </ul>
-        
-                                <!--controls-->
-        
-                                <!--controls-->
-        
-                            </div>
-        
-                        </div>
-                    </div>
-        
-                    <div class="row" style="margin-left: 450px;">
-                        {% if request.user.userprofile_set.first.userType == "Public" %}
-                        {% if house_details.status == "Available" %}
-                        <div class="text-center pt-5">
-                            <a href="/book-house/{{house_details.id}}/">
-                                <button class="btn btn-primary submit-btn"
-                                    style="margin-bottom: 10px; border-radius: 20px;">Book Now</button>
-                            </a>
-                        </div>&nbsp;&nbsp;&nbsp;
-                        {% endif %}
-                        {% endif %}
-                        {% if request.user.userprofile_set.first.userType == "Owner" %}
-                        {% if house_details.status == "Booked" %}
-        
-                        <div class="text-center pt-5">
-                            <a href="/available-house/{{house_details.id}}/">
-                                <button class="btn btn-primary submit-btn"
-                                    style="margin-bottom: 10px; border-radius: 20px;">Available Now</button>
-                            </a>
-                        </div>&nbsp;&nbsp;&nbsp;
-                        {% endif %}
-                        <div class="text-center pt-5">
-                            <a href="/edit-house/{{house_details.id}}/">
-                                <button class="btn btn-primary submit-btn"
-                                    style="margin-bottom: 10px; border-radius: 20px;">Edit House</button>
-                            </a>
-                        </div>&nbsp;&nbsp;&nbsp;
-                        {% endif %}
-                        <div class="text-center pt-5">
-                            <a href="/location/{{house_details.location}}" target="_blank">
-                                <button class="btn btn-primary submit-btn" style="margin-bottom: 10px; border-radius: 20px;">See
-                                    Location</button>
-                            </a>
-                        </div>
-                        &nbsp;&nbsp;&nbsp;
-        
-                    </div>
-        
-                </div>
-            </div>
-        </div>
-        <!--**********************************
-                Main wrapper end
-            ***********************************-->
-        
-        <!--**********************************
-                Scripts
-            ***********************************-->
-
-
-
-
-
-
-
-
-
-
-
-    </main>
 
 {% endblock %}
 
 {% block 'footer' %}
 {% endblock %}
 
-{% block 'header' %}
-{% endblock %}
+
 
 

@@ -84,15 +84,21 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">How it works</a>
-                            <a href="" class="nav-item nav-link">Pricing</a>
-                            <a href="" class="nav-item nav-link">Help</a>
-                            <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+                            <strong><a href="{% url 'home' %}" class="nav-item nav-link active">Home</a></strong>
+                            <strong><a href="shop.html" class="nav-item nav-link">How it works</a></strong>
+                            <strong> <a href="" class="nav-item nav-link">Pricing</a></strong>
+                            <strong> <a href="" class="nav-item nav-link">Help</a></strong>
+                            {% if not user.is_authenticated %}
+                            <strong><a href="{% url 'login' %}" class="nav-item nav-link">Login</a></strong>
+                            {% endif %}
+                            {% if not user.is_authenticated %}
+                            <strong><a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a></strong>
+                            {% endif %}
+                            <strong><a href="{% url 'master' %}" class="nav-item nav-link">Browse Listings</a></strong>
+                            {% if listing.seller.user == request.user or request.user.profile.userType == "Owner" %}
+                            <strong><a href="{% url 'owner' %}" class="nav-item nav-link">Make Listings</a></strong>
+                            {% endif %}
 
-                            <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
-                            <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
-                            <a href="{% url 'owner' %}" class="nav-item nav-link">House Owner</a>
                             {% if user.is_superuser or user.is_staff  %}
                             <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2">AdminBoard</a>
                             {% endif %}
@@ -105,22 +111,25 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link" id="accountTrigger">
                                 <div class="col-1">
+                                    {% if user.is_authenticated %}
                                     {% if listing.seller.photo %}
-                                        <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="30" width="30" style="object-fit: cover;">
+                                        <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
                                     {% else %}
                                         <!-- Placeholder image or alternative content when 'photo' is not available -->
                                         <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
                                     {% endif %}
+                                    {% endif %}
                                 </div>
                             </a>
 
-
+                            {% if user.is_authenticated %}
                             <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
                                 <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
                                 <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
 
                               <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
                             </div>
+                            {% endif %}
                           </div>
                           {% comment %} <div id="google_translate_element"></div> {% endcomment %}
 
@@ -158,8 +167,8 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="position-relative mx-auto">
-                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">
-                                <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
+                                <input class="form-control border-2 w-100 py-3 px-3 rounded-pill" type="number" placeholder="Your Email">
+                                <button type="submit" class="btn btn-primary border-0 border-secondary py-2 px-3 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -249,7 +258,6 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/radio.js' %}"></script>
     <script src="{% static 'js/js_message.js' %}"></script>
-    
     {% comment %} <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
 

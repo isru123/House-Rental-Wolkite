@@ -1,8 +1,8 @@
 from django.db import models
 import uuid
-
+from django.utils import timezone
 from users.models import Location,Profile
-
+from django.utils.translation import gettext_lazy as _
 from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
 from .utils import user_listing_path
 
@@ -10,6 +10,7 @@ from .utils import user_listing_path
 
 
 class ListingHouseAmenities(models.Model):
+    
     RADIO_CHOICES = [
         ('yes', 'Yes'),
         ('no', 'No'),
@@ -26,14 +27,16 @@ class ListingHouseAmenities(models.Model):
         ('yes', 'Yes'),
         ('no', 'No'),
     ]
-    
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     bed = models.CharField(max_length=24, choices=RADIO_CHOICES, verbose_name='Bed') 
     wifi = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Wifi')
     desk = models.CharField(max_length=24, choices=RADIO_CHOICES3, verbose_name='Desk')
     living_room_furnished = models.CharField(max_length=24, choices=RADIO_CHOICES4, verbose_name='Living Room Furnished')
     
     def __str__(self):
-        return self.bed
+           
+            return f'Listing House Amenities {self.id}'
+ 
     
 
 
@@ -43,6 +46,8 @@ class ListingSpaceOverview(models.Model):
         ('yes', 'Yes'),
         ('no', 'No'),
     ]
+    
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     house_size = models.CharField(max_length=24)
     house_mate_no = models.CharField(max_length=24)
     bedroom_size = models.CharField(max_length=24, verbose_name='Bedroom Size')
@@ -50,7 +55,8 @@ class ListingSpaceOverview(models.Model):
     
     
     def __str__(self):
-        return f'{self.house_size}'
+           
+            return f'Listing Space Overview {self.id}'
 
 
 
@@ -77,6 +83,8 @@ class ListingHouseArea(models.Model):
         ('yes', 'Yes'),
         ('no', 'No'),
     ]
+    
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     kitchen = models.CharField(max_length=24, choices=RADIO_CHOICES, verbose_name='Kitchen')
     toilet = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Toilet')
     bathroom = models.CharField(max_length=24, choices=RADIO_CHOICES3, verbose_name='Bathroom')
@@ -84,7 +92,8 @@ class ListingHouseArea(models.Model):
     garden = models.CharField(max_length=24, choices=RADIO_CHOICES5, verbose_name='Garden')
     
     def __str__(self):
-        return self.kitchen
+           
+            return f'Listing House Area {self.id}' 
     
 
     
@@ -106,13 +115,15 @@ class RentalConditions(models.Model):
         ('advanced price', 'Advanced Price'),
     ]
     
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     contract = models.CharField(max_length=24, choices=RADIO_CHOICES, verbose_name='Contract Type')
     cancellation = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Cancellation Option')
     price = models.CharField(max_length=24, choices=RADIO_CHOICES3, verbose_name='Price')
     utility_costs = models.CharField(max_length=24)
     
     def __str__(self):
-        return self.contract
+           
+            return f'Listing Rental Conditions {self.id}'
     
 
 class RulesAndPreferences(models.Model):
@@ -135,6 +146,8 @@ class RulesAndPreferences(models.Model):
     ]
     
     
+    
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     gender = models.CharField(max_length=10, choices=RADIO_CHOICES, verbose_name='Gender')
     minimum_age = models.CharField(max_length=24, choices=MINMUM_AGE, default=None)
     maximum_age = models.CharField(max_length=24, choices=MAXIMUM_AGE, default=None)
@@ -144,7 +157,9 @@ class RulesAndPreferences(models.Model):
 
     
     def __str__(self):
-        return self.gender
+           
+            return f' Listing Rules and Preferences {self.id}'
+    
     
 
 # This model is used to store information about rooms within properties
@@ -153,43 +168,27 @@ class RulesAndPreferences(models.Model):
 #     capacity = models.PositiveSmallIntegerField()
 
 
-# class Image(models.Model):
-#      image1 = models.ImageField(upload_to=user_listing_path)
-#      image2 = models.ImageField(upload_to=user_listing_path)
-#      image3 = models.ImageField(upload_to=user_listing_path)
-#      image4 = models.ImageField(upload_to=user_listing_path)
-#      image5 = models.ImageField(upload_to=user_listing_path)
-#      alt_text = models.CharField(max_length=200)
+class Image(models.Model):
+       seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
+       image1 = models.ImageField(upload_to=user_listing_path)
+       image2 = models.ImageField(upload_to=user_listing_path)
+       image3 = models.ImageField(upload_to=user_listing_path)
+       image4 = models.ImageField(upload_to=user_listing_path)
+       image5 = models.ImageField(upload_to=user_listing_path)
+       description = models.CharField(max_length=255,
+                                         verbose_name=_("Short description"))
+       created = models.DateTimeField(auto_now_add=True,
+                                   verbose_name=_("Created"))
+       
+       
+       def __str__(self):
+           
+            return f'Listing Images {self.id}'
     
     
 
-# class Listing(models.Model):
-#     id = models.UUIDField(primary_key = True, default = uuid.uuid4, unique=True, editable=False)
-#     created_at = models.DateTimeField(auto_now_add = True)
-#     updated_at = models.DateTimeField(auto_now = True)
-#     seller = models.ForeignKey(Profile, on_delete = models.CASCADE)
-#     brand = models.CharField(max_length=24, choices=CAR_BRANDS, default=None)
-#     model = models.CharField(max_length=64,)
-#     vin = models.CharField(max_length=17,)
-#     mileage = models.IntegerField(default=0)
-#     color = models.CharField(max_length=24, default='white')
-#     description = models.TextField()
-#     title = models.CharField(max_length=200)
-#     engine = models.CharField(max_length=24,)
-#     price = models.PositiveIntegerField()
-#     transmission = models.CharField(max_length=24, choices=TRANSMISSION_OPTIONS, default=None)
-#     location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
-#     image = models.ImageField(upload_to=user_listing_path)
-#     # rooms = models.ManyToManyField(Room)
-#     amenities = models.ManyToManyField(ListingHouseAmenities, through='Amenity')
-#     listing_space_overview = models.ManyToManyField(ListingSpaceOverview, through='ListingSpace')
-#     listing_house_area = models.ManyToManyField(ListingHouseArea, through='HouseArea')
-#     rental_condtion = models.ManyToManyField(RentalConditions, through='RentalCondition')
-#     rules_and_preferences = models.ManyToManyField(RulesAndPreferences, through='Rules')
     
     
-#     def __str__(self):
-#         return f'{self.seller.user.username}\'s Listings - {self.model}'
     
 class Listing(models.Model):
       RADIO_CHOICES = [
@@ -204,21 +203,22 @@ class Listing(models.Model):
       house_kind = models.CharField(max_length=200,choices=RADIO_CHOICES, verbose_name='House Kind')
       description = models.TextField()
       price = models.PositiveSmallIntegerField()
-      available_start = models.DateTimeField(null=True)
-      available_end = models.DateTimeField(null=True)
-      image = models.ImageField(upload_to=user_listing_path)
+      available_start = models.DateTimeField(default=timezone.now,null=True)
+      available_end = models.DateTimeField(default=timezone.now,null=True)
+      photo = models.ImageField(upload_to=user_listing_path)
     #   rooms = models.ManyToManyField(Room)
       minimum_rental_period = models.CharField(max_length=200,choices=TRANSMISSION_OPTIONS)
       maximum_rental_period = models.CharField(max_length=200,choices=CAR_BRANDS)
       address = models.CharField(max_length=255)
       latitude = models.FloatField(blank=True, null=True)
       longitude = models.FloatField(blank=True, null=True)
-      amenities = models.ManyToManyField(ListingHouseAmenities, through='Amenity')
-      listing_space_overview = models.ManyToManyField(ListingSpaceOverview, through='ListingSpace')
-      listing_house_area = models.ManyToManyField(ListingHouseArea, through='HouseArea')
-      rental_condtion = models.ManyToManyField(RentalConditions, through='RentalCondition')
-      rules_and_preferences = models.ManyToManyField(RulesAndPreferences, through='Rules')
-    
+      amenities = models.ManyToManyField(ListingHouseAmenities)
+      listing_space_overview = models.ManyToManyField(ListingSpaceOverview)
+      listing_house_area = models.ManyToManyField(ListingHouseArea)
+      rental_condtion = models.ManyToManyField(RentalConditions)
+      rules_and_preferences = models.ManyToManyField(RulesAndPreferences)
+      image = models.ManyToManyField(Image)
+      
     
       def __str__(self):
           return f'{self.seller.user.username}\'s Listings'
@@ -229,47 +229,33 @@ class Listing(models.Model):
 
     
 # This model is used to store booking information made by guests
-class Booking(models.Model):
-    guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    check_in_date = models.DateTimeField(default=None)
-    check_out_date = models.DateTimeField(default=None)
-    # rooms = models.ManyToManyField(Room)
+# class Booking(models.Model):
+#     guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
+#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+#     check_in_date = models.DateTimeField(default=None)
+#     check_out_date = models.DateTimeField(default=None)
+#     # rooms = models.ManyToManyField(Room)
     
     
     
-    def __str__(self):
-         return f'{self.listing.title}\' listing booked'
+#     def __str__(self):
+#          return f'{self.listing.title}\' listing booked'
     
     
     
     
 
-# # This model is used to store details of room bookings within a general booking
-# class RoomBooking(models.Model):
-#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-#     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='room')
-#     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-#     adults = models.PositiveSmallIntegerField()
-#     children = models.PositiveSmallIntegerField()
-    
-    
-   
-#     def __str__(self):
-#          return f'{self.listing.title}\'  booked'
-    
-    
     
 
 # This model is used to store reviews made by users for properties
-class Review(models.Model):
-    reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    review_text = models.TextField()
-    rating = models.PositiveSmallIntegerField()
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+# class Review(models.Model):
+#     reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+#     review_text = models.TextField()
+#     rating = models.PositiveSmallIntegerField()
+#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     
-    def __str__(self):
-         return f'{self.listing.title}\' listing reviewd'
+#     def __str__(self):
+#          return f'{self.listing.title}\' listing reviewd'
     
     
     
@@ -287,29 +273,8 @@ class LikedListing(models.Model):
     
 
 
-# This model is used to link amenities to properties
-class Amenity(models.Model):
-     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='property_amenities')
-     amenity_type = models.ForeignKey(ListingHouseAmenities, on_delete=models.CASCADE, default=None, related_name='amenity_type')
-
-
-class ListingSpace(models.Model):
-     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listing_spaces')
-     space_overview = models.ForeignKey(ListingSpaceOverview, on_delete=models.CASCADE, default=None, related_name='space_overview')
     
-class HouseArea(models.Model):
-     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='Listing_house_area')
-     house_area = models.ForeignKey(ListingHouseArea, on_delete=models.CASCADE, default=None, related_name='house_area')
     
-class RentalCondition(models.Model):
-     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='rental_conditions')
-     rental_conditions = models.ForeignKey(RentalConditions, on_delete=models.CASCADE,default=None, related_name='rental_conditions')
-
-class Rules(models.Model):
-     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='Listing_rules')
-     rules_and = models.ForeignKey(RulesAndPreferences, on_delete=models.CASCADE, default=None, related_name='rules_and_preferences')
-    
-      
     
     
     

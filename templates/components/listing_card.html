@@ -1,6 +1,6 @@
 <div class="card shadow-sm ">
-    {% comment %} <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image.url}}" role="img" arial-label="placeholder: Thumbnail"
-    focusable="false"> {% endcomment %}
+    <img class="bd-placeholder-img card-img-top" width="100%" src="{{listing.image1.url}}" role="img" arial-label="placeholder: Thumbnail"
+    focusable="false">
     <div class="card-body rounded position-relative fruite-item">
      <h4 class="card-text">{{listing.title}}</h4>
        <div class="row justify-content-start align-items-center">
@@ -19,15 +19,14 @@
        <br>
        <p class="card-text">{{listing.description}}</p>
        <div class="d-flex justify-content-between align-items-center">
-          <div class="btn-group">
+           <div class="btn-group">
            <a type="button" class="btn btn-sm btn-outline-primary" 
            href="{% url 'single_house_view' id=listing.id  %}">View</a>
            {% comment %} <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'map_view' %}">Map</a> {% endcomment %}
            {% comment %} {% if listing.seller.user == request.user %}
           <a href=""  type="button" class="btn btn-sm btn-outline-primary">Edit</a>
           {% endif %}
-           {% endcomment %}
-          </div>
+          </div> 
            <small class="text-muted">{{listing.updated_at}}</small>
            {% comment %} <button id="like_{{listing.id}}" type="button" value="like" class="btn btn-secondary">
           {% if listing.id in liked_listings_ids %}
