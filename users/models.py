@@ -26,6 +26,7 @@ class Profile(models.Model):
       bio = models.CharField(max_length=140, blank=True)
       address = models.TextField()
       contact_No = models.IntegerField()
+      is_email_verified = models.BooleanField(default=False)
       email = models.CharField(max_length=50) 
       userType = models.CharField(max_length=10, choices=USER_TYPES, default='Public')
       verified = models.BooleanField(default=False)

@@ -54,9 +54,10 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'message',
-     'paymnet',
+    'paymnet',
     'paypal.standard.ipn',
-
+    'verify_email',
+    'crum',
 ]
 
 MIDDLEWARE = [
@@ -181,3 +182,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
 PAYPAL_TEST = True  # Set to False for production
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'israelbeyene92@gmail.com'  # Replace with your Outlook.com email address
+EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

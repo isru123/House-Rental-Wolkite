@@ -10,12 +10,13 @@ from django.core.mail import send_mail
 from .forms import UserForm,ProfileForm,LocationForm
 from main.models import Listing,LikedListing
 from .models import Profile,OTP
-from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
-from twilio.rest import Client
-from django.conf import settings
-import random
-import string
+from email_validator import validate_email, EmailNotValidError
+from django.contrib.auth.models import User
+
+
+
+
 
 def LoginPage(request):
     if request.user.is_authenticated:
@@ -48,26 +49,6 @@ def Logout(request):
 
 
 
-
-
-def send_verification_code(phone_number, verification_code):
-    account_sid = 'AC9e0e9e306fc840441b99c1e42bed7ceb'
-    auth_token = 'be97b4af4ba9ee71fba7a86ebf92e66f'
-    twilio_phone_number = '+1 470 239 6493'
-    client = Client(account_sid, auth_token)
-    
-     # Send the verification code
-    message = client.messages.create(
-        body=f"Your verification code is: {verification_code}",
-        from_ = twilio_phone_number,
-        to=phone_number
-    )
-
-    # Return the message SID
-    return message.sid
-        
-        
-        
         
 
 def SignPage(request):
@@ -79,73 +60,49 @@ def SignPage(request):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         contact = request.POST.get('contact')
-        # profile_pic = request.FILES.get('pic')
-        address= request.POST.get('address')
-        
-        if pass1!=pass2:
-            msg= _('Password should be same.')
-            return render(request,'sign.html',{'msg':msg})
-        if len(contact)!=10:
-            msg= _('Contact should be 10 digit.')
-            return render(request,'users/sign.html',{'msg':msg})
+        address = request.POST.get('address')
+
+        if pass1 != pass2:
+            msg = _('Password should be same.')
+            return render(request, 'users/sign.html', {'msg': msg})
+        if len(contact) != 10:
+            msg = _('Contact should be 10 digits.')
+            return render(request, 'users/sign.html', {'msg': msg})
+
         try:
-            user=User.objects.create_user(
+            email_object = validate_email(email)
+        except EmailNotValidError as e:
+            messages.warning(request, f'{e}')
+            return render(request, 'users/sign.html', {'msg': f'{e}'})
+
+        try:
+            user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=pass1,
                 first_name=first_name,
                 last_name=last_name
-                )
+            )
         except:
-            msg= _('Usename already exist.')
-            return render(request,'users/sign.html',{'msg':msg})
+            msg = _('Username already exists.')
+            return render(request, 'users/sign.html', {'msg': msg})
+
         Profile.objects.create(
             user=user,
-            # profilePicture=profile_pic,
             contact_No=contact,
             address=address,
-            verified=True
-            )
-        
-        verification_code = generate_verification_code()  # Replace with your code to generate a verification code
-        verification_request_id = send_verification_code(contact, verification_code)
-        print("Verification request ID:", verification_request_id)
-        request.session['verification_code'] = verification_code
+            verified=False
+        )
 
-        return redirect('verify_phone')
-        # return redirect('login')
+    
+        return redirect('login')
     return render(request, 'users/sign.html')
 
 
 
-
-def generate_verification_code():
-    code_length = 6  # Set the desired length of the verification code
-    characters = string.digits  # Use digits for a numeric verification code
-
-    verification_code = ''.join(random.choice(characters) for _ in range(code_length))
-    return verification_code
-
-# Assume you have the necessary imports and other code here
-
-def verify_phone(request):
-    if request.method == 'POST':
-        entered_code = request.POST.get('verification_code')
-        expected_code = request.session.get('verification_code')
-
-        if entered_code == expected_code:
-            # Phone number is verified
-            # Perform any necessary actions, such as updating the user's verified status
-            return redirect('login')  # Redirect to the login page
-        else:
-            # Verification code does not match
-            # Handle the error condition appropriately
-            error_message = "Invalid verification code."
-            return render(request, 'users/verify_phone.html', {'error_message': error_message})
-
-    return render(request, 'users/verify_phone.html')
-
-
+    
+    
+    
 
 
 

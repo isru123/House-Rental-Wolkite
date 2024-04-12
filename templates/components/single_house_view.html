@@ -1,7 +1,6 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
-{% comment %} {% load filters %}  {% endcomment %}
 {% load humanize %}
 
 {% block 'body' %}
@@ -39,7 +38,7 @@
 
     <div class="row col-12 px-0">
       <div class="col-8">
-        <a href="{% url 'master' %}" class="btn btn-light mb-4">{{ _("Back To Listings") }}</a>
+        <a href="{% url 'master' %}" class="btn btn-primary mb-4">{{ _("Back To Listings") }}</a>
       </div>
       <div class="col-2 text-right mr-0 pr-0">
 
@@ -54,34 +53,69 @@
 	{% endif%}
       </div>
     </div>
-
+ <br>
     <div class="row">
       <div class="col-md-9">
         <!-- Home Main Image -->
-        {% for image in listing.image.all %}
-        <img class="bd-placeholder-img card-img-top" style="width:800px; height:450px"
-         src="{{ image.image1.url }}" class="img-main img-fluid mb-3">
-          {% endfor %} 
+        <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-body rounded" data-bs-ride="true">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              {% for image in listing.image.all %}
+              <img style="width:100px;height:400px;" src="{{ image.image1.url }}" class="d-block w-100" alt="...">
+              {% endfor %}
+            </div>
+            <div class="carousel-item">
+              {% for image in listing.image.all %}
+              <img style="width:100px;height:400px;" src="{{ image.image2.url }}" class="d-block w-100" alt="...">
+              {% endfor %}
+            </div>
+            <div class="carousel-item">
+              {% for image in listing.image.all %}
+              <img style="width:100px;height:400px;" src="{{ image.image3.url }}" class="d-block w-100" alt="...">
+              {% endfor %}
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        {% comment %} {% for image in listing.image.all %}
+        <img class="bd-placeholder-img card-img-top" style="width:800px; height:400px"
+         src="{{ image.image2.url }}" class="img-main img-fluid mb-3">
+          {% endfor %}  {% endcomment %}
         <!-- Thumbnails -->
-        <br>
-        <br>
         <br>
         <div class="row thumbs listing-second-title">
           {% for img in listing.image.all %}
           <div class="row">
-              <div class="col-4">
-                <img style="width:300px;height:200px;" src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing">
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing">
               </div>
-              <div class="col-4">
-                <img style="width:300px;height:200px;" src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
               </div>
-              <div class="col-4">
-                <img style="width:300px;height:200px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
               </div>
-            {% comment %} <a href="{{ img.image2.url }}" data-lightbox="home-images">
-              <img src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
-            </a> {% endcomment %}
-            {% comment %} class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2" {% endcomment %}
+              <div class="col-2">
+                <img style="width:200px;height:130px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+              </div>
+            <div class="col-2">
+             
+             <a href="{{ img.image2.url }}" data-lightbox="home-images">
+              <img src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing" style="width:250px;height:130px;">
+            </a> 
+          </div>
           </div>
           <br>
           {% endfor%}

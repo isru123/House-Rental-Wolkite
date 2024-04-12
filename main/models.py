@@ -5,7 +5,7 @@ from users.models import Location,Profile
 from django.utils.translation import gettext_lazy as _
 from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
 from .utils import user_listing_path
-from conversation.models import Contact
+
 
 
 
@@ -202,7 +202,6 @@ class Listing(models.Model):
       location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
       house_kind = models.CharField(max_length=200,choices=RADIO_CHOICES, verbose_name='House Kind')
       description = models.TextField()
-      contact = models.ForeignKey(Contact, on_delete = models.CASCADE)
       price = models.PositiveSmallIntegerField()
       available_start = models.DateTimeField(default=timezone.now,null=True)
       available_end = models.DateTimeField(default=timezone.now,null=True)

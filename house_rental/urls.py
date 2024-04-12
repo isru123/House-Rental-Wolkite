@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('', include('users.urls')),
-    # path('', include('conversation.urls')),
     path('', include('paymnet.urls')),
     path("paypal/", include("paypal.standard.ipn.urls")),  # Updated module name
     path('', include('message.urls')),

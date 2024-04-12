@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginPage, Logout, ProfileView, SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword,verify_phone
+from .views import LoginPage, Logout, ProfileView, SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword
 from main.views import master_view
 
 
@@ -13,7 +13,6 @@ urlpatterns = [
     path('forgot/',ForgotPage),
     path('forgotpassword/', ForgotPassword  , name='forgotpassword'),
     path('logout/', Logout, name='logout'),
-    path('verify_phone/', verify_phone , name='verify_phone'),
 ]
 
 

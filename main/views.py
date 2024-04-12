@@ -18,10 +18,9 @@ from django.db.models import Q
 from decimal import Decimal
 from django.utils.html import format_html
 from django.utils.decorators import method_decorator
-from conversation.models import ChatMessage,Contact
 from django.utils.translation import gettext_lazy as _
 import uuid
-
+from message.models import ConversationMessage
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -251,43 +250,21 @@ def single_house_view(request, id):
     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
    
     try:
-        product = Listing.objects.get(id=id)
-        conversation_id = uuid.uuid4()  # Generate a UUID
+        # product = Listing.objects.get(id=id)
+        # conversation_id = uuid.uuid4()  # Generate a UUID
         listing = Listing.objects.get(id=id)
         # Check if the current user is the seller
-        user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
+        # user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
         listing = Listing.objects.get(id=id)
         if listing is None:
              raise Exception
         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-                                        'filtered_listings':filtered_listings,'conversation_id':conversation_id,'user_is_seller':user_is_seller})
+                                        'filtered_listings':filtered_listings})
     except Exception as e:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         return redirect('home')
 
 
-
-
-@login_required  
-def booking(request,id):
-    listing = Listing.objects.get(id=id)
-    contact = listing.contact
-    if request.method == 'POST':
-        contact_id = request.POST['contact_id']
-        user_id = request.POST['user_id']
-        message = request.POST['message']
-
-        obj = ChatMessage(contact_id=contact_id, message=message,
-                          user_id=user_id)
-
-        obj.save()
-
-        messages.success(
-            request, (_("Your request has been submitted, a realtor will ' \
-                        'get back to you soon")))
-        return redirect('chat-history', pk=contact_id)
-    listing = Listing.objects.get(id=id)
-    return render(request, 'components/booking.html',{'listing':listing, 'contact':contact})
 
 
 
