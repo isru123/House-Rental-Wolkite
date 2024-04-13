@@ -12,7 +12,7 @@ from importlib import reload
 from formtools.wizard.views import SessionWizardView
 from .filters import ListingFilter
 from users.forms import UserForm,ProfileForm,LocationForm
-from opencage.geocoder import OpenCageGeocode
+# from opencage.geocoder import OpenCageGeocode
 from django.conf import settings
 from django.db.models import Q
 from decimal import Decimal
@@ -122,25 +122,25 @@ def owner_second_view(request):
 
 
 
-def map_view(request):
-    listings = Listing.objects.all()
-    geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
+# def map_view(request):
+#     listings = Listing.objects.all()
+#     geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
 
-    for listing in listings:
-        if not listing.latitude or not listing.longitude:
-            results = geocoder.geocode(listing.address)
-            if results and len(results):
-                first_result = results[0]
-                listing.latitude = first_result['geometry']['lat']
-                listing.longitude = first_result['geometry']['lng']
-                listing.save()
+#     for listing in listings:
+#         if not listing.latitude or not listing.longitude:
+#             results = geocoder.geocode(listing.address)
+#             if results and len(results):
+#                 first_result = results[0]
+#                 listing.latitude = first_result['geometry']['lat']
+#                 listing.longitude = first_result['geometry']['lng']
+#                 listing.save()
 
-    context = {
-        'listings': listings,
-        'opencage_api_key': settings.OPENCAGE_API_KEY,
-    }
+#     context = {
+#         'listings': listings,
+#         'opencage_api_key': settings.OPENCAGE_API_KEY,
+#     }
     
-    return render(request, 'main/major/location.html', context)
+#     return render(request, 'main/major/location.html', context)
 
 
    
@@ -233,6 +233,37 @@ def map_view(request):
 #      return render(request, 'components/single_house_view.html', context)
 
 
+# def single_house_view(request, id):
+#     filtered_listings = None 
+#     if request.method == 'POST':
+#         form = RentalFilterForm(request.POST)
+#         if form.is_valid():
+#             move_in_date = form.cleaned_data['move_in_date']
+#             move_out_date = form.cleaned_data['move_out_date']
+#             filtered_listings = Listing.objects.filter(
+#                 Q(available_start=move_in_date, available_end=move_in_date) |
+#                 Q(available_start=move_out_date, available_end=move_out_date)
+#             )
+#             # Render the filtered listings in the template
+#     else:
+#         form = RentalFilterForm()
+#     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
+   
+#     try:
+#         # product = Listing.objects.get(id=id)
+#         # conversation_id = uuid.uuid4()  # Generate a UUID
+#         listing = Listing.objects.get(id=id)
+#         # Check if the current user is the seller
+#         # user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
+#         listing = Listing.objects.get(id=id)
+#         if listing is None:
+#              raise Exception
+#         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
+#                                         'filtered_listings':filtered_listings})
+#     except Exception as e:
+#         messages.error(request, f'Invalid UID {id} was provided for listing')
+#         return redirect('home')
+
 def single_house_view(request, id):
     filtered_listings = None 
     if request.method == 'POST':
@@ -247,35 +278,28 @@ def single_house_view(request, id):
             # Render the filtered listings in the template
     else:
         form = RentalFilterForm()
-    # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
-   
+    
     try:
-        # product = Listing.objects.get(id=id)
-        # conversation_id = uuid.uuid4()  # Generate a UUID
-        listing = Listing.objects.get(id=id)
+        product = Listing.objects.get(id=id)
+        conversation_id = uuid.uuid4()  # Generate a UUID
+
         # Check if the current user is the seller
-        # user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
-        listing = Listing.objects.get(id=id)
-        if listing is None:
-             raise Exception
-        return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-                                        'filtered_listings':filtered_listings})
-    except Exception as e:
+        user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
+
+        context = {
+            'product': product,
+            'conversation_id': conversation_id,
+            'user_is_seller': user_is_seller,
+            'form': form,
+            'filtered_listings': filtered_listings
+        }
+        return render(request, 'components/single_house_view.html', context)
+    except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         return redirect('home')
-
-
-
-
-
-
-
-
-  
-
-
-
-
+    except Exception as e:
+        messages.error(request, f'Error processing request: {str(e)}')
+        return redirect('home')
 
 
         
@@ -370,57 +394,57 @@ class multistepformsubmission(SessionWizardView):
 
 
     
-def search(request):
-    res = Listing.objects.order_by('-created')
+# def search(request):
+#     res = Listing.objects.order_by('-created')
 
-    keywords = request.GET.get('keywords', "")
-    city = request.GET.get('city', "")
-    state = request.GET.get('state', "")
-    listing_type = request.GET.get('listing_type', 0)
-    min_sqft = request.GET.get('sqft', 0)
-    max_price = request.GET.get('price', Decimal(10000000))
-    min_bedrooms = request.GET.get('bedrooms', 0)
-    min_bathrooms = request.GET.get('bathrooms', 0)
+#     keywords = request.GET.get('keywords', "")
+#     city = request.GET.get('city', "")
+#     state = request.GET.get('state', "")
+#     listing_type = request.GET.get('listing_type', 0)
+#     min_sqft = request.GET.get('sqft', 0)
+#     max_price = request.GET.get('price', Decimal(10000000))
+#     min_bedrooms = request.GET.get('bedrooms', 0)
+#     min_bathrooms = request.GET.get('bathrooms', 0)
 
-    if not min_sqft:
-        min_sqft = 0
-    if not max_price:
-        max_price = 1000000000
-    if not min_bedrooms:
-        min_bedrooms = 0
-    if not min_bathrooms:
-        min_bathrooms = 0
+#     if not min_sqft:
+#         min_sqft = 0
+#     if not max_price:
+#         max_price = 1000000000
+#     if not min_bedrooms:
+#         min_bedrooms = 0
+#     if not min_bathrooms:
+#         min_bathrooms = 0
 
-    queryset_list = res.filter(
-        (Q(description__icontains=keywords) |
-         Q(title__icontains=keywords)),
-        address__city__icontains=city,
-        bedrooms__gte=min_bedrooms,
-        bathrooms__gte=min_bathrooms,
-        sqft__gte=min_sqft,
-        price__lte=max_price,
-    )
+#     queryset_list = res.filter(
+#         (Q(description__icontains=keywords) |
+#          Q(title__icontains=keywords)),
+#         address__city__icontains=city,
+#         bedrooms__gte=min_bedrooms,
+#         bathrooms__gte=min_bathrooms,
+#         sqft__gte=min_sqft,
+#         price__lte=max_price,
+#     )
 
-    try:
-        if isinstance(int(listing_type), int):
-            queryset_list = queryset_list.filter(listing_type=listing_type)
-    except Exception:
-        pass
+#     try:
+#         if isinstance(int(listing_type), int):
+#             queryset_list = queryset_list.filter(listing_type=listing_type)
+#     except Exception:
+#         pass
 
-    try:
-        if isinstance(int(state), int):
-            queryset_list = queryset_list.filter(address__state=state)
-    except Exception:
-        pass
+#     try:
+#         if isinstance(int(state), int):
+#             queryset_list = queryset_list.filter(address__state=state)
+#     except Exception:
+#         pass
 
-    context = {
-        'states': State.objects.all(),
-        'list_types': ListingType.objects.all(),
-        'listings': queryset_list,
-        'values': request.GET
-    }
+#     context = {
+#         'states': State.objects.all(),
+#         'list_types': ListingType.objects.all(),
+#         'listings': queryset_list,
+#         'values': request.GET
+#     }
 
-    return render(request, 'listings/_partials/_search.html', context)
+#     return render(request, 'listings/_partials/_search.html', context)
     
     
     

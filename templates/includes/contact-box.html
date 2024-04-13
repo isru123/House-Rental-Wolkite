@@ -22,11 +22,29 @@
       <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <button href="" style="width:350px" class="btn btn-primary my-2" type="submit">Contact {{listing.seller.user.username}}</button>
-      </form>
+    
+        {% if user_is_seller %}
+            <!-- Seller is logged in, display the "See Messages" button -->
+            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
+                See Messages
+            </button>
+        {% else %}
+            <!-- Seller is not logged in, display the "Contact" and "Pay Now" buttons -->
+            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'new' id=product.id %}'">
+                Contact {{ product.seller.user.username }}
+            </button>
+            <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
+                Pay now
+            </button>
+           
+        {% endif %}
+
+        
+    </form>
+    
       {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
             Pay now
-        </button> {% endcomment %}
+        </button> 
       <h5 class="p-2 text-green text-center">
         <b>{{ _("Get in touch") }}</b>
       </h5>

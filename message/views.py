@@ -16,26 +16,28 @@ from .models import Conversation
 
 
 
-def new_conversation(request,id):
+def new_conversation(request, id):
     listing = get_object_or_404(Listing, id=id)
 
+    # Check if the current user is the owner of the listing
     if request.user.profile.userType == "Owner" and listing.seller.user == request.user:
         return redirect('main:home')
 
-    conversations = Conversation.objects.filter(item=listing).filter(members__in=[request.user.id])
-
-    if conversations:
+    # Check if there are existing conversations related to the listing for the current user
+    conversations = Conversation.objects.filter(item=listing, members=request.user)
+    if conversations.exists():
         return redirect('detail', conversation_id=conversations.first().id)
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
 
         if form.is_valid():
+            # Create a new conversation
             conversation = Conversation.objects.create(item=listing)
-            conversation.members.add(request.user)
-            conversation.members.add(listing.seller.user)  # Access the User instance through the profile
+            conversation.members.add(request.user, listing.seller.user)
             conversation.save()
 
+            # Create a new conversation message
             conversation_message = form.save(commit=False)
             conversation_message.conversation = conversation
             conversation_message.created_by = request.user
@@ -57,12 +59,8 @@ from .models import Conversation
 from .models import Conversation
 
 def inbox(request, conversation_id):
-    # Ensure request.user is a Profile instance
     profile = request.user.profile
-    
-    # Filter conversations where the related house's seller is the current user's profile
     conversations = Conversation.objects.filter(item__seller=profile)
-    
     context = {
         'conversations': conversations
     }

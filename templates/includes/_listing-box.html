@@ -96,7 +96,7 @@
       <a type="button" class="btn btn-sm bg-success text-white btn-outline-success" 
       href="{% url 'single_house_view' id=listing.id  %}">View</a>
       {% endif %}
-      <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'map_view' %}">Map</a>
+      <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="">Map</a>
       {% if listing.seller.user == request.user %}
      <a href=""  type="button" class="btn btn-sm bg-secondary text-white btn-outline-secondary">Edit</a>
      {% endif %}
