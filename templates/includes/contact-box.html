@@ -18,12 +18,14 @@
       <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
 
       <hr>
-    
-      <form method="post" action="">
+      {% comment %} {% url 'new' product_id=listing.id conversation_id=conversation_id %} {% endcomment %}
+      <form method="post" action="{% url 'new' product_id=listing.id %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button href="" style="width:350px" class="btn btn-primary my-2" type="submit">Contact {{listing.seller.user.username}}</button>
+        <button style="width:350px" class="btn btn-primary my-2" type="submit">Contact {{listing.seller.user.username}}</button>
+        
       </form>
+     
       {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
             Pay now
         </button> {% endcomment %}
@@ -36,7 +38,8 @@
       <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
      
       <hr>
-        <button href="{% url 'inbox-view' conversation_id=conversation_id %}" style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button>
+        {% comment %} <button href="{% url 'dashboard_owner' %}" style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button> {% endcomment %}
+        <a href="{% url 'inbox_view' %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
          {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
                 See Messages
             </button> {% endcomment %}

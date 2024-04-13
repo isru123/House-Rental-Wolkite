@@ -16,10 +16,10 @@ from .models import Conversation
 
 
 
-def new_conversation(request,id):
-    listing = get_object_or_404(Listing, id=id)
+def new_conversation(request, product_id):
+    listing = get_object_or_404(Listing, id=product_id)
 
-    if request.user.profile.userType == "Owner" and listing.seller.user == request.user:
+    if request.user == listing.seller:
         return redirect('main:home')
 
     conversations = Conversation.objects.filter(item=listing).filter(members__in=[request.user.id])
@@ -56,7 +56,7 @@ from .models import Conversation
 
 from .models import Conversation
 
-def inbox(request, conversation_id):
+def inbox_view(request):
     # Ensure request.user is a Profile instance
     profile = request.user.profile
     
@@ -129,7 +129,7 @@ def inbox(request, conversation_id):
 
 def detail(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
-
+    listing_seller = conversation.item.seller
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
         if form.is_valid():
@@ -140,7 +140,7 @@ def detail(request, conversation_id):
             return redirect('detail', conversation_id=conversation_id)
     else:
         form = ConversationMessageForm()
-    context = {'conversation': conversation, 'form': form}
+    context = {'conversation': conversation, 'form': form, 'listing_seller':listing_seller}
     return render(request, 'conversation/conversationpage.html', context)
 
 def edit_message(request, message_id):

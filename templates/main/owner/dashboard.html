@@ -2,301 +2,66 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-
-
-
-{% block 'header'%}
-<!-- Navbar start -->
-<div class="container-fluid fixed-top">
-    {% comment %} <div class="container topbar bg-primary d-none d-lg-block">
-        <div class="d-flex justify-content-between">
-            <div class="top-info ps-2">
-                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
-                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">lemish@gmail.com</a></small>
-            </div>
-            <div class="top-link pe-2">
-                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                <a href="#" class="text-white"><small class="text-white ms-2">Rent and Refunds</small></a>
-            </div>
-        </div>
-    </div> {% endcomment %}
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                    <a href="shop.html" class="nav-item nav-link">How it works</a>
-                    <a href="" class="nav-item nav-link">Pricing</a>
-                    <a href="" class="nav-item nav-link">Help</a>
-                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
-
-                    <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
-                    <a href="{% url 'multistepformsubmission' %}" class="btn btn-primary my-2">Add Listing</a>
-
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                   
-            
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link" id="accountTrigger">
-                      <i class="fas fa-user fa-2x"></i>
-                    </a>
-                    <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
-                        <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
-                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
-
-                      <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
-                    </div>
-                  </div>
-                  {% comment %} <div id="google_translate_element"></div> {% endcomment %}
-
-        </nav>
-    </div>
-</div>
-
-<br>
-<br>
-<br>
-<br>
-<!-- Navbar End -->
+{% block 'head' %}
+<link href="{% static 'AdminStatic/css/style.css' %}" rel="stylesheet">
 {% endblock %}
-
 
 {% block 'body' %}
-<hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
-  <body>
-		
-     <div class="vh-100" style="width:200px; background-color:#1877F2">
-      <br>
-    <div class="d-flex align-items-start">
-      <div class="nav flex-column nav-pills me-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button style="width:200px; color:white" class=" mr-3 nav-link active btn btn-primary my-2" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
-          <i class="fas fa-key fa-fw me-4"></i><span>Dashboard</span></button>
-          
-        <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-bookings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bookings" type="button" role="tab" aria-controls="v-pills-bookings" aria-selected="false">
-          <i class="fas fa-calendar-alt fa-fw me-4"></i><span>Bookings</span></button>
-        
-          <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-listings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-listings" type="button" role="tab" aria-controls="v-pills-listings" aria-selected="false">
-              <i class="fas fa-home fa-fw me-4"></i><span>Listings</span></button>
-          
-            <a href="{% url 'payement' %}" style="text-decoration: none;"><button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-payemnts-tab" data-bs-toggle="pill" data-bs-target="#v-pills-payemnts" type="button" role="tab" aria-controls="v-pills-payemnts" aria-selected="false">
-       <i class="fas fa-credit-card fa-fw me-4"></i><span>Payemnts</span></button></a>
-         
-          <button style="width:200px; color:white" class="nav-link btn btn-primary my-2" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-      <i class="fas fa-envelope fa-fw me-4"></i><span>Messages</span></button>
-          
-        <button style="width:200px; color:white" class=" mr-3  nav-link btn btn-primary my-2" id="v-pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reviews" type="button" role="tab" aria-controls="v-pills-reviews" aria-selected="false">
-      <i class="fas fa-star fa-fw me-4"></i><span>Reviews</span></button>
-      <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
-      </div>
-      <div class="tab-content" id="v-pills-tabContent">
-        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-      
-        
-        </div>
 
 
 
-        <div class="tab-pane fade" id="v-pills-bookings" role="tabpanel" aria-labelledby="v-pills-bookings-tab">
-        
-          <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
-            <div class="card-body" role="button">
-                <h5 class="card-title"><input id="meerkat" type="radio"> <label
-                        for="meerkat">Meerkat</label></h5>
-                <p class="card-text">It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at its layout.</p>
-            </div>
-        </div>
-        </div>
-        <div class="tab-pane fade" id="v-pills-listings" role="tabpanel" aria-labelledby="v-pills-listings-tab">
-         
-         
 
-        </div>
-
-
-          <div class="tab-pane fade" id="v-pills-payemnts" role="tabpanel" aria-labelledby="v-pills-payemnts-tab">
-         
-          <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
-            <div class="card-body" role="button">
-                <h5 class="card-title"><input id="meerkat" type="radio"> <label
-                        for="meerkat">Meerkat</label></h5>
-                <p class="card-text">It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at its layout.</p>
-            </div>
-        </div>
-        </div>
-        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+    <section style="height:50px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
        
-         <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
-          <div class="card-body" role="button">
-              <h5 class="card-title"><input id="meerkat" type="radio"> <label
-                      for="meerkat">Meerkat</label></h5>
-              <p class="card-text">It is a long established fact that a reader will be
-                  distracted by the readable content of a page when looking at its layout.</p>
-          </div>
-      </div>
-        </div>
-        
-        <div class="tab-pane fade" id="v-pills-reviews" role="tabpanel" aria-labelledby="v-pills-reviews-tab">
-       
-          <div id="meerkat-card" class="card mb-4 row-4" style="width:500px">
-            <div class="card-body" role="button">
-                <h5 class="card-title"><input id="meerkat" type="radio"> <label
-                        for="meerkat">Meerkat</label></h5>
-                <p class="card-text">It is a long established fact that a reader will be
-                    distracted by the readable content of a page when looking at its layout.</p>
-            </div>
-        </div>
-      
-        </div>
-      </div>
-    </div>
-  </div> 
-  <br>
+       <div class="nk-sidebar " >
+           <div class="" >
+               <br>
+               <ul class="metismenu" id="menu">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span  style="width:200px; color:white" class="nav-link btn btn-primary my-2" class="nav-text">Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm">
+                       
+                       <ul>
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="/all-user/">All User</a></li>
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                        
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-primary my-2"  href="/approve-admin/">Admin Panel</a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="/rent-house/">Manage Owner</a></li>
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        <li>
+                            <a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="/admin-helpdesk/">Admin Helpdesk</a>
+                        </li>
 
+                        <li>
+                            <a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="{% url 'add-admin' %}">Add admin</a>
+                        </li>
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
+    {% endblock %}
 
-  </body>
-
-{% endblock %}
 
 {% block 'footer' %}
 {% endblock %}
-{% extends 'base/base.html' %}
-{% load crispy_forms_tags %}
-{% load static %}
 
 
-
-
-{% block 'header'%}
-<!-- Navbar start -->
-<div class="container-fluid fixed-top">
-    <div class="container topbar bg-primary d-none d-lg-block">
-        <div class="d-flex justify-content-between">
-            <div class="top-info ps-2">
-                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
-                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">lemish@gmail.com</a></small>
-            </div>
-            <div class="top-link pe-2">
-                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                <a href="#" class="text-white"><small class="text-white ms-2">Rent and Refunds</small></a>
-            </div>
-        </div>
-    </div>
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                    <a href="shop.html" class="nav-item nav-link">How it works</a>
-                    <a href="" class="nav-item nav-link">Pricing</a>
-                    <a href="" class="nav-item nav-link">Help</a>
-                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
-
-                    <a href="{% url 'register' %}" class="nav-item nav-link">Signup</a>
-                    <a href="{% url 'multistepformsubmission' %}" class="btn btn-success my-2">Add Listing</a>
-
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                   
-            
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link" id="accountTrigger">
-                      <i class="fas fa-user fa-2x"></i>
-                    </a>
-                    <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
-                        <a href="{% url 'register' %}" class="dropdown-item">Sign Up</a>
-                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
-
-                      <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
-                    </div>
-                  </div>
-                  {% comment %} <div id="google_translate_element"></div> {% endcomment %}
-
-        </nav>
-    </div>
-</div>
-<!-- Navbar End -->
+{% block 'footer2' %}
 {% endblock %}
 
-
-{% block 'body' %}
-
-  <body>
-		 <!-- Single Page Header start -->
-    <div class="bg-danger container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Shop</li>
-        </ol>
-    </div>
 
     
-		<div class="wrapper d-flex align-items-stretch">
-			<nav id="sidebar">
-				<div class="custom-menu">
-					<button type="button" id="sidebarCollapse" class="btn btn-primary">
-	        </button>
-        </div>
-	  		<div class="img bg-wrap text-center py-4" style="background-image: url(images/bg_1.jpg);">
-	  			<div class="user-logo">
-	  				<div class="img" style="background-image: url(images/logo.jpg);"></div>
-	  				<h3>Catriona Henderson</h3>
-	  			</div>
-	  		</div>
-
-        <ul class="list-unstyled components mb-5">
-          <li class="active">
-            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
-          </li>
-          <li>
-              <a href="#"><span class="fa fa-download mr-3 notif"><small class="d-flex align-items-center justify-content-center">5</small></span> Download</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-gift mr-3"></span> Gift Code</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-trophy mr-3"></span> Top Review</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-cog mr-3"></span> Settings</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-support mr-3"></span> Support</a>
-          </li>
-          <li>
-            <a href="#"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
-          </li>
-        </ul>
-
-    	</nav>
-
-        <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-5 pt-5">
-        <h2 class="mb-4">Sidebar #09</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div>
-		</div>
-
-
-  </body>
-{% endblock %}
-
