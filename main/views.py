@@ -280,26 +280,47 @@ def single_house_view(request, id):
         form = RentalFilterForm()
     
     try:
-        product = Listing.objects.get(id=id)
+        
+        listing = Listing.objects.get(id=id)
         conversation_id = uuid.uuid4()  # Generate a UUID
-
-        # Check if the current user is the seller
-        user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
-
-        context = {
-            'product': product,
-            'conversation_id': conversation_id,
-            'user_is_seller': user_is_seller,
-            'form': form,
-            'filtered_listings': filtered_listings
-        }
-        return render(request, 'components/single_house_view.html', context)
+        
+        if listing is None:
+             raise Exception
+        return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
+                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id})
     except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
-        return redirect('home')
-    except Exception as e:
-        messages.error(request, f'Error processing request: {str(e)}')
-        return redirect('home')
+        # return redirect('home')
+        return redirect('new', product_id=listing.id, conversation_id=conversation_id)
+
+
+# def single_house_view(request, id):
+#     try:
+#         product = Listing.objects.get(id=id)
+#         conversation_id = uuid.uuid4()  # Generate a UUID
+
+#         # Check if the current user is the seller
+#         user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
+
+#         context = {
+#             'product': product,
+#             'conversation_id': conversation_id,
+#             'user_is_seller': user_is_seller
+#         }
+#         return render(request, 'components/single_house_view.html', context)
+#     except Listing.DoesNotExist:
+#         messages.error(request, f'Invalid UID {id} was provided for listing')
+#         return redirect('home')
+
+
+
+
+
+  
+
+
+
+
 
 
         
