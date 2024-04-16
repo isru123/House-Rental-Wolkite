@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
+{% load custom_filters %}
 {% load static %}
 {% load humanize %}
 
@@ -267,8 +268,118 @@
 <script
   src="https://maps.googleapis.com/maps/api/js?key=[YOUR-API-KEY]&callback=myMap"></script> {% endcomment %}
 
+ <div class="container mt-5">
+  <h5 class="text-uppercase font-weight-bold">Review(2)</h5>
+  <hr class="mt-0 pt-0">
+  <div class="row">
+    <div class="col-sm-7 mt-2">
+      {% for review in review %}
+      <div class="review-heading">
+        <a class="text-capitalize"><i class="fas fa-user mr-1"></i>{{ review.reviewer.user.username }}</a>
+        <a class="ml-2"><i class="fas fa-clock mr-1"></i>{{ review.created_at }}</a>
+        <i class="fa fa-star" style="float: right;"></i>
+        <i class="fa fa-star" style="float: right;"></i>
+        <i class="fa fa-star checked" style="float: right;"></i>
+        <i class="fa fa-star checked" style="float: right;"></i>
+        <i class="fa fa-star checked" style="float: right;"></i>
+      </div>
+      
+
+      <div class="review-body mt-2">
+        <p>
+          Operations to perform:
+  Apply all migrations: admin, adminApp, auth, contenttypes, ipn, main, message, sessions, users, verify_email
+Running migrations:
+  Applying main.0002_review... OK
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="col-sm-5 mt-2">
+      <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+
+      <form class="review-form" method="GET" action="/review"> 
+      {% for list in product %}
+      <input type="hidden" name="list_id" id="list_id" value="{{ list_id }}"/>
+      {% endfor %}
+      <div class="form-group">
+        <textarea class="input" type="text" name="review_text" placeholder="Your Review"></textarea>
+      </div>
+      <div class="form-group">
+        <div class="input rating">
+          <p class="text-uppercase font-weight-bold">Your Rating: </p>
+          <div class="rating-wrapper">
+            <input type="radio" id="star-5" name="rating" value="5"/><label for="star-5" class="fas fa-star"></label>
+            <input type="radio" id="star-4" name="rating" value="4"/><label for="star-4" class="fas fa-star"></label>
+            <input type="radio" id="star-3" name="rating" value="3"/><label for="star-3" class="fas fa-star"></label>
+            <input type="radio" id="star-2" name="rating" value="2"/><label for="star-2" class="fas fa-star"></label>
+            <input type="radio" id="star-1" name="rating" value="1"/><label for="star-1" class="fas fa-star"></label>
+          </div>
+        </div>
+      </div>
+     {% if user.is_authenticated and request.user.profile.userType == "Public" %}
+      <button class="btn btn-danger btn-md m-0" type="submit">Post</button>
+      {% else %}
+      <p>You must be logged in to Post a review,<a href="{% url 'login' %}">Login</a></p>
+      {% endif %}
+      </form>
+    </div>
+  </div>
+</div> 
+
+<hr>
 
 
+
+
+
+{% comment %} 
+<div class="container mt-5">
+  <h5 class="text-uppercase font-weight-bold">Review({{ reviews|length }})</h5>
+  <hr class="mt-0 pt-0">
+  <div class="row">
+    <div class="col-sm-7 mt-2">
+      {% for review in reviews %}
+      <div class="review-heading">
+        <a class="text-capitalize"><i class="fas fa-user mr-1"></i>{{ review.reviewer.user.username }}</a>
+        <a class="ml-2"><i class="fas fa-clock mr-1"></i>{{ review.created_at }}</a>
+        {% for _ in review.rating|get_range %}
+          <i class="fa fa-star checked" style="float: right;"></i>
+        {% endfor %}
+      </div>
+      <div class="review-body mt-2">
+        <p>{{ review.comment }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-sm-5 mt-2">
+      <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+      <form class="review-form" method="GET" action="/review"> 
+        {% for listing in listing_filter.qs %}
+        <input type="hidden" name="list_id" id="list_id" value="{{ listing.id }}"/>
+        {% endfor %}
+        <div class="form-group">
+          <textarea class="input" type="text" name="review_text" placeholder="Your Review"></textarea>
+        </div>
+        <div class="form-group">
+          <div class="input rating">
+            <p class="text-uppercase font-weight-bold">Your Rating: </p>
+            <div class="rating-wrapper">
+              {% for i in 5|get_range %}
+                <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star"></label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% if user.is_authenticated and request.user.profile.userType == "Public" %}
+          <button class="btn btn-danger btn-md m-0" type="submit">Post</button>
+        {% else %}
+          <p>You must be logged in to post a review, <a href="{% url 'login' %}">Login</a></p>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div> {% endcomment %}
 {% endblock %}
 
 {% block 'footer' %}

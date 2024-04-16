@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html>
 <head>
     <title>House Map</title>
@@ -22,6 +22,43 @@
     </script>
 </head>
 <body>
+    
     <iframe src="https://www.google.com/maps/d/embed?mid=1u3uCYNWix9PKR1BIuNrF3DDZDbyb6D0&ehbc=2E312F" width="1550" height="750"></iframe>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <h1>Map View</h1>
+    <div id="map"></div>
+    
+    <script>
+        // Get the latitude and longitude from the Django context
+        var latitude = {{ latitude }};
+        var longitude = {{ longitude }};
+        
+        // Create a map centered at the given latitude and longitude
+        var map = L.map('map').setView([latitude, longitude], 12);
+
+        // Add a tile layer to the map (e.g., OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add a marker to the map
+        L.marker([latitude, longitude]).addTo(map)
+            .bindPopup('Selected Location')
+            .openPopup();
+    </script>
 </body>
 </html>

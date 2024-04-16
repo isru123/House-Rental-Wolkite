@@ -133,8 +133,8 @@
                             </div>
                             {% endif %}
                           </div>
-                          {% comment %} <div id="google_translate_element"></div> {% endcomment %}
-
+                          <div id="google_translate_element"></div>
+                          
                 </nav>
             </div>
         </div>
@@ -260,17 +260,19 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/radio.js' %}"></script>
     <script src="{% static 'js/js_message.js' %}"></script>
-    {% comment %} <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script>
+    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+   
+    <script>
 
-   function googleTranslateElementInit(){
+    {% comment %} function googleTranslateElementInit(){
     new google.translate.TranslateElement(
         {pageLanguage: 'en', defaultLanguage: 'en'},
         'google_translate_element'
     );
    } 
-</script>
-   {% endcomment %}
+    </script> {% endcomment %}
+   
+
     </body>
 
 </html>

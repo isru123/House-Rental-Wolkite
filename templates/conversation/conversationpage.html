@@ -59,13 +59,33 @@
   </section>
 
 
-
+  
+  <br>
   <div class="card d-flex flex-column align-items-start">
+
+   
 <div class="container mt-5 text-start" style="max-width: 50%;">
     <h2 style="color:black" class="mb-4">Introduce yourself to {{ listing_seller.user.username }}</h2>
      <h5 style="color:black">For a faster response, share as much as you can.</h5>
      <br>
-    {% comment %} <div id="conversation-content text-start">
+   
+
+    <form id="write-form" method="post" action="{% url 'detail' conversation_id=conversation.id %}" style="display: none;">
+        {% csrf_token %}
+        <div class="input-group mt-2" style="width:1000px;">
+            {{ form.content }}
+        </div>
+
+        <button  href="{% url 'book_request' %}" class="btn btn-dark  mt-3">Send Booking Request</button>
+        <button type="button" class="btn btn-primary mt-3 btn-width" onclick="clearMessage()">Clear</button>
+        <button type="submit" class="btn btn-primary mt-3 btn-width">Send</button>
+    </form>
+
+    <button id="start-writing-btn" class="btn btn-primary mt-3" style="display: inline-block;">Start Writing</button>
+    <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button>
+    <br>
+    <br>
+    <div id="conversation-content text-start">
         <div class="space-y-4">
             {% for message in conversation.messages.all %}
             <div class="p-3 {% if message.created_by == request.user %}bg-primary text-white{% else %}bg-light{% endif %} rounded-lg shadow-sm">
@@ -80,26 +100,21 @@
             </div>
             {% endfor %}
         </div>
-    </div> {% endcomment %}
+    </div>
 
-    <form id="write-form" method="post" action="{% url 'detail' conversation_id=conversation.id %}" style="display: none;">
-        {% csrf_token %}
-        <div class="input-group mt-2" style="width:1000px;">
-            {{ form.content }}
-        </div>
-        <button type="button" class="btn btn-primary mt-3 btn-width" onclick="clearMessage()">Clear</button>
-        <button type="submit" class="btn btn-primary mt-3 btn-width">Send</button>
-    </form>
-
-    <button id="start-writing-btn" class="btn btn-primary mt-3" style="display: inline-block;">Start Writing</button>
-    <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button>
 </div>
+<br>
+<br>
 </div>
 <style>
     .btn-width {
         width: calc(30% - 5px); /* Adjust the percentage as needed */
         margin-right: 10px;
     }
+    .button-container {
+        display: flex;
+        justify-content: center;
+      }
 </style>
 
 <script>

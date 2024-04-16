@@ -20,7 +20,11 @@ from django.utils.html import format_html
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 import uuid
+from datetime import datetime
 from message.models import ConversationMessage
+import requests
+import folium
+import pandas as pd
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -31,6 +35,7 @@ from .models import (
     RentalConditions,
     RulesAndPreferences,
     Image,
+    Review,
 )
 
 from .forms import (
@@ -41,6 +46,7 @@ from .forms import (
     RentalConditionsForm,
     RulesAndPreferencesForm,
     ImageForm,
+    ReviewForm,
 )
 
 
@@ -143,7 +149,96 @@ def map_view(request):
     return render(request, 'main/major/location.html', context)
 
 
-   
+
+
+
+
+
+
+
+
+
+
+# def map_view(request):
+#     if request.method == 'POST':
+#     # listing_id = request.GET.get('listing_id')
+
+#     # # Load the CSV data containing location information
+#     # data = pd.read_csv('data/location.csv',encoding='utf-8')
+#         address = request.POST.get('address')
+#         response = requests.get(
+#             f'settings.OPENCAGE_API_KEY
+#         )
+#         data = response.json()
+#         # Check if the response contains the 'status' key
+#         if 'status' in data and data['status'] == 'OK':
+#         # Extract latitude and longitude from the response
+#         # if data['status'] == 'OK':
+#             latitude = data['results'][0]['geometry']['location']['lat']
+#             longitude = data['results'][0]['geometry']['location']['lng']
+
+#             # Create a map object
+#             map = folium.Map(location=[latitude, longitude], zoom_start=12)
+
+#             # Add a marker for the listing's location
+#             marker = folium.Marker(location=[latitude, longitude], popup='Selected Location')
+#             marker.add_to(map)
+
+#             # Pass the map object to the template
+#             context = {'map': map._repr_html_()}
+#             return render(request, 'main/major/location.html', context)
+
+#     return render(request, 'main/major/location.html')
+    
+    
+    # Create a map with an initial view
+    # map = folium.Map(location=[data['Latitude'].mean(), data['Longitude'].mean()], zoom_start=10)
+
+    # # Iterate through the data to add markers for each location
+    # for _, row in data.iterrows():
+    #     location = [row['Latitude'], row['Longitude']]
+    #     name = row['Location Name']
+        
+        
+    #     # Create a marker for each location
+    #     marker = folium.Marker(location=location, popup=name)
+    #     marker.add_to(map)
+
+    # # Add a marker for the selected listing's location
+    # if listing_id:
+    #     listing = Listing.objects.get(id=listing_id)
+    #     selected_location = [listing.latitude, listing.longitude]
+    #     marker = folium.Marker(location=selected_location, popup='Selected Location')
+    #     marker.add_to(map)
+
+    #     # Pan to the selected location
+    #     map.pan_to(selected_location)
+
+    # # Pass the map object to the template
+    # context = {'map': map._repr_html_()}
+    # return render(request, 'main/major/location.html', context)
+
+
+
+
+
+
+# def get_coordinates(address):
+#     url = 'https://map-geocoding.p.rapidapi.com/json'
+#     params = {
+#         'address': address,
+#         'key': '41bf648085msh064da0a40c524c0p18fb1cjsn79660b9868ab'  # Replace with your actual API key
+#     }
+#     response = requests.get(url, params=params)
+#     data = response.json()
+
+#     if data['status'] == 'OK':
+#         result = data['results'][0]
+#         latitude = result['geometry']['location']['lat']
+#         longitude = result['geometry']['location']['lng']
+#         return latitude, longitude
+
+#     return None, None
     
     
 
@@ -250,14 +345,28 @@ def single_house_view(request, id):
     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
    
     try:
-        
-        listing = Listing.objects.get(id=id)
+        listing = get_object_or_404(Listing, id=id)
+        # listing = Listing.objects.get(id=id)
         conversation_id = uuid.uuid4()  # Generate a UUID
         
         if listing is None:
              raise Exception
+         
+        review_form = ReviewForm()  # Create a new instance of the review form
+        
+        if request.method == 'GET' and 'rating' in request.GET and 'comment' in request.GET:
+            review_form = ReviewForm(request.GET)
+            if review_form.is_valid():
+                rating = review_form.cleaned_data['rating']
+                comment = review_form.cleaned_data['comment']
+                Review.objects.create(listing=listing, rating=rating, comment=comment)
+                messages.success(request, 'Review added successfully.')
+                return redirect('single_house_view', id=id)
+
+        reviews = Review.objects.filter(listing=listing)
+        
         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id})
+                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,})
     except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         # return redirect('home')
@@ -302,7 +411,7 @@ class multistepformsubmission(SessionWizardView):
     
     
     def done(self, form_list, **kwargs):
-     
+        
         form_data = [form.cleaned_data for form in form_list]
         seller = self.request.user.profile 
         listing = Listing(house_kind = form_data[0]['house_kind'], address = form_data[0]['address'],
@@ -311,6 +420,7 @@ class multistepformsubmission(SessionWizardView):
                           minimum_rental_period = form_data[0]['minimum_rental_period'],
                           maximum_rental_period = form_data[0]['maximum_rental_period'],
                           seller=seller )
+        
         listing.save()
         
         listing_space = ListingSpaceOverview(house_size = form_data[1]['house_size'],
@@ -320,6 +430,7 @@ class multistepformsubmission(SessionWizardView):
                                             seller=seller)
         
         listing_space.save()
+        listing.listing_space_overview.add(listing_space)
         
         listing_house = ListingHouseArea(kitchen = form_data[2]['kitchen'],
                                         toilet = form_data[2]['toilet'],
@@ -329,7 +440,7 @@ class multistepformsubmission(SessionWizardView):
                                         seller=seller)
         
         listing_house.save()
-        
+        listing.listing_house_area.add(listing_house)
         
         listing_amenities = ListingHouseAmenities(
             bed = form_data[3]['bed'],
@@ -340,7 +451,7 @@ class multistepformsubmission(SessionWizardView):
         )
         
         listing_amenities.save()
-        
+        listing.amenities.add(listing_amenities)
         
         rental_condition = RentalConditions(
             contract = form_data[4]['contract'],
@@ -351,7 +462,7 @@ class multistepformsubmission(SessionWizardView):
         )
         
         rental_condition.save()
-        
+        listing.rental_condtion.add(rental_condition)
         
         rules_preferences = RulesAndPreferences(
             gender =  form_data[5]['gender'],
@@ -363,6 +474,7 @@ class multistepformsubmission(SessionWizardView):
         )
         
         rules_preferences.save()
+        listing.rules_and_preferences.add(rules_preferences)
         
         images = Image(
             image1 =  form_data[6]['image1'],
@@ -371,11 +483,11 @@ class multistepformsubmission(SessionWizardView):
             image4 = form_data[6]['image4'],
             image5 = form_data[6]['image5'],
             description = form_data[6]['description'],
-            seller=seller
+            seller=seller,
         )
         
         images.save()
-        
+        listing.image.add(images)
         # data = Listing.objects.all()
         # return render(self.request, 'main/owner/done.html', {'data': data})
         
@@ -383,6 +495,39 @@ class multistepformsubmission(SessionWizardView):
     
 
 
+def review_view(request):
+    # if request.method == 'GET':
+    #     form = ReviewForm(request.GET)
+    #     if form.is_valid():
+    #         review_text = form.cleaned_data['review_text']
+    #         rating = form.cleaned_data['rating']
+    #         # Perform further processing with the submitted data
+            
+    #         review = Review.objects.create(
+    #             reviewer=request.user,
+    #             comment=review_text,
+    #             rating=rating,
+    #             created_at=datetime.datetime.now()
+    #         )
+            
+    #         return redirect('single_house_view', {'review':review})
+            
+    # else:
+    #     form = ReviewForm()
+    if request.method == "GET":
+        list_id = request.GET.get('list_id')
+        listing = Listing.objects.get(id=list_id)
+        review_text = request.GET.get('review_text')
+        rating = request.GET.get('rating')
+        reviewer = request.user.profile
+        Review(reviewer=reviewer, listing=listing, review_text=review_text,rating=rating).save()
+        render(request, 'single_house_view', id=list_id)
+    
+    
+    
+    
+        
+        
 
     
 def search(request):

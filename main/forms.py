@@ -87,6 +87,10 @@ class RentalFilterForm(forms.Form):
         widget=forms.DateInput(attrs={'type': 'date'}),
         label='Move-out Date'
     )
-        
+
+
+class ReviewForm(forms.Form):
+    review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
+    rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
          
          

@@ -171,3 +171,10 @@ def delete_message(request, message_id):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+
+
+
+def booking_request_view(request):
+    return render(request, 'main/major/booking_request.html')
+

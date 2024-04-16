@@ -35,7 +35,7 @@ class ListingHouseAmenities(models.Model):
     
     def __str__(self):
            
-            return f'Listing House Amenities {self.id}'
+            return f'Listing House Amenities of {self.seller.user.username}'
  
     
 
@@ -56,7 +56,7 @@ class ListingSpaceOverview(models.Model):
     
     def __str__(self):
            
-            return f'Listing Space Overview {self.id}'
+            return f'Listing Space Overview of {self.seller.user.username}'
 
 
 
@@ -93,7 +93,7 @@ class ListingHouseArea(models.Model):
     
     def __str__(self):
            
-            return f'Listing House Area {self.id}' 
+            return f'Listing House Area of {self.seller.user.username}' 
     
 
     
@@ -123,7 +123,7 @@ class RentalConditions(models.Model):
     
     def __str__(self):
            
-            return f'Listing Rental Conditions {self.id}'
+            return f'Listing Rental Conditions of {self.seller.user.username}'
     
 
 class RulesAndPreferences(models.Model):
@@ -158,7 +158,7 @@ class RulesAndPreferences(models.Model):
     
     def __str__(self):
            
-            return f' Listing Rules and Preferences {self.id}'
+            return f' Listing Rules and Preferences of {self.seller.user.username}'
     
     
 
@@ -183,7 +183,7 @@ class Image(models.Model):
        
        def __str__(self):
            
-            return f'Listing Images {self.id}'
+            return f'Listing Images of {self.seller.user.username}'
     
     
 
@@ -206,6 +206,8 @@ class Listing(models.Model):
       available_start = models.DateTimeField(default=timezone.now,null=True)
       available_end = models.DateTimeField(default=timezone.now,null=True)
       photo = models.ImageField(upload_to=user_listing_path)
+      address = models.CharField(max_length=255)
+      approved = models.BooleanField(default=False)
     #   rooms = models.ManyToManyField(Room)
       minimum_rental_period = models.CharField(max_length=200,choices=TRANSMISSION_OPTIONS)
       maximum_rental_period = models.CharField(max_length=200,choices=CAR_BRANDS)
@@ -248,14 +250,15 @@ class Listing(models.Model):
     
 
 # This model is used to store reviews made by users for properties
-# class Review(models.Model):
-#     reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     review_text = models.TextField()
-#     rating = models.PositiveSmallIntegerField()
-#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+class Review(models.Model):
+    reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    review_text = models.TextField()
+    rating = models.PositiveSmallIntegerField(default=0)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     
-#     def __str__(self):
-#          return f'{self.listing.title}\' listing reviewd'
+    def __str__(self):
+         return f'{self.reviewer.user.username}\' reviewd f{self.listing.seller.user.username}\'s Listing'
     
     
     
