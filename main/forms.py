@@ -1,6 +1,6 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
-from .models import Image,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
+from .models import Image,Review,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
 
 
 
@@ -89,8 +89,12 @@ class RentalFilterForm(forms.Form):
     )
 
 
-class ReviewForm(forms.Form):
+class ReviewForm(forms.ModelForm):
     review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
     rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
+    
+    class Meta:
+        model = Review
+        fields = ['rating', 'review_text']
          
          

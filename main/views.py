@@ -346,27 +346,31 @@ def single_house_view(request, id):
    
     try:
         listing = get_object_or_404(Listing, id=id)
+        reviews = listing.reviews.all()
+        review_form = ReviewForm(request.POST)
         # listing = Listing.objects.get(id=id)
         conversation_id = uuid.uuid4()  # Generate a UUID
-        
+        latitude = request.GET.get('lat')
+        longitude = request.GET.get('lng')
         if listing is None:
              raise Exception
          
-        review_form = ReviewForm()  # Create a new instance of the review form
+        # review_form = ReviewForm()  # Create a new instance of the review form
         
-        if request.method == 'GET' and 'rating' in request.GET and 'comment' in request.GET:
-            review_form = ReviewForm(request.GET)
-            if review_form.is_valid():
-                rating = review_form.cleaned_data['rating']
-                comment = review_form.cleaned_data['comment']
-                Review.objects.create(listing=listing, rating=rating, comment=comment)
-                messages.success(request, 'Review added successfully.')
-                return redirect('single_house_view', id=id)
+        
+        # form = ReviewForm(request.GET)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.listing = listing
+            review.reviewer = request.user.profile
+            review.save()
+            messages.success(request, 'Review added successfully.')
+            return redirect('single_house_view', id=id)
 
-        reviews = Review.objects.filter(listing=listing)
+        # reviews = Review.objects.filter(listing=listing)
         
         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,})
+                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,'latitude': latitude,'longitude': longitude})
     except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         # return redirect('home')
@@ -495,7 +499,7 @@ class multistepformsubmission(SessionWizardView):
     
 
 
-def review_view(request):
+# def review_view(request):
     # if request.method == 'GET':
     #     form = ReviewForm(request.GET)
     #     if form.is_valid():
@@ -514,16 +518,30 @@ def review_view(request):
             
     # else:
     #     form = ReviewForm()
-    if request.method == "GET":
-        list_id = request.GET.get('list_id')
-        listing = Listing.objects.get(id=list_id)
-        review_text = request.GET.get('review_text')
-        rating = request.GET.get('rating')
-        reviewer = request.user.profile
-        Review(reviewer=reviewer, listing=listing, review_text=review_text,rating=rating).save()
-        render(request, 'single_house_view', id=list_id)
+    # if request.method == "GET":
+    #     list_id = request.GET.get('list_id')
+    #     listing = Listing.objects.get(id=list_id)
+    #     review_text = request.GET.get('review_text')
+    #     rating = request.GET.get('rating')
+    #     reviewer = request.user.profile
+    #     Review(reviewer=reviewer, listing=listing, review_text=review_text,rating=rating).save()
+    #     render(request, 'single_house_view', id=list_id)
     
-    
+# def review_view(request):
+#     if request.method == "GET":
+#         list_id = request.GET.get('list_id')
+#         review_text = request.GET.get('review_text')
+#         rating = request.GET.get('rating')
+        
+#         try:
+#             listing = Listing.objects.get(id=list_id)
+#         except Listing.DoesNotExist:
+#             return HttpResponse("Listing does not exist.")  # Or you can handle the error differently
+            
+#         reviewer = request.user.profile
+#         Review.objects.create(reviewer=reviewer, listing=listing, review_text=review_text, rating=rating)
+        
+#         return redirect('single_house_view', id=list_id)
     
     
         

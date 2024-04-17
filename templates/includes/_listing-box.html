@@ -97,6 +97,7 @@
       href="{% url 'single_house_view' id=listing.id  %}">View</a>
       {% endif %}
       <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'map' %}">Map</a>
+      <a href="/listing/{{listing.id}}/?lat={{listing.latitude}}&lng={{listing.longitude}}">View Location</a>
       {% if listing.seller.user == request.user %}
      <a href=""  type="button" class="btn btn-sm bg-secondary text-white btn-outline-secondary">Edit</a>
      {% endif %}

@@ -39,7 +39,7 @@
         <!-- Template Stylesheet -->
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        
+        <link rel="stylesheet" href="{% static 'jquery/jquery.rateyo.css' %}"/>
 
     </head>
 {% endblock %}
@@ -261,8 +261,9 @@
     <script src="{% static 'js/radio.js' %}"></script>
     <script src="{% static 'js/js_message.js' %}"></script>
     <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-   
-    <script>
+    <script src="{% static 'jquery/jquery.js' %}"></script>
+    <script src="{% static 'jquery/jquery.rateyo.js' %}"></script>
+     {% comment %} <script> {% endcomment %}
 
     {% comment %} function googleTranslateElementInit(){
     new google.translate.TranslateElement(

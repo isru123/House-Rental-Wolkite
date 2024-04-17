@@ -251,10 +251,10 @@ class Listing(models.Model):
 
 # This model is used to store reviews made by users for properties
 class Review(models.Model):
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='reviews')
     reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
     review_text = models.TextField()
     rating = models.PositiveSmallIntegerField(default=0)
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
