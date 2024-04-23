@@ -25,6 +25,11 @@ from message.models import ConversationMessage
 import requests
 import folium
 import pandas as pd
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
+
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -494,11 +499,31 @@ class multistepformsubmission(SessionWizardView):
         listing.image.add(images)
         # data = Listing.objects.all()
         # return render(self.request, 'main/owner/done.html', {'data': data})
-        
-        return redirect('master')
+        message = messages.info(self.request, "We will give you a reminder when your listing be approved in 24 hours")
+        return render(self.request, 'main/owner/done.html', {'message': message})
+            
+        # return redirect('master')
     
 
 
+
+# def send_email(request):
+#     subject = 'Subject here'
+#     from_email = 'from@example.com'
+#     to_email = ['to@example.com']
+    
+#     # Load the HTML template
+#     html_template = get_template('email_template.html')
+#     context = {'variable1': 'value1', 'variable2': 'value2'}
+#     html_content = html_template.render(Context(context))
+
+#     # Create the email message
+#     email_message = EmailMultiAlternatives(subject, '', from_email, to_email)
+#     email_message.attach_alternative(html_content, "text/html")
+#     email_message.send()
+    
+    
+    
 # def review_view(request):
     # if request.method == 'GET':
     #     form = ReviewForm(request.GET)
@@ -655,5 +680,10 @@ def payement(request):
                                                     #   'location_form': location_form, 'user_listings': user_listings, 
                                                     })
         
-    
+
+def owner_listings(request):
+    return render(request, 'main/owner/owner-listings.html')
+
+
+
 

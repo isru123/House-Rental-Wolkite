@@ -36,29 +36,37 @@
                                     <table class="table table-striped table-bordered zero-configuration">
                                         <thead>
                                             <tr>
-                                                <th>Owner ID</th>
-                                                <th>Owner Name</th>
-                                                <th>Email</th>
-                                                <th>Contact No.</th>
+                                                <th>User Name</th>
+                                                <th>Listing Type</th>
                                                 <th>Address</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Price</th>
+                                                <th>Available From</th>
+                                                <th>House Owner</th>
+                                                <th>Created At</th>
+            
+                                                <th>Approve</th>
+                                                <th>Images</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% if listing %}
                                             {% for L in listing %}
                                             <tr>
-                                                <td>{{L.id}}</td>
-                                                <td>{{L.user.first_name}} {{L.user.last_name}}</td>
-                                                <td>{{L.user.email}}</td>
-                                                <td>{{L.contact_No}}</td>
-                                                
+                                                <td>{{L.seller.user.username}}</td>
+                                                <td>{{L.house_kind}}</td>
                                                 <td>{{L.address}}</td>
-                                                <td>{{L.verified}}</td>
+                                                <td>{{L.price}}</td>
+                                                
+                                                <td>{{L.available_start}}</td>
+                                                <td>{{L.seller.user.first_name}} {{ L.seller.user.last_name }}</td>
+                                                <td>{{L.created_at}}</td>
+                                             
                                                 <td>
                                                     <a href="/approve-owner-request/{{L.id}}/" class="btn btn-success text-white" title="Verify"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                                    <a href="/delete-user/{{L.user.id}}/" class="btn btn-danger text-white" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <a href="/delete-user/{{L.seller.user.id}}/" class="btn btn-danger text-white" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'retrieve_images' L.id %}" class="btn btn-secondary text-white "><i class="fa fa-eye"></i> See Images</a>
                                                 </td>
                                             </tr>
                                             {% endfor %}
@@ -105,21 +113,26 @@
                            <span class="nav-text">Admin</span>
                        </a>
                        <ul>
+                        {% if user.is_superuser or user.is_staff  %} 
                         <li><a href="/all-user/">All User</a></li>
+                        {% endif %}
                         {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
                         <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
                         
                         <li><a href="/approve-admin/">Admin Panel</a></li>
                         {% comment %} {% endif %} {% endcomment %}
                         
-                        <li><a href="/rent-house/">Manage Owner</a></li>
-                        <li><a href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        <li><a href="{% url 'manage-owner-task' %}">Manage Owner Task</a></li>
+                        <li><a href="">Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}">Manage Users</a></li>
                         <li>
                             <a href="/admin-helpdesk/">Admin Helpdesk</a>
                         </li>
 
                         <li>
-                            <a href="{% url 'add-admin' %}">Add admin</a>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white;" ><i class="fa fa-user"></i> Add admin</a>
+                            {% endif %}
                         </li>
                        </ul> 
                    </li>
@@ -129,6 +142,7 @@
        </div>
        <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
    </section>
+
     {% endblock %}
 
     

@@ -2,7 +2,7 @@
 {% load humanize %}
 
 
-
+{% if listing.approved %}
 <div class="col-md-4 col-lg-3 mb-1 floating-div" style="margin: 0 30px; ">
   <div class="card listing-preview rounded position-relative fruite-item " style="width:300px; height:500px;">
 
@@ -92,12 +92,12 @@
       </div>
     </div>
     <div class="btn-group">
-      {% if request.user.profile.userType == "Owner" and listing.seller.user == request.user or request.user.profile.userType == "Public" %}
+      {% if request.user.profile.userType == "Owner" or listing.seller.user == request.user or request.user.profile.userType == "Public" or request.user.profile.userType == "Admin" %}
       <a type="button" class="btn btn-sm bg-success text-white btn-outline-success" 
       href="{% url 'single_house_view' id=listing.id  %}">View</a>
       {% endif %}
       <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'map' %}">Map</a>
-      <a href="/listing/{{listing.id}}/?lat={{listing.latitude}}&lng={{listing.longitude}}">View Location</a>
+      {% comment %} <a href="/listing/{{listing.id}}/?lat={{listing.latitude}}&lng={{listing.longitude}}">View Location</a> {% endcomment %}
       {% if listing.seller.user == request.user %}
      <a href=""  type="button" class="btn btn-sm bg-secondary text-white btn-outline-secondary">Edit</a>
      {% endif %}
@@ -131,6 +131,8 @@
       background-color: #007A87;
   }
 </style>
+{% endif %}
+
 
 
 

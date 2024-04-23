@@ -162,7 +162,9 @@
                            <span class="nav-text">Admin</span>
                        </a>
                        <ul>
+                        {% if user.is_superuser or user.is_staff  %} 
                         <li><a href="/all-user/">All User</a></li>
+                        {% endif %}
                         {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
                         <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
                         

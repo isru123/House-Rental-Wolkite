@@ -80,11 +80,11 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="" class="navbar-brand"><h1 class="text-success display-6">OHR</h1></a>
+                    <a href="" class="navbar-brand"><h1 style="color: #FF7F50" class=" display-6">OHR</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="collapse bg-white navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <strong><a href="{% url 'home' %}" class="nav-item nav-link active">Home</a></strong>
                             <strong><a href="shop.html" class="nav-item nav-link">How it works</a></strong>
@@ -101,7 +101,7 @@
                             <strong><a href="{% url 'owner' %}" class="nav-item nav-link">Make Listings</a></strong>
                             {% endif %}
 
-                            {% if user.is_superuser or user.is_staff  %}
+                            {% if user.is_superuser or user.is_staff or request.user.profile.userType == "Admin" %}
                             <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2">AdminBoard</a>
                             {% endif %}
                         </div>

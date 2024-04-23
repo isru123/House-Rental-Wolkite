@@ -181,11 +181,11 @@
     </div>
   </section>
   
-  <a href="{% url 'map' %}?listing_id={{ listing.id }}">View on Map</a>
+  {% comment %} <a href="{% url 'map' %}?listing_id={{ listing.id }}">View on Map</a> {% endcomment %}
   
   <!-- Breadcrumb -->
   <section id="bc" class="mt-3">
-    <div class="container">
+    <div class="container" style="margin-left:30px">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
@@ -202,7 +202,7 @@
   {% comment %} <section id="listings" class="py-4"> {% endcomment %}
     {% comment %} <div class="container"> {% endcomment %}
       {% comment %} <div class="row"> {% endcomment %}
-        
+
   <div class="col-lg-9">
     <div class="row g-4 justify-content-center">
        <div class="album py-5 bg-light ">
