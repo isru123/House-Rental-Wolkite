@@ -1,0 +1,132 @@
+{% extends 'base/adminbase.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block 'search' %}
+<input type="text" name="search" class="form-control" placeholder="Search First Name...">
+{% endblock %}
+
+{% block 'body' %}
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+<section class="vh-100" style="background-color: #eee;">
+<div class="container-fluid mt-3">
+    <div class="container" style="margin-left: 300px;">
+        <div class="row">
+            <div class="col-12">
+                <br>
+                <br>
+                <div class="card" style="width: 1000px;">
+                    <div class="card-body" style="width: 500px">
+
+                        <form method="post">
+                            {% csrf_token %}
+                     <div class="form-group">
+                                <label for="profile">Profile:</label>
+                         <div class="input-group">
+                                <select name="profile" id="profile" class="form-control">
+                                    {% for profile in profiles %}
+                                    <option value="{{ profile.id }}">{{ profile.name }}</option>
+                                    {% endfor %}
+                                </select>
+                           
+                            <div style="margin-left:5px" class="input-group-append">
+                            <div class="action-icons">
+                                <a href="" class="btn btn-primary" title="Create Profile">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="Edit Profile">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="View Profile">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                           </div>
+                        </div>
+                    </div>
+                            
+                            {{ form|crispy }}
+                            <button style="width: 450px" class="btn btn-primary btn-rounded float-right" type="submit">Save</button>
+
+                            
+                  
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+</section>
+<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+
+    <section style="height:50px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       <div class="nk-sidebar">
+           <div class="">
+               <br>
+               <ul class="metismenu" id="menu">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm">
+                       <a class="has-arrow">
+                           <i class="icon-screen-tablet menu-icon"></i>
+                           <span class="nav-text">Admin</span>
+                       </a>
+                       <ul>
+                        {% if user.is_superuser or user.is_staff  %} 
+                        <li><a href="/all-user/">All User</a></li>
+                        {% endif %}
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                        
+                        <li><a href="/approve-admin/">Admin Panel</a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        
+                        <li><a href="{% url 'manage-owner-task' %}">Manage Owner Task</a></li>
+                        <li><a href="">Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}">Manage Users</a></li>
+                        <li>
+                            <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                        </li>
+
+                        <li>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white;" ><i class="fa fa-user"></i> Add admin</a>
+                            {% endif %}
+                        </li>
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
+{% endblock %}
+
