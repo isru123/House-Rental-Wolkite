@@ -1,0 +1,16 @@
+<div class="widget-right" >
+    {% for notification in notifications %}
+    {% if notification.seen == True %}
+    <p class="wiget-title text-success" style="font-size: smaller;"> {{notification.message}}</p>
+    <p class="wiget-title text-success" style="font-size: smaller;"> {{notification.timestamp}}</p>
+    <hr>
+
+    {% else %}
+    <p class="wiget-title text-danger " style="font-size: smaller;"> {{notification.message}}</p>
+    <p class="wiget-title text-danger" style="font-size: smaller;"> {{notification.timestamp}}</p>
+    <a href="{% url 'mark_notification_as_seen' notification.id %}" class="btn btn-outline-primary "><span class="ti-eye"></span>Seen</a>
+ 
+    <hr>
+    {% endif %}
+    {% endfor %}
+   

@@ -26,9 +26,13 @@
         
       </form>
      
-      {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=product.id %}'">
-            Pay now
-        </button> 
+      <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'product-view' product_id=listing.id %}'">
+            Reserve now
+        </button>   
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'poster' %}">Write</a>
+        </li>  
+        {% comment %}
       <h5 class="p-2 text-green text-center">
         <b>{{ _("Get in touch") }}</b>
       </h5>
@@ -38,7 +42,10 @@
       <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
      
       <hr>
-        {% comment %} <button href="{% url 'dashboard_owner' %}" style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button> {% endcomment %}
+       
+{% comment %} <button href="{% url 'dashboard_owner' %}" style="width:350px" class="btn btn-primary my-2" type="submit">See Messages</button> {% endcomment %}
+{% elif request.user.profile.userType == "Owner" and listing.seller.user == request.user %}
+
         <a href="{% url 'inbox_view' %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
          {% comment %} <button class="w-100 btn-lg btn-outline-primary my-3" onclick="location.href='{% url 'inbox-view' conversation_id=conversation_id %}'">
                 See Messages

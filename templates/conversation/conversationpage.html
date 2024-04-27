@@ -65,7 +65,7 @@
     <h2 style="color:black" class="mb-4">Introduce yourself to {{ listing_seller.user.username }}</h2>
      <h5 style="color:black">For a faster response, share as much as you can.</h5>
      <br>
-    {% comment %} <div id="conversation-content text-start">
+    <div id="conversation-content text-start">
         <div class="space-y-4">
             {% for message in conversation.messages.all %}
             <div class="p-3 {% if message.created_by == request.user %}bg-primary text-white{% else %}bg-light{% endif %} rounded-lg shadow-sm">
@@ -80,7 +80,7 @@
             </div>
             {% endfor %}
         </div>
-    </div> {% endcomment %}
+    </div> 
 
     <form id="write-form" method="post" action="{% url 'detail' conversation_id=conversation.id %}" style="display: none;">
         {% csrf_token %}
@@ -90,9 +90,11 @@
         <button type="button" class="btn btn-primary mt-3 btn-width" onclick="clearMessage()">Clear</button>
         <button type="submit" class="btn btn-primary mt-3 btn-width">Send</button>
     </form>
+    
+    
 
     <button id="start-writing-btn" class="btn btn-primary mt-3" style="display: inline-block;">Start Writing</button>
-    <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button>
+    <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button> 
 </div>
 </div>
 <style>
@@ -181,6 +183,21 @@ editButtons.forEach(function(button) {
             }
         });
     });
+  
+    function autoResizeTextarea(textarea) {
+        var lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
+        var scrollHeight = textarea.scrollHeight;
+
+        // Set the minimum height for the textarea
+        textarea.style.height = '40px';
+
+        // Increase the height of the textarea gradually by lineHeight
+        while (textarea.scrollHeight > scrollHeight) {
+            scrollHeight += lineHeight;
+            textarea.style.height = scrollHeight + 'px';
+        }
+    }
+        
 </script>
 
 

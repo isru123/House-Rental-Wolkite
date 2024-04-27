@@ -8,8 +8,9 @@ class ConversationMessageForm(forms.ModelForm):
         fields = ('content',)
         widgets = {
             'content': forms.Textarea(attrs={
-                'class': 'w-full py-4 px-6 rounded-xl border',
+                'class': 'w-full py-2 px-4 rounded-lg border',
                 'id': 'message-input',
-                'style': 'width: 100%; background-color: #F2F2F2;'
+                'style': 'width: 77%; background-color: #F2F2F2; height: 40px;',  # Set initial height here
+                'oninput': 'autoResizeTextarea(this)'
             })
         }

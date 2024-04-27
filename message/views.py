@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from users.models import Profile,Location
 
 from main.models import Listing
 from django.urls import reverse
@@ -169,3 +170,153 @@ def delete_message(request, message_id):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+
+def booking_page(request, conversation_id):
+    # Your view logic here
+    return redirect('booking_page', conversation_id=conversation_id)
+
+
+def dashboard_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
+    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+
+    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
+    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+
+    # available_house = House.objects.filter(status="Available").count()
+    # booked_house = House.objects.filter(status="Booked").count()
+
+    # customer_request = BookingRequest.objects.filter(status="Pending").count()
+
+    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
+
+    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+
+    Dict = {
+        "total_verified_owner":total_verified_owner,
+        "total_unverified_owner":total_unverified_owner,
+        "total_verified_admin":total_verified_admin,
+        "total_unverified_admin":total_unverified_admin,
+        # "available_house":available_house,
+        # "booked_house":booked_house,
+        # "customer_request":customer_request,
+
+        # "my_house": my_house,
+        # "my_available_house":my_available_house,
+
+        # "my_booking":my_booking
+        }
+    return render(request, 'renterApp/dashboard.html',Dict)
+
+
+def messages(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
+    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+
+    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
+    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+
+    # available_house = House.objects.filter(status="Available").count()
+    # booked_house = House.objects.filter(status="Booked").count()
+
+    # customer_request = BookingRequest.objects.filter(status="Pending").count()
+
+    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
+
+    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+
+    Dict = {
+        "total_verified_owner":total_verified_owner,
+        "total_unverified_owner":total_unverified_owner,
+        "total_verified_admin":total_verified_admin,
+        "total_unverified_admin":total_unverified_admin,
+        # "available_house":available_house,
+        # "booked_house":booked_house,
+        # "customer_request":customer_request,
+
+        # "my_house": my_house,
+        # "my_available_house":my_available_house,
+
+        # "my_booking":my_booking
+        }
+    return render(request, 'renterApp/messages.html',Dict)
+
+
+
+def books(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
+    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+
+    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
+    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+
+    # available_house = House.objects.filter(status="Available").count()
+    # booked_house = House.objects.filter(status="Booked").count()
+
+    # customer_request = BookingRequest.objects.filter(status="Pending").count()
+
+    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
+
+    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+
+    Dict = {
+        "total_verified_owner":total_verified_owner,
+        "total_unverified_owner":total_unverified_owner,
+        "total_verified_admin":total_verified_admin,
+        "total_unverified_admin":total_unverified_admin,
+        # "available_house":available_house,
+        # "booked_house":booked_house,
+        # "customer_request":customer_request,
+
+        # "my_house": my_house,
+        # "my_available_house":my_available_house,
+
+        # "my_booking":my_booking
+        }
+    return render(request, 'renterApp/books.html',Dict)
+
+
+def listigs(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
+    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+
+    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
+    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+
+    # available_house = House.objects.filter(status="Available").count()
+    # booked_house = House.objects.filter(status="Booked").count()
+
+    # customer_request = BookingRequest.objects.filter(status="Pending").count()
+
+    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
+
+    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+
+    Dict = {
+        "total_verified_owner":total_verified_owner,
+        "total_unverified_owner":total_unverified_owner,
+        "total_verified_admin":total_verified_admin,
+        "total_unverified_admin":total_unverified_admin,
+        # "available_house":available_house,
+        # "booked_house":booked_house,
+        # "customer_request":customer_request,
+
+        # "my_house": my_house,
+        # "my_available_house":my_available_house,
+
+        # "my_booking":my_booking
+        }
+    return render(request, 'renterApp/listing.html',Dict)
