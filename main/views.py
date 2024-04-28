@@ -29,7 +29,8 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from geopy.geocoders import Nominatim
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -41,6 +42,7 @@ from .models import (
     RulesAndPreferences,
     Image,
     Review,
+    AddressOfListing,
 )
 
 from .forms import (
@@ -52,6 +54,7 @@ from .forms import (
     RulesAndPreferencesForm,
     ImageForm,
     ReviewForm,
+    AddressForm,
 )
 
 
@@ -133,7 +136,8 @@ def owner_second_view(request):
 
 
 
-def map_view(request):
+def map_view(request, id):
+    
     listings = Listing.objects.all()
     geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
 
@@ -145,14 +149,43 @@ def map_view(request):
                 listing.latitude = first_result['geometry']['lat']
                 listing.longitude = first_result['geometry']['lng']
                 listing.save()
-
+    
+    listing = get_object_or_404(Listing, id=id)
+    # address_listing = AddressOfListing.objects.get(all)
+    
+    # for address_of in address_listing:
+    #     if listing.address == address_of.Address:
+    #         listing.latitude = address_of.lat
+    #         listing.longitude = address_of.long
+            
+    #         pass
     context = {
-        'listings': listings,
+        'listing': listing,
         'opencage_api_key': settings.OPENCAGE_API_KEY,
     }
     
     return render(request, 'main/major/location.html', context)
 
+
+
+def my_view(request):
+    address = AddressOfListing.objects.all()
+    
+    return render(request, 'main/major/my_form.html', {'showaddress': address})
+    # if request.method == 'POST':
+    #     form = AddressForm(request.POST)
+    #     if form.is_valid():
+    #         selected_address = form.cleaned_data['Address']
+    #         geolocator = Nominatim(user_agent='house_rental')
+    #         location = geolocator.geocode(selected_address.Address)
+
+    #         if location:
+    #             selected_address.latitude = location.latitude
+    #             selected_address.longitude = location.longitude
+    #             selected_address.save()
+    # else:
+    #     form = AddressForm()
+   
 
 
 
@@ -380,6 +413,35 @@ def single_house_view(request, id):
         messages.error(request, f'Invalid UID {id} was provided for listing')
         # return redirect('home')
         return redirect('new', product_id=listing.id, conversation_id=conversation_id)
+
+
+
+
+def review_view(request):
+    obj = Review.objects.filter(score=0).order_by("?").first()
+    context ={
+        'object': obj
+    }
+    return render(request, 'ratings/main.html', context)
+
+
+
+
+def rate_image(request):
+    if request.method == 'POST':
+        el_id = request.POST.get('el_id')
+        val = request.POST.get('val')
+        print(val)
+        obj = Review.objects.get(id=el_id)
+        obj.score = val
+        obj.save()
+        return JsonResponse({'success':'true', 'score': val}, safe=False)
+    return JsonResponse({'success':'false'})
+
+
+
+
+
 
 
 # def single_house_view(request, id):
@@ -681,8 +743,32 @@ def payement(request):
                                                     })
         
 
+
+
+
+
+
+
 def owner_listings(request):
-    return render(request, 'main/owner/owner-listings.html')
+    L = Listing.objects.filter(approved=True)
+    if request.method == "POST":
+        search = request.POST.get("search")
+        # seller = seller.user.username
+        # seller = request.user.profile 
+        L = Listing.objects.filter(user__house_kind__icontains=search, approved=True)
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(L, 7)
+    try:
+        L = paginator.page(page)
+    except PageNotAnInteger:
+        L = paginator.page(1)
+    except EmptyPage:
+        L = paginator.page(paginator.num_pages)
+
+    # return render(request, 'adminApp/approve-owner.html',  {'listing':L})
+    return render(request, 'main/owner/owner-listings.html',  {'listing':L})
 
 
 

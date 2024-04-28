@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Listing,LikedListing,Image,ListingSpaceOverview, ListingHouseArea, ListingHouseAmenities, RentalConditions, RulesAndPreferences,Review
+from .models import Listing,LikedListing,Image,ListingSpaceOverview, ListingHouseArea, ListingHouseAmenities, RentalConditions, RulesAndPreferences,Review,AddressOfListing
 
 class ListingAdmin(admin.ModelAdmin):
     readonly_fields = ('id', )
@@ -61,6 +61,10 @@ class ReviewAdmin(admin.ModelAdmin):
     
     pass
 
+class AddressOfListingAdmin(admin.ModelAdmin):
+    
+    pass
+
 
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(ListingSpaceOverview, ListingSpaceOverviewAdmin)
@@ -76,6 +80,7 @@ admin.site.register(RulesAndPreferences, RulesAndPreferencesAdmin)
 # admin.site.register(Rules, RulesAdmin)
 admin.site.register(Review,ReviewAdmin)
 admin.site.register(Image,ImageAdmin)
+admin.site.register(AddressOfListing,AddressOfListingAdmin)
 # admin.site.register(Booking, BookingAdmin)
 
 

@@ -7,12 +7,14 @@ from .forms import AdminProfileForm
 from users.forms import LocationForm,UserForm
 from django.db import models
 from django.conf import settings
-from main.models import Listing,Image
+from main.models import Listing,Image,ListingHouseAmenities,ListingSpaceOverview,ListingHouseArea,RentalConditions,RulesAndPreferences
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from main.forms import ListingForm
+from main.forms import ListingForm,ListingHouseAmenitiesForm,ListingSpaceOverviewForm,ListingHouseAreaForm,RentalConditionsForm,RulesAndPreferencesForm,ImageForm
 from django.utils.translation import gettext as _
+from main.models import ListingHouseAmenities
+from users.forms import ProfileForm
 # Create your views here.
 
 
@@ -62,11 +64,11 @@ def Dashboard(request):
 #     return render(request, 'adminApp/approve-owner.html')
 
 def manage_customer_view(request):
-    u = Profile.objects.filter(verified=True).exclude(user__profile__userType='Admin').exclude(user=request.user)
+    u = Profile.objects.filter(verified=True).exclude(user=request.user)
     if request.method == "POST":
         search = request.POST.get("search")
-        u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user__profile__userType='Admin').exclude(user=request.user)
-        
+        u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user=request.user)
+        # exclude(user__profile__userType='Admin')
     page = request.GET.get('page', 1)
 
     paginator = Paginator(u, 10)
@@ -174,7 +176,7 @@ def add_house_owner(request):
             address=address,
             userType="Owner"
             )
-        return redirect('manage-customer')
+        return redirect('/manage-customer/')
     return render(request, 'adminApp/add-house-owner.html')
     
 
@@ -216,7 +218,7 @@ def add_tenant(request):
             userType="Public"
             )
         
-        return redirect('manage-customer')
+        return redirect('/manage-customer/')
     return render(request, 'adminApp/add-tenant.html')
     
 
@@ -242,18 +244,84 @@ def manage_owner_task(request):
     return render(request, 'adminApp/manage-owner-task.html')
 
 
-    
-    
+
+
 def add_listing(request):
     profiles = Profile.objects.all()
+    amenities = ListingHouseAmenities.objects.all()
+    overview = ListingSpaceOverview.objects.all()
+    area = ListingHouseArea.objects.all()
+    condition = RentalConditions.objects.all()
+    preferences = RulesAndPreferences.objects.all()
+    images = Image.objects.all()
+    
     if request.method == 'POST':
         form = ListingForm(request.POST)
+        form2 = ListingHouseAmenitiesForm(request.POST)
+        form3 = ListingSpaceOverviewForm(request.POST)
+        form4 = ListingHouseAreaForm(request.POST)
+        form5 = RentalConditionsForm(request.POST)
+        form6 = RulesAndPreferencesForm(request.POST)
+        form7 = ImageForm(request.POST)
+        profileForm = ProfileForm(request.POST)
+        # rules_preferences.save()
+        # listing.rules_and_preferences.add(rules_preferences)
+        listing = None
         if form.is_valid():
-            listing = form.save()
-            return redirect('listing_detail', pk=listing.pk)
+            listing = form.save(commit=False)
+            listing.seller_id = request.user.id  # Set the seller_id to the logged-in user's ID
+            listing.save()
+        
+        if form2.is_valid():
+            if listing is not None:
+                instances = form2.save()
+                listing.form2.set(instances)
+            return redirect('add-listing')
+        
+        if form3.is_valid():
+            if listing is not None:
+                instances = form3.save()
+                listing.form3.set(instances)
+            return redirect('add-listing')
+        
+        if form4.is_valid():
+            if listing is not None:
+                instances = form4.save()
+                listing.form4.set(instances)
+            return redirect('add-listing')
+        
+        if form5.is_valid():
+            if listing is not None:
+                instances = form5.save()
+                listing.form5.set(instances)
+            return redirect('add-listing')
+        
+        if form6.is_valid():
+            if listing is not None:
+                instances = form6.save()
+                listing.form6.set(instances)
+            return redirect('add-listing')
+        
+        if form7.is_valid():
+            if listing is not None:
+                instances = form7.save()
+                listing.form7.set(instances)
+            return redirect('add-listing')
+        
+        return redirect('master')
+    
     else:
         form = ListingForm()
-    return render(request, 'adminApp/add-listing.html', {'form': form , 'profiles':profiles})
+        form2 = ListingHouseAmenitiesForm()
+        form3 = ListingSpaceOverviewForm()
+        form4 = ListingHouseAreaForm()
+        form5 = RentalConditionsForm()
+        form6 = RulesAndPreferencesForm()
+        form7 = ImageForm()
+        
+    return render(request, 'adminApp/add-listing.html', {'form': form,'form2':form2,'form3':form3,'form4':form4,'form5':form5,'form6':form6, 'form7':form7,
+                                                         'profiles': profiles, 'amenities':amenities,'overview':overview,'area':area,'condition':condition,'preferences':preferences,'images':images})
+    
 
     
      
@@ -339,48 +407,51 @@ def AllUser(request):
     return render(request, 'adminApp/all-user.html', {'user':u})
 
 
-def AddAdmin(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        pass1 = request.POST.get('pass1')
-        pass2 = request.POST.get('pass2')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        contact = request.POST.get('contact')
-        DOB = request.POST.get('dob')
-        profile_pic = request.FILES.get('pic')
-        gender=request.POST.get('gender')
-        address= request.POST.get('address')
+
+
+
+# def AddAdmin(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         pass1 = request.POST.get('pass1')
+#         pass2 = request.POST.get('pass2')
+#         first_name = request.POST.get('first_name')
+#         last_name = request.POST.get('last_name')
+#         email = request.POST.get('email')
+#         contact = request.POST.get('contact')
+#         DOB = request.POST.get('dob')
+#         profile_pic = request.FILES.get('pic')
+#         gender=request.POST.get('gender')
+#         address= request.POST.get('address')
         
-        if pass1!=pass2:
-            msg='Password should be same.'
-            return render(request,'adminApp/add-admin.html',{'msg':msg})
-        if len(contact)!=10:
-            msg='Contact should be 10 digit.'
-            return render(request,'adminApp/add-admin.html',{'msg':msg})
-        try:
-            user=User.objects.create_user(
-                username=username,
-                email=email,
-                password=pass1,
-                first_name=first_name,
-                last_name=last_name
-                )
-        except:
-            msg='Usename already exist.'
-            return render(request,'adminApp/add-admin.html',{'msg':msg})
-        Profile.objects.create(
-            user=user,
-            profilePicture=profile_pic,
-            contact_No=contact,
-            address=address,
-            gender=gender,
-            DOB=DOB,
-            userType="Admin"
-            )
-        return redirect('all-user')
-    return render(request, 'adminApp/add-admin.html')
+#         if pass1!=pass2:
+#             msg='Password should be same.'
+#             return render(request,'adminApp/add-admin.html',{'msg':msg})
+#         if len(contact)!=10:
+#             msg='Contact should be 10 digit.'
+#             return render(request,'adminApp/add-admin.html',{'msg':msg})
+#         try:
+#             user=User.objects.create_user(
+#                 username=username,
+#                 email=email,
+#                 password=pass1,
+#                 first_name=first_name,
+#                 last_name=last_name
+#                 )
+#         except:
+#             msg='Usename already exist.'
+#             return render(request,'adminApp/add-admin.html',{'msg':msg})
+#         Profile.objects.create(
+#             user=user,
+#             profilePicture=profile_pic,
+#             contact_No=contact,
+#             address=address,
+#             gender=gender,
+#             DOB=DOB,
+#             userType="Admin"
+#             )
+#         return redirect('all-user')
+#     return render(request, 'adminApp/add-admin.html')
 
 
 # def Profile(request):

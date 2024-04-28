@@ -94,44 +94,44 @@
         Scripts
     ***********************************-->
 
-    <section style="height:50px ">
+    <section style="height:400px">
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar">
+       <div class="nk-sidebar bg-dark">
            <div class="">
                <br>
-               <ul class="metismenu" id="menu">
+               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
                    <li>
                        <a href="{% url 'board' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-clipboard"></i> Dashboard</span>
                        </a>
                    </li>
-                   <li class="mega-menu mega-menu-sm">
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text">Admin</span>
+                           <span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-user-circle"></i> Admin</span>
                        </a>
-                       <ul>
+                       <ul style=" background-color: #1877F2;">
                         {% if user.is_superuser or user.is_staff  %} 
-                        <li><a href="/all-user/">All User</a></li>
+                        <li><a href="/all-user/" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
                         {% endif %}
                         {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                        <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                        <li><a href="{% url 'approve-owner' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
                         
-                        <li><a href="/approve-admin/">Admin Panel</a></li>
+                        <li><a href="/approve-admin/" style="color:white; font-family: sans-serif;"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
                         {% comment %} {% endif %} {% endcomment %}
                         
-                        <li><a href="{% url 'manage-owner-task' %}">Manage Owner Task</a></li>
-                        <li><a href="">Manage Tenant Task</a></li>
-                        <li><a href="{% url 'manage-customer' %}">Manage Users</a></li>
+                        <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
+                        <li><a href="" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
                         <li>
-                            <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                            <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
                         </li>
 
                         <li>
                             {% if user.is_superuser or user.is_staff  %}
-                            <a href="{% url 'add-admin' %}" style="color:white;" ><i class="fa fa-user"></i> Add admin</a>
+                            <a href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;" ><i class="fa fa-user" style="color: white;"></i> Add admin</a>
                             {% endif %}
                         </li>
                        </ul> 

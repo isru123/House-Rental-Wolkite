@@ -5,7 +5,7 @@ from users.models import Location,Profile
 from django.utils.translation import gettext_lazy as _
 from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
 from .utils import user_listing_path
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -256,6 +256,10 @@ class Review(models.Model):
     review_text = models.TextField()
     rating = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    score = models.IntegerField(default=0, validators=[
+        MaxValueValidator(5),
+        MinValueValidator(0),
+    ])
     
     def __str__(self):
          return f'{self.reviewer.user.username}\' reviewd f{self.listing.seller.user.username}\'s Listing'
@@ -272,6 +276,15 @@ class LikedListing(models.Model):
     def __str__(self):
         return f'{self.listing.title} listing liked by {self.profile.user.username}' 
 
+
+class AddressOfListing(models.Model):
+    Address = models.CharField(max_length=100)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
+    
+    
+    def __str__(self):
+        return f'{self.Address}'
     
     
 

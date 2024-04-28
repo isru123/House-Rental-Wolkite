@@ -1,8 +1,11 @@
-{% comment %} <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>House Map</title>
-    <script src="https://maps.googleapis.com/maps/api/js"></script> 
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    {% comment %} <script src="https://maps.googleapis.com/maps/api/js"></script> 
     <script src="https://maps.googleapis.com/maps/api/js?key={{ opencage_api_key }}"></script>
     <script>
         function initMap() {
@@ -12,53 +15,69 @@
             });
 
             {% for listing in listings %}
-                var marker{{ house.id }} = new google.maps.Marker({
+                var marker{{ listing.id }} = new google.maps.Marker({
                     position: {lat: {{ listing.latitude }}, lng: {{ listing.longitude }}},
                     map: map,
                     title: "{{ listing.address }}"
                 });
             {% endfor %}
         }
-    </script>
+    </script> {% endcomment %}
 </head>
 <body>
+    <div>
+        <h1>Hello Map</h1>
+    </div>
+
+    {{ listing.address }} <br>
+    {{ listing.latitude }} <br>
+    {{ listing.longitude }} <br>
+
+
     
-    <iframe src="https://www.google.com/maps/d/embed?mid=1u3uCYNWix9PKR1BIuNrF3DDZDbyb6D0&ehbc=2E312F" width="1550" height="750"></iframe>
-</body>
-</html> {% endcomment %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Map</title>
-    <style>
-        #map {
-            height: 400px;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
-</head>
-<body>
-    <h1>Map View</h1>
-    <div id="map"></div>
-    
+
+    {% comment %} <iframe src="https://www.google.com/maps/d/embed?mid=1u3uCYNWix9PKR1BIuNrF3DDZDbyb6D0&ehbc=2E312F" width="1550" height="750"></iframe> {% endcomment %}
+  
+   
+    <div id="map-{{ listing.id }}" style="height: 400px;"></div>
+
     <script>
-        // Get the latitude and longitude from the Django context
-        var latitude = {{ latitude }};
-        var longitude = {{ longitude }};
-        
-        // Create a map centered at the given latitude and longitude
-        var map = L.map('map').setView([latitude, longitude], 12);
+        // Replace with your actual latitude and longitude values
+    {% comment %} var YOUR_LATITUDE = 8.1951581;
+    var YOUR_LONGITUDE = 37.7923727;
+    let latitude = 0;
+    let longitude =  0; {% endcomment %}
+    
+    var latitude = {{ listing.latitude }};
+    var longitude = {{ listing.longitude }};
 
-        // Add a tile layer to the map (e.g., OpenStreetMap)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
 
-        // Add a marker to the map
-        L.marker([latitude, longitude]).addTo(map)
-            .bindPopup('Selected Location')
-            .openPopup();
+    navigator.geolocation.getCurrentPosition(position => {
+     let latitude = position.coords.latitude;
+     let longitude = position.coords.longitude;
+    // Use the retrieved values as needed
+    console.log(latitude, longitude);
+    }); 
+
+      // Initialize map
+      {% comment %} var map = L.map('map').setView([YOUR_LATITUDE, YOUR_LONGITUDE], 12); {% endcomment %}
+      var map = L.map('map-{{ listing.id }}').setView([latitude, longitude], 12);
+      // Add OpenStreetMap tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+      }).addTo(map);
+
+      // Add marker to the map
+      {% comment %} var marker = L.marker([YOUR_LATITUDE, YOUR_LONGITUDE]).addTo(map); {% endcomment %}
+      var marker = L.marker([latitude, longitude]).addTo(map);
+  
     </script>
+
+    
+
+    
+
+
 </body>
 </html>

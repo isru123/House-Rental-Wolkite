@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',
     'verify_email',
     'crum',
+    'dal',
+    'dal_select2',
     # 'house_rental.custom_filters',
 ]
 

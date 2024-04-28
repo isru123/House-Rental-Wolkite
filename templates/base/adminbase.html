@@ -44,12 +44,12 @@
         <!--**********************************
             Nav header start
         ***********************************-->
-        <div class="nav-header bg-dark">
+        <div class="nav-header bg-white">
             <div class="brand-logo">
                 <a href="/">
                 <span class="brand-title align-item-start">
-                    <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
-                    <h4 style="padding: 100px; " class="text-white  icon-home"> <span><i class="fa fa-home">HOME</i></span></h4>
+                    {% comment %} <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt=""> {% endcomment %}
+                    <span><i class="fa fa-house"></i>HOME</span>
                     </span>
                 </a>
                 
@@ -76,6 +76,9 @@
                     <div class="input-group icons">
                         
                         <form action="/rent-house/" method="POST">
+                            <br>
+                            <br>
+                            <br>
                             {% csrf_token %}
                             {% block 'search' %}
                             <input type="text" name="search" class="form-control" placeholder="Search By City...">

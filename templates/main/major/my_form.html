@@ -1,0 +1,47 @@
+
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>AutoComplete</title> 
+	<script src= 
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"> 
+	</script> 
+	
+	<script src= 
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"> 
+	</script> 
+	
+	<link href= 
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+		rel="stylesheet" type="text/css" /> 
+</head> 
+<body> 
+	<h1>Welcome to GFG</h1> 
+	<input type="text" id="tags"> 
+	<script>
+        $(function() {
+          var availableTags = [
+            {% for add in showaddress %}
+              "{{ add.Address }}",
+            {% endfor %}
+          ];
+      
+          $("#tags").autocomplete({
+            source: availableTags,
+            select: function(event, ui) {
+              // When an option is selected from the autocomplete dropdown
+              $("#warning").hide(); // Hide the warning message
+            },
+            change: function(event, ui) {
+              // When the input value is changed
+              if (!ui.item) {
+                // If the selected item is not from the autocomplete options
+                $("#tags").val(""); // Clear the input value
+                $("#warning").show(); // Show the warning message
+              }
+            }
+          });
+        });
+      </script>
+</body> 
+</html>
