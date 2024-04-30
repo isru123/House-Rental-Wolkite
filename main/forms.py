@@ -89,13 +89,13 @@ class RentalFilterForm(forms.Form):
     )
 
 
-class ReviewForm(forms.ModelForm):
-    review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
-    rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
+# class ReviewForm(forms.ModelForm):
+#     review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
+#     rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
     
-    class Meta:
-        model = Review
-        fields = ['rating', 'review_text']
+#     class Meta:
+#         model = Review
+#         fields = ['rating', 'review_text']
          
 from django import forms
 from .models import Upload
