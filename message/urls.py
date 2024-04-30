@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import inbox_view,detail,new_conversation,edit_message,delete_message,dashboard_view,messages, listigs, books
+from .views import inbox_view,detail,new_conversation,edit_message,delete_message,dashboard_view,messages, listigs, books, payments
 
 urlpatterns = [
     # Other URL patterns
@@ -12,6 +12,8 @@ urlpatterns = [
          path('dashboard_renter/', dashboard_view, name='dashboard_renter'),
                   path('messages/', messages, name='messages'),
                   path('listigs/', listigs, name='listigs'),
+                path('payments/', payments, name='payments'),
+
                   path('books/', books, name='books'),
 
 

@@ -1,13 +1,15 @@
 {% extends 'base/base.html' %}
 
-{% block title %}New conversation{% endblock %}
-
+{% block title %}New Conversation{% endblock %}
 
 {% block 'header' %}
 {% endblock %}
 
-{% block 'body' %}
-
+{% block 'body' %}<br>
+<br>
+<br>
+<br>
+<br>
 
 <!-- Breadcrumb -->
 <section id="bc" class="mt-3">
@@ -20,32 +22,57 @@
           <li class="breadcrumb-item">
             <a href="{% url 'master' %}">{{ _("Listings") }}</a>
           </li>
-          <li class="breadcrumb-item active">{{ listing.house_kind }}</li>
+          <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
         </ol>
       </nav>
     </div>
   </section>
+<div class="container">
+    <h1 class="mb-4 text-center">New Conversation</h1>
 
-  
-<h1 class="mb-6 text-3xl">New conversation</h1>
-
-<form method="post" action=".">
-    {% csrf_token %}
-
-    <div class="space-y-4">
-        {{ form.as_p }}
-    </div>
-
-    {% if form.errors or form.non_field_errors %}
-        <div class="mb-3 p-6 bg-red-100 rounded-xl">
-            {% for field in form %}
-                {{ field.errors }}
-            {% endfor %}
-
-            {{ form.non_field_errors }}
-        </div>
+    <!-- Display tenant's document and photo -->
+    {% if not id_document_url %}
+        <button id="approveButton" class="btn btn-primary btn-lg my-3 mx-auto" onclick="location.href='{% url 'upload' %}'">
+            Approve your identity
+        </button>
     {% endif %}
 
-    <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Send</button>
-</form>
+    {% if id_document_url %}
+        <div class="alert alert-success my- mx-auto">
+            You have successfully approved your identity!
+            {% if tenant_photo_url %}
+                <p>Your photo:</p>
+                <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
+            {% endif %}
+            {% if id_document_url %}
+                <p>Your document:</p>
+                <a href="{{ id_document_url }}" class="btn btn-success btn-sm" style="text-decoration: none;">View Document</a>
+            {% endif %}
+        </div>
+    {% else %}
+        {% if tenant_photo_url %}
+            <p>Your photo:</p>
+            <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm mx-auto" style="text-decoration: none;">View Photo</a>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="." class="mx-auto">
+      {% csrf_token %}
+  
+      <div class="mb-3">
+          {{ form.content }}
+          {% if form.is_bound and form.content.errors and form.content.value == '' %}
+              <div class="alert alert-danger mt-2">
+                  Please insert the correct message.
+              </div>
+          {% endif %}
+      </div>
+  
+      <button id="sendButton" class="btn btn-lg btn-block btn-teal mt-4">Send</button>
+  </form>
+  
+</div>
+{% endblock %}
+
+{% block 'footer' %}
 {% endblock %}

@@ -162,10 +162,6 @@ class RulesAndPreferences(models.Model):
     
     
 
-# This model is used to store information about rooms within properties
-# class Room(models.Model):
-#     name = models.CharField(max_length=200)
-#     capacity = models.PositiveSmallIntegerField()
 
 
 class Image(models.Model):
@@ -228,36 +224,7 @@ class Listing(models.Model):
 
 
     
-# This model is used to store booking information made by guests
-# class Booking(models.Model):
-#     guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-#     check_in_date = models.DateTimeField(default=None)
-#     check_out_date = models.DateTimeField(default=None)
-#     # rooms = models.ManyToManyField(Room)
-    
-    
-    
-#     def __str__(self):
-#          return f'{self.listing.title}\' listing booked'
-    
-    
-    
-    
 
-    
-
-# This model is used to store reviews made by users for properties
-# class Review(models.Model):
-#     reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     review_text = models.TextField()
-#     rating = models.PositiveSmallIntegerField()
-#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    
-#     def __str__(self):
-#          return f'{self.listing.title}\' listing reviewd'
-    
-    
     
 
 class LikedListing(models.Model):
@@ -272,8 +239,17 @@ class LikedListing(models.Model):
     
     
 
+class Upload(models.Model):
+    TENANT_CHOICES = (
+        ('Document', 'Document'),
+        ('Photo', 'Photo')
+    )
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    document = models.FileField(upload_to='uploads/documents/')
+    photo = models.ImageField(upload_to='uploads/photos/')
 
-    
+    def __str__(self):
+        return f"{self.document.name} - {self.photo.name}"
     
     
     

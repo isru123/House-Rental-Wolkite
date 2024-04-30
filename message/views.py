@@ -13,9 +13,8 @@ from .models import ConversationMessage
 from .forms import ConversationMessageForm
 from .models import Conversation
 
+from main.models import Upload
 @login_required
-
-
 
 def new_conversation(request, product_id):
     listing = get_object_or_404(Listing, id=product_id)
@@ -27,6 +26,18 @@ def new_conversation(request, product_id):
     conversations = Conversation.objects.filter(item=listing, members=request.user)
     if conversations.exists():
         return redirect('detail', conversation_id=conversations.first().id)
+
+    id_document_url = ''
+    tenant_photo_url = ''
+
+    # Fetch tenant's document and photo
+    tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
+
+    # Assuming you want to use the first upload found
+    if tenant_uploads.exists():
+        tenant_upload = tenant_uploads.first()
+        id_document_url = tenant_upload.document.url
+        tenant_photo_url = tenant_upload.photo.url
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
@@ -49,23 +60,75 @@ def new_conversation(request, product_id):
 
     context = {
         'form': form,
-        'listing': listing
+        'listing': listing,
+        'id_document_url': id_document_url,
+        'tenant_photo_url': tenant_photo_url,
     }
     return render(request, 'conversation/new.html', context)
 
 
-from .models import Conversation
+
+
+# def new_conversation(request, product_id):
+#     listing = get_object_or_404(Listing, id=product_id)
+
+#     if request.user == listing.seller:
+#         return redirect('main:home')
+
+#     # Check if there are existing conversations related to the listing for the current user
+#     conversations = Conversation.objects.filter(item=listing, members=request.user)
+#     if conversations.exists():
+#         return redirect('detail', conversation_id=conversations.first().id)
+
+#     if request.method == 'POST':
+#         form = ConversationMessageForm(request.POST)
+
+#         if form.is_valid():
+#             # Create a new conversation
+#             conversation = Conversation.objects.create(item=listing)
+#             conversation.members.add(request.user, listing.seller.user)
+#             conversation.save()
+
+#             # Create a new conversation message
+#             conversation_message = form.save(commit=False)
+#             conversation_message.conversation = conversation
+#             conversation_message.created_by = request.user
+#             conversation_message.save()
+
+#             return redirect('detail', conversation_id=conversation.id)
+#     else:
+#         form = ConversationMessageForm()
+
+#     context = {
+#         'form': form,
+#         'listing': listing
+#     }
+#     return render(request, 'conversation/new.html', context)
+
 
 from .models import Conversation
 
+from .models import Conversation
+
+# views.py
+
+# def inbox_view(request):
+#     profile = request.user.profile
+#     conversations = Conversation.objects.filter(item__seller=profile)
+#     context = {
+#         'conversations': conversations
+#     }
+#     return render(request, 'conversation/inbox.html', context)
 def inbox_view(request):
-    # Ensure request.user is a Profile instance
     profile = request.user.profile
     conversations = Conversation.objects.filter(item__seller=profile)
     context = {
         'conversations': conversations
     }
     return render(request, 'conversation/inbox.html', context)
+
+
+
 
 
 
@@ -177,116 +240,58 @@ def booking_page(request, conversation_id):
     return redirect('booking_page', conversation_id=conversation_id)
 
 
+@login_required
 def dashboard_view(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
-    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+    bookings = Booking.objects.filter(tenant=request.user)
+    payment_history = Payment.objects.filter(payer=request.user)
+    messages_received = ConversationMessage.objects.all()
+    
+    # Calculate the total number of messages
+    total_messages_count = messages_received.count()
+    context = {
+        'bookings': bookings,
+        'payment_history': payment_history,
+        'messages_received': messages_received,
+        'total_messages_count': total_messages_count,
 
-    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
-    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+    }
+    return render(request, 'renterApp/dashboard.html', context)
 
-    # available_house = House.objects.filter(status="Available").count()
-    # booked_house = House.objects.filter(status="Booked").count()
+from .models import ConversationMessage
 
-    # customer_request = BookingRequest.objects.filter(status="Pending").count()
-
-    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
-
-    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-
-    Dict = {
-        "total_verified_owner":total_verified_owner,
-        "total_unverified_owner":total_unverified_owner,
-        "total_verified_admin":total_verified_admin,
-        "total_unverified_admin":total_unverified_admin,
-        # "available_house":available_house,
-        # "booked_house":booked_house,
-        # "customer_request":customer_request,
-
-        # "my_house": my_house,
-        # "my_available_house":my_available_house,
-
-        # "my_booking":my_booking
-        }
-    return render(request, 'renterApp/dashboard.html',Dict)
-
-
+@login_required
 def messages(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
-    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
 
-    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
-    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+    # Retrieve conversations where the logged-in user is a member
+    user = request.user
+    conversations = Conversation.objects.filter(members=user)
 
-    # available_house = House.objects.filter(status="Available").count()
-    # booked_house = House.objects.filter(status="Booked").count()
+    # Pass the conversations to the template
+    return render(request, 'renterApp/messages.html', {'conversations': conversations, 'user': user})
 
-    # customer_request = BookingRequest.objects.filter(status="Pending").count()
 
-    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
-
-    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-
-    Dict = {
-        "total_verified_owner":total_verified_owner,
-        "total_unverified_owner":total_unverified_owner,
-        "total_verified_admin":total_verified_admin,
-        "total_unverified_admin":total_unverified_admin,
-        # "available_house":available_house,
-        # "booked_house":booked_house,
-        # "customer_request":customer_request,
-
-        # "my_house": my_house,
-        # "my_available_house":my_available_house,
-
-        # "my_booking":my_booking
-        }
-    return render(request, 'renterApp/messages.html',Dict)
-
+from paymnet.models import Booking
 
 
 def books(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
-    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+    
+    # Filter bookings where the logged-in user is either the tenant or the owner
+    all_bookings = Booking.objects.filter(tenant=request.user) 
 
-    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
-    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+    # Pass the filtered bookings to the template
+    context = {
+        'all_bookings': all_bookings
+    }
 
-    # available_house = House.objects.filter(status="Available").count()
-    # booked_house = House.objects.filter(status="Booked").count()
-
-    # customer_request = BookingRequest.objects.filter(status="Pending").count()
-
-    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
-
-    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-
-    Dict = {
-        "total_verified_owner":total_verified_owner,
-        "total_unverified_owner":total_unverified_owner,
-        "total_verified_admin":total_verified_admin,
-        "total_unverified_admin":total_unverified_admin,
-        # "available_house":available_house,
-        # "booked_house":booked_house,
-        # "customer_request":customer_request,
-
-        # "my_house": my_house,
-        # "my_available_house":my_available_house,
-
-        # "my_booking":my_booking
-        }
-    return render(request, 'renterApp/books.html',Dict)
+    return render(request, 'renterApp/books.html', context)
 
 
-def listigs(request):
+
+def listigs(request): 
     if not request.user.is_authenticated:
         return redirect('login')
     total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
@@ -320,3 +325,19 @@ def listigs(request):
         # "my_booking":my_booking
         }
     return render(request, 'renterApp/listing.html',Dict)
+from django.shortcuts import render, redirect
+from paymnet.models import Payment
+
+def payments(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Filter payments where the logged-in user is either the payer or the recipient
+    all_payments = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+
+    # Pass the filtered payments to the template
+    context = {
+        'all_payments': all_payments
+    }
+
+    return render(request, 'renterApp/payment.html', context)

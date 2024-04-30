@@ -8,16 +8,56 @@
 {% block 'body' %}
  
 <!--**********************************
-            Content body start
-        ***********************************-->
-        <section class="vh-100" style="background-color: #eee;">
-            <br>
-            <br>
-        <div class="content-body">
-             
-           
+        Content body start
+***********************************-->
+ {% comment %} <section class="vh-100" style="background-color: #eee;">
+    <br>
+    <br>
+    <div class="content-body">
+        {% for conversation in conversations %}
+            <div>
+                <h3>Conversation ID: {{ conversation.id }}</h3>
+                {% for message in conversation.messages.all %}
+                    <div>
+                        {% if message.created_by == user %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% else %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</section>  {% endcomment %}
+
+
+<section class="vh-100" style="background-color: #eee;">
+    <br>
+    <br>
+    <div class="content-body">
+        {% for conversation in conversations %}
+            <div>
+                <p><strong>Conversation ID: {{ conversation.id }}, conversation with {{ conversation.item.seller.username }}</strong></p>
+                {% for message in conversation.messages.all %}
+                    <div>
+                        {% if message.created_by == user %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% else %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
 </section>
+
+
 
 
 
@@ -44,12 +84,10 @@
                     
                         <li><a href="{% url 'messages' %}">messages</a></li>
                         <li>
-                            <a href="https://www.sandbox.paypal.com/myaccount/summary">Payment history</a>
+                            <a href="{% url 'payments' %}">Payment history</a>
                         </li>
 
-                        <li>
-                            <a href="{% url 'listigs' %}">Listings</a>
-                        </li>
+                       
                         <li>
                             <a href="{% url 'books' %}">Books</a>
                         </li>

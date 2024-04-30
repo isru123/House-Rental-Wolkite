@@ -1,27 +1,103 @@
+{% extends 'base/base.html' %}
 
-{% block 'title' %}Inbox{% endblock %}
+{% block title %}Inbox{% endblock %}
+
+{% block header %}
+    <!-- Header content goes here -->
+{% endblock %}
 
 {% block 'body' %}
-<h1 class="mb-6 text-3xl">Inbox</h1>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
 
-<div class="space-y-6">
-    {% for conversation in conversations %}
-        <a href="{% url 'detail' conversation.id %}">
-            <div class="p-6 flex bg-gray-100 rounded-xl">
-                <div class="pr-6">
-                    <img src="{{ conversation.list.image.url }}" class="w-20 rounded-xl">
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for conversation in conversations %}
+                <a href="{% url 'detail' conversation.id %}" class="block">
+                    <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
+                        <div class="p-4">
+                            <!-- Display conversation content here -->
+                            <!-- For example, conversation item image and name -->
 
-                <div>
-                    {% for member in conversation.members.all %}
-                        {% if member != request.user %}
-                            <p class="mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
-                            <p>{{ conversation.list.name }}</p>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </a>
-    {% endfor %}
-</div>
+                            <!-- Display uploads associated with the conversation -->
+                            {% for message in conversation.conversationmessage_set.all %}
+                                <p>{{ message.content }}</p>
+                                {% if member != request.user %}
+                                        <p class="text-gray-700 mb-2"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
+                                    {% endif %}
+                             
+                            {% endfor %}
+                            {% for upload in conversation.upload_set.all %}
+                                <img src="{{ upload.document.url }}" alt="Document" class="w-full h-auto mb-2">
+                                <img src="{{ upload.photo.url }}" alt="Photo" class="w-full h-auto">
+                            {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
+
+{% block footer %}
+    <!-- Footer content goes here -->
+{% endblock %}
+
+
+
+
+{% comment %} {% extends 'base/base.html' %}
+
+{% block 'title' %}{% endblock %}
+
+{% block 'header' %}
+    <!-- You can add header content here if needed -->
+{% endblock %}
+
+{% block 'body' %}
+<br>
+<br>
+<br>
+<br>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+    <div class="container">
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+           <a href="{% url 'home' %}">{{ _("Home") }}</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+          </li>
+          <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for conversation in conversations %}
+                <a href="{% url 'detail' conversation.id %}" class="block">
+                    <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
+                        <div class="p-4">
+                            <img src="{{ conversation.list.image.url }}" alt="{{ conversation.list.name }}" class="w-full h-auto rounded-t-xl">
+                            <div class="mt-4">
+                                {% for member in conversation.members.all %}
+                                    {% if member != request.user %}
+                                        <p class="text-gray-700 mb-2"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                                <p class="text-gray-600">{{ conversation.list.name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block 'footer' %}
+{% endblock %} {% endcomment %}

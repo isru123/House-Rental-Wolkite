@@ -89,4 +89,12 @@ class RentalFilterForm(forms.Form):
     )
         
          
+from django import forms
+from .models import Upload
+
+class UploadForm(forms.ModelForm):
+    class Meta:
+        model = Upload
+        fields = ['document', 'photo']
+
          

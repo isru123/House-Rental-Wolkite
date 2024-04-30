@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Housing In Wolkite | Home</title>
+{% endblock %}
+{% block 'header' %}
+{% endblock %}
+
+{% block 'body' %}<section id="bc" class="mt-3">
+    <div class="container">
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+           <a href="{% url 'home' %}">{{ _("Home") }}</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+          </li>
+          <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">{{ block.super }}</div>
+                <div class="card-body">
+                    <h4 class="card-title">Upload Your Identity Documents</h4>
+                    <p class="card-text">Please upload your identity documents to continue.</p>
+                    <!-- upload.html -->
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}
