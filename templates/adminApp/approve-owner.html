@@ -31,7 +31,7 @@
                         <br>
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Approve Owner</h4>
+                                <h4 class="card-title">Approve Owner Listings</h4>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered zero-configuration">
                                         <thead>
@@ -46,19 +46,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% if verified %}
-                                            {% for v in verified %}
+                                            {% if listing %}
+                                            {% for L in listing %}
                                             <tr>
-                                                <td>{{v.id}}</td>
-                                                <td>{{v.user.first_name}} {{v.user.last_name}}</td>
-                                                <td>{{v.user.email}}</td>
-                                                <td>{{v.contact_No}}</td>
+                                                <td>{{L.id}}</td>
+                                                <td>{{L.user.first_name}} {{L.user.last_name}}</td>
+                                                <td>{{L.user.email}}</td>
+                                                <td>{{L.contact_No}}</td>
                                                 
-                                                <td>{{v.address}}</td>
-                                                <td>{{v.verified}}</td>
+                                                <td>{{L.address}}</td>
+                                                <td>{{L.verified}}</td>
                                                 <td>
-                                                    <a href="/approve-owner-request/{{v.id}}/" class="btn btn-success text-white" title="Verify"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                                    <a href="/delete-user/{{v.user.id}}/" class="btn btn-danger text-white" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <a href="/approve-owner-request/{{L.id}}/" class="btn btn-success text-white" title="Verify"><i class="fa fa-check" aria-hidden="true"></i></a>
+                                                    <a href="/delete-user/{{L.user.id}}/" class="btn btn-danger text-white" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                 </td>
                                             </tr>
                                             {% endfor %}

@@ -142,9 +142,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-# LOCALE_PATHS = [
-#     os.path.join(BASE_DIR, 'locale')
-# ]
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 OPENCAGE_API_KEY = '48277b56842b40d0af342b24c3833c15'
 

@@ -58,7 +58,9 @@ class ImageAdmin(admin.ModelAdmin):
 #     pass
 
 class ReviewAdmin(admin.ModelAdmin):
+    
     pass
+
 
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(ListingSpaceOverview, ListingSpaceOverviewAdmin)

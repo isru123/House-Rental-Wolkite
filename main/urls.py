@@ -25,6 +25,7 @@ urlpatterns = [
      # path('search', search, name='search'),
      # path('booking/<str:id>/', booking , name='booking'),
     
+    
 ]
 
 

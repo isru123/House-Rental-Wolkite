@@ -7,7 +7,7 @@ from .forms import AdminProfileForm
 from users.forms import LocationForm,UserForm
 from django.db import models
 from django.conf import settings
-
+from main.models import Listing
 # Create your views here.
 
 
@@ -91,7 +91,27 @@ def add_admin_view(request):
         return render(request, 'adminApp/add-admin.html', {'user_form':user_form,'profile_form': profile_form, 'location_form': location_form})
 
         
-        
+def Approve_listing(request):
+    L = Listing.objects.filter(approved=False).exclude(user=request.user)
+    if request.method == "POST":
+        search = request.POST.get("search")
+        seller = seller.user.username
+        # seller = request.user.profile 
+        L = Listing.objects.filter(user__seller__icontains=search, approved=False).exclude(user=request.user)
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(L, 10)
+    try:
+        L = paginator.page(page)
+    except PageNotAnInteger:
+        L = paginator.page(1)
+    except EmptyPage:
+        L = paginator.page(paginator.num_pages)
+
+    return render(request, 'adminApp/approve-owner.html',  {'listing':L})
+
+  
         
  
 

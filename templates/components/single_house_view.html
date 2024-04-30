@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
+{% load custom_filters %}
 {% load static %}
 {% load humanize %}
 
@@ -266,9 +267,149 @@
 
 <script
   src="https://maps.googleapis.com/maps/api/js?key=[YOUR-API-KEY]&callback=myMap"></script> {% endcomment %}
+  
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4EQgBHPzdD6kyxE82LlK03ApvscEJZ9A&callback=initMap" async defer></script>
+  <h2>{{ listing.title }}</h2>
+  <p>{{ listing.description }}</p>
+
+  <div id="map"></div>
+
+  <script>
+    function initMap() {
+      var latitude = {{ latitude }};
+      var longitude = {{ longitude }};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: latitude, lng: longitude},
+        zoom: 13
+      });
+
+      var marker = new google.maps.Marker({
+        position: {lat: latitude, lng: longitude},
+        map: map
+      });
+    }
+  </script>
+
+
+  <h2>Reviews</h2>
+  {% for review in reviews %}
+  <div class="review-card" style="width: 800px; height: 200px; border: 1px solid #ccc; padding: 10px;">
+    <div class="review-card" style="width: 700px; height: 80px; border: 1px solid #ccc; padding: 10px;">
+      <div class="review-header" style="display: flex; align-items: center;">
+        {% if review.reviewer.photo %}
+        <img src="{{ review.reviewer.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
+        {% else %}
+        <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+        {% endif %}
+        <h4>{{ review.reviewer.user.username }}</h4>
+      </div>
+      {% comment %} <div class="review-content">
+        <p>{{ review.review_text }}</p>
+      </div> {% endcomment %}
+    </div>
+    {% comment %} <div class="card" style="width:50px:height:300px">
+      <h3>{{ review.reviewer.user.username }}</h3>
+    </div> {% endcomment %}
+      <p>Rating: {{ review.rating }}</p>
+      <p>{{ review.review_text }}</p>
+      <p>Submitted at: {{ review.created_at }}</p>
+  </div>
+  {% empty %}
+  <p>No reviews yet.</p>
+  {% endfor %}
+  
+
+  {% comment %} <div class="col-sm-5 mt-2">
+    <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+    <form class="review-form" method="POST" action="{% url 'single_house_view' id=listing.id %}"> 
+       {% for listing in listing_filter.qs %}
+      <input type="hidden" name="list_id" id="list_id" value="{{ listing.id }}"/>
+      {% endfor %} 
+      <div class="form-group">
+        <textarea class="input" type="text" name="review_text" placeholder="Your Review"></textarea>
+      </div>
+      <div class="form-group">
+        <div class="input rating">
+          <p class="text-uppercase font-weight-bold">Your Rating: </p>
+          <div class="rating-wrapper">
+            {% for i in 5|get_range %}
+              <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star"></label>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% if user.is_authenticated and request.user.profile.userType == "Public" %}
+        <button class="btn btn-danger btn-md m-0" type="submit">Post</button>
+      {% else %}
+        <p>You must be logged in to post a review, <a href="{% url 'login' %}">Login</a></p>
+      {% endif %}
+    </form>
+  </div> {% endcomment %}
+
+
+  <div class="col-sm-5 mt-2">
+    <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+  <form method="POST" action="{% url 'single_house_view' id=listing.id %}">
+      {% csrf_token %}
+      {{ review_form.as_p }}
+      <button type="submit">Submit Review</button>
+  </form>
+</div>
+<hr>
 
 
 
+
+
+{% comment %} 
+<div class="container mt-5">
+  <h5 class="text-uppercase font-weight-bold">Review({{ reviews|length }})</h5>
+  <hr class="mt-0 pt-0">
+  <div class="row">
+    <div class="col-sm-7 mt-2">
+      {% for review in reviews %}
+      <div class="review-heading">
+        <a class="text-capitalize"><i class="fas fa-user mr-1"></i>{{ review.reviewer.user.username }}</a>
+        <a class="ml-2"><i class="fas fa-clock mr-1"></i>{{ review.created_at }}</a>
+        {% for _ in review.rating|get_range %}
+          <i class="fa fa-star checked" style="float: right;"></i>
+        {% endfor %}
+      </div>
+      <div class="review-body mt-2">
+        <p>{{ review.comment }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-sm-5 mt-2">
+      <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+      <form class="review-form" method="GET" action="/review"> 
+        {% for listing in listing_filter.qs %}
+        <input type="hidden" name="list_id" id="list_id" value="{{ listing.id }}"/>
+        {% endfor %}
+        <div class="form-group">
+          <textarea class="input" type="text" name="review_text" placeholder="Your Review"></textarea>
+        </div>
+        <div class="form-group">
+          <div class="input rating">
+            <p class="text-uppercase font-weight-bold">Your Rating: </p>
+            <div class="rating-wrapper">
+              {% for i in 5|get_range %}
+                <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star"></label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% if user.is_authenticated and request.user.profile.userType == "Public" %}
+          <button class="btn btn-danger btn-md m-0" type="submit">Post</button>
+        {% else %}
+          <p>You must be logged in to post a review, <a href="{% url 'login' %}">Login</a></p>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div> {% endcomment %}
 {% endblock %}
 
 {% block 'footer' %}
