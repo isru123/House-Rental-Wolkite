@@ -1,6 +1,6 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
-from .models import Image,Review,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
+from .models import Image,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
 
 
 
