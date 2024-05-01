@@ -15,14 +15,17 @@ urlpatterns = [
      path('single_house_view/<str:id>/', single_house_view , name='single_house_view'),
      
      # path('listing/<str:id>/like/', like_listing_view , name='like_listing'),
-     path('multistepformsubmission/', multistepformsubmission.as_view(), name='multistepformsubmission'),
+     path('multistepformsubmission', multistepformsubmission.as_view(), name='multistepformsubmission'),
      path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
      # path('review/', review_view , name='review'),
      path('map/<str:id>/', map_view, name='map'),
-     path('search', search, name='search'),
+     path('search/', search, name='search'),
      path('owner-listings/', owner_listings , name='owner-listings'),
      path('address-autocomplete/', AddressAutocomplete.as_view(), name='address-autocomplete'),
      path('my-form/', my_view, name='my-form'),
+     
+     # path('done/', done_view , name='done'),
+     # path('second/', upload_documents, name='upload_documents'),
      # path('booking/<str:id>/', booking , name='booking'),
     
     

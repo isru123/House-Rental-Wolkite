@@ -26,7 +26,7 @@ class ProfileForm(forms.ModelForm):
 class LocationForm(forms.ModelForm):
     
     address_1 = forms.CharField(required=True)
-  
+    address_2 = forms.CharField(required=True)
     
     class Meta:
         model = Location

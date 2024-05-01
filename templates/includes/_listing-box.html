@@ -3,8 +3,8 @@
 
 
 {% if listing.approved %}
-<div class="col-md-4 col-lg-3 mb-1 floating-div" style="margin: 0 30px; ">
-  <div class="card listing-preview rounded position-relative fruite-item " style="width:300px; height:500px;">
+<div class="col-md-4 col-lg-3 mb-1 floating-div mr-5" style="margin: 10 40px; ">
+  <div class="card listing-preview rounded position-relative fruite-item " style="width:310px; height:400px;">
 
     {% comment %} <a href="{% url 'listing' listing.id %}" class="stretched-link"> {% endcomment %}
       <div id="carouselExampleIndicators-{{ listing.id }}"  class="carousel slide shadow p-1 mb-2 bg-body rounded" data-bs-ride="true">
@@ -51,7 +51,7 @@
 
       <div class="card-img-overlay">
         <h2>
-          <span class="badge badge-success">${{ listing.price | intcomma }}</span>
+          <span class="badge badge-success">{{ listing.price | intcomma }} Birr</span>
 
         </h2>
       </div>
@@ -61,36 +61,41 @@
         </div> {% endcomment %}
     </a>
     <hr>
-    <div>
+   <div class="mt-0" style="height:12px;">
       <p>
         <i style="margin-left: 5px;" class="fas fa-map-marker text-success"></i>
         <strong style="margin-left: 5px;">{{ listing.location.city }}</strong>
       </p>
     </div>
+   
     <div class="row py-2">
-      <div class="col-6">
+      {% comment %} <div class="col-6">
         <strong style="margin-left: 5px;">{{ _("House Size") }}:</strong><br>
         {% for space_overview in listing.listing_space_overview.all %}
         <i style="margin-left: 5px;">{{ space_overview.house_size }} m²</i>
         {% endfor %}
         
+      </div> {% endcomment %}
+      <div class="col-6">
+        <strong>{{ _("Available To") }}:</strong> <br>
+        {{ listing.available_end }}
       </div>
       <div class="col-6">
         <strong> {{ _("Available From") }}:</strong><br>
         <i > {{ listing.available_start }}</div></i>
     </div>
-    <div class="row py-2">
-      <div class="col-6">
+    {% comment %} <div class="row py-2">
+        <div class="col-6">
         <strong style="margin-left: 5px;">{{ _("Cancellation") }}:</strong><br>
         {% for condtion in listing.rental_condtion.all %}
         <i style="margin-left: 5px;">{{ condtion.cancellation }}</i>
         {% endfor %}
-      </div>
+      </div> 
       <div class="col-6">
         <strong>{{ _("Available To") }}:</strong> <br>
         {{ listing.available_end }}
       </div>
-    </div>
+    </div> {% endcomment %}
     <div class="btn-group">
       {% if request.user.profile.userType == "Owner" or listing.seller.user == request.user or request.user.profile.userType == "Public" or request.user.profile.userType == "Admin" %}
       <a type="button" class="btn btn-sm bg-success text-white btn-outline-success" 

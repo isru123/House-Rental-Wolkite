@@ -187,7 +187,8 @@ class Image(models.Model):
     
     
 
-    
+
+
     
     
 class Listing(models.Model):
@@ -226,6 +227,16 @@ class Listing(models.Model):
           return f'{self.seller.user.username}\'s Listings'
     
     
+
+
+class AddressOfListing(models.Model):
+    Address = models.CharField(max_length=100)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
+    
+    
+    def __str__(self):
+        return f'{self.Address}'
     
 
 
@@ -277,17 +288,19 @@ class LikedListing(models.Model):
         return f'{self.listing.title} listing liked by {self.profile.user.username}' 
 
 
-class AddressOfListing(models.Model):
-    Address = models.CharField(max_length=100)
-    lat = models.FloatField(blank=True, null=True)
-    long = models.FloatField(blank=True, null=True)
-    
-    
-    def __str__(self):
-        return f'{self.Address}'
-    
     
 
+class Document(models.Model):
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    id_photo = models.ImageField(upload_to=user_listing_path)
+    house_map = models.ImageField(upload_to=user_listing_path)
+    
+    def __str__(self):
+        return f'{self.seller.user.username}/s Document'
+    
+    
+    
 
     
     

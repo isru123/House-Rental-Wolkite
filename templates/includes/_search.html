@@ -1,40 +1,12 @@
-<div class="search">
-    <form action="{% url 'search' %}">
+<div class="search" >
+    <form action="{% url 'search' %}" style="margin-right:500px">
         {% csrf_token %}
         <!-- Form Row 1 -->
-        <div class="form-row">
-
-
-            <div class="input-group col-12 col-xs-6 col-md-3 mb-3 text-left">
-                <label class="sr-only">
-                    {{ _("Keywords") }}
-                </label>
-                <div class="input-group-append">
-                    <span class="input-group-text icon-size text-center">
-                        <i class="fas fa-search"></i>
-                    </span>
-                </div>
-                <input type="text" name="keywords" class="form-control"
-                    placeholder='{{ _("Keyword (Pool, Garage, etc)") }}'>
-            </div>
+        <div class="form-row" >
 
             <div class="input-group col-12 col-xs-6 col-md-3 mb-3 text-left">
                 <label class="sr-only">
-                    {{ _("City") }}
-                </label>
-                <div class="input-group-append">
-                    <span class="input-group-text icon-size text-center">
-                        <i class="fas fa-city"></i>
-                    </span>
-                </div>
-                <input type="text" name="city" class="form-control" placeholder='{{ _("City") }}'
-                    value="{{ values.city }}">
-            </div>
-
-
-            <div class="input-group col-12 col-xs-6 col-md-3 mb-3 text-left">
-                <label class="sr-only">
-                    {{ _("State") }}
+                    {{ _("Address") }}
                 </label>
                 <div class="input-group-append">
                     <span class="input-group-text icon-size text-center">
@@ -42,7 +14,7 @@
                     </span>
                 </div>
                 <select name="state" class="form-control">
-                    <option selected="true">{{ _("States (All)") }}</option>
+                    <option selected="true">{{ _("Address (All)") }}</option>
                     {% for state in states %}
                     <option value="{{ state.id }}">{{ state.name }}</option>
                     {% endfor %}
@@ -53,7 +25,7 @@
 
             <div class="input-group col-12 col-xs-6 col-md-3 mb-3 text-left">
                 <label class="sr-only">
-                    {{ _("Type") }}
+                    {{ _("House Type") }}
                 </label>
                 <div class="input-group-append">
                     <span class="input-group-text icon-size text-center">
@@ -67,38 +39,6 @@
                     {% endfor %}
                 </select>
             </div>
-
-
-
-            <div class="input-group col-6 col-md-3 mb-3 text-left">
-                <label class="sr-only">
-                    {{ _("Min Bedrooms") }}:
-                </label>
-                <div class="input-group-append">
-                    <span class="input-group-text icon-size text-center">
-                        <i class="fas fa-bed"></i>
-                    </span>
-                </div>
-                <input type="number" name="bedrooms" class="form-control" placeholder="Min bedrooms"
-                    value="{{ values.bedrooms }}">
-            </div>
-
-
-
-            <div class="input-group col-6 col-md-3 mb-3 text-left">
-                <label class="sr-only">
-                    {{ _("Min Bathrooms") }}:
-                </label>
-                <div class="input-group-append">
-                    <span class="input-group-text icon-size text-center">
-                        <i class="fas fa-bath"></i>
-                    </span>
-                </div>
-                <input type="number" name="bathrooms" class="form-control" placeholder="Min bathrooms"
-                    value="{{ values.bathrooms }}">
-            </div>
-
-
 
             <div class="input-group col-6 col-md-3 mb-3 text-left">
                 <label class="sr-only">

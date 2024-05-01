@@ -1,6 +1,6 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
-from .models import Image,Review,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing
+from .models import Image,Review,Listing,Document,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from dal import autocomplete
@@ -19,10 +19,9 @@ class ListingForm(forms.ModelForm):
         
     class Meta:
         model = Listing
-        fields = ['house_kind', 'address', 'price', 'available_start', 'available_end', 'minimum_rental_period','maximum_rental_period']
+        fields = ['house_kind', 'price','address', 'available_start', 'available_end', 'minimum_rental_period','maximum_rental_period']
         labels = {
             'house_kind': _('House Kind'),
-            'address': _('Address'),
             'price': _('Price'),
         }
         
@@ -69,7 +68,7 @@ class RulesAndPreferencesForm(forms.ModelForm):
  
 
 class ImageForm(forms.ModelForm):
-    description = forms.CharField(label=_("Description"), widget=forms.Textarea)
+    description = forms.CharField(label=_("Description"), widget=forms.Textarea(attrs={'style':'width: 300px; height: 100px;'}))
     image1 = forms.ImageField(widget=forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 100px;'}))
     image2 = forms.ImageField(widget=forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 50px;'}))
     image3 = forms.ImageField(widget=forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 50px;'}))
@@ -122,14 +121,26 @@ class ReviewForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit Review'))
          
 
-class AddressForm(forms.Form):
-    address = forms.ModelChoiceField(
-        queryset=AddressOfListing.objects.all(),
-        widget=autocomplete.ModelSelect2(url='address-autocomplete')
-    )
+# class AddressForm(forms.Form):
+#     address = forms.ModelChoiceField(
+#         queryset=AddressOfListing.objects.all(),
+#         widget=autocomplete.ModelSelect2(url='address-autocomplete')
+#     )
     
-    class Meta:
-        model = AddressOfListing
-        fields = ['Address']
+#     class Meta:
+#         model = AddressOfListing
+#         fields = ['Address']
         
+
+class DocumentForm(forms.ModelForm):
+    id_photo = forms.ImageField()
+    house_map = forms.ImageField()
+    class Meta:
+        model = Document
+        fields = ('id_photo', 'house_map')
+        
+        
+    
+        
+    
         
