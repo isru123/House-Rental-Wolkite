@@ -12,9 +12,11 @@ from .forms import ConversationMessageForm
 from .models import ConversationMessage
 from .forms import ConversationMessageForm
 from .models import Conversation
+from .models import ConversationMessage
 
-from main.models import Upload
+# from main.models import Upload
 @login_required
+
 
 def new_conversation(request, product_id):
     listing = get_object_or_404(Listing, id=product_id)
@@ -27,17 +29,17 @@ def new_conversation(request, product_id):
     if conversations.exists():
         return redirect('detail', conversation_id=conversations.first().id)
 
-    id_document_url = ''
-    tenant_photo_url = ''
+    # id_document_url = ''
+    # tenant_photo_url = ''
 
     # Fetch tenant's document and photo
-    tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
+    # tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
 
     # Assuming you want to use the first upload found
-    if tenant_uploads.exists():
-        tenant_upload = tenant_uploads.first()
-        id_document_url = tenant_upload.document.url
-        tenant_photo_url = tenant_upload.photo.url
+    # if tenant_uploads.exists():
+    #     tenant_upload = tenant_uploads.first()
+    #     id_document_url = tenant_upload.document.url
+    #     tenant_photo_url = tenant_upload.photo.url
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
@@ -61,8 +63,8 @@ def new_conversation(request, product_id):
     context = {
         'form': form,
         'listing': listing,
-        'id_document_url': id_document_url,
-        'tenant_photo_url': tenant_photo_url,
+        # 'id_document_url': id_document_url,
+        # 'tenant_photo_url': tenant_photo_url,
     }
     return render(request, 'conversation/new.html', context)
 
@@ -106,19 +108,9 @@ def new_conversation(request, product_id):
 #     return render(request, 'conversation/new.html', context)
 
 
-from .models import Conversation
 
-from .models import Conversation
 
-# views.py
 
-# def inbox_view(request):
-#     profile = request.user.profile
-#     conversations = Conversation.objects.filter(item__seller=profile)
-#     context = {
-#         'conversations': conversations
-#     }
-#     return render(request, 'conversation/inbox.html', context)
 def inbox_view(request):
     profile = request.user.profile
     conversations = Conversation.objects.filter(item__seller=profile)
@@ -205,6 +197,8 @@ def detail(request, conversation_id):
     context = {'conversation': conversation, 'form': form, 'listing_seller':listing_seller}
     return render(request, 'conversation/conversationpage.html', context)
 
+
+
 def edit_message(request, message_id):
     if request.method == 'POST':
         new_content = request.POST.get('new_content')
@@ -218,13 +212,9 @@ def edit_message(request, message_id):
     else:
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
-def delete_message(request, message_id):
-    if request.method == 'POST':
-        message = get_object_or_404(ConversationMessage, pk=message_id)
-        message.delete()
-        return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+
+
 
 def delete_message(request, message_id):
     if request.method == 'POST':
@@ -257,7 +247,7 @@ def dashboard_view(request):
     }
     return render(request, 'renterApp/dashboard.html', context)
 
-from .models import ConversationMessage
+
 
 @login_required
 def messages(request):

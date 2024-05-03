@@ -10,12 +10,6 @@
     {% endif %}
 
     {% if user.is_authenticated %}
-<<<<<<< HEAD
-    {% if request.user.profile.userType == "Public" %}
-    <div class="card-body">
-      <h5 class="card-title">{{ _("House Owner") }}</h5>
-      <h6 class="mb-4">{{ listing.seller.user.first_name }} {{ listing.seller.user.last_name }}</h6>
-=======
       {% if request.user.profile.userType == "Public" %}
         <div class="card-body">
           <h5 class="card-title">{{ _("House Owner") }}</h5>
@@ -38,7 +32,6 @@
               <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
             {% endif %}
           {% endif %}
->>>>>>> e64048f0303b4009bf6fffcff6eb16adb50d03ac
 
         
           

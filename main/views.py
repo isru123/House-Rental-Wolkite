@@ -12,7 +12,7 @@ from importlib import reload
 from formtools.wizard.views import SessionWizardView
 from .filters import ListingFilter
 from users.forms import UserForm,ProfileForm,LocationForm
-# from opencage.geocoder import OpenCageGeocode
+from opencage.geocoder import OpenCageGeocode
 from django.conf import settings
 from django.db.models import Q
 from decimal import Decimal
@@ -32,6 +32,9 @@ from django.template import Context
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from geopy.geocoders import Nominatim
 from users.models import Profile
+
+
+
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -174,20 +177,13 @@ def map_view(request, id):
                 listing.save()
     
     listing = get_object_or_404(Listing, id=id)
-    # address_listing = AddressOfListing.objects.get(all)
-    
-    # for address_of in address_listing:
-    #     if listing.address == address_of.Address:
-    #         listing.latitude = address_of.lat
-    #         listing.longitude = address_of.long
-            
-    #         pass
     context = {
         'listing': listing,
         'opencage_api_key': settings.OPENCAGE_API_KEY,
     }
     
-#     return render(request, 'main/major/location.html', context)
+    return render(request, 'main/major/location.html', context)
+
 
 
 
@@ -229,8 +225,7 @@ def my_view(request, id):
             
             if location_form.is_valid():
                 
-                
-                listing = Listing() 
+                listing = Listing.objects.get(pk=id) 
                 listing.seller = request.user.profile
                 listing_location = location_form.save(commit=False)
                 listing_location.listing = listing
@@ -245,14 +240,16 @@ def my_view(request, id):
                 try:
                     
                     listing = get_object_or_404(Listing, id=id)
+                    document = form.save(commit=False)
+                    document.seller = listing.seller  # Assign the seller object to the document
+                    document.listing = listing  # Assign the listing object to the document
+                    document.save()
+                    
                 except Listing.DoesNotExist:
                     messages.error(request, "First, you need to create a listing.")
                     return redirect('multistepformsubmission')
 
-                document = form.save(commit=False)
-                document.seller = listing.seller  # Assign the seller object to the document
-                document.listing = listing  # Assign the listing object to the document
-                document.save()
+                
                 
                 message = messages.success(request, 'You successfully submitted.')
                 return redirect('my-form', id=listing.id)
@@ -263,7 +260,7 @@ def my_view(request, id):
         except Exception as e:
             print(e)
             messages.error(
-                request, 'an error occured will submitting'
+                request, 'an error occured while submitting'
             )
             
     else:
@@ -273,320 +270,55 @@ def my_view(request, id):
     return render(request, 'main/major/my_form.html', {'location_form':location_form, 'form': form,'showaddress': address, 'mss':mss,'message':message, 'listing_id': listing.id})
     
 
-    # if request.method == 'POST':
-    #     form = AddressForm(request.POST)
-    #     if form.is_valid():
-    #         selected_address = form.cleaned_data['Address']
-    #         geolocator = Nominatim(user_agent='house_rental')
-    #         location = geolocator.geocode(selected_address.Address)
 
-    #         if location:
-    #             selected_address.latitude = location.latitude
-    #             selected_address.longitude = location.longitude
-    #             selected_address.save()
-    # else:
-    #     form = AddressForm()
-   
-
-
-
-
-
-
-
-
-
-
-
-# def map_view(request):
-#     if request.method == 'POST':
-#     # listing_id = request.GET.get('listing_id')
-
-#     # # Load the CSV data containing location information
-#     # data = pd.read_csv('data/location.csv',encoding='utf-8')
-#         address = request.POST.get('address')
-#         response = requests.get(
-#             f'settings.OPENCAGE_API_KEY
-#         )
-#         data = response.json()
-#         # Check if the response contains the 'status' key
-#         if 'status' in data and data['status'] == 'OK':
-#         # Extract latitude and longitude from the response
-#         # if data['status'] == 'OK':
-#             latitude = data['results'][0]['geometry']['location']['lat']
-#             longitude = data['results'][0]['geometry']['location']['lng']
-
-#             # Create a map object
-#             map = folium.Map(location=[latitude, longitude], zoom_start=12)
-
-#             # Add a marker for the listing's location
-#             marker = folium.Marker(location=[latitude, longitude], popup='Selected Location')
-#             marker.add_to(map)
-
-#             # Pass the map object to the template
-#             context = {'map': map._repr_html_()}
-#             return render(request, 'main/major/location.html', context)
-
-#     return render(request, 'main/major/location.html')
-    
-    
-    # Create a map with an initial view
-    # map = folium.Map(location=[data['Latitude'].mean(), data['Longitude'].mean()], zoom_start=10)
-
-    # # Iterate through the data to add markers for each location
-    # for _, row in data.iterrows():
-    #     location = [row['Latitude'], row['Longitude']]
-    #     name = row['Location Name']
-        
-        
-    #     # Create a marker for each location
-    #     marker = folium.Marker(location=location, popup=name)
-    #     marker.add_to(map)
-
-    # # Add a marker for the selected listing's location
-    # if listing_id:
-    #     listing = Listing.objects.get(id=listing_id)
-    #     selected_location = [listing.latitude, listing.longitude]
-    #     marker = folium.Marker(location=selected_location, popup='Selected Location')
-    #     marker.add_to(map)
-
-    #     # Pan to the selected location
-    #     map.pan_to(selected_location)
-
-    # # Pass the map object to the template
-    # context = {'map': map._repr_html_()}
-    # return render(request, 'main/major/location.html', context)
-
-
-
-
-
-
-# def get_coordinates(address):
-#     url = 'https://map-geocoding.p.rapidapi.com/json'
-#     params = {
-#         'address': address,
-#         'key': '41bf648085msh064da0a40c524c0p18fb1cjsn79660b9868ab'  # Replace with your actual API key
-#     }
-#     response = requests.get(url, params=params)
-#     data = response.json()
-
-#     if data['status'] == 'OK':
-#         result = data['results'][0]
-#         latitude = result['geometry']['location']['lat']
-#         longitude = result['geometry']['location']['lng']
-#         return latitude, longitude
-
-#     return None, None
-    
-    
-
-
-
-
-# @login_required(login_url='/login/')
-# def list_view(request):
-#     if request.method == 'POST':
-#         try:
-#             listing_form = ListingForm(request.POST, request.FILES)
-#             location_form = LocationForm(request.POST, )
-#             if listing_form.is_valid() and location_form.is_valid():
-#                 listing = listing_form.save(commit=False)
-#                 listing_location = location_form.save(commit=False)
-#                 listing_location = location_form.save()
-#                 listing.seller = request.user.profile
-#                 listing_location = listing_location
-#                 listing.save()
-               
-#                 return redirect('listing_space_overview')
-#                 # messages.info(request, f'{listing.title} Listing Posted Successfully!')
-#                 # return redirect('master')
-            
-#             else:
-#                 listing_form = ListingForm()
-#                 location_form = LocationForm()
-                
-#         except Exception as e:
-#             print(e)
-#             messages.error(
-#                 request, 'An error occured while posting the listing.'
-#             )
-#     elif request.method == 'GET':
-#         listing_form = ListingForm()
-#         location_form = LocationForm()
-        
-#         return render(request, 'main/owner/listing.html', {'listing_form': listing_form, 'location_form': location_form})
-    
-
-
-
-
-
-# def SpaceOverview(request):
-#       if request.method == 'POST':
-#           listing_space_form = ListingSpaceOverviewForm(request.POST,request.FILES)
-        
-#           if listing_space_form.is_valid():
-#               listing_space_overview = listing_space_form.save(commit=False)
-#               listing_space_overview.seller = request.user.profile
-#               listing_space_overview.save()
-#             #   request.session['space_overview_data'] = listing_space_form.cleaned_data
-            
-#               return redirect('listing_house_area')
-        
-#           else:
-            
-#               listing_space_form = ListingSpaceOverviewForm()
-            
-#       else:
-        
-#           listing_space_form = ListingSpaceOverviewForm()
-            
-#           return render(request, 'main/owner/space_overview.html', {'listing_space_form': listing_space_form})
-    
-    
-    
-    
-    
-
- 
-# @login_required  
-# def single_house_view(request, id):
-#     # try:
-#     #     listing = Listing.objects.get(id=id)
-#     #     if listing is None:
-#     #         raise Exception
-#      #   return render(request, 'payment/single_house_view.html')
-#     # except Exception as e:
-#     #     messages.error(request, f'Invalid UID {id} was provided for listing')
-#     #     return redirect('home')
-#      product = Listing.objects.get(id=id)
-#      context = {
-#         'product': product
-#      }
-#      return render(request, 'components/single_house_view.html', context)
-
-
-# def single_house_view(request, id):
-#     filtered_listings = None 
-#     if request.method == 'POST':
-#         form = RentalFilterForm(request.POST)
-#         if form.is_valid():
-#             move_in_date = form.cleaned_data['move_in_date']
-#             move_out_date = form.cleaned_data['move_out_date']
-#             filtered_listings = Listing.objects.filter(
-#                 Q(available_start=move_in_date, available_end=move_in_date) |
-#                 Q(available_start=move_out_date, available_end=move_out_date)
-#             )
-#             # Render the filtered listings in the template
-#     else:
-#         form = RentalFilterForm()
-#     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
-   
-#     try:
-#         # product = Listing.objects.get(id=id)
-#         # conversation_id = uuid.uuid4()  # Generate a UUID
-#         listing = Listing.objects.get(id=id)
-#         # Check if the current user is the seller
-#         # user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
-#         listing = Listing.objects.get(id=id)
-#         if listing is None:
-#              raise Exception
-#         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-#                                         'filtered_listings':filtered_listings})
-#     except Exception as e:
-#         messages.error(request, f'Invalid UID {id} was provided for listing')
-#         return redirect('home')
-
-# def single_house_view(request, id):
-#     filtered_listings = None 
-#     if request.method == 'POST':
-#         form = RentalFilterForm(request.POST)
-#         if form.is_valid():
-#             move_in_date = form.cleaned_data['move_in_date']
-#             move_out_date = form.cleaned_data['move_out_date']
-#             filtered_listings = Listing.objects.filter(
-#                 Q(available_start=move_in_date, available_end=move_in_date) |
-#                 Q(available_start=move_out_date, available_end=move_out_date)
-#             )
-#             # Render the filtered listings in the template
-#     else:
-#         form = RentalFilterForm()
-    
-#     try:
-        
-#         listing = Listing.objects.get(id=id)
-#         conversation_id = uuid.uuid4()  # Generate a UUID
-        
-#         if listing is None:
-#              raise Exception
-#         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-#                                         'filtered_listings':filtered_listings, 'conversation_id':conversation_id})
-#     except Listing.DoesNotExist:
-#         messages.error(request, f'Invalid UID {id} was provided for listing')
-#         # return redirect('home')
-#         return redirect('new', product_id=listing.id, conversation_id=conversation_id)
 
 def single_house_view(request, id):
     filtered_listings = None 
-    form = RentalFilterForm(request.POST or None)
-    if form.is_valid():
-        move_in_date = form.cleaned_data['move_in_date']
-        move_out_date = form.cleaned_data['move_out_date']
-        filtered_listings = Listing.objects.filter(
-            Q(available_start=move_in_date, available_end=move_in_date) |
-            Q(available_start=move_out_date, available_end=move_out_date)
-        )
-
-    listing = get_object_or_404(Listing, id=id)
-    conversation_id = uuid.uuid4()  # Generate a UUID
-
-    # Fetch tenant's document and photo
-    tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
-
-    # Initialize variables for document and photo URLs
-    id_document_url = ''
-    tenant_photo_url = ''
-
-    # Assuming you want to use the first upload found
-    if tenant_uploads.exists():
-        tenant_upload = tenant_uploads.first()
-        id_document_url = tenant_upload.document.url
-        tenant_photo_url = tenant_upload.photo.url
-
-    return render(request, 'components/single_house_view.html', {
-        "listing": listing,
-        'form': form,
-        'filtered_listings': filtered_listings,
-        'conversation_id': conversation_id,
-        'id_document_url': id_document_url,
-        'tenant_photo_url': tenant_photo_url,
-    })
-from django.shortcuts import render, redirect
-from .models import Upload
-from .forms import UploadForm
-from .models import Profile
-
-def upload(request):
     if request.method == 'POST':
-        form = UploadForm(request.POST, request.FILES)
+        form = RentalFilterForm(request.POST)
         if form.is_valid():
-            upload = form.save(commit=False)
-            user_profile = Profile.objects.get(user=request.user)
-            upload.tenant = user_profile
-            upload.save()
-            return redirect('upload')
+            move_in_date = form.cleaned_data['move_in_date']
+            move_out_date = form.cleaned_data['move_out_date']
+            filtered_listings = Listing.objects.filter(
+                Q(available_start=move_in_date, available_end=move_in_date) |
+                Q(available_start=move_out_date, available_end=move_out_date)
+            )
+            # Render the filtered listings in the template
     else:
-        form = UploadForm()
-    return render(request, 'payment/upload.html', {'form': form})
+        form = RentalFilterForm()
+    # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
+   
+    try:
+        listing = get_object_or_404(Listing, id=id)
+        reviews = listing.reviews.all()
+        review_form = ReviewForm(request.POST)
+        # listing = Listing.objects.get(id=id)
+        conversation_id = uuid.uuid4()  # Generate a UUID
+        latitude = request.GET.get('lat')
+        longitude = request.GET.get('lng')
+        if listing is None:
+             raise Exception
+         
+        # review_form = ReviewForm()  # Create a new instance of the review form
+        
+        
+        # form = ReviewForm(request.GET)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.listing = listing
+            review.reviewer = request.user.profile
+            review.save()
+            messages.success(request, 'Review added successfully.')
+            return redirect('single_house_view', id=id)
 
-def identity_page(request):
-    # Your identity page view logic here
-    return render(request, 'payment/identity.html')  
-
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.views import View
-
+        # reviews = Review.objects.filter(listing=listing)
+        
+        return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
+                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,'latitude': latitude,'longitude': longitude})
+    except Listing.DoesNotExist:
+        messages.error(request, f'Invalid UID {id} was provided for listing')
+        # return redirect('home')
+        return redirect('new', product_id=listing.id, conversation_id=conversation_id)
 
 
 
@@ -642,10 +374,12 @@ def rate_image(request):
 
   
 
-from django.core.mail import send_mail
 
 
 
+
+
+        
 @method_decorator(login_required, name='dispatch')
 class multistepformsubmission(SessionWizardView):
     file_storage = DefaultStorage()
@@ -814,41 +548,17 @@ def save_listing(request):
 #         review_text = request.GET.get('review_text')
 #         rating = request.GET.get('rating')
         
-# @method_decorator(login_required, name='dispatch')
-# class multistepformsubmission(SessionWizardView):
-#     file_storage = DefaultStorage()
-#     template_name = 'main/owner/multistep.html'
-#     form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm,ImageForm]
+#         try:
+#             listing = Listing.objects.get(id=list_id)
+#         except Listing.DoesNotExist:
+#             return HttpResponse("Listing does not exist.")  # Or you can handle the error differently
+            
+#         reviewer = request.user.profile
+#         Review.objects.create(reviewer=reviewer, listing=listing, review_text=review_text, rating=rating)
+        
+#         return redirect('single_house_view', id=list_id)
     
     
-#     def done(self, form_list, **kwargs):
-     
-#         form_data = [form.cleaned_data for form in form_list]
-#         seller = self.request.user.profile 
-#         listing = Listing(house_kind = form_data[0]['house_kind'], address = form_data[0]['address'],
-#                           price = form_data[0]['price'], available_start = form_data[0]['available_start'],
-#                           available_end = form_data[0]['available_end'] , 
-#                           minimum_rental_period = form_data[0]['minimum_rental_period'],
-#                           maximum_rental_period = form_data[0]['maximum_rental_period'],
-#                           seller=seller )
-#         listing.save()
-        
-#         listing_space = ListingSpaceOverview(house_size = form_data[1]['house_size'],
-#                                              house_mate_no = form_data[1]['house_mate_no'],
-#                                             bedroom_size = form_data[1]['bedroom_size'] ,
-#                                             bedroom_furnished = form_data[1]['bedroom_furnished'],
-#                                             seller=seller)
-        
-#         listing_space.save()
-        
-#         listing_house = ListingHouseArea(kitchen = form_data[2]['kitchen'],
-#                                         toilet = form_data[2]['toilet'],
-#                                         bathroom = form_data[2]['bathroom'],
-#                                         living_room = form_data[2]['living_room'],
-#                                         garden = form_data[2]['garden'],
-#                                         seller=seller)
-        
-#         listing_house.save()
         
         
 def search(request):
@@ -1020,6 +730,5 @@ def search_listings(request):
         queryset = queryset.filter(rules_and_preferences__tenant=tenant_type)
     
     return render(request, 'search_results.html', {'listings': queryset})
-
 
 

@@ -319,7 +319,7 @@ from .models import Notification
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseBadRequest
 from .models import Booking
-from main.models import Listing, Upload
+from main.models import Listing
 from .forms import TenantInfoForm
 
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -334,6 +334,9 @@ from django.utils.html import strip_tags
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+
+
 @login_required
 def CheckOut(request, product_id):
     product = Listing.objects.get(id=product_id)
@@ -446,6 +449,8 @@ def CheckOut(request, product_id):
 #     }
 
 #     return render(request, 'payment/checkout.html', context)
+
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def approve_payment(request, booking_id):

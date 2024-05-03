@@ -102,15 +102,8 @@
                             {% if listing.seller.user == request.user or request.user.profile.userType == "Owner" %}
                             <strong><a href="{% url 'owner' %}" class="nav-item nav-link">Make Listings</a></strong>
                             {% endif %}
-<<<<<<< HEAD
 
                             {% if user.is_superuser or user.is_staff or request.user.profile.userType == "Admin" %}
-=======
-                            {% if request.user.profile.userType == "Public" %}
-                            <strong><a href="{% url 'dashboard_renter' %}" class="nav-item nav-link">Renter board</a></strong>
-                            {% endif %}
-                            {% if user.is_superuser or user.is_staff  %}
->>>>>>> e64048f0303b4009bf6fffcff6eb16adb50d03ac
                             <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2">AdminBoard</a>
                             {% endif %}
                         </div>
