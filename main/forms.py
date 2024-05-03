@@ -19,7 +19,7 @@ class ListingForm(forms.ModelForm):
         
     class Meta:
         model = Listing
-        fields = ['house_kind', 'price','address', 'available_start', 'available_end', 'minimum_rental_period','maximum_rental_period']
+        fields = ['house_kind', 'price','address', 'available_start', 'available_end']
         labels = {
             'house_kind': _('House Kind'),
             'price': _('Price'),
@@ -58,7 +58,18 @@ class RentalConditionsForm(forms.ModelForm):
 
 class RulesAndPreferencesForm(forms.ModelForm):
     
-     class Meta:
+    RADIO_CHOICES3 = [
+    ('proof of identity', 'Proof of Identity'),
+    ('proof of income', 'Proof of Income'),
+    ('proof of occupation', 'Proof of Occupation'),
+         ]
+    
+    Document = forms.MultipleChoiceField(
+        choices=RADIO_CHOICES3,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
+    )
+    
+    class Meta:
          model = RulesAndPreferences
          fields = '__all__'
          exclude = ['seller']

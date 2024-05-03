@@ -17,6 +17,9 @@
 <!--**********************************
             Content body start
         ***********************************-->
+
+
+
 <section class="vh-105" style="background-color: #eee;">
 <div class="container-fluid mt-3">
     <div class="container" style="margin-left: 300px;">
@@ -25,21 +28,33 @@
                 <div class="card" style="width: 1000px;">
                     <div class="card-body" >
 
-                        <form method="post">
+<form method="post">
                             {% csrf_token %}
-            <div class="row">
+        <div class="row">
             <div class="col-md-6" style="width:100px">
-                     <div class="form-group">
+                <div class="form-group">
                                 <label for="profile">Profile:</label>
-                         <div class="input-group">
-                                <select name="profile" id="profile" class="form-control">
-                                    <option value="">select ------------</option>
-                                    {% for profile in profiles %}
-                                    <option value="{{ profile.id }}">{{ profile.user.username }}</option>
-                                    {% endfor %}
+                    <div class="input-group">
+                                <select name="profile" id="profile" class="form-control" onchange="handleProfileSelection()">
+                                <option value="">select ------------</option>
+                                {% for profile in profiles %}
+                                <option value="{{ profile.user.username }}">{{ profile.user.username }}</option>
+                                {% endfor %}
                                 </select>
+
+                                <script>
+                            function handleProfileSelection() {
+                              var selectedProfile = document.getElementById("profile").value;
+                              listing.seller = selectedProfile;
+                              console.log("Selected Profile: " + selectedProfile);
+                              console.log("Listing Seller: " + listing.seller);
+                              // You can perform further actions with the selected profile value
+                             // For example, you can update another input field or make an AJAX request
+                             }
+                            </script>
+
                            
-                            <div style="margin-left:5px" class="input-group-append">
+                        <div style="margin-left:5px" class="input-group-append">
                             <div class="action-icons">
                                 <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal0" title="Create Profile">
                                     <i class="fa fa-plus"></i>
@@ -51,23 +66,35 @@
                                     <i class="fa fa-eye"></i>
                                 </a>
                             </div>
-                           </div>
                         </div>
-                    </div>
+                    </div> 
+                </div>
                             
                             {{ form|crispy }}
-                </div>
+            </div>
                 
-                <div class="col-md-6" style="border-left: 1px solid black; height: 600px;">
+
+            <div class="col-md-6" style="border-left: 1px solid black; height: 600px;">
                 <div class="form-group">
-                                <label for="profile">Amenities:</label>
+                                <label for="amenity">Amenities:</label>
                     <div class="input-group">
-                                <select name="profile" id="profile" class="form-control">
+                                <select name="amenity" id="amenity" class="form-control">
                                     <option value="">select ------------</option>
                                     {% for amenity in amenities %}
-                                    <option value="{{ amenity.id }}">Amenities of {{ amenity.seller.user.username|capfirst }}</option>
+                                    <option value="{{ amenity.id }}">Amenities of {{ amenity.seller.user.username }}</option>
                                     {% endfor %}
                                 </select>
+
+                                <script>
+                                    function handleProfileSelection() {
+                                      var selectedAmenity = document.getElementById("amenity").value;
+                                      listing.amenities = selectedAmenity;
+                                      console.log("Selected Profile: " + selectedAmenity);
+                                      console.log("Listing Seller: " + listing.amenities);
+                                      // You can perform further actions with the selected profile value
+                                     // For example, you can update another input field or make an AJAX request
+                                     }
+                                </script>
                            
                         <div style="margin-left:5px" class="input-group-append">
                             <div class="action-icons">
@@ -112,7 +139,7 @@
                     </div>
                 </div>
 
-                
+                {% comment %}
                 <div class="form-group">
                                 <label for="profile">House Area:</label>
                     <div class="input-group">
@@ -167,6 +194,9 @@
                 </div>
             </div>
                 
+
+
+
             <div class="form-group">
                                 <label for="profile">Preferences:</label>
                 <div class="input-group">
@@ -194,6 +224,9 @@
             </div>
 
 
+
+
+
         <div class="form-group">
                <label for="profile">Images:</label>
             <div class="input-group">
@@ -219,22 +252,23 @@
                 </div>
             </div>
         </div>
- <div>
-                    </div>
 
-                        </div>
-                    </div>
+
+ <div>
+ </div>
+ </div>
 </div>
-                            <button style="width: 450px; margin-left:250px;" class="btn btn-primary btn-rounded float-right" type="submit">Save</button>
+</div>
+                            
                     
-                            <br>
+                            <br> {% endcomment %}
                   
                             {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                 Open Modal
                             </button> {% endcomment %}
 
-    
-                        </form>
+                            <button style="width: 450px; margin-left:250px;" class="btn btn-primary btn-rounded float-right" type="submit">Save</button>
+ </form>
                     </div>
                 </div>
             </div>
@@ -320,7 +354,7 @@
             <div class="modal-body">
                 <form method="post">
                     {% csrf_token %}
-                    {{ form2|crispy }}
+                    {{ amenity_form |crispy }}
                     {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
                 
             </div>
@@ -479,10 +513,78 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+    <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+        <div style="width:400px">
+            <div class="form-group">
+                    <label for="profile">Users:</label>
+                <div class="input-group">
+                           <select name="user" id="user" class="form-control" onchange="handleProfileSelection()">
+                            <option value="">select ------------</option>
+                           {% for user in users %}
+                           <option value="{{ user.id }}">{{ user.username }}</option>
+                           {% endfor %}
+                            </select>
+
+                         <script>
+                            function handleProfileSelection() {
+                            var selectedProfile = document.getElementById("user").value;
+                            listing.seller = selectedProfile;
+                            console.log("Selected Profile: " + selectedProfile);
+                            console.log("Listing Seller: " + listing.seller);
+                          // You can perform further actions with the selected profile value
+                          // For example, you can update another input field or make an AJAX request
+                               }
+                           </script>
+
+                      
+                    <div style="margin-left:5px" class="input-group-append">
+                       <div class="action-icons">
+                           <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal10" title="Create Profile">
+                               <i class="fa fa-plus"></i>
+                           </a>
+                           <a href="" class="btn btn-primary" title="Edit Profile">
+                               <i class="fa fa-edit"></i>
+                           </a>
+                           <a href="" class="btn btn-primary" title="View Profile">
+                               <i class="fa fa-eye"></i>
+                           </a>
+                       </div>
+                    </div>
+                </div> 
+            </div>
+                    {{ user_profile|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+        </div>
+    </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="exampleModal10" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="modal-body">
                 <form method="post">
                     {% csrf_token %}
-                    {{ form|crispy }}
+                    
+                    {{ user_form |crispy }}
                     {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
                 
             </div>
@@ -494,6 +596,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

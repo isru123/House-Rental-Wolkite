@@ -77,7 +77,7 @@
                                  {% comment %} <div class="card-deck ">  {% endcomment %}
                                   <div id="elephant-card" class="row-4 card mb-4 active">
                                       
-                                   <form method="POST" action="{% url 'second' %}" enctype="multipart/form-data" style="margin-left:80px;width:300px">
+                                   <form method="POST" action="{% url 'second' id=listing.id %}" enctype="multipart/form-data" style="margin-left:80px;width:300px">
                                    {% csrf_token %}
                                    
                                    {{ form|crispy }}

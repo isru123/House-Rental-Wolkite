@@ -137,14 +137,14 @@ def owner_second_view(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
+            
+            listing = get_object_or_404(Listing, id=id)
             document = form.save(commit=False)
-            seller = request.user.profile  # Get the seller object
-            listing_id = request.POST.get('id')
-            listing = Listing.objects.get(pk=listing_id)  # Replace <listing_id> with the actual listing ID
-            document.seller = seller  # Assign the seller object to the document
+            document.seller = listing.seller  # Assign the seller object to the document
             document.listing = listing  # Assign the listing object to the document
             document.save()
-            message = messages.success(request, 'You Successfully submited')
+                
+            message = messages.success(request, 'You successfully submitted.')
             return redirect('second')
             
     else:
@@ -191,10 +191,17 @@ def map_view(request, id):
 
 
 
-def my_view(request):
+def my_view(request, id):
     mss = None
     message = None
     address = AddressOfListing.objects.all()
+    try:
+        
+        listing = get_object_or_404(Listing, id=id)
+    
+    except Listing.DoesNotExist:
+        messages.error(request, "First, you need to create a listing.")
+        return redirect('multistepformsubmission')
     
     if request.method == 'POST':
         try:
@@ -202,6 +209,23 @@ def my_view(request):
             
             location_form = LocationForm(request.POST)
             address_1 = request.POST.get('addloc')
+            address = request.POST.get('addloc')
+            listing = Listing.objects.get(pk=id)  # Replace `listing_id` with the appropriate value
+            
+            address_listing = get_object_or_404(AddressOfListing, Address=address)
+        
+            latitude = address_listing.lat
+            longitude = address_listing.long
+            
+            listing.latitude = latitude
+            listing.longitude = longitude
+            
+            listing.address = address
+            listing.save()
+            
+            
+            
+            
             
             if location_form.is_valid():
                 
@@ -213,13 +237,29 @@ def my_view(request):
                 listing_location.address_1 = address_1 
                 listing_location.save()
                 
-                # document = form.save(commit=False)
-                # document.seller = listing.seller  # Assign the seller object to the document
-                # document.listing = listing  # Assign the listing object to the document
-                # document.save()
+            else:
+                messages.info(request, 'You have to fill the form')
+                return redirect('my-form', id=listing.id)
+            
+            if form.is_valid():
+                try:
+                    
+                    listing = get_object_or_404(Listing, id=id)
+                except Listing.DoesNotExist:
+                    messages.error(request, "First, you need to create a listing.")
+                    return redirect('multistepformsubmission')
+
+                document = form.save(commit=False)
+                document.seller = listing.seller  # Assign the seller object to the document
+                document.listing = listing  # Assign the listing object to the document
+                document.save()
                 
                 message = messages.success(request, 'You successfully submitted.')
-                return redirect('second')
+                return redirect('my-form', id=listing.id)
+            else:
+                messages.info(request, 'You have to fill the form')
+                return redirect('my-form', id=listing.id)
+            
         except Exception as e:
             print(e)
             messages.error(
@@ -230,7 +270,7 @@ def my_view(request):
         form = DocumentForm()
         location_form = LocationForm()
     
-    return render(request, 'main/major/my_form.html', {'location_form':location_form, 'form': form,'showaddress': address, 'mss':mss,'message':message})
+    return render(request, 'main/major/my_form.html', {'location_form':location_form, 'form': form,'showaddress': address, 'mss':mss,'message':message, 'listing_id': listing.id})
     
 
     # if request.method == 'POST':
@@ -546,14 +586,13 @@ class multistepformsubmission(SessionWizardView):
         
         form_data = [form.cleaned_data for form in form_list]
         seller = self.request.user.profile 
-        address = kwargs.get('address')
+        # address = kwargs.get('address')
         
-        listing = Listing(address=address,
+        listing = Listing(
+                          address = form_data[0]['address'],
                           house_kind = form_data[0]['house_kind'],
                           price = form_data[0]['price'], available_start = form_data[0]['available_start'],
                           available_end = form_data[0]['available_end'] , 
-                          minimum_rental_period = form_data[0]['minimum_rental_period'],
-                          maximum_rental_period = form_data[0]['maximum_rental_period'],
                           seller=seller )
         # Get the address from the form data and update the existing listing
         
@@ -626,8 +665,14 @@ class multistepformsubmission(SessionWizardView):
         listing.image.add(images)
         # data = Listing.objects.all()
         # return render(self.request, 'main/owner/done.html', {'data': data})
-        message = messages.info(self.request, "We will give you a reminder when your listing be approved in 24 hours")
-        return render(self.request, 'main/owner/done.html', {'message': message})
+        messages.add_message(self.request, messages.INFO, "We will give you a reminder when your listing is approved in 24 hours")
+        return render(self.request, 'main/owner/done.html',  {'listing_id': listing.id})
+    
+    def form_invalid(self, form):
+        messages.info(self.request, "Please fill in all the required fields.")
+        return super().form_invalid(form)
+    
+        
             
         # return redirect('master')
     

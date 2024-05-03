@@ -15,7 +15,7 @@
     {% if request.user.profile.userType == "Public" %}
     <div class="card-body">
       <h5 class="card-title">{{ _("House Owner") }}</h5>
-      <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
+      <h6 class="mb-4">{{ listing.seller.user.first_name }} {{ listing.seller.user.last_name }}</h6>
 
       <hr>
       {% comment %} {% url 'new' product_id=listing.id conversation_id=conversation_id %} {% endcomment %}

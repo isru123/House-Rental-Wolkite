@@ -16,8 +16,8 @@
   <div>
    <h5>Now you have to Upload the Government Identity Of you and Yout listing's address<h5>
   </div>
-  
-   <a href="{% url 'my-form' %}" class="btn btn-primary my-2">Continue</a>
+   <p>Listing ID: {{ listing_id }}</p>
+   <a href="{% url 'my-form' id=listing_id %}" class="btn btn-primary my-2">Continue</a>
 
 {% endblock %}
 

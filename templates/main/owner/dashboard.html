@@ -19,7 +19,7 @@
 <br>
 <hr>
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid ml-5">
             <div class="row flex-nowrap">
                 <div class="col-auto px-0">
                     <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm">
@@ -40,10 +40,12 @@
                                         class="text-decoration-none text-black">Bookings</a> </li>
                                 <li class="list-group-item"> <a href="#"
                                         class="text-decoration-none text-black">Payments</a> </li>
-                                <li class="list-group-item"> <a href="#"
+                                <li class="list-group-item"> <a href="{% url 'inbox_view' %}"
                                             class="text-decoration-none text-black">Messages</a> </li>
                                 <li class="list-group-item"> <a href="#"
                                         class="text-decoration-none text-black">Reviews</a> </li>
+                                <li class="list-group-item"><a href="{% url 'helpdesk' %}"
+                                    class="text-decoration-none text-black">Helpdesk</a></li>
                             </ul>
                         </div>
                     </div>
@@ -54,72 +56,63 @@
                         class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list"></i></a>
                    
                     <hr>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card shadow">
-                                <div class="card-body text-start">
-                                    <h5 class="card-title">All Users</h5>
-                                    <p class="card-text"><i class="bi bi-people mr-3"></i>600</p>
-                                    <a href="#" class="btn btn-primary">See Table</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card shadow">
-                                <div class="card-body text-start">
-                                    <h5 class="card-title">All Blogs</h5>
-                                    <p class="card-text"><i class="bi bi-people mr-3"></i>70</p>
-                                    <a href="#" class="btn btn-primary">See Table</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card shadow">
-                                <div class="card-body text-start">
-                                    <h5 class="card-title">Inbox message</h5>
-                                    <p class="card-text"><i class="bi bi-people mr-3"></i>100+</p>
-                                    <a href="#" class="btn btn-primary">See Table</a>
+                    <div class="content-body">
+
+                        <div class="content-body">
+                            <div class="container-fluid mt-5">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card gradient-2">
+                                            <div class="card-body">
+                                                <h3 class="card-title text-white">Total No. of Request</h3>
+                                                <div class="d-inline-block">
+                                                    <h2 class="text-white value-float" id="total-request-value">4565</h2>
+                                                </div>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card gradient-1">
+                                            <div class="card-body">
+                                                <h3 class="card-title text-white">Total Accepted Request</h3>
+                                                <div class="d-inline-block">
+                                                    <h2 class="text-white value-float" id="total-accepted-request-value">8541</h2>
+                                                </div>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card gradient-3">
+                                            <div class="card-body">
+                                                <h3 class="card-title text-white">Total Rejected Request</h3>
+                                                <div class="d-inline-block">
+                                                    <h2 class="text-white value-float" id="total-rejected-request-value">4565</h2>
+                                                </div>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-5">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                </div>
                 </div>
             </div>
         </div>
-     
+        <style>
+            .value-float:hover {
+                transform: translateY(-5px);
+                transition: transform 0.3s ease-in-out;
+            }
+        </style>
     </body>
+    
+
 {% endblock %}
+
 
 {% block 'footer' %}
 {% endblock %}

@@ -38,7 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # "daphne",
+    
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'formtools',
     "crispy_forms",
+    
     "crispy_bootstrap5",
     'message',
     'paymnet',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'crum',
     'dal',
     'dal_select2',
+    
     
     # 'house_rental.custom_filters',
 ]
@@ -102,14 +104,14 @@ ASGI_APPLICATION = 'house_rental.asgi.application'
 
 DATABASES = {
     'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-          'NAME': BASE_DIR / 'db.sqlite3',
-        #   'ENGINE': 'django.db.backends.postgresql',
-        #   'NAME': 'mydb',
-        #   'USER': 'israel',
-        #   'PASSSWORD': '326598',
-        #   'HOST': 'localhost',
-        #   'PORT': '5431', 
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+            # 'ENGINE': 'django.db.backends.postgresql',
+            # 'NAME': 'mydb',
+            # 'USER': 'israel',
+            # 'PASSSWORD': '326598',
+            # 'HOST': 'localhost',
+            # 'PORT': '5431', 
     }
 }
 

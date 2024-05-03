@@ -64,7 +64,7 @@
    <div class="mt-0" style="height:12px;">
       <p>
         <i style="margin-left: 5px;" class="fas fa-map-marker text-success"></i>
-        <strong style="margin-left: 5px;">{{ listing.location.city }}</strong>
+        <strong style="margin-left: 5px;">{{ listing.address }}</strong>
       </p>
     </div>
    
@@ -124,16 +124,16 @@
 <style>
   .floating-div {
       background-color: #f7f7f7;
-      border: 1px solid #ccc;
+      {% comment %} border: 1px solid #ccc; {% endcomment %}
       border-radius: 4px;
-      padding: 10px;
+      {% comment %} padding: 10px; {% endcomment %}
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   }
 
   .floating-div:hover {
       transform: translateY(-5px);
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-      background-color: #007A87;
+      background-color: #000333;
   }
 </style>
 {% endif %}

@@ -15,6 +15,7 @@ from main.forms import ListingForm,ListingHouseAmenitiesForm,ListingSpaceOvervie
 from django.utils.translation import gettext as _
 from main.models import ListingHouseAmenities
 from users.forms import ProfileForm
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -243,85 +244,123 @@ def add_tenant(request):
 def manage_owner_task(request):
     return render(request, 'adminApp/manage-owner-task.html')
 
-
-
+ # amenities = None
+    
+    # selected_username = request.POST.get('profile') 
+ # try:
+        #     selected_profile = Profile.objects.get(user__username=selected_username)
+        #     amenities = ListingHouseAmenities.objects.filter(profile=selected_profile)
+        # except  Profile.DoesNotExist:
+    
+    
+        #     messages.error(request, "The selected profile does not exist")
+        #     return redirect('add-listing')
 
 def add_listing(request):
-    profiles = Profile.objects.all()
+    
+    profiles = Profile.objects.filter(userType='Owner')
+    users = User.objects.all()
     amenities = ListingHouseAmenities.objects.all()
-    overview = ListingSpaceOverview.objects.all()
-    area = ListingHouseArea.objects.all()
-    condition = RentalConditions.objects.all()
-    preferences = RulesAndPreferences.objects.all()
-    images = Image.objects.all()
+    # overview = ListingSpaceOverview.objects.all()
+    # area = ListingHouseArea.objects.all()
+    # condition = RentalConditions.objects.all()
+    # preferences = RulesAndPreferences.objects.all()
+    # images = Image.objects.all()
     
     if request.method == 'POST':
         form = ListingForm(request.POST)
-        form2 = ListingHouseAmenitiesForm(request.POST)
-        form3 = ListingSpaceOverviewForm(request.POST)
-        form4 = ListingHouseAreaForm(request.POST)
-        form5 = RentalConditionsForm(request.POST)
-        form6 = RulesAndPreferencesForm(request.POST)
-        form7 = ImageForm(request.POST)
-        profileForm = ProfileForm(request.POST)
-        # rules_preferences.save()
-        # listing.rules_and_preferences.add(rules_preferences)
-        listing = None
-        if form.is_valid():
+        user_form = UserForm(request.POST)
+        user_profile = ProfileForm(request.POST)
+        amenity_form = ListingHouseAmenitiesForm(request.POST)
+        # form3 = ListingSpaceOverviewForm(request.POST)
+        # form4 = ListingHouseAreaForm(request.POST)
+        # form5 = RentalConditionsForm(request.POST)
+        # form6 = RulesAndPreferencesForm(request.POST)
+        # form7 = ImageForm(request.POST)
+        # profileForm = ProfileForm(request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            
+        else:
+            messages.info(request, 'Please Fill the forms!  ')
+            return redirect('add-listing')
+        
+        if user_profile.is_valid():
+            profile = user_profile.save(commit=False)
+            selected_user = request.POST.get('user')
+            selected_user = User.objects.get(username=selected_user)
+            profile.user = selected_user
+            profile.save()
+            
+        else:
+            messages.info(request, 'Please Fill the forms!  ')
+            return redirect('add-listing')
+        
+        
+        
+        if amenity_form.is_valid():
+            amenity = amenity_form.save(commit=False)
+            selected_amenity = request.POST.get('amenity')
+            seller = f'Amenities of {seller.user.username}'
+            selected_amenity = ListingHouseAmenities.objects.get(seller=selected_amenity)
+            amenity.seller = selected_amenity
+            amenity.save()
+        
+        else:
+            messages.info(request, 'Please Fill the forms! ')
+            return redirect('add-listing')
+        
+            
+        if form.is_valid(): 
+        # form2.is_valid() and form3.is_valid() and form4.is_valid() and form5.is_valid() and form6.is_valid() and form7.is_valid():
             listing = form.save(commit=False)
-            listing.seller_id = request.user.id  # Set the seller_id to the logged-in user's ID
+            selected_profile = request.POST.get('profile')
+            selected_profile = Profile.objects.get(user__username=selected_profile)
+            
+            # listing = Listing(seller=selected_profile)
+            listing.seller = selected_profile # Set the seller_id to the logged-in user's ID
             listing.save()
-        
-        if form2.is_valid():
-            if listing is not None:
-                instances = form2.save()
-                listing.form2.set(instances)
+
+            # instances2 = form2.save()
+            # listing.form2.add(*instances2)
+
+            # instances3 = form3.save()
+            # listing.form3.add(*instances3)
+
+            # instances4 = form4.save()
+            # listing.form4.add(*instances4)
+
+            # instances5 = form5.save()
+            # listing.form5.add(*instances5)
+
+            # instances6 = form6.save()
+            # listing.form6.add(*instances6)
+
+            # instances7 = form7.save()
+            # listing.form7.add(*instances7)
+            messages.success(request, "Listing added successfully")
             return redirect('add-listing')
-        
-        if form3.is_valid():
-            if listing is not None:
-                instances = form3.save()
-                listing.form3.set(instances)
+        else:
+            messages.info(request, 'Please Fill the forms!')
             return redirect('add-listing')
-        
-        if form4.is_valid():
-            if listing is not None:
-                instances = form4.save()
-                listing.form4.set(instances)
-            return redirect('add-listing')
-        
-        if form5.is_valid():
-            if listing is not None:
-                instances = form5.save()
-                listing.form5.set(instances)
-            return redirect('add-listing')
-        
-        if form6.is_valid():
-            if listing is not None:
-                instances = form6.save()
-                listing.form6.set(instances)
-            return redirect('add-listing')
-        
-        if form7.is_valid():
-            if listing is not None:
-                instances = form7.save()
-                listing.form7.set(instances)
-            return redirect('add-listing')
-        
-        return redirect('master')
-    
     else:
         form = ListingForm()
-        form2 = ListingHouseAmenitiesForm()
-        form3 = ListingSpaceOverviewForm()
-        form4 = ListingHouseAreaForm()
-        form5 = RentalConditionsForm()
-        form6 = RulesAndPreferencesForm()
-        form7 = ImageForm()
+        user_form = UserForm()
+        user_profile = ProfileForm()
+        amenity_form = ListingHouseAmenitiesForm()
+        # form2 = ListingHouseAmenitiesForm()
+        # form3 = ListingSpaceOverviewForm()
+        # form4 = ListingHouseAreaForm()
+        # form5 = RentalConditionsForm()
+        # form6 = RulesAndPreferencesForm()
+        # form7 = ImageForm()
         
-    return render(request, 'adminApp/add-listing.html', {'form': form,'form2':form2,'form3':form3,'form4':form4,'form5':form5,'form6':form6, 'form7':form7,
-                                                         'profiles': profiles, 'amenities':amenities,'overview':overview,'area':area,'condition':condition,'preferences':preferences,'images':images})
-    
+    return render(request, 'adminApp/add-listing.html', {'form': form,'profiles': profiles,'users':users,'amenity_form': amenity_form,
+                                                         'user_form':user_form,'user_profile':user_profile,'amenities': amenities})
+
+                                                        #  'form2': form2, 'form3': form3, 'form4': form4, 'form5': form5, 'form6': form6, 'form7': form7,
+                                                        #    'overview': overview, 'area': area, 'condition': condition,
+                                                        #  'preferences': preferences, 'images': images})
 
     
      
@@ -331,11 +370,11 @@ def Approve_listing(request):
         search = request.POST.get("search")
         # seller = seller.user.username
         # seller = request.user.profile 
-        L = Listing.objects.filter(user__house_kind__icontains=search, approved=False)
+        L = Listing.objects.filter(house_kind__icontains=search, approved=False)
     
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(L, 10)
+    paginator = Paginator(L,5)
     try:
         L = paginator.page(page)
     except PageNotAnInteger:
@@ -461,7 +500,36 @@ def AllUser(request):
 
 
 
+def AdminHelpDesk(request):
+    u = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+        email = request.POST.get('email')
+        message = request.POST.get('message')
 
+        subject = 'From Home Rental Service'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [email]
+        if u.userType == "Admin" or request.user.is_superuser or request.user.is_staff:
+            body = f'Hi,  \n \n \t  email: {email} \n \n \t message: {message} \n\n Thanks, \n From Admin, \nHome Rental Service'
+        else:
+            body = f'Hi {email}, \n \n \t message: {message} \n\n Thanks, \n From Owner, \nHome Rental Service'         
+        send_mail(subject, body, from_email, to_email, fail_silently=True)
+
+    return render(request, 'adminApp/admin-helpdesk.html')
+
+
+
+def HelpDesk(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "POST":
+        message = request.POST.get('message')
+        subject = 'From Home Rental Service'
+        body = f'Hi Admin, \n \n \t {request.user.first_name} is trying to contact you. \n \n \t  email: {request.user.email} \n \n \t message: {message} \n\n Thanks, \n Home Rental Service'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = ['israelbeyene92@gmail.com']
+        send_mail(subject, body, from_email, to_email, fail_silently=True)
+    return render(request, 'main/owner/helpdesk.html')
 
 
 

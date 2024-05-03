@@ -10,7 +10,7 @@ urlpatterns = [
      path('dashboard_owner/', dashboard_view, name='dashboard_owner'),
      # path('listing/', list_view, name='listing'),
      path('payement/', payement, name='payement'),
-     path('second/', owner_second_view , name='second'),
+     path('second/<str:id>/', owner_second_view , name='second'),
      path('detail-view/', detail_list_view, name='detail_product_view'), 
      path('single_house_view/<str:id>/', single_house_view , name='single_house_view'),
      
@@ -22,7 +22,7 @@ urlpatterns = [
      path('search/', search, name='search'),
      path('owner-listings/', owner_listings , name='owner-listings'),
      path('address-autocomplete/', AddressAutocomplete.as_view(), name='address-autocomplete'),
-     path('my-form/', my_view, name='my-form'),
+     path('my-form/<uuid:id>/', my_view, name='my-form'),
      
      # path('done/', done_view , name='done'),
      # path('second/', upload_documents, name='upload_documents'),

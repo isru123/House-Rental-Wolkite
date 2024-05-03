@@ -71,6 +71,10 @@
       // Add marker to the map
       {% comment %} var marker = L.marker([YOUR_LATITUDE, YOUR_LONGITUDE]).addTo(map); {% endcomment %}
       var marker = L.marker([latitude, longitude]).addTo(map);
+
+
+      var popupContent = "<strong>Address:</strong><br>{{ listing.address }}";
+      marker.bindPopup(popupContent).openPopup();
   
     </script>
 

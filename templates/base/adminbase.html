@@ -28,14 +28,7 @@
 
 <body>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-        {{ message }}
-        {{ message.tags }}
-    </div>
-    {% endfor %}
-    {% endif %}
+   
           
        
 
@@ -56,6 +49,16 @@
             </div>
            
         </div>
+
+
+        {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+            {{ message }}
+            {{ message.tags }}
+        </div>
+        {% endfor %}
+        {% endif %}
         
         <!--**********************************
             Nav header end

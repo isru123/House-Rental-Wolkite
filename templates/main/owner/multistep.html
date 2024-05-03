@@ -22,7 +22,7 @@
 
 <br>
 <br>
-
+  
 {% comment %} <div class="col d-flex align-items-start"> {% endcomment %}
     <div>
        <h2 class="mb-3 border-bottom align-items-right" style="color: black; font-size: 30px;">Create your listing</h2>
@@ -31,32 +31,38 @@
 <section class="vh-50" style="background-color: #eee; background-image: url('{% static 'images/house1.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
     <div class="container align-left w-150 py-5 h-100">
       <div class="row d-flex justify-content-start align-items-right h-100">
-        <div class="col col-xl-6">
+        <div class="col col-xl-8">
           <div class="card d-flex align-items-center" style="border-radius: 1rem; margin: 0 auto; width: 0px;height: 0px;">
                 <div class="row" style="width:500px">
                     <div class="col-12">
                         <br>
                         <h1 style="font-family: Arial, sans-serif;font-size: 30px; color:black">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h1>
                         <br>
-                        <form action="" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <table>
-                                {{ wizard.management_form }}
-                                {% if wizard.form.forms %}
-                                    {{ wizard.form.management_form }}
-                                    {% for form in wizard.form.forms %}
-                                        {{ form.as_table|crispy}}
-                                    {% endfor %}
-                                {% else %}
-                                    {{ wizard.form|crispy }}
-                                {% endif %}
-                                </table>
-                                {% if wizard.steps.prev %}
-                                <button class="btn btn-primary my-2 align-end"  name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% translate "first step" %}</button><br>
-                                <button class="btn btn-primary my-2 align-end" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% translate "prev step" %}</button>
-                                {% endif %}
-                                <input class="btn btn-primary my-2 align-end" type="submit" value="{% translate "submit" %}"/>
-                         </form>
+                        <div class="col-12">
+                            <div id="elephant-card" style="width:500px" class="row-12 card mb-4 active">
+                                <form action="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table>
+                                        {{ wizard.management_form }}
+                                        {% if wizard.form.forms %}
+                                            {{ wizard.form.management_form }}
+                                            {% for form in wizard.form.forms %}
+                                                {{ form.as_table|crispy}}
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ wizard.form|crispy }}
+                                        {% endif %}
+                                        </table>
+                                        {% if wizard.steps.prev %}
+                                        <button class="btn btn-primary my-2 align-end"  name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% translate "first step" %}</button><br>
+                                        <button class="btn btn-primary my-2 align-end" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% translate "prev step" %}</button>
+                                        {% endif %}
+                                        <input class="btn btn-primary my-2 align-end" type="submit" value="{% translate "submit" %}"/>
+                                 </form>
+                            </div>
+                          </div>
+                        </div>
+                       
 </div>
 </div>
 </div>

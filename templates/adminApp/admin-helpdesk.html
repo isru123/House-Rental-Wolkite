@@ -1,0 +1,34 @@
+{% extends 'base/adminbase.html' %}
+{% load static %}
+{% block 'body' %}
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+<div class="container mt-5" style="margin-left: 300px; margin-right: 100px;">
+    <form action="/admin-helpdesk/" method="POST" style="margin-right: 100px;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">User email</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter Email.." required />
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Message</label>
+            <textarea class="form-control" placeholder="Message..." name="message" id="exampleFormControlTextarea1" rows="10" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:200px;margin-left: 200px; border-radius: 4px;">Send</button>
+
+    </form>
+</div>
+</div>
+<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+{% endblock %}

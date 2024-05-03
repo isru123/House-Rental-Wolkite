@@ -35,7 +35,7 @@ class ListingHouseAmenities(models.Model):
     
     def __str__(self):
            
-            return f'Listing House Amenities of {self.seller.user.username}'
+            return f'ID {self.id} Listing House Amenities of {self.seller.user.username}'
  
     
 
@@ -56,7 +56,7 @@ class ListingSpaceOverview(models.Model):
     
     def __str__(self):
            
-            return f'Listing Space Overview of {self.seller.user.username}'
+            return f'ID {self.id} Listing Space Overview of {self.seller.user.username}'
 
 
 
@@ -93,7 +93,7 @@ class ListingHouseArea(models.Model):
     
     def __str__(self):
            
-            return f'Listing House Area of {self.seller.user.username}' 
+            return f'ID {self.id} Listing House Area of {self.seller.user.username}' 
     
 
     
@@ -101,9 +101,8 @@ class ListingHouseArea(models.Model):
 class RentalConditions(models.Model):
     
     RADIO_CHOICES =[
-        ('daily', 'Daily'),
-        ('monthly', 'Monthly'),
-        ('fortnight', 'Fortnight'),
+        ('shelter', 'Shelter'),
+        ('business', 'Business'),
     ]
     RADIO_CHOICES2 = [
         ('strict cancellation', 'Strict Cancellation'),
@@ -123,7 +122,7 @@ class RentalConditions(models.Model):
     
     def __str__(self):
            
-            return f'Listing Rental Conditions of {self.seller.user.username}'
+            return f'ID {self.id} Listing Rental Conditions of {self.seller.user.username}'
     
 
 class RulesAndPreferences(models.Model):
@@ -138,13 +137,7 @@ class RulesAndPreferences(models.Model):
         ('student ', 'Student'),
         ('working professional', 'Working Professional'),
     ]
-    
-    RADIO_CHOICES3 = [
-        ('proof of identity', 'Proof of Identity'),
-        ('proof of income', 'Proof of Income'),
-        ('proof of occupation', 'Proof of Occupation'),
-    ]
-    
+   
     
     
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -152,13 +145,13 @@ class RulesAndPreferences(models.Model):
     minimum_age = models.CharField(max_length=24, choices=MINMUM_AGE, default=None)
     maximum_age = models.CharField(max_length=24, choices=MAXIMUM_AGE, default=None)
     tenant = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Tenant Type')
-    proof = models.CharField(max_length=24, choices=RADIO_CHOICES3, verbose_name='Proof for Tenant')
+    proof = models.CharField(max_length=24, verbose_name='Proof for Tenant')
     
 
     
     def __str__(self):
            
-            return f' Listing Rules and Preferences of {self.seller.user.username}'
+            return f'ID {self.id} Listing Rules and Preferences of {self.seller.user.username}'
     
     
 
@@ -183,7 +176,7 @@ class Image(models.Model):
        
        def __str__(self):
            
-            return f'Listing Images of {self.seller.user.username}'
+            return f'ID {self.id} Listing Images of {self.seller.user.username}'
     
     
 
@@ -224,7 +217,8 @@ class Listing(models.Model):
       
     
       def __str__(self):
-          return f'{self.seller.user.username}\'s Listings'
+        sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
+        return f"ID {sequential_id} {self.seller.user.username}'s Listing"
     
     
 
@@ -292,7 +286,7 @@ class LikedListing(models.Model):
 
 class Document(models.Model):
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    listing = models.OneToOneField(Listing, on_delete=models.CASCADE)
     id_photo = models.ImageField(upload_to=user_listing_path)
     house_map = models.ImageField(upload_to=user_listing_path)
     
