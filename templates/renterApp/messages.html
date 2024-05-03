@@ -1,0 +1,104 @@
+{% extends 'base/adminbase.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+
+{% block 'body' %}
+ 
+<!--**********************************
+        Content body start
+***********************************-->
+ {% comment %} <section class="vh-100" style="background-color: #eee;">
+    <br>
+    <br>
+    <div class="content-body">
+        {% for conversation in conversations %}
+            <div>
+                <h3>Conversation ID: {{ conversation.id }}</h3>
+                {% for message in conversation.messages.all %}
+                    <div>
+                        {% if message.created_by == user %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% else %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</section>  {% endcomment %}
+
+
+<section class="vh-100" style="background-color: #eee;">
+    <br>
+    <br>
+    <div class="content-body">
+        {% for conversation in conversations %}
+            <div>
+                <p><strong>Conversation ID: {{ conversation.id }}, conversation with {{ conversation.item.seller.username }}</strong></p>
+                {% for message in conversation.messages.all %}
+                    <div>
+                        {% if message.created_by == user %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% else %}
+                            <p>{{ message.created_by.username }} @ {{ message.created_at|date:"F j, Y, P" }}</p>
+                            <p>{{ message.content }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+
+
+
+    <section style="height:50px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       <div class="nk-sidebar">
+           <div class="">
+               <br>
+               <ul class="metismenu" id="menu">
+                   <li>
+                       <a href="{% url 'dashboard_renter' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm">
+                       <a class="has-arrow">
+                           <i class="icon-screen-tablet menu-icon"></i>
+                           <span class="nav-text">Tenant</span>
+                       </a>
+                       <ul>
+                    
+                        <li><a href="{% url 'messages' %}">messages</a></li>
+                        <li>
+                            <a href="{% url 'payments' %}">Payment history</a>
+                        </li>
+
+                       
+                        <li>
+                            <a href="{% url 'books' %}">Books</a>
+                        </li>
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
+    {% endblock %}
+
+    

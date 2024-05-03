@@ -11,7 +11,7 @@ from .forms import UserForm,ProfileForm,LocationForm
 from main.models import Listing,LikedListing
 from .models import Profile,OTP
 from django.utils.translation import gettext as _
-from email_validator import validate_email, EmailNotValidError
+# from email_validator import validate_email, EmailNotValidError # type: ignore
 from django.contrib.auth.models import User
 
 
@@ -69,11 +69,11 @@ def SignPage(request):
             msg = _('Contact should be 10 digits.')
             return render(request, 'users/sign.html', {'msg': msg})
 
-        try:
-            email_object = validate_email(email)
-        except EmailNotValidError as e:
-            messages.warning(request, f'{e}')
-            return render(request, 'users/sign.html', {'msg': f'{e}'})
+        # try:
+        #     email_object = validate_email(email)
+        # except EmailNotValidError as e:
+        #     messages.warning(request, f'{e}')
+        #     return render(request, 'users/sign.html', {'msg': f'{e}'})
 
         try:
             user = User.objects.create_user(

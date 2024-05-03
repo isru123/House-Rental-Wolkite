@@ -1,6 +1,10 @@
 from django.contrib import admin
 
+<<<<<<< HEAD
 from .models import Listing,LikedListing,Image,ListingSpaceOverview, ListingHouseArea,Document, ListingHouseAmenities, RentalConditions, RulesAndPreferences,Review,AddressOfListing
+=======
+from .models import Listing,LikedListing,Upload,Image,ListingSpaceOverview, ListingHouseArea, ListingHouseAmenities, RentalConditions, RulesAndPreferences
+>>>>>>> e64048f0303b4009bf6fffcff6eb16adb50d03ac
 
 class ListingAdmin(admin.ModelAdmin):
     readonly_fields = ('id', )
@@ -81,12 +85,13 @@ admin.site.register(RulesAndPreferences, RulesAndPreferencesAdmin)
 # admin.site.register(HouseArea, HouseAreaAdmin)
 # admin.site.register(RentalCondition, RentalConditionAdmin)
 # admin.site.register(Rules, RulesAdmin)
-admin.site.register(Review,ReviewAdmin)
+
 admin.site.register(Image,ImageAdmin)
 admin.site.register(AddressOfListing,AddressOfListingAdmin)
 admin.site.register(Document,DocumentAdmin)
 # admin.site.register(Booking, BookingAdmin)
 
+admin.site.register(Upload)
 
 
 

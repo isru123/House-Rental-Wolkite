@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from users.models import Profile,Location
 
 from main.models import Listing
 from django.urls import reverse
@@ -12,9 +13,8 @@ from .models import ConversationMessage
 from .forms import ConversationMessageForm
 from .models import Conversation
 
+from main.models import Upload
 @login_required
-
-
 
 def new_conversation(request, product_id):
     listing = get_object_or_404(Listing, id=product_id)
@@ -22,20 +22,33 @@ def new_conversation(request, product_id):
     if request.user == listing.seller:
         return redirect('main:home')
 
-    conversations = Conversation.objects.filter(item=listing).filter(members__in=[request.user.id])
-
-    if conversations:
+    # Check if there are existing conversations related to the listing for the current user
+    conversations = Conversation.objects.filter(item=listing, members=request.user)
+    if conversations.exists():
         return redirect('detail', conversation_id=conversations.first().id)
+
+    id_document_url = ''
+    tenant_photo_url = ''
+
+    # Fetch tenant's document and photo
+    tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
+
+    # Assuming you want to use the first upload found
+    if tenant_uploads.exists():
+        tenant_upload = tenant_uploads.first()
+        id_document_url = tenant_upload.document.url
+        tenant_photo_url = tenant_upload.photo.url
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
 
         if form.is_valid():
+            # Create a new conversation
             conversation = Conversation.objects.create(item=listing)
-            conversation.members.add(request.user)
-            conversation.members.add(listing.seller.user)  # Access the User instance through the profile
+            conversation.members.add(request.user, listing.seller.user)
             conversation.save()
 
+            # Create a new conversation message
             conversation_message = form.save(commit=False)
             conversation_message.conversation = conversation
             conversation_message.created_by = request.user
@@ -47,26 +60,75 @@ def new_conversation(request, product_id):
 
     context = {
         'form': form,
-        'listing': listing
+        'listing': listing,
+        'id_document_url': id_document_url,
+        'tenant_photo_url': tenant_photo_url,
     }
     return render(request, 'conversation/new.html', context)
 
 
-from .models import Conversation
+
+
+# def new_conversation(request, product_id):
+#     listing = get_object_or_404(Listing, id=product_id)
+
+#     if request.user == listing.seller:
+#         return redirect('main:home')
+
+#     # Check if there are existing conversations related to the listing for the current user
+#     conversations = Conversation.objects.filter(item=listing, members=request.user)
+#     if conversations.exists():
+#         return redirect('detail', conversation_id=conversations.first().id)
+
+#     if request.method == 'POST':
+#         form = ConversationMessageForm(request.POST)
+
+#         if form.is_valid():
+#             # Create a new conversation
+#             conversation = Conversation.objects.create(item=listing)
+#             conversation.members.add(request.user, listing.seller.user)
+#             conversation.save()
+
+#             # Create a new conversation message
+#             conversation_message = form.save(commit=False)
+#             conversation_message.conversation = conversation
+#             conversation_message.created_by = request.user
+#             conversation_message.save()
+
+#             return redirect('detail', conversation_id=conversation.id)
+#     else:
+#         form = ConversationMessageForm()
+
+#     context = {
+#         'form': form,
+#         'listing': listing
+#     }
+#     return render(request, 'conversation/new.html', context)
+
 
 from .models import Conversation
 
+from .models import Conversation
+
+# views.py
+
+# def inbox_view(request):
+#     profile = request.user.profile
+#     conversations = Conversation.objects.filter(item__seller=profile)
+#     context = {
+#         'conversations': conversations
+#     }
+#     return render(request, 'conversation/inbox.html', context)
 def inbox_view(request):
-    # Ensure request.user is a Profile instance
     profile = request.user.profile
-    
-    # Filter conversations where the related house's seller is the current user's profile
     conversations = Conversation.objects.filter(item__seller=profile)
-    
     context = {
         'conversations': conversations
     }
     return render(request, 'conversation/inbox.html', context)
+
+
+
 
 
 
@@ -173,8 +235,109 @@ def delete_message(request, message_id):
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
 
+def booking_page(request, conversation_id):
+    # Your view logic here
+    return redirect('booking_page', conversation_id=conversation_id)
 
 
-def booking_request_view(request):
-    return render(request, 'main/major/booking_request.html')
+@login_required
+def dashboard_view(request):
+    bookings = Booking.objects.filter(tenant=request.user)
+    payment_history = Payment.objects.filter(payer=request.user)
+    messages_received = ConversationMessage.objects.all()
+    
+    # Calculate the total number of messages
+    total_messages_count = messages_received.count()
+    context = {
+        'bookings': bookings,
+        'payment_history': payment_history,
+        'messages_received': messages_received,
+        'total_messages_count': total_messages_count,
 
+    }
+    return render(request, 'renterApp/dashboard.html', context)
+
+from .models import ConversationMessage
+
+@login_required
+def messages(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    # Retrieve conversations where the logged-in user is a member
+    user = request.user
+    conversations = Conversation.objects.filter(members=user)
+
+    # Pass the conversations to the template
+    return render(request, 'renterApp/messages.html', {'conversations': conversations, 'user': user})
+
+
+from paymnet.models import Booking
+
+
+def books(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Filter bookings where the logged-in user is either the tenant or the owner
+    all_bookings = Booking.objects.filter(tenant=request.user) 
+
+    # Pass the filtered bookings to the template
+    context = {
+        'all_bookings': all_bookings
+    }
+
+    return render(request, 'renterApp/books.html', context)
+
+
+
+def listigs(request): 
+    if not request.user.is_authenticated:
+        return redirect('login')
+    total_verified_owner = Profile.objects.filter(userType="Public", verified=True).count()
+    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+
+    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
+    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+
+    # available_house = House.objects.filter(status="Available").count()
+    # booked_house = House.objects.filter(status="Booked").count()
+
+    # customer_request = BookingRequest.objects.filter(status="Pending").count()
+
+    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
+
+    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
+
+    Dict = {
+        "total_verified_owner":total_verified_owner,
+        "total_unverified_owner":total_unverified_owner,
+        "total_verified_admin":total_verified_admin,
+        "total_unverified_admin":total_unverified_admin,
+        # "available_house":available_house,
+        # "booked_house":booked_house,
+        # "customer_request":customer_request,
+
+        # "my_house": my_house,
+        # "my_available_house":my_available_house,
+
+        # "my_booking":my_booking
+        }
+    return render(request, 'renterApp/listing.html',Dict)
+from django.shortcuts import render, redirect
+from paymnet.models import Payment
+
+def payments(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Filter payments where the logged-in user is either the payer or the recipient
+    all_payments = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+
+    # Pass the filtered payments to the template
+    context = {
+        'all_payments': all_payments
+    }
+
+    return render(request, 'renterApp/payment.html', context)

@@ -55,8 +55,11 @@
                       </div> {% endcomment %}
                         <br>
                         <br>
-                        <button type="submit" class="btn btn-danger" style="color:white; width:400px">Login</button>
-                        <p class="message"> <a href="/forgot/">Forgot Password</a></p>
+                        <button type="submit" class="btn btn-primary btn-lg" style="color:white; width:400px">Login</button>
+                        <div class="text-center my-3">
+                          <a href="{% url 'password_reset' %}">Forget Password</a>
+                      </div>
+                      <hr>
                         <p class="message"> Don't have an Account??<a href="/sign/">Create One.</a></p>
                         
                       </form>

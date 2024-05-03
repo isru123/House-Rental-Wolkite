@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block 'head' %}
+<link href="{% static 'AdminStatic/css/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+
+
+
+    <section style="height:50px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       
+       <div class="nk-sidebar " >
+           <div class="" >
+               <br>
+               <ul class="metismenu" id="menu">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span  style="width:200px; color:white" class="nav-link btn btn-secondary my-3" class="nav-text">Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm">
+                       
+                       <ul>
+                        {% comment %} <li><a style="width:200px; color:white" class="nav-link btn btn-primary my-2" href="/all-user/">All User</a></li> {% endcomment %}
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-Info my-2" href="{% url 'inbox_view' %}">message</a></li>
+                        
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-Info my-2"  href="https://www.sandbox.paypal.com/myaccount/summary">payment history </a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-Info my-2"  href="{% url 'payement' %}">listings  history </a></li>
+
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-Info my-2" href="/rent-house/">booking</a></li>
+                        <li><a style="width:200px; color:white" class="nav-link btn btn-Info my-2" href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        <li>
+                            <a style="width:200px; color:white" class="nav-link btn btn-Info my-2" href="/admin-helpdesk/">review</a>
+                        </li>
+
+       
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
+    {% endblock %}
+
+
+{% block 'footer' %}
+{% endblock %}
+
+
+{% block 'footer2' %}
+{% endblock %}
+
+
+    

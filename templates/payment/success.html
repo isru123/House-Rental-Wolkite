@@ -1,0 +1,44 @@
+{% comment %} 
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+</head>
+<body><section id="bc" class="mt-3">
+    <div class="container">
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+           <a href="{% url 'home' %}">{{ _("Home") }}</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+          </li>
+          <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+    <h1>Success</h1>
+    <p>Your tenant information has been submitted successfully.</p>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Received</title>
+</head>
+<body>
+    <h1>Payment Received</h1>
+    <p>Hi {{ product.seller.user.username }},</p>
+    <p>A payment has been made for your listing "{{ product.title }}".</p>
+    <p>Amount: ${{ product.price }}</p>
+    <p>Thank you for using our platform.</p>
+</body>
+</html>

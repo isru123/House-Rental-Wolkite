@@ -1,59 +1,156 @@
 {% extends 'base/base.html' %}
+
+{% comment %} {% extends 'base/base.html' %}
 {% load static %}
-{% block 'title' %}
+{% block title %}
 <title>
-    Housing In Wolkite , Home
-</title>{% endblock %}
-{% block 'header' %}
+    Housing In Wolkite, Home
+</title>
+{% endblock %}
+{% block header %}
 {% endblock %}
 {% block 'body' %}
+<h1 style="        margin-top: 20vh;        padding-left: 500px;
+
+">Payment successful </h1>
+<div class="product-container">
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment successful</title>
-</head>
-<body>
-    <h1>Payment successful for List: {{product.name}}</h1>
-    <div class="product-container">
-        <div class="products">
-            <img class="img" src="{{product.image}}" alt="">
-            <p>{{product.name}}</p>
-            <p>Price: $ {{product.price}}</p>
-            <p>Enjoy your house</p>
-
-        </div>  
+    <div class="products">
+        <img class="img" src="{{ product.image }}" alt="">
+        <p>{{ product.name }}</p>
+        <p>Price: $ {{ product.price }}</p>
+        <p>Enjoy your house</p>
     </div>
-    <style>
-        body {
-            padding: 10px;
-            box-sizing: border-box;
-        }
+</div>
 
-        .product-container {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            height: 100vh;
-        }
-        .img {
-            width: 60%;
-            border-radius: 50px;
-        }
-        button {
-            padding: 10px;
-            border-radius: 5px;
-            background-color: dodgerblue;
-            color: white;
-            border: none;
-        }
-    </style>
-</body>
-</html>
+<!-- Notification button -->
+<div class="text-center my-3">
+    <a href="#" class="btn btn-success">Notify Admin</a>
+</div>
+<style>
+    body {
+        padding: 10px;
+        margin-top: 100px; /* Add top margin */
+        box-sizing: border-box;
+    }
+
+    .product-container {
+        margin-top: 10px;
+        padding: 40px;
+        padding-left: 550px;
+
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+    }
+    .img {
+        width: 60%;
+        border-radius: 50px;
+    }
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: dodgerblue;
+        color: white;
+        border: none;
+        text-decoration: none; /* Add this to remove underline from anchor tag */
+        display: inline-block; /* Add this to make the button display inline */
+    }
+    .btn:hover {
+        background-color: #007bff; /* Change color on hover */
+    }
+</style>
 {% endblock %}
 
-{% block 'footer' %}
+{% block footer %}
+{% endblock %} {% endcomment %}
+
+
+{% load static %}
+{% block title %}
+<title>
+    Housing In Wolkite, Home
+</title>
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block 'body' %}
+<h1 style="margin-top: 20vh; padding-left: 500px;">Payment successful</h1>
+<div class="product-container">
+    <div class="products">
+        <img class="img" src="{{ product.image }}" alt="">
+        <p>{{ product.name }}</p>
+        <p>Price: $ {{ product.price }}</p>
+        <p>Enjoy your house</p>
+    </div>
+</div>
+
+<!-- Notification button -->
+<div class="text-center my-3">
+    <a href="#" class="btn btn-success">Notify Admin</a>
+</div>
+
+{% comment %} <!-- Tenant Information Form -->
+<div class="container">
+    <h2>Tenant Information</h2>
+    <form method="post" action="{% url 'booking_create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Booking Information Fields -->
+       
+        <label for="id_document">Identification Document:</label>
+        <input type="file" id="id_document" name="id_document" accept="image/*" required>
+        
+        <label for="tenant_photo">Tenant Photo:</label>
+        <input type="file" id="tenant_photo" name="tenant_photo" accept="image/*" required>
+    
+        <!-- Other Booking Fields -->
+        <!-- Add other booking fields here as needed -->
+    
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+    </form>
+    
+</div> {% endcomment %}
+
+<style>
+    /* Add your custom styles here */ 
+    body {
+        padding: 10px;
+        margin-top: 100px; /* Add top margin */
+        box-sizing: border-box;
+    }
+
+    .product-container {
+        margin-top: 10px;
+        padding: 40px;
+        padding-left: 550px;
+
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+    }
+    .img {
+        width: 60%;
+        border-radius: 50px;
+    }
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: dodgerblue;
+        color: white;
+        border: none;
+        text-decoration: none; /* Add this to remove underline from anchor tag */
+        display: inline-block; /* Add this to make the button display inline */
+    }
+    .btn:hover {
+        background-color: #007bff; /* Change color on hover */
+    }
+</style>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

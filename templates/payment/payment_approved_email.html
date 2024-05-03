@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Approved</title>
+</head>
+<body>
+    <h1>Payment Approved</h1>
+    <p>Hi {{ booking.house.seller.user.username }},</p>
+    <p>We are pleased to inform you that the payment for your listing "{{ booking.house.title }}" has been approved.</p>
+    <p>Booking ID: {{ booking.id }}</p>
+    <p>Amount: ${{ booking.total_price }}</p>
+    <p>Thank you for using our platform.</p>
+</body>
+</html>

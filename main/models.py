@@ -155,10 +155,6 @@ class RulesAndPreferences(models.Model):
     
     
 
-# This model is used to store information about rooms within properties
-# class Room(models.Model):
-#     name = models.CharField(max_length=200)
-#     capacity = models.PositiveSmallIntegerField()
 
 
 class Image(models.Model):
@@ -235,22 +231,6 @@ class AddressOfListing(models.Model):
 
 
     
-# This model is used to store booking information made by guests
-# class Booking(models.Model):
-#     guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-#     check_in_date = models.DateTimeField(default=None)
-#     check_out_date = models.DateTimeField(default=None)
-#     # rooms = models.ManyToManyField(Room)
-    
-    
-    
-#     def __str__(self):
-#          return f'{self.listing.title}\' listing booked'
-    
-    
-    
-    
 
     
 
@@ -296,7 +276,8 @@ class Document(models.Model):
     
     
 
-    
+    def __str__(self):
+        return f"{self.document.name} - {self.photo.name}"
     
     
     

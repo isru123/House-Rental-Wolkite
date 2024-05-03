@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Received</title>
+</head>
+<body>
+    <h1>Payment Received</h1>
+    <p>Hi ,</p>
+    <p>A payment has been made for {{ product.seller.user.username }}, listing "{{ product.title }}".</p>
+
+    <p>Amount: ${{ product.price }}</p>
+    <p>Thank you for using our platform.</p>
+    <p>List ID: {{ product.id }}</p>
+
+</body>
+</html>

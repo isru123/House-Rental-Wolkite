@@ -13,7 +13,10 @@ urlpatterns = [
      path('second/<str:id>/', owner_second_view , name='second'),
      path('detail-view/', detail_list_view, name='detail_product_view'), 
      path('single_house_view/<str:id>/', single_house_view , name='single_house_view'),
-     
+     path('upload/', upload, name='upload'),
+     path('identity/',identity_page, name='identity-page'),  # Replace 'identity-page' with your desired URL name
+
+
      # path('listing/<str:id>/like/', like_listing_view , name='like_listing'),
      path('multistepformsubmission', multistepformsubmission.as_view(), name='multistepformsubmission'),
      path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
