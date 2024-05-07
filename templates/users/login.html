@@ -29,11 +29,11 @@
                     <div class="form">
                       <div class="login">
                         <div class="login-header">
-                          <h3><a href="/">Home</a></h3>
-                          <h3>LOGIN</h3>
+                          <h3><a href="/"><i class="fas fa-home"></i></a></h3>
+                          <h3 style="margin-right:190px; font-family:serif;">LOGIN</h3>
                           <p>Please enter your credentials to login.</p>
-                          <h1>{% trans "Welcome to our website!" %}</h1>
-                          <p>{% trans "Please log in to continue." %}</p>
+                          {% comment %} <h1>{% trans "Welcome to our website!" %}</h1>
+                          <p>{% trans "Please log in to continue." %}</p> {% endcomment %}
                         </div>
                       </div>
                       <form class="login-form" method="POST" action="/login/" enctype="multipart/form-data">
@@ -55,9 +55,9 @@
                       </div> {% endcomment %}
                         <br>
                         <br>
-                        <button type="submit" class="btn btn-primary btn-lg" style="color:white; width:400px">Login</button>
+                        <button type="submit" class="btn btn-primary btn-lg" style="color:white; width:400px; font-family:serif;">Login</button>
                         <div class="text-center my-3">
-                          <a href="{% url 'password_reset' %}">Forget Password</a>
+                          <button type="submit" class="btn btn-dark btn-lg" ><a href="{% url 'password_reset' %}" style="color:white; width:600px; font-family:serif;">Forget Password</a></button>
                       </div>
                       <hr>
                         <p class="message"> Don't have an Account??<a href="/sign/">Create One.</a></p>

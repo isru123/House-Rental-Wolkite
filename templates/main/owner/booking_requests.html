@@ -1,0 +1,189 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+    {% block 'body' %}
+     <!-- Single Page Header start -->
+ <div class="container-fluid page-header py-5" style="background-color: #1877F2; height:50px">
+    <h1 class="text-center text-white display-6">Dashboard</h1>
+    <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active">Post</li>
+    </ol>
+</div> 
+
+<br>
+<br>
+<br>
+<br>
+<hr>
+    <body>
+        <div class="container-fluid ml-4">
+            <div class="row flex-nowrap">
+                <div class="col-auto px-0">
+                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm">
+                        <div id="sidebar-nav" class="list-group border-0 rounded-0">
+                            <div class="p-2">
+                                <h4 style="color:black">House Owner Dashboard</h4>
+                            </div>
+                           
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="{% url 'dashboard_owner' %}" class="text-decoration-none text-black">
+                                        Dashboard</a></li>
+                                <li class="list-group-item"> <a href="{% url 'owner-listings' %}"
+                                        class="text-decoration-none text-black">Listings</a> </li>
+                                <li class="list-group-item"> <a href="#"
+                                        class="text-decoration-none text-black">Bookings</a> </li>
+                                <li class="list-group-item"> <a href="{% url 'Request' %}"
+                                            class="text-decoration-none text-black">Booking Request</a> </li>
+                                <li class="list-group-item"> <a href="#"
+                                        class="text-decoration-none text-black">Payments</a> </li>
+                                <li class="list-group-item"> <a href="{% url 'MIDI' %}"
+                                            class="text-decoration-none text-black">Messages</a> </li>
+                                <li class="list-group-item"> <a href="#"
+                                        class="text-decoration-none text-black">Reviews</a> </li>
+                                <li class="list-group-item"><a href="{% url 'helpdesk' %}"
+                                            class="text-decoration-none text-black">Helpdesk</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-secondary card " style="margin-left:5px; margin-bottom:5px;">
+                    <div id="meerkat-card" class="card mt-5 mb-4 row-4" style="width:1200px">
+                        <div class="table-responsive">
+                            <table class="table  table-bordered zero-configuration">
+                                <thead>
+                                    <tr>
+                                        <th>Listing ID</th>
+                                        <th>Tenant Name</th>
+                                        <th>Created At</th>
+                                        <th>Tenant Photo</th>
+                                        <th>Government ID</th>
+                                        <th>Proof Of Income</th>
+                                        <th>Proof Of Profession</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% with counter=1 %}
+                                    {% if requests %}
+                                            {% for U in requests %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                
+                                                <td>{{U.tenant.user.username}}</td>
+                                             
+                                                <td>{{U.created_at}}</td>
+                                                
+                                                <td>
+                                                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showModalImage('{{ U.photo.url }}')">
+                                                      <img src="{{ U.photo.url }}" alt="User Photo" width="50" height="50">
+                                                    </button>
+                                                  </td>
+                                                  <td>
+                                                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#fileModal" onclick="showFile('{{ U.profession_proof.name }}')">View File</button>
+                                                  </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#fileModal" onclick="showFile('{{ U.profession_proof.name }}')">View File</button>
+                                                  </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#fileModal" onclick="showFile('{{ U.profession_proof.name }}')">View File</button>
+                                                  </td>
+                                                {% comment %} <td>{{L.created_at}}</td> {% endcomment %}
+                                             
+                                                <td>
+                                                   <button class="btn btn-primary my-2">Accept</button>
+                                            
+                                                {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
+                                                <button class="btn btn-primary my-2">Reject</button>
+                                                </td>
+                                                
+                                            </tr>
+                                            {% with counter=counter|add:1 %}
+                                            {% endwith %} 
+                                            {% endfor %}
+                                            {% else %}
+                                            No Owner with status UnVerified.
+                                            {% endif %}
+                                            {% endwith %}
+                                   
+                                </tbody>
+                            </table>
+
+                            
+                            {% if requests.has_other_pages %}
+                            <ul class="pagination">
+                                {% if requests.has_previous %}
+                                <li><a href="?page={{ requests.previous_page_number }}" class="btn btn-primary">&laquo;</a>
+                                </li>
+                                {% else %}
+                                <li class="disabled btn btn-primary"><span>&laquo;</span></li>
+                                {% endif %}
+                                {% for i in requests.paginator.page_range %}
+                                {% if requests.number == i %}
+                                <li class="active btn btn-primary"><span>{{ i }} <span
+                                            class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li><a href="?page={{ i }}" class="btn btn-primary">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if requests.has_next %}
+                                <li><a href="?page={{ requests.next_page_number }}" class="btn btn-primary">&raquo;</a></li>
+                                {% else %}
+                                <li class="disabled btn btn-primary"><span>&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                    </div>
+                   
+                  
+
+                </div>
+              
+            </div>
+        </div>
+
+
+
+  <!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img id="modalImage" src="" alt="User Photo" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+<div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <iframe id="fileIframe" src="" width="100%" height="500px"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+    </body>
+
+    <script>
+        function showModalImage(imageUrl) {
+          var modalImage = document.getElementById('modalImage');
+          modalImage.src = imageUrl;
+        }
+        function showFile(fileUrl) {
+            var fileIframe = document.getElementById('fileIframe');
+            fileIframe.src = fileUrl;
+          }
+      </script>
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}
+
+
+

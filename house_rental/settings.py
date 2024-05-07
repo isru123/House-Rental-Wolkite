@@ -38,7 +38,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    
+    'channels',
+    'daphne',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,7 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'formtools',
     "crispy_forms",
-    
     "crispy_bootstrap5",
     'message',
     'paymnet',
@@ -97,8 +97,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'house_rental.wsgi.application'
-ASGI_APPLICATION = 'house_rental.asgi.application'
+# ASGI_APPLICATION = 'house_rental.asgi.application'
 
+
+ASGI_APPLICATION = 'house_rental.asgi.application'
+CHANNEL_LAYERS = {
+	"default": {
+		"BACKEND": "channels.layers.InMemoryChannelLayer"
+	}
+}
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -108,8 +115,8 @@ DATABASES = {
             'NAME': BASE_DIR / 'db.sqlite3',
             # 'ENGINE': 'django.db.backends.postgresql',
             # 'NAME': 'mydb',
-            # 'USER': 'israel',
-            # 'PASSSWORD': '326598',
+            # 'USER': 'postgres',
+            # 'PASSSWORD': 'admin',
             # 'HOST': 'localhost',
             # 'PORT': '5431', 
     }

@@ -1,11 +1,8 @@
 {% extends 'base/base.html' %}
-<<<<<<< HEAD
 {% load crispy_forms_tags %}
 {% load static %}
 
 
-=======
->>>>>>> e64048f0303b4009bf6fffcff6eb16adb50d03ac
 
 {% block title %}Inbox{% endblock %}
 
@@ -14,7 +11,6 @@
 {% endblock %}
 
 {% block 'body' %}
-<<<<<<< HEAD
 
 <br>
 <br>
@@ -22,38 +18,17 @@
 <br>
 <br>
 <br>
+
 <h1 class="mb-6 mt-10 text-3xl">Inbox</h1>
-=======
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
->>>>>>> e64048f0303b4009bf6fffcff6eb16adb50d03ac
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for conversation in conversations %}
-                <a href="{% url 'detail' conversation.id %}" class="block">
+                <a href="{% url 'message:detail' conversation.id %}" class="block">
                     <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
                         <div class="p-4">
                             <!-- Display conversation content here -->
                             <!-- For example, conversation item image and name -->
 
-<<<<<<< HEAD
-                <div>
-                    {% for member in conversation.members.all %}
-                        {% if member != request.user %}
-                            <p class="mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
-                            <p>{{ conversation.list.name }}</p>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </a>
-    {% endfor %}
-</div>
-{% endblock %}
-
-{% block 'footer' %}
-{% endblock %}
-=======
                             <!-- Display uploads associated with the conversation -->
                             {% for message in conversation.conversationmessage_set.all %}
                                 <p>{{ message.content }}</p>
@@ -137,4 +112,3 @@
 {% endblock %}
 {% block 'footer' %}
 {% endblock %} {% endcomment %}
->>>>>>> e64048f0303b4009bf6fffcff6eb16adb50d03ac

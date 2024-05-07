@@ -408,11 +408,12 @@
          {% if request.user.profile.userType == 'Public' %}
       <div class="col-sm-5 mt-2">
         <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+        <div id="review-form-container">
       <form method="POST" action="{% url 'single_house_view' id=listing.id %}">
           {% csrf_token %}
           {{ review_form.media }} 
           {{ review_form.as_p }}
-          <script>
+            <script>
             document.addEventListener('DOMContentLoaded', function() {
               var ratingInputs = document.querySelectorAll('.rating-input');
               var hiddenRatingInput = document.getElementById('id_hidden_rating');
@@ -423,9 +424,10 @@
                 });
               });
             });
-          </script>
+          </script> 
           <button type="submit" class="btn btn-sm bg-primary text-white btn-outline-primary">Submit Review</button>
       </form>
+    </div>
     </div>
       {% endif %}
       
@@ -459,8 +461,6 @@
 </div>
 <br>
 <br>
-
-
 
 
 

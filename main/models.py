@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
 from .utils import user_listing_path
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from datetime import datetime
 
 
 class ListingHouseAmenities(models.Model):
@@ -182,8 +182,12 @@ class Image(models.Model):
     
 class Listing(models.Model):
       RADIO_CHOICES = [
-        ('private_room', 'Private Room'),
-        ('shared_room', 'Shared Room'),
+        ('Private room', 'Private Room'),
+        ('Shared room', 'Shared Room'),
+      ]
+      RADIO_CHOICES1 = [
+          ('pending', 'Pending'),
+          ('approved', 'Approved'),
       ]
       id = models.UUIDField(primary_key = True, default = uuid.uuid4, unique=True, editable=False)
       created_at = models.DateTimeField(auto_now_add =True)
@@ -193,12 +197,15 @@ class Listing(models.Model):
       house_kind = models.CharField(max_length=200,choices=RADIO_CHOICES, verbose_name='House Kind')
       description = models.TextField()
       price = models.PositiveSmallIntegerField()
-      available_start = models.DateTimeField(default=timezone.now,null=True)
-      available_end = models.DateTimeField(default=timezone.now,null=True)
+      available_start = models.DateField(default=timezone.now,null=True)
+      available_end = models.DateField(default=timezone.now,null=True)
       photo = models.ImageField(upload_to=user_listing_path)
       address = models.CharField(max_length=255)
       approved = models.BooleanField(default=False)
+      status = models.CharField(max_length=200, choices=RADIO_CHOICES1, default='pending')
     #   rooms = models.ManyToManyField(Room)
+      move_in_date = models.DateField(default=timezone.now,null=True)
+      move_out_date = models.DateField(default=timezone.now,null=True)
       minimum_rental_period = models.CharField(max_length=200,choices=TRANSMISSION_OPTIONS)
       maximum_rental_period = models.CharField(max_length=200,choices=CAR_BRANDS)
       address = models.CharField(max_length=255)
@@ -211,12 +218,86 @@ class Listing(models.Model):
       rules_and_preferences = models.ManyToManyField(RulesAndPreferences)
       image = models.ManyToManyField(Image)
       
+      
+      
+      
     
       def __str__(self):
         sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
         return f"ID {sequential_id} {self.seller.user.username}'s Listing"
     
     
+    
+    
+      def calculate_total_payment(self):
+        total_payment = 0
+
+        # Calculate the number of months between move-in and move-out dates
+        months = (self.move_out_date.year - self.move_in_date.year) * 12 + (self.move_out_date.month - self.move_in_date.month)
+
+        if months > 0:
+            if self.move_in_date.day >= 30:
+                months = months
+
+            # Calculate the total payment
+            total_payment = (self.calculate_total_price()) * months
+
+        return total_payment
+    
+      def calculate_total_price(self):
+        total_price = self.price
+
+        for rental_condition in self.rental_conditions.all():
+            total_price += rental_condition.utility_costs
+
+        return total_price
+    
+    
+
+
+
+
+
+class Upload(models.Model):
+    TENANT_CHOICES = (
+        ('Document', 'Document'),
+        ('Photo', 'Photo')
+    )
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.DO_NOTHING)
+    document = models.FileField(upload_to='uploads/documents/')
+    photo = models.ImageField(upload_to='uploads/photos/')
+    move_in_date = models.DateField(default=timezone.now,null=True)
+    move_out_date = models.DateField(default=timezone.now,null=True)
+    id_proof = models.FileField(upload_to='uploads/Id/')
+    income_proof = models.FileField(upload_to='uploads/Income/')
+    profession_proof = models.FileField(upload_to='uploads/Profession/')
+    created_at = models.DateTimeField(default=timezone.now,null=True)
+
+    
+    def __str__(self):
+        sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
+        return f"Request for Listing ID {sequential_id} Of {self.listing.seller.user.username} by {self.tenant.user.username}"
+
+
+
+
+
+class Request(models.Model):
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    move_in_date = models.DateField(default=timezone.now,null=True)
+    # Add more fields as per your requirements
+    requester = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Add any additional methods or logic as needed
+
+    
+    def __str__(self):
+        sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
+        return f"Request for Listing ID {sequential_id} Of {self.listing.seller.user.username} by {self.requester.user.username}"
+
+
 
 
 class AddressOfListing(models.Model):
@@ -273,13 +354,30 @@ class Document(models.Model):
     def __str__(self):
         return f'{self.seller.user.username}/s Document'
     
-    
-    
 
+class Booking(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    )
+
+    guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    move_in_date = models.DateField()
+    move_out_date = models.DateField()
+    total_price = models.DecimalField(max_digits=8, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    id_proof = models.ImageField(upload_to= user_listing_path)
+    income_proof = models.ImageField(upload_to=user_listing_path)
+    profession_proof = models.ImageField(upload_to=user_listing_path)
+    
     def __str__(self):
-        return f"{self.document.name} - {self.photo.name}"
-    
-    
+        return f'{self.guest.user.username}/s Booking'
+
+    # Other booking attributes and methods
+
+
     
     
     

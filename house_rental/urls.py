@@ -26,7 +26,6 @@ urlpatterns = [
     path('', include('paymnet.urls')),
     path("paypal/", include("paypal.standard.ipn.urls")),  # Updated module name
     path('', include('message.urls')),
-
     path('', include('adminApp.urls')),
     
 ]

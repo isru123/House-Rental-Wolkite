@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect,HttpResponse
 from users.models import Profile,Location
 
-from main.models import Listing
+from main.models import Listing,Request,Upload
 from django.urls import reverse
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -13,33 +13,47 @@ from .models import ConversationMessage
 from .forms import ConversationMessageForm
 from .models import Conversation
 from .models import ConversationMessage
+from datetime import datetime
+from django.contrib import messages
 
-# from main.models import Upload
+
+def is_request_valid(move_in_date, move_out_date, available_start):
+    move_in_date = datetime.strptime(move_in_date, '%Y-%m-%d').date() if isinstance(move_in_date, str) else move_in_date
+    move_out_date = datetime.strptime(move_out_date, '%Y-%m-%d').date() if isinstance(move_out_date, str) else move_out_date
+    available_start = datetime.strptime(available_start, '%Y-%m-%d').date() if isinstance(available_start, str) else available_start
+
+    if available_start <= move_in_date <= move_out_date:
+        return True
+    return False
+
+
+
+
 @login_required
-
-
 def new_conversation(request, product_id):
     listing = get_object_or_404(Listing, id=product_id)
-
+    
+    
+    
     if request.user == listing.seller:
         return redirect('main:home')
 
     # Check if there are existing conversations related to the listing for the current user
     conversations = Conversation.objects.filter(item=listing, members=request.user)
     if conversations.exists():
-        return redirect('detail', conversation_id=conversations.first().id)
+        return redirect('message:detail', conversation_id=conversations.first().id)
 
-    # id_document_url = ''
-    # tenant_photo_url = ''
+    id_document_url = ''
+    tenant_photo_url = ''
 
     # Fetch tenant's document and photo
-    # tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
+    tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
 
     # Assuming you want to use the first upload found
-    # if tenant_uploads.exists():
-    #     tenant_upload = tenant_uploads.first()
-    #     id_document_url = tenant_upload.document.url
-    #     tenant_photo_url = tenant_upload.photo.url
+    if tenant_uploads.exists():
+        tenant_upload = tenant_uploads.first()
+        id_document_url = tenant_upload.document.url
+        tenant_photo_url = tenant_upload.photo.url
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
@@ -56,17 +70,52 @@ def new_conversation(request, product_id):
             conversation_message.created_by = request.user
             conversation_message.save()
 
-            return redirect('detail', conversation_id=conversation.id)
+            return redirect('message:detail', conversation_id=conversation.id)
     else:
         form = ConversationMessageForm()
 
     context = {
         'form': form,
         'listing': listing,
-        # 'id_document_url': id_document_url,
-        # 'tenant_photo_url': tenant_photo_url,
+        'id_document_url': id_document_url,
+        'tenant_photo_url': tenant_photo_url,
     }
     return render(request, 'conversation/new.html', context)
+
+
+
+
+
+def send_notification_to_seller(seller):
+    # Implement your notification logic here
+    # This function could send an email, push notification, or any other form of notification to the seller
+    # You can use a library like Django's EmailMessage or any other notification service
+
+    # Example using Django's EmailMessage
+    from django.core.mail import EmailMessage
+
+    subject = "New Request for Your Listing"
+    message = f"Hello {seller.user.username},\n\nYou have received a new request for your listing.\n\nPlease check your account for further details."
+    email = EmailMessage(subject, message, to=[seller.email])
+    email.send()
+
+
+
+def send_notification_to_admins():
+    # Implement your notification logic here
+    # This function could send an email, push notification, or any other form of notification to the administrators
+    # You can use a library like Django's EmailMessage or any other notification service
+
+    # Example using Django's EmailMessage
+    from django.core.mail import EmailMessage
+    from django.contrib.auth.models import User
+
+    admins = User.objects.filter(is_superuser=True)
+
+    subject = "New Request Received"
+    message = "Hello Admins,\n\nA new request has been received.\n\nPlease check the system for further details."
+    email = EmailMessage(subject, message, to=[admin.email for admin in admins])
+    email.send()
 
 
 
@@ -191,7 +240,7 @@ def detail(request, conversation_id):
             conversation_message.conversation = conversation
             conversation_message.created_by = request.user
             conversation_message.save()
-            return redirect('detail', conversation_id=conversation_id)
+            return redirect('message:detail', conversation_id=conversation_id)
     else:
         form = ConversationMessageForm()
     context = {'conversation': conversation, 'form': form, 'listing_seller':listing_seller}

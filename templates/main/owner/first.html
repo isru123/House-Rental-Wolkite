@@ -80,7 +80,7 @@
 {% block 'body' %}
 
 <div>
-<img src="{% static 'images/bg_1.jpg' %}" class="img-fluid " style="width:2000px; height:500px;" alt="image">
+<img src="{% static 'images/first.jpg' %}" class="img-fluid " style="width:2000px; height:700px;" alt="image">
 
 </div>
 <div>
@@ -110,37 +110,36 @@
 
 
 
-<div class="bg-info-subtle  container-fluid page-header py-5" style="height:500px">
+<div class="bg  container-fluid page-header py-5" style="height:700px;background-color:#0F3057">
     <div class="container text-center">
         <div>
-            <h1 class="text-center">Everything you need to maximise your earnings.</h1>
+            <h1 class="text-center text-info">Everything you need to maximise your earnings.</h1>
         </div>
         <br>
         <br>
         <br>
         <div class="row justify-content-around">
-          <div class="col-6">
-            <h3 class="text-center" style="color:white">Protection from last-minute cancellations</h3>
+           
+          <div class="card bg-white col-6">
+            <h3 class="text-center" style="color:black">Protection from last-minute cancellations</h3>
             <p>To reserve accommodation, the tenant pays one month's rent in advance.
                  Has the tenant cancelled after confirmation? 
                  HousingAnywhere guarantees the first month's rent.</p>
-          </div>
-          <br>
-          <br>
-          <br>
-          <div class="col-6">
-            <h3 class="text-center" style="color:white">Find your perfect tenant with ease</h3>
+          
+         </div>
+
+           <div class="card bg-white col-6">
+            <h3 class="text-center" style="color:black">Find your perfect tenant with ease</h3>
             <p>Save time by only talking to those that you're interested in. 
                 Set the preferences for your ideal tenant, 
                 and receive messages from verified users who meet your criteria.</p>
-          </div>
-          <br>
-            <br>
-            <br>
+           </div>
+
         </div>
+
         <div class="row justify-content-around">
-            <div class="col-6">
-                <h3 class="text-center" style="color:white">Access to local and international tenants</h3>
+            <div class="card bg-white col-6">
+                <h3 class="text-center" style="color:black">Access to local and international tenants</h3>
                 <p>Publish once and reuse whenever you need. 
                     Set custom prices, adjust availability, and block-off time for maintenance.
                      Enjoy complete control over your listings.</p>
@@ -148,8 +147,9 @@
             <br>
             <br>
             <br>
-            <div class="col-6">
-                <h3 class="text-center" style="color:white">Get bookings months in advance</h3>
+            
+            <div class="card bg-white col-6">
+                <h3 class="text-center" style="color:black">Get bookings months in advance</h3>
                 <p>Publish once and reuse whenever you need. 
                     Set custom prices, adjust availability, and block-off time for maintenance.
                      Enjoy complete control over your listings.</p>
@@ -162,12 +162,12 @@
 <br>
 <br>
 <br>
-<div>
-    <img src="{% static 'images/et.jpg' %}" class="img-fluid " style="width:700px; height:700px;" alt="image">
+<div class="mt-10">
+    {% comment %} <img src="{% static 'images/et.jpg' %}" class="img-fluid " style="width:700px; height:700px;" alt="image"> {% endcomment %}
  </div>
 <br>
 <br>
-<div>
+<div style="margin-top:120px">
     <h5 class="text-center">Pricing</h5>
 </div>
 <br>

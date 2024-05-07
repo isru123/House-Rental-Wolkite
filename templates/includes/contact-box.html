@@ -16,15 +16,25 @@
           <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
 
           <hr>
-          <form method="post" action="{% url 'new' product_id=listing.id %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary my-2 btn-block" type="submit">Contact {{listing.seller.user.username}}</button>
-          </form>
+          
+      {% if user_has_sent_request %}
+    <button class="btn btn-primary my-2 btn-block" type="submit">
+        <a class="text-white" href="{% url 'message:new' product_id=listing.id %}">Chat with {{ listing.seller.user.username }}</a>
+    </button>
+      {% else %}
+         
+          
+            <button class="btn btn-primary my-2 btn-block "><a href="{% url 'upload' id=listing.id %} " class="text-white" >Contact {{listing.seller.user.username}}</a></button>
+        
+      
+    </button>
+     {% endif %}
+         
+         
 
           {% if id_document_url %}
             <div class="alert alert-success my- mx-auto">
-              You have successfully send your identity to {{listing.seller.user.username}}!
+              You have successfully sent your identity to {{listing.seller.user.username}}!
             </div>
           {% else %}
             {% if tenant_photo_url %}
@@ -36,7 +46,7 @@
         
           
           <!-- Reserve Now button -->
-          <button class="btn btn-success btn-lg btn-block my-3" onclick="confirmReservation()">Reserve Now</button>
+          <button class="btn btn-success btn-md btn-block my-2" onclick="confirmReservation()">Reserve Now</button>
         </div>
       {% endif %}
       {% if request.user.profile.userType == "Owner" and request.user == listing.seller.user %}
@@ -58,13 +68,13 @@
 </div>
 
 <!-- JavaScript to show popup if document URL is empty -->
-<script>
+{% comment %} <script>
   function confirmReservation() {
     var idDocumentUrl = "{{ id_document_url }}";
     if (!idDocumentUrl) {
       // Show the confirmation popup
       if (confirm("Are you sure you want to proceed? You need to approve your identity before making a reservation.")) {
-        location.href = "{% url 'upload' %}"; // Redirect to the upload page
+        location.href = "{% url 'upload' id=listing.id %}"; // Redirect to the upload page
       } else {
         // User canceled, do nothing
       }
@@ -73,5 +83,30 @@
       // Replace 'reservation' with the appropriate URL name for reservation
       location.href = "{% url 'product-view' product_id=listing.id %}";
     }
+  }
+</script> {% endcomment %}
+
+
+
+<script>
+  function confirmReservation() {
+    var idDocumentUrl = "{{ id_document_url }}";
+    {% if user_has_sent_request %}
+      // User has sent a request
+      location.href = "{% url 'product-view' product_id=listing.id %}"; // Replace 'request-view' with the appropriate URL name for the request view
+    {% else %}
+      // User has not sent a request
+      if (!idDocumentUrl) {
+        // Show the confirmation popup
+        if (confirm("Are you sure you want to proceed? You need to approve your identity before making a reservation.")) {
+          location.href = "{% url 'upload' id=listing.id %}"; // Replace 'upload' with the appropriate URL name for the upload page
+        } else {
+          // User canceled, do nothing
+        }
+      } else {
+        // Document URL is not empty, proceed with reservation
+        location.href = "{% url 'product-view' product_id=listing.id %}"; // Replace 'product-view' with the appropriate URL name for the product view
+      }
+    {% endif %}
   }
 </script>

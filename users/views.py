@@ -13,8 +13,18 @@ from .models import Profile,OTP
 from django.utils.translation import gettext as _
 # from email_validator import validate_email, EmailNotValidError # type: ignore
 from django.contrib.auth.models import User
-
-
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 
 
 
@@ -94,16 +104,37 @@ def SignPage(request):
             verified=False
         )
 
-    
+        messages.success(request, 'You have been successfully Registered')
         return redirect('login')
     return render(request, 'users/sign.html')
 
 
 
     
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
     
-    
+import requests
 
+def validate_email(email):
+    url = "https://emailvalidation.abstractapi.com/v1/"
+    params = {
+        "api_key": "a6f76d710c2e4dd28b34f14742bfa9ed",
+        "email": email
+    }
+
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        # Check the response for validity
+        if response.status_code == 200 and data.get('valid'):
+            return True
+        else:
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"Error occurred during email validation: {e}")
+        return None
 
 
 def OwnerSign(request):
@@ -118,12 +149,34 @@ def OwnerSign(request):
         photo = request.FILES.get('pic')
         address= request.POST.get('address')
         
+        
+        phone_number = contact
+        country_code = 'ET'
+        if not validate_phone_number(phone_number, country_code): 
+            messages.warning(request, 'Invalid Phone Number')
+            return render(request,'users/owner-sign.html')
+            # Replace 'US' with the appropriate country code
+             
+        if not is_strong_password(pass1):
+            messages.warning(request, 'Password Must be Strong')
+            return render(request,'users/owner-sign.html')
+        
+        if not is_strong_password(pass2):
+            messages.warning(request, 'Password Must be Strong')
+            return render(request,'users/owner-sign.html')
+            
+            
+        # if not validate_email(email):
+        #     messages.warning(request, 'Invalid Email Address')
+        #     return render(request,'users/owner-sign.html')
+        
+        
         if pass1!=pass2:
             msg= _('Password should be same.')
             return render(request,'users/owner-sign.html',{'msg':msg})
         if len(contact)!=10:
-            msg= _('Contact should be 10 digit.')
-            return render(request,'users/owner-sign.html',{'msg':msg})
+            messages.warning(request, 'Contact should be 10 digit.')
+            return render(request,'users/owner-sign.html')
         try:
             user=User.objects.create_user(
                 username=username,
@@ -142,8 +195,108 @@ def OwnerSign(request):
             address=address,
             userType="Owner"
             )
+        
+        # send_activation_email(request, user)
+        messages.success(request, 'You have been successfully Registered')
         return redirect('/login/')
     return render(request, 'users/owner-sign.html')
+
+
+
+
+import re
+
+def is_strong_password(password):
+    # Check password length
+    if len(password) < 8:
+        return False
+
+    # Check for at least one uppercase letter
+    if not re.search(r'[A-Z]', password):
+        return False
+
+    # Check for at least one lowercase letter
+    if not re.search(r'[a-z]', password):
+        return False
+
+    # Check for at least one digit
+    if not re.search(r'\d', password):
+        return False
+
+    # Check for at least one special character
+    if not re.search(r'[!@#$%^&*()-=_+[\]{}|;:,.<>/?]', password):
+        return False
+
+    # All checks passed, password is strong
+    return True
+
+
+
+import phonenumbers
+
+def validate_phone_number(phone_number, country_code):
+    try:
+        parsed_number = phonenumbers.parse(phone_number, country_code)
+        return phonenumbers.is_valid_number(parsed_number)
+    except phonenumbers.phonenumberutil.NumberParseException:
+        return False
+    
+    
+
+
+  
+
+
+
+
+def send_activation_email(request, user):
+    uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
+    token = default_token_generator.make_token(user)
+
+    activation_url = reverse('activate_account', kwargs={'uidb64': uid, 'token': token})
+    activation_link = request.build_absolute_uri(activation_url)
+
+    subject = 'Account Verification'
+    from_email = 'fikefiresew1234@gmail.com'  # Replace with your email address
+    to_email = user.email
+
+    context = {
+        'username': user.username,
+        'activation_link': activation_link
+    }
+
+    text_content = 'Please click the link below to verify your account:'
+    html_content = render_to_string('verification_email.html', context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
+
+
+
+
+def activate_account(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        # Activate the user's account
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Your account has been activated. You can now log in.')
+    else:
+        messages.error(request, 'Invalid activation link.')
+
+    return redirect('login')
+        
+
+
 
 
 def ForgotPage(request):

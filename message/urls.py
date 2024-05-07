@@ -2,6 +2,9 @@ from django.urls import path
 
 from .views import inbox_view,detail,new_conversation,edit_message,delete_message,dashboard_view,messages, listigs, books, payments
 
+
+app_name = 'message'
+
 urlpatterns = [
     # Other URL patterns
     path('inbox/', inbox_view, name='inbox_view'),

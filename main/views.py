@@ -32,7 +32,7 @@ from django.template import Context
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from geopy.geocoders import Nominatim
 from users.models import Profile
-
+from message.models import Conversation
 
 
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
@@ -47,6 +47,8 @@ from .models import (
     Image,
     Review,
     AddressOfListing,
+    Upload,
+    Booking,
 )
 
 from .forms import (
@@ -58,8 +60,9 @@ from .forms import (
     RulesAndPreferencesForm,
     ImageForm,
     ReviewForm,
-    
+    BookingForm,
     DocumentForm,
+    UploadForm,
 )
 
 
@@ -272,6 +275,75 @@ def my_view(request, id):
 
 
 
+# def single_house_view(request, id):
+#     filtered_listings = None 
+#     if request.method == 'POST':
+#         form = RentalFilterForm(request.POST or None)
+#         if form.is_valid():
+#             move_in_date = form.cleaned_data['move_in_date']
+#             move_out_date = form.cleaned_data['move_out_date']
+#             filtered_listings = Listing.objects.filter(
+#                 Q(available_start=move_in_date, available_end=move_in_date) |
+#                 Q(available_start=move_out_date, available_end=move_out_date)
+#             )
+#             # Render the filtered listings in the template
+#     else:
+#         form = RentalFilterForm()
+#     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
+   
+#     try:
+#         listing = get_object_or_404(Listing, id=id)
+#         reviews = listing.reviews.all()
+#         review_form = ReviewForm(request.POST)
+#         # listing = Listing.objects.get(id=id)
+        
+#         conversation_id = uuid.uuid4()  # Generate a UUID
+#         tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
+#         id_document_url = ''
+#         tenant_photo_url = ''
+        
+#         # Assuming you want to use the first upload found
+#         if tenant_uploads.exists():
+#             tenant_upload = tenant_uploads.first()
+#             id_document_url = tenant_upload.document.url
+#             tenant_photo_url = tenant_upload.photo.url
+        
+#         latitude = request.GET.get('lat')
+#         longitude = request.GET.get('lng')
+        
+#         if listing is None:
+#              raise Exception
+         
+#         # review_form = ReviewForm()  # Create a new instance of the review form
+        
+        
+#         # form = ReviewForm(request.GET)
+#         if review_form.is_valid():
+#             review = review_form.save(commit=False)
+#             review.listing = listing
+#             review.reviewer = request.user.profile
+#             review.save()
+#             messages.success(request, 'Review added successfully.')
+#             return redirect('single_house_view', id=id)
+
+#         # reviews = Review.objects.filter(listing=listing)
+        
+#         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
+#                                         'filtered_listings':filtered_listings, 
+#                                         'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,
+#                                         'latitude': latitude,'longitude': longitude,
+#                                         'conversation_id': conversation_id,
+#                                         'id_document_url': id_document_url,
+#                                         'tenant_photo_url': tenant_photo_url,})
+        
+#     except Listing.DoesNotExist:
+#         messages.error(request, f'Invalid UID {id} was provided for listing')
+#         # return redirect('home')
+#         return redirect('new', product_id=listing.id, conversation_id=conversation_id)
+
+
+
+
 def single_house_view(request, id):
     filtered_listings = None 
     if request.method == 'POST':
@@ -290,6 +362,9 @@ def single_house_view(request, id):
    
     try:
         listing = get_object_or_404(Listing, id=id)
+        
+        user_has_sent_request = Upload.objects.filter(tenant=request.user.profile, listing=listing).exists()
+        
         reviews = listing.reviews.all()
         review_form = ReviewForm(request.POST)
         # listing = Listing.objects.get(id=id)
@@ -314,12 +389,92 @@ def single_house_view(request, id):
         # reviews = Review.objects.filter(listing=listing)
         
         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,'latitude': latitude,'longitude': longitude})
+                                        'filtered_listings':filtered_listings, 'conversation_id':conversation_id,
+                                        'reviews':reviews,'review_form': review_form,'latitude': latitude,
+                                        'longitude': longitude, 'user_has_sent_request':user_has_sent_request})
     except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         # return redirect('home')
         return redirect('new', product_id=listing.id, conversation_id=conversation_id)
 
+
+
+
+
+def upload(request,id):
+    listing = Listing.objects.get(id=id)
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        
+        try:
+            
+            if form.is_valid():
+                # move_in_date = form.cleaned_data['move_in_date']
+                # move_out_date = form.cleaned_data['move_out_date']
+                # print(listing.available_start)
+                # if is_request_valid(move_in_date, move_out_date,listing.available_start):
+                    
+                upload = form.save(commit=False)
+                user_profile = Profile.objects.get(user=request.user)
+                upload.tenant = user_profile
+                upload.listing = listing  # Assign the listing object
+                upload.save()
+                messages.success(request, 'You have successfully sent the Documents')
+                return redirect('message:new', product_id=listing.id)
+                
+                # else:
+                #     messages.warning(request, 'You have to Correct The Dates')
+        
+        except Exception as e:
+            
+            print(e)
+            messages.warning(request, 'You have to upload the Neccessary files!')
+    else:
+        form = UploadForm()
+    return render(request, 'payment/upload.html', {'form': form, 'listing': listing})
+
+
+
+
+def booking_requests(request):
+    profile = request.user.profile
+    U = Upload.objects.filter(listing__seller=profile)
+    if request.method == "POST":
+        search = request.POST.get("search")
+        # seller = seller.user.username
+        # seller = request.user.profile 
+        U = Upload.objects.filter(tenant__user__username__icontains=search)
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(U, 7)
+    try:
+        U = paginator.page(page)
+    except PageNotAnInteger:
+        U = paginator.page(1)
+    except EmptyPage:
+        U = paginator.page(paginator.num_pages)
+
+    return render(request,'main/owner/booking_requests.html', {'requests': U})
+
+
+
+def messages_view(request):
+    profile = request.user.profile
+    conversations = Conversation.objects.filter(item__seller=profile)
+    context = {
+        'conversations': conversations
+    }
+    return render(request, 'main/owner/messages.html', context)
+
+
+
+
+
+
+def identity_page(request):
+    # Your identity page view logic here
+    return render(request, 'payment/identity.html') 
 
 
 
@@ -477,12 +632,75 @@ class multistepformsubmission(SessionWizardView):
         messages.info(self.request, "Please fill in all the required fields.")
         return super().form_invalid(form)
     
-        
+
             
         # return redirect('master')
     
 # def done_view(request):
 #     return render(request, 'main/major/done.html')
+
+
+def is_request_valid(move_in_date, move_out_date, available_start):
+    move_in_date = datetime.strptime(move_in_date, '%Y-%m-%d').date() if isinstance(move_in_date, str) else move_in_date
+    move_out_date = datetime.strptime(move_out_date, '%Y-%m-%d').date() if isinstance(move_out_date, str) else move_out_date
+    available_start = datetime.strptime(available_start, '%Y-%m-%d').date() if isinstance(available_start, str) else available_start
+
+    if (move_in_date >= available_start) and ((move_out_date - move_in_date).days >= 30) and ((move_out_date - move_in_date).days % 30 == 0):
+        return True
+    return False
+
+
+from django.contrib import messages
+
+def create_booking(request, id):
+    listing = Listing.objects.get(pk=id)
+    
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            
+            booking = form.save(commit=False)
+            booking.guest = request.user.profile
+            booking.listing = listing
+            booking.save()
+            messages.success(request, 'Request sent successfully')
+            return redirect('booking_confirmation', message='success')
+    else:
+        form = BookingForm()
+
+    return render(request, 'includes/booking/create.html', {'form': form, 'listing': listing})
+
+
+
+def booking_confirmation_view(request):
+    
+    return render(request, 'includes/booking/booking_confirmation.html')
+
+
+
+# def booking_requests(request):
+#     booking_requests = Booking.objects.filter(listing__seller=request.user.profile, status='pending')
+#     return render(request, 'booking/booking_requests.html', {'booking_requests': booking_requests})
+
+
+
+def review_booking_request(request,id):
+    booking = Booking.objects.get(pk=id)
+    
+    if request.method == 'POST':
+        if 'accept' in request.POST:
+            booking.status = 'accepted'
+            booking.save()
+            return redirect('booking_requests')
+        elif 'reject' in request.POST:
+            booking.status = 'rejected'
+            booking.save()
+            return redirect('booking_requests')
+
+    return render(request, 'booking/review_booking_request.html', {'booking': booking})
+
+
+
 
 
 def save_listing(request):
@@ -665,12 +883,22 @@ def payement(request):
 
 
 def owner_listings(request):
-    L = Listing.objects.filter(approved=True)
+    profile = request.user.profile
+    L = Listing.objects.filter(seller=profile)
     if request.method == "POST":
         search = request.POST.get("search")
         # seller = seller.user.username
         # seller = request.user.profile 
-        L = Listing.objects.filter(user__house_kind__icontains=search, approved=True)
+        L = Listing.objects.filter(user__house_kind__icontains=search)
+        
+    for listing in L:
+        if listing.approved:
+            listing.status = "Approved"
+        else:
+            listing.status = "Pending"
+            
+            
+        
     
     page = request.GET.get('page', 1)
 

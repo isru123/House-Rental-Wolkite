@@ -1,0 +1,98 @@
+  
+
+   
+* Backpropagation or back propagation of errors
+
+-> designed to test for errors
+-> by going from output nodes to input nodes.
+-> so that neurons can adjust(means thier weights and biases) 
+   themselves if they played a role in error
+-> they have applications in areas such as OCR, 
+ natural language processing and image processing 
+
+
+* Multiple hidden layer
+-> allows the network to learn more complex patterns and representations
+-> having multiple layer allows for increased representational power.
+-> 
+
+* Dimentionality reduction
+
+-> to reduce nummber of features or variables in a dataset 
+ while preserving essential information
+-> converting high dimentionality data to low dimentionality
+-> it's need is because of original dataset has a larger number of features
+which can lead to several challenges.
+
+ Among this challenges 
+
+1. curse of dimentionality
+
+-> when high dimentionality data becomes sparse 
+and the distance between points  become less  meaningful.
+-> and this lead to Overfitting and increased computational complexity.
+
+2. Redundancy and Noise 
+
+-> some features in the dataset may be redundant or haighly correlated.
+
+-> noise or irrelevant information also
+
+
+   We can reduce Dimentionality by Feature Selection and Extraction
+
+-> Selection - Selecting most informative or relevant features.
+-> Extraction - creating new features by combining or transforming original features.
+
+* Cross-Validation
+
+->  main idea is to divide the data into multiple subsets (folds)
+->  and iteratively train and test the model on 
+    different combinations of these subsets.
+
+*  K-Fold Cross-Validation: 
+
+-> The data is split into K equally sized folds.
+-> The model is trained on K-1 folds and tested on the remaining fold.
+-> This process is repeated K times
+->  with each fold serving as the test set once.
+
+* Bootstrapping:
+
+->  Randomly sampling 
+-> with replacement from the original dataset to create new datasets
+-> Useful for estimating confidence 
+   intervals and assessing model stability.
+
+* Resampling
+
+-> involve drawing samples from the
+ available data to fit more accurate models,
+-> perform model selection, and tune parameters.
+
+*  5 × 2-Fold Cross-Validation:
+
+-> data is divided into two subsets (usually randomly).
+-> model is trained on one subset and tested on the other.
+-> process is repeated five times (hence the “5 × 2” notation).
+-> final performance metric is typically an 
+   average of the results from these five iterations.
+-> it balances the trade-off between bias and variance.
+
+*  Batch Gradient Descent
+
+-> the entire training dataset is used to 
+  compute the gradient of the cost function.
+-> It provides a smooth convergence toward the minimum
+   of the cost function.
+
+* Stochastic Gradient Descent (SGD)
+
+-> only one randomly selected training example is used for each update
+-> more noise due to randomness.
+
+
+
+
+
+

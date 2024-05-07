@@ -151,6 +151,8 @@
        <div class="nk-sidebar bg-dark">
            <div class="">
                <br>
+               <br>
+               <br>
                <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
                    <li>
                        <a href="{% url 'board' %}" aria-expanded="false">
@@ -182,6 +184,8 @@
                         <li>
                             <a href="{% url 'add-admin' %}"><i class="fa fa-user" style="color: white;"></i> Add admin</a>
                         </li>
+                        <li class="list-group-item"> <a href="{% url 'admin_tenant' recipient_username=request.user %}"
+                            class="text-decoration-none text-black">Messages</a> </li>
                        </ul>
                    </li>
                    {% comment %} {% endif %} {% endcomment %}

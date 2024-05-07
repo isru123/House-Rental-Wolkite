@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
-{% block title %}
+{% block 'title' %}
     <title>Housing In Wolkite | Home</title>
 {% endblock %}
 {% block 'header' %}
@@ -16,6 +17,7 @@
           <li class="breadcrumb-item">
             <a href="{% url 'master' %}">{{ _("Listings") }}</a>
           </li>
+         
           <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
         </ol>
       </nav>
@@ -32,7 +34,7 @@
                     <!-- upload.html -->
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.as_p }}
+                        {{ form|crispy}}
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
                 </div>
@@ -41,6 +43,6 @@
     </div>
 </div>
 {% endblock %}
-
+{% comment %} action="{% url 'new' product_id=listing.id %}" {% endcomment %}
 {% block 'footer' %}
 {% endblock %}

@@ -1,6 +1,6 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
-from .models import Image,Review,Listing,Document,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing
+from .models import Image,Review,Listing,Document,Booking,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing,Upload
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from dal import autocomplete
@@ -100,6 +100,10 @@ class RentalFilterForm(forms.Form):
         widget=forms.DateInput(attrs={'type': 'date'}),
         label='Move-out Date'
     )
+    
+    class Meta:
+        model = Listing
+        fields = ['move_in_date', 'move_out_date']
 
 
 class ReviewForm(forms.ModelForm):
@@ -150,6 +154,41 @@ class DocumentForm(forms.ModelForm):
         model = Document
         fields = ('id_photo', 'house_map')
         
+
+
+class UploadForm(forms.ModelForm):
+    move_in_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Move-in Date',
+        required=True,
+    )
+    move_out_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Move-out Date',
+        required=True,
+    )
+    
+    class Meta:
+        model = Upload
+        fields = ['document', 'photo','move_in_date','move_out_date','id_proof','income_proof','profession_proof']
+        
+
+class BookingForm(forms.ModelForm):
+    move_in_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Move-in Date',
+        required=True,
+    )
+    move_out_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Move-out Date',
+        required=True,
+    )
+    
+    
+    class Meta:
+        model = Booking
+        fields = ['move_in_date', 'move_out_date', 'id_proof', 'income_proof', 'profession_proof']
         
     
         

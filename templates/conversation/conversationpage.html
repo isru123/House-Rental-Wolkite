@@ -85,7 +85,7 @@
         </div>
     </div> 
 
-    <form id="write-form" method="post" action="{% url 'detail' conversation_id=conversation.id %}" style="display: none;">
+    <form id="write-form" method="post" action="{% url 'message:detail' conversation_id=conversation.id %}" style="display: none;">
         {% csrf_token %}
         <div class="input-group mt-2" style="width:1000px;">
             {{ form.content }}
@@ -94,6 +94,7 @@
         <button type="submit" class="btn btn-primary mt-3 btn-width">Send</button>
     </form>
     
+    <button class="btn btn-primary mt-3 btn-width" ><a href="{% url 'message:dashboard_renter' %}" style="color:white;" >Dashboard</a></button>
     
 
     <button id="start-writing-btn" class="btn btn-primary mt-3" style="display: inline-block;">Start Writing</button>

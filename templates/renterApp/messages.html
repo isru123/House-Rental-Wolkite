@@ -70,7 +70,7 @@
                <br>
                <ul class="metismenu" id="menu">
                    <li>
-                       <a href="{% url 'dashboard_renter' %}" aria-expanded="false">
+                       <a href="{% url 'message:dashboard_renter' %}" aria-expanded="false">
                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                        </a>
                    </li>
@@ -82,14 +82,14 @@
                        </a>
                        <ul>
                     
-                        <li><a href="{% url 'messages' %}">messages</a></li>
+                        <li><a href="{% url 'message:messages' %}">messages</a></li>
                         <li>
-                            <a href="{% url 'payments' %}">Payment history</a>
+                            <a href="{% url 'message:payments' %}">Payment history</a>
                         </li>
 
                        
                         <li>
-                            <a href="{% url 'books' %}">Books</a>
+                            <a href="{% url 'message:books' %}">Books</a>
                         </li>
                        </ul>
                    </li>

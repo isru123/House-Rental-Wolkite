@@ -2,7 +2,7 @@
 from django.urls import path
 from main.views import master_view
 from .views import admin_view,AllUser,Dashboard ,add_admin_view,manage_customer_view,ViewUser,DeleteUser,Approve_listing,retrieve_images,approve_owner_request,manage_owner_task
-from .views import add_listing,add_house_owner,add_tenant,AdminHelpDesk,HelpDesk
+from .views import add_listing,add_house_owner,add_tenant,AdminHelpDesk,HelpDesk,admin_tenant_messaging,landlord_admin_messaging
 
 
 urlpatterns = [
@@ -24,5 +24,8 @@ urlpatterns = [
     path('add-tenant/', add_tenant , name='add-tenant'),
     path('admin-helpdesk/', AdminHelpDesk, name='admin-helpdesk'),
     path('helpdesk/', HelpDesk , name='helpdesk'),
+    path('admin-tenant/<str:recipient_username>/', admin_tenant_messaging, name='admin_tenant'),
+    path('landlord-admin/', landlord_admin_messaging, name='landlord_admin'),
+    # path('chat/<str:recipient_username>/', views.chat_view, name='chat'),
 ]
 

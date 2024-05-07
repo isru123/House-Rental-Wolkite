@@ -17,7 +17,8 @@ from main.models import ListingHouseAmenities
 from users.forms import ProfileForm
 from django.core.mail import send_mail
 # Create your views here.
-
+from message.models import Conversation,ConversationMessage
+from message.forms import ConversationMessageForm
 
 def admin_view(request):
     return render(request, 'adminApp/adminHome.html')
@@ -65,10 +66,10 @@ def Dashboard(request):
 #     return render(request, 'adminApp/approve-owner.html')
 
 def manage_customer_view(request):
-    u = Profile.objects.filter(verified=True).exclude(user=request.user)
+    u = Profile.objects.filter(verified=True).exclude(user=request.user).exclude(user__profile__userType='Admin')
     if request.method == "POST":
         search = request.POST.get("search")
-        u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user=request.user)
+        u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user=request.user).exclude(user__profile__userType='Admin')
         # exclude(user__profile__userType='Admin')
     page = request.GET.get('page', 1)
 
@@ -135,6 +136,7 @@ def add_admin_view(request):
             address=address,
             userType="Admin"
             )
+        messages.info(request, 'An admin Registered seccessfully')
         return redirect('/all-user/')
     return render(request, 'adminApp/add-admin.html')
 
@@ -177,6 +179,7 @@ def add_house_owner(request):
             address=address,
             userType="Owner"
             )
+        messages.info(request, 'An house owner Registered seccessfully')
         return redirect('/manage-customer/')
     return render(request, 'adminApp/add-house-owner.html')
     
@@ -219,6 +222,7 @@ def add_tenant(request):
             userType="Public"
             )
         
+        messages.info(request, 'A tenant Registered seccessfully')
         return redirect('/manage-customer/')
     return render(request, 'adminApp/add-tenant.html')
     
@@ -436,7 +440,7 @@ def AllUser(request):
         u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user=request.user)
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(u, 10)
+    paginator = Paginator(u, 7)
     try:
         u = paginator.page(page)
     except PageNotAnInteger:
@@ -533,5 +537,21 @@ def HelpDesk(request):
 
 
 
+# @login_required(login_url='login')
+# def chat_view(request, recipient_username):
+#     return render(request, 'chat.html', {'recipient_username': recipient_username})
+
+
+def admin_tenant_messaging(request,recipient_username):
+    return render(request, 'adminApp/adminMessage.html', {'recipient_username': recipient_username})
+
+
+def landlord_admin_messaging(request):
+    admin = request.user
+    conversations = Conversation.objects.filter(members=admin)
+    context = {
+        'conversations': conversations
+    }
+    return render(request, 'adminApp/out_box.html', context)
 
         

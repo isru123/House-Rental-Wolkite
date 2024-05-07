@@ -341,10 +341,12 @@ from django.utils.html import strip_tags
 def CheckOut(request, product_id):
     product = Listing.objects.get(id=product_id)
     host = request.get_host()
-
-    # Generate a UUID for the payment ID
-    payment_id = uuid.uuid4().hex
-
+    
+    all_listings = list(Listing.objects.all())
+    sequential_id = all_listings.index(product) + 1
+   
+    username = request.user.username
+    payment_id = f"{username.upper()}{sequential_id}"
     # Get the seller's user object
     recipient_user = product.seller.user  # Assuming the seller is associated with a user
 
