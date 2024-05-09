@@ -12,7 +12,7 @@ urlpatterns = [
     path('error/', views.error_page, name='error_page'),
 
     path('payment-failed/<uuid:product_id>/', views.paymentFailed, name='payment-failed'),
-  path('mark-notification/<int:id>/', views.mark_notification_as_seen, name='mark_notification_as_seen'),
+    path('mark-notification/<int:id>/', views.mark_notification_as_seen, name='mark_notification_as_seen'),
     path('poster/', views.poster, name='poster'),
     path('submit-tenant-info/', views.submit_tenant_info, name='submit_tenant_info'),
     path('confirm-booking/<uuid:booking_id>/', views.confirm_booking, name='confirm_booking'),

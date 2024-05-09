@@ -1,9 +1,9 @@
-{% extends 'base/base.html' %}
+{% extends 'base/adminbase.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
 
     {% block 'body' %}
-     <!-- Single Page Header start -->
+     {% comment %} <!-- Single Page Header start -->
  <div class="container-fluid page-header py-5" style="background-color: #1877F2; height:50px">
     <h1 class="text-center text-white display-6">Dashboard</h1>
     <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
@@ -15,7 +15,7 @@
 
 <br>
 <br>
-<br>
+<br> {% endcomment %}
 <br>
 <hr>
     <body>
@@ -51,21 +51,21 @@
                 </div>
 
                 {% comment %} <h1 class="mb-6 text-2xl">Inbox</h1> {% endcomment %}
-             <div class="card bg-light ml-5 mt-3" style="width:500px">
+             <div class="card bg-light ml-5 mt-3" style="width:500px; height:600px;">
                 <div class="space-y-6">
                     {% for conversation in conversations %}
                     {% comment %} <h1>Hi</h1> {% endcomment %}
-                        <a href="{% url 'detail' conversation.id %}">
+                        <a href="{% url 'message:detail' conversation.id %}">
                             <div class="p-6 flex bg-gray-100 rounded-xl">
                                 <div class="pr-6">
-                                    <img src="{{ conversation.list.image.url }}" class="w-20 rounded-xl">
+                                    <img src="{{ conversation.list.image.url }}" class="w-40 rounded-xl">
                                 </div>
                 
                                 <div>
                                     {% for member in conversation.members.all %}
                                         {% if member != request.user %}
                                         {% comment %} <div class="card ml-3 mt-5 bg-white"> {% endcomment %}
-                                            <div class="card bg-white text-primary mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</div>
+                                            <div class="card bg-white text-info mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</div>
                                             <p>{{ conversation.list.name }}</p>
                                         
                                         {% endif %}

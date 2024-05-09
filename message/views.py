@@ -15,6 +15,7 @@ from .models import Conversation
 from .models import ConversationMessage
 from datetime import datetime
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def is_request_valid(move_in_date, move_out_date, available_start):
@@ -372,11 +373,49 @@ def payments(request):
         return redirect('login')
     
     # Filter payments where the logged-in user is either the payer or the recipient
-    all_payments = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+    A = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+    
+    page = request.GET.get('page', 1)
 
+    paginator = Paginator(A, 7)
+    try:
+        A = paginator.page(page)
+    except PageNotAnInteger:
+        A = paginator.page(1)
+    except EmptyPage:
+        A = paginator.page(paginator.num_pages)
     # Pass the filtered payments to the template
-    context = {
-        'all_payments': all_payments
-    }
+  
+    return render(request, 'renterApp/payment.html', {'payments':A})
 
-    return render(request, 'renterApp/payment.html', context)
+
+def booking_ask(request):
+    profile = request.user.profile
+    R = Upload.objects.filter(tenant=profile)
+    if request.method == "POST":
+        search = request.POST.get("search")
+        # seller = seller.user.username
+        # seller = request.user.profile 
+        R = Upload.objects.filter(listing__price=search)
+        
+    for ask in R:
+        if ask.accepted is not True and ask.accepted is not False:
+            ask.status = "Pending"
+        elif ask.accepted is True:
+            ask.status = "Accepted"
+        else:
+            ask.status = "Rejected"
+            
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(R, 7)
+    try:
+        R = paginator.page(page)
+    except PageNotAnInteger:
+        R = paginator.page(1)
+    except EmptyPage:
+        R = paginator.page(paginator.num_pages)
+
+    return render(request,'renterApp/booking_ask.html', {'requests': R})
+
+

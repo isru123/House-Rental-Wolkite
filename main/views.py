@@ -427,8 +427,9 @@ def upload(request,id):
         
         except Exception as e:
             
-            print(e)
+            
             messages.warning(request, 'You have to upload the Neccessary files!')
+            print(e)
     else:
         form = UploadForm()
     return render(request, 'payment/upload.html', {'form': form, 'listing': listing})
@@ -438,12 +439,12 @@ def upload(request,id):
 
 def booking_requests(request):
     profile = request.user.profile
-    U = Upload.objects.filter(listing__seller=profile)
+    U = Upload.objects.filter(listing__seller=profile, status='Pending')
     if request.method == "POST":
         search = request.POST.get("search")
         # seller = seller.user.username
         # seller = request.user.profile 
-        U = Upload.objects.filter(tenant__user__username__icontains=search)
+        U = Upload.objects.filter(tenant__user__username__icontains=search, status='Pending')
     
     page = request.GET.get('page', 1)
 
@@ -916,6 +917,36 @@ def owner_listings(request):
 
 
 
+
+def approve_tenant_request(request, listing_id):
+    
+    upload = Upload.objects.filter(listing_id=listing_id).first()
+
+    
+    upload.accepted = True
+    upload.save() 
+ 
+    
+    messages.success(request, 'Request Approved!')
+    return redirect('Request')
+    
+    
+
+
+
+# subject = 'Listing Approved'
+    # from_email = settings.EMAIL_HOST_USER
+    # to_email = ['lema2127@gmail.com']
+    
+    # messages.info(request, 'Welcome To Housing At Wolkite')
+    # messages.success(request, 'Listing has been verified.')
+    
+    # html_content = render_to_string('adminApp/email_template.html', {'variable1': 'Welcome To Housing At Wolkite', 'variable2': 'Listing has been verified.'})
+    # # Create the email message
+    # email_message = EmailMultiAlternatives(subject, body=None, from_email=from_email, to=to_email)
+    # email_message.attach_alternative(html_content, "text/html")
+    # email_message.send()
+    # Redirect to a success page or back to the listing details page
 
 def upload_documents(request):
     message = None

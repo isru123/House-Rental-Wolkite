@@ -100,31 +100,37 @@
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar">
+       <div class="nk-sidebar" style="background-color:#0F3057">
            <div class="">
                <br>
-               <ul class="metismenu" id="menu">
+               <br>
+               <br>
+               <ul class="metismenu" id="menu" style="background-color:#0F3057">
+                
                    <li>
                        <a href="{% url 'message:dashboard_renter' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-2"></i>    Dashboard</span>
                        </a>
                    </li>
                 
-                   <li class="mega-menu mega-menu-sm">
+                   <li class="mega-menu mega-menu-sm" style="background-color:#0F3057">
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text">Tenant</span>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Tenant</span>
                        </a>
-                       <ul> 
+                       <ul style=" background-color: #0F3057;"> 
                     
-                        <li><a href="{% url 'message:messages' %}">messages</a></li>
+                        <li><a href="{% url 'message:messages' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     messages</a></li>
                         <li>
-                            <a href="{% url 'message:payments' %}">Payment history</a>
+                            <a href="{% url 'message:payments' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Payment history</a>
                         </li>
 
                       
                         <li>
-                            <a href="{% url 'message:books' %}">Books</a>
+                            <a href="{% url 'message:books' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Booking</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'message:ask' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Booking Request</a>
                         </li>
                        </ul>
                    </li>

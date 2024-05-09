@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,owner_second_view,upload,identity_page
-from .views import multistepformsubmission,payement,map_view,messages_view,booking_requests,edit_listing_view,search,owner_listings,review_view,rate_image,my_view,create_booking,booking_confirmation_view
+from .views import multistepformsubmission,approve_tenant_request,payement,map_view,messages_view,booking_requests,edit_listing_view,search,owner_listings,review_view,rate_image,my_view,create_booking,booking_confirmation_view
 from .autocomplete import AddressAutocomplete
 
 urlpatterns = [
@@ -30,7 +30,7 @@ urlpatterns = [
      path('messages_board/', messages_view , name="MIDI"),
      # path('done/', done_view , name='done'),
      # path('second/', upload_documents, name='upload_documents'),
-     
+     path('approve-tenant-request/<uuid:listing_id>/', approve_tenant_request, name='approve_tenant_request'),
      path('booking/<str:id>/', create_booking , name='booking'),
      path('booking_confirmation/', booking_confirmation_view , name='booking_confirmation'),
     

@@ -422,10 +422,6 @@ def approve_owner_request(request, listing_id):
     email_message = EmailMultiAlternatives(subject, body=None, from_email=from_email, to=to_email)
     email_message.attach_alternative(html_content, "text/html")
     email_message.send()
-    
-    
-   
-    
     # Redirect to a success page or back to the listing details page
     return redirect('master')
 

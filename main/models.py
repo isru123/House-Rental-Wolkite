@@ -263,17 +263,26 @@ class Upload(models.Model):
         ('Document', 'Document'),
         ('Photo', 'Photo')
     )
+    STATUS_CHOICES = [
+        ('Rejected', 'Rejected'),
+        ('Accepted', 'Accepted'),
+        ('Pending', 'Pending'),
+    ]
     tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.DO_NOTHING)
-    document = models.FileField(upload_to='uploads/documents/')
+    document = models.ImageField(upload_to='uploads/documents/')
     photo = models.ImageField(upload_to='uploads/photos/')
     move_in_date = models.DateField(default=timezone.now,null=True)
     move_out_date = models.DateField(default=timezone.now,null=True)
-    id_proof = models.FileField(upload_to='uploads/Id/')
-    income_proof = models.FileField(upload_to='uploads/Income/')
-    profession_proof = models.FileField(upload_to='uploads/Profession/')
+    id_proof = models.ImageField(upload_to='uploads/Id/')
+    income_proof = models.ImageField(upload_to='uploads/Income/')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    accepted = models.BooleanField()
+    
+    profession_proof = models.ImageField(upload_to='uploads/Profession/')
     created_at = models.DateTimeField(default=timezone.now,null=True)
-
+    
+   
     
     def __str__(self):
         sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
