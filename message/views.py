@@ -232,6 +232,7 @@ def inbox_view(request):
 
 
 def detail(request, conversation_id):
+  
     conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
     listing_seller = conversation.item.seller
     if request.method == 'POST':
@@ -241,6 +242,10 @@ def detail(request, conversation_id):
             conversation_message.conversation = conversation
             conversation_message.created_by = request.user
             conversation_message.save()
+            
+            
+           
+                
             return redirect('message:detail', conversation_id=conversation_id)
     else:
         form = ConversationMessageForm()
@@ -282,11 +287,13 @@ def booking_page(request, conversation_id):
 
 @login_required
 def dashboard_view(request):
+    user = request.user.id
     bookings = Booking.objects.filter(tenant=request.user)
     payment_history = Payment.objects.filter(payer=request.user)
-    messages_received = ConversationMessage.objects.all()
+    messages_received = ConversationMessage.objects.filter(recipient=user)
     
     # Calculate the total number of messages
+    
     total_messages_count = messages_received.count()
     context = {
         'bookings': bookings,
@@ -320,11 +327,17 @@ def books(request):
         return redirect('login')
     
     # Filter bookings where the logged-in user is either the tenant or the owner
-    all_bookings = Booking.objects.filter(tenant=request.user) 
-
+    all_bookings = Booking.objects.filter(tenant=request.user)
+    # all_listing = list(Booking.objects.filter(tenant=request.user))
+    # sequential_id = all_listing.index(all_bookings[0]) + 1
+   
+    # print(sequential_id)
+    # username = request.user.username
+    # payment_id = f"{username.upper()}{sequential_id}"
     # Pass the filtered bookings to the template
     context = {
-        'all_bookings': all_bookings
+        'all_bookings': all_bookings,
+        
     }
 
     return render(request, 'renterApp/books.html', context)
@@ -399,11 +412,11 @@ def booking_ask(request):
         R = Upload.objects.filter(listing__price=search)
         
     for ask in R:
-        if ask.accepted is not True and ask.accepted is not False:
+        if ask.status != 'Accepted' and ask.status != 'Rejected':
             ask.status = "Pending"
-        elif ask.accepted is True:
+        elif ask.status == 'Accepted':
             ask.status = "Accepted"
-        else:
+        elif ask.status == 'Rejected':
             ask.status = "Rejected"
             
     page = request.GET.get('page', 1)

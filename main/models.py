@@ -206,8 +206,8 @@ class Listing(models.Model):
     #   rooms = models.ManyToManyField(Room)
       move_in_date = models.DateField(default=timezone.now,null=True)
       move_out_date = models.DateField(default=timezone.now,null=True)
-      minimum_rental_period = models.CharField(max_length=200,choices=TRANSMISSION_OPTIONS)
-      maximum_rental_period = models.CharField(max_length=200,choices=CAR_BRANDS)
+      id_photo = models.ImageField(upload_to='uploads/gov_id/')
+      house_map = models.ImageField(upload_to='uploads/house_map/')
       address = models.CharField(max_length=255)
       latitude = models.FloatField(blank=True, null=True)
       longitude = models.FloatField(blank=True, null=True)
@@ -223,9 +223,11 @@ class Listing(models.Model):
       
     
       def __str__(self):
-        sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
-        return f"ID {sequential_id} {self.seller.user.username}'s Listing"
+          return str(self.id)
+        
+      
     
+    # sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
     
     
     
@@ -268,6 +270,10 @@ class Upload(models.Model):
         ('Accepted', 'Accepted'),
         ('Pending', 'Pending'),
     ]
+    STATUS_CHOICES2 = [
+        ('Reject', 'Reject'),
+        ('Accept', 'Accept'),
+    ]
     tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.DO_NOTHING)
     document = models.ImageField(upload_to='uploads/documents/')
@@ -277,7 +283,7 @@ class Upload(models.Model):
     id_proof = models.ImageField(upload_to='uploads/Id/')
     income_proof = models.ImageField(upload_to='uploads/Income/')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
-    accepted = models.BooleanField()
+    accepted = models.CharField(max_length=10, choices=STATUS_CHOICES2, default='Pending')
     
     profession_proof = models.ImageField(upload_to='uploads/Profession/')
     created_at = models.DateTimeField(default=timezone.now,null=True)
@@ -357,8 +363,9 @@ class LikedListing(models.Model):
 class Document(models.Model):
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.OneToOneField(Listing, on_delete=models.CASCADE)
-    id_photo = models.ImageField(upload_to=user_listing_path)
-    house_map = models.ImageField(upload_to=user_listing_path)
+    id_photo = models.ImageField(upload_to='uploads/gov_id/')
+    house_map = models.ImageField(upload_to='uploads/house_map/')
+    created_at = models.DateTimeField(default=timezone.now,null=True)
     
     def __str__(self):
         return f'{self.seller.user.username}/s Document'

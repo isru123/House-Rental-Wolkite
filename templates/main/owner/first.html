@@ -30,7 +30,7 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'main:home' %}" class="nav-item nav-link active">Home</a>
                     <a href="shop.html" class="nav-item nav-link">How it works</a>
                     <a href="" class="nav-item nav-link">Pricing</a>
                     <a href="" class="nav-item nav-link">Help</a>
@@ -91,7 +91,7 @@
 
 <div class="container text-center">       
 <div style="align-center">
-<a href="{% url 'multistepformsubmission' %}"  class="btn btn-success my-2">Get started</a>
+<a href="{% url 'main:multistepformsubmission' %}"  class="btn btn-success my-2">Get started</a>
 </div>
 </div>
 
@@ -195,7 +195,7 @@
           Send Email
        </button> {% endcomment %}
        <div style="align-center">
-        <a href="{% url 'multistepformsubmission' %}"  class="btn btn-primary my-2">Get started</a>
+        <a href="{% url 'main:multistepformsubmission' %}"  class="btn btn-primary my-2">Get started</a>
         </div>
 
       </div>

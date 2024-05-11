@@ -87,6 +87,7 @@ def main_view(request):
 def master_view(request):
     all_listings  = Listing.objects.all()
     listing_filter  = ListingFilter(request.GET, queryset=all_listings )
+    
    
     # listings = listings.prefetch_related('rules_and_preferences')
     
@@ -107,7 +108,7 @@ def master_view(request):
         'listing_space_overview',
         'listing_house_area',
         'rental_condition',
-        'image'
+        'image',
     )
     return render(request, 'main/major/master.html',  {'listing_filter': listing_filter,
                                                'filtered_listings': filtered_listings})
@@ -130,7 +131,33 @@ def owner_view(request):
 
 
 def dashboard_view(request):
-    return render(request, 'main/owner/dashboard.html')
+    profile = request.user.profile
+    listings = Listing.objects.filter(seller=profile)
+    pending_listing = Listing.objects.filter(seller=profile, approved=False)
+    accepted_listings = Listing.objects.filter(seller=profile, approved=True)
+    booking_requests = Upload.objects.filter(listing__seller=profile)
+    accepted_requests = Upload.objects.filter(listing__seller=profile, status='Accepted')
+    rejected_requests = Upload.objects.filter(listing__seller=profile, status='Rejected')
+    # payment_history = Payment.objects.filter(payer=request.user)
+    # messages_received = ConversationMessage.objects.filter(recipient=user)
+    
+    # Calculate the total number of messages
+    total_listings = listings.count()
+    pendings = pending_listing.count()
+    accepted_listings = accepted_listings.count()
+    booking_requests = booking_requests.count()
+    accepted_requests = accepted_requests.count()
+    rejected_requests = rejected_requests.count()
+    # total_messages_count = messages_received.count()
+    context = {
+        'total_listings': total_listings,
+        'pendings':pendings,
+        'accepted_listings':accepted_listings,
+        'booking_requests':booking_requests,
+        'accepted_requests':accepted_requests,
+        'rejected_requests':rejected_requests,
+    }
+    return render(request, 'main/owner/dashboard.html', context)
 
 # def listing_view(request):
 #     return render(request, 'main/owner/listing.html')
@@ -204,10 +231,10 @@ def my_view(request, id):
     
     if request.method == 'POST':
         try:
-            form = DocumentForm(request.POST, request.FILES)
+            # form = DocumentForm(request.POST, request.FILES)
             
-            location_form = LocationForm(request.POST)
-            address_1 = request.POST.get('addloc')
+            # location_form = LocationForm(request.POST)
+            # address_1 = request.POST.get('addloc')
             address = request.POST.get('addloc')
             listing = Listing.objects.get(pk=id)  # Replace `listing_id` with the appropriate value
             
@@ -221,44 +248,53 @@ def my_view(request, id):
             
             listing.address = address
             listing.save()
+            messages.success(request= 'we will give you a remainder when the listing is approved')
+            return redirect('main:upload_file' , id=listing.id)
             
             
             
             
             
-            if location_form.is_valid():
+            # if location_form.is_valid():
                 
-                listing = Listing.objects.get(pk=id) 
-                listing.seller = request.user.profile
-                listing_location = location_form.save(commit=False)
-                listing_location.listing = listing
-                listing_location.address_1 = address_1 
-                listing_location.save()
+            #     listing = Listing.objects.get(pk=id) 
+            #     listing.seller = request.user.profile
+            #     listing_location = location_form.save(commit=False)
+            #     listing_location.listing = listing
+            #     listing_location.address_1 = address_1 
+            #     listing_location.save()
                 
-            else:
-                messages.info(request, 'You have to fill the form')
-                return redirect('my-form', id=listing.id)
+            # else:
+            #     messages.info(request, 'You have to fill the form')
+            #     return redirect('my-form', id=listing.id)
             
-            if form.is_valid():
-                try:
+            # if form.is_valid():
+            #     try:
+                    # upload = form.save(commit=False)
+                    # user_profile = Profile.objects.get(user=request.user)
+                    # upload.seller = user_profile
+                    # upload.listing = listing  # Assign the listing object
+                    # upload.save()
+                    # messages.success(request, 'You have successfully sent the Documents')
+                    # return redirect('main:my-form', id=listing.id)
+                
+                    # listing = get_object_or_404(Listing, id=id)
+                    # document = form.save(commit=False)
+                    # document.seller = listing.seller  # Assign the seller object to the document
+                    # document.listing = listing  # Assign the listing object to the document
+                    # document.save()
                     
-                    listing = get_object_or_404(Listing, id=id)
-                    document = form.save(commit=False)
-                    document.seller = listing.seller  # Assign the seller object to the document
-                    document.listing = listing  # Assign the listing object to the document
-                    document.save()
-                    
-                except Listing.DoesNotExist:
-                    messages.error(request, "First, you need to create a listing.")
-                    return redirect('multistepformsubmission')
+                # except Listing.DoesNotExist:
+                #     messages.error(request, "First, you need to create a listing.")
+                #     return redirect('multistepformsubmission')
 
                 
                 
-                message = messages.success(request, 'You successfully submitted.')
-                return redirect('my-form', id=listing.id)
-            else:
-                messages.info(request, 'You have to fill the form')
-                return redirect('my-form', id=listing.id)
+                # message = messages.success(request, 'You successfully submitted.')
+                # return redirect('my-form', id=listing.id)
+            # else:
+            #     messages.info(request, 'You have to fill the form')
+            #     return redirect('my-form', id=listing.id)
             
         except Exception as e:
             print(e)
@@ -267,10 +303,10 @@ def my_view(request, id):
             )
             
     else:
-        form = DocumentForm()
-        location_form = LocationForm()
+        
+        listing = Listing.objects.get(pk=id) 
     
-    return render(request, 'main/major/my_form.html', {'location_form':location_form, 'form': form,'showaddress': address, 'mss':mss,'message':message, 'listing_id': listing.id})
+    return render(request, 'main/major/my_form.html', {'showaddress': address, 'listing_id': listing.id})
     
 
 
@@ -362,7 +398,7 @@ def single_house_view(request, id):
    
     try:
         listing = get_object_or_404(Listing, id=id)
-        
+        request_is_approved = Upload.objects.filter(tenant=request.user.profile, listing=listing , status= 'Accepted')
         user_has_sent_request = Upload.objects.filter(tenant=request.user.profile, listing=listing).exists()
         
         reviews = listing.reviews.all()
@@ -391,7 +427,7 @@ def single_house_view(request, id):
         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
                                         'filtered_listings':filtered_listings, 'conversation_id':conversation_id,
                                         'reviews':reviews,'review_form': review_form,'latitude': latitude,
-                                        'longitude': longitude, 'user_has_sent_request':user_has_sent_request})
+                                        'longitude': longitude, 'user_has_sent_request':user_has_sent_request,'request_is_approved':request_is_approved})
     except Listing.DoesNotExist:
         messages.error(request, f'Invalid UID {id} was provided for listing')
         # return redirect('home')
@@ -433,6 +469,7 @@ def upload(request,id):
     else:
         form = UploadForm()
     return render(request, 'payment/upload.html', {'form': form, 'listing': listing})
+
 
 
 
@@ -553,7 +590,9 @@ class multistepformsubmission(SessionWizardView):
                           address = form_data[0]['address'],
                           house_kind = form_data[0]['house_kind'],
                           price = form_data[0]['price'], available_start = form_data[0]['available_start'],
-                          available_end = form_data[0]['available_end'] , 
+                          available_end = form_data[0]['available_end'] ,
+                          id_photo = form_data[0]['id_photo'],
+                          house_map = form_data[0]['house_map'],
                           seller=seller )
         # Get the address from the form data and update the existing listing
         
@@ -624,10 +663,12 @@ class multistepformsubmission(SessionWizardView):
         
         images.save()
         listing.image.add(images)
+        listing_id = Listing.objects.get(id=listing.id)
+        print(listing_id)
         # data = Listing.objects.all()
         # return render(self.request, 'main/owner/done.html', {'data': data})
         messages.add_message(self.request, messages.INFO, "We will give you a reminder when your listing is approved in 24 hours")
-        return render(self.request, 'main/owner/done.html',  {'listing_id': listing.id})
+        return redirect( 'main:my-form', id=listing_id)
     
     def form_invalid(self, form):
         messages.info(self.request, "Please fill in all the required fields.")
@@ -831,7 +872,189 @@ def edit_listing_view(request):
 
 
     
+
+
+
+
+
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
+@method_decorator(login_required, name='dispatch')
+class multistepsubmissionEdit(SessionWizardView):
+    file_storage = DefaultStorage()
+    template_name = 'main/owner/multistep.html'
+    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm, RentalConditionsForm, RulesAndPreferencesForm, ImageForm]
+
+    def get_form_initial(self, step):
+        initial = self.initial_dict.get(step, {})
+        listing_id = self.kwargs.get('listing_id')
+
+        if listing_id:
+            listing = get_object_or_404(Listing, id=listing_id)
+
+            if step == '0':
+                initial.update({
+                    'address': listing.address,
+                    'house_kind': listing.house_kind,
+                    'price': listing.price,
+                    'available_start': listing.available_start,
+                    'available_end': listing.available_end,
+                })
+            elif step == '1':
+                listing_space = listing.listing_space_overview.first()
+                if listing_space:
+                    initial.update({
+                        'house_size': listing_space.house_size,
+                        'house_mate_no': listing_space.house_mate_no,
+                        'bedroom_size': listing_space.bedroom_size,
+                        'bedroom_furnished': listing_space.bedroom_furnished,
+                    })
+            elif step == '2':
+                listing_house = listing.listing_house_area.first()
+                if listing_house:
+                    initial.update({
+                        'kitchen': listing_house.kitchen,
+                        'toilet': listing_house.toilet,
+                        'bathroom': listing_house.bathroom,
+                        'living_room': listing_house.living_room,
+                        'garden': listing_house.garden,
+                    })
+            elif step == '3':
+                listing_amenities = listing.amenities.first()
+                if listing_amenities:
+                    initial.update(
+                        {
+                            'bed':listing_amenities.bed,
+                            'wifi':listing_amenities.wifi,
+                            'desk':listing_amenities.desk,
+                            'living_room_furnished':listing_amenities.living_room_furnished,
+                            
+                        }
+                    )
+                
+            elif step == '4':
+                rental_condition = listing.rental_condtion.first()
+                if rental_condition:
+                    initial.update(
+                        {
+                            'contract':rental_condition.contract,
+                            'cancellation':rental_condition.cancellation,
+                            'price':rental_condition.price,
+                            'utility_costs':rental_condition.utility_costs,
+                            
+                            
+                        }
+                    )
+                
+            elif step == '5':
+                rules_preferences = listing.rules_and_preferences.first()
+                if rules_preferences:
+                    initial.update(
+                        {
+                        'gender':rules_preferences.gender,
+                        'minimum_age':rules_preferences.minimum_age,
+                        'maximum_age':rules_preferences.maximum_age,
+                        'tenant':rules_preferences.tenant,
+                        'proof':rules_preferences.proof,
+                        }
+                        
+                    )
+                    
+            elif step == '6':
+                images = listing.image.first()
+                if images:
+                    initial.update(
+                        {
+                            'image1':images.image1,
+                            'image2':images.image2,
+                            'image3':images.image3,
+                            'image4':images.image4,
+                            'image5':images.image5,
+                            'description':images.description,
+                        }
+                        
+                    )
+                
+        return initial
     
+    
+
+    def done(self, form_list, **kwargs):
+        form_data = [form.cleaned_data for form in form_list]
+        seller = self.request.user.profile
+
+        listing_id = self.kwargs.get('listing_id')
+        if listing_id:
+            listing = get_object_or_404(Listing, id=listing_id)
+        else:
+            listing = Listing(seller=seller)
+
+        listing.address = form_data[0]['address']
+        listing.house_kind = form_data[0]['house_kind']
+        listing.price = form_data[0]['price']
+        listing.available_start = form_data[0]['available_start']
+        listing.available_end = form_data[0]['available_end']
+        listing.save()
+
+        # Update or create listing space overview
+        listing_space, _ = ListingSpaceOverview.objects.get_or_create(listing=listing)
+        listing_space.house_size = form_data[1]['house_size']
+        listing_space.house_mate_no = form_data[1]['house_mate_no']
+        listing_space.bedroom_size = form_data[1]['bedroom_size']
+        listing_space.bedroom_furnished = form_data[1]['bedroom_furnished']
+        listing_space.save()
+
+        # Update or create listing house area
+        listing_house, _ = ListingHouseArea.objects.get_or_create(listing=listing)
+        listing_house.kitchen = form_data[2]['kitchen']
+        listing_house.toilet = form_data[2]['toilet']
+        listing_house.bathroom = form_data[2]['bathroom']
+        listing_house.living_room = form_data[2]['living_room']
+        listing_house.garden = form_data[2]['garden']
+        listing_house.save()
+
+        # Update or create listing amenities
+        listing_amenities, _ = ListingHouseAmenities.objects.get_or_create(listing=listing)
+        listing_amenities.bed = form_data[3]['bed']
+        listing_amenities.wifi = form_data[3]['wifi']
+        listing_amenities.desk = form_data[3]['desk']
+        listing_amenities.living_room_furnished = form_data[3]['living_room_furnished']
+        listing_amenities.save()
+
+        # Update or create rental conditions
+        rental_condition, _ = RentalConditions.objects.get_or_create(listing=listing)
+        rental_condition.contract = form_data[4]['contract']
+        rental_condition.cancellation = form_data[4]['cancellation']
+        rental_condition.price = form_data[4]['price']
+        rental_condition.utility_costs = form_data[4]['utility_costs']
+        rental_condition.save()
+
+        # Update or create rules and preferences
+        rules_preferences, _ = RulesAndPreferences.objects.get_or_create(listing=listing)
+        rules_preferences.gender = form_data[5]['gender']
+        rules_preferences.minimum_age = form_data[5]['minimum_age']
+        rules_preferences.maximum_age = form_data[5]['maximum_age']
+        rules_preferences.tenant = form_data[5]['tenant']
+        rules_preferences.proof = form_data[5]['proof']
+        rules_preferences.save()
+
+        # Update or create images
+        images, _ = Image.objects.get_or_create(listing=listing)
+        images.image1 = form_data[6]['image1']
+        images.image2 = form_data[6]['image2']
+        images.image3 = form_data[6]['image3']
+        images.image4 = form_data[6]['image4']
+        images.image5 = form_data[6]['image5']
+        images.description = form_data[6]['description']
+        images.save()
+
+        messages.add_message(self.request, messages.INFO, "We will give you a reminder when your listing is approved in 24 hours")
+        return render(self.request, 'main/owner/done.html', {'listing_id': listing.id})
+
+    def form_invalid(self, form):
+        messages.info(self.request, "Please fill in all the required fields.")
+        return super().form_invalid(form)
     
     
     
@@ -899,7 +1122,7 @@ def owner_listings(request):
             listing.status = "Pending"
             
             
-        
+   
     
     page = request.GET.get('page', 1)
 
@@ -923,14 +1146,24 @@ def approve_tenant_request(request, listing_id):
     upload = Upload.objects.filter(listing_id=listing_id).first()
 
     
-    upload.accepted = True
+    upload.status = 'Accepted'
     upload.save() 
  
     
     messages.success(request, 'Request Approved!')
     return redirect('Request')
     
+def reject_tenant_request(request, listing_id):
     
+    upload = Upload.objects.filter(listing_id=listing_id).first()
+    
+    upload.status ='Rejected'
+    upload.save()
+    
+    messages.info(request, 'You rejected booking request')
+    return redirect('Request')
+
+
 
 
 

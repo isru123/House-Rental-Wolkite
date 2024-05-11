@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 
 <div class="col-md-3">
-  <div class="card mb-3" style="width:400px">
+  <div class="card mb-5" style="width:400px;height:400px">
     {% if listing.seller.photo %}
       <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
     {% else %}
@@ -9,7 +9,7 @@
       <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
     {% endif %}
 
-    {% if user.is_authenticated %}
+   {% if user.is_authenticated %}
       {% if request.user.profile.userType == "Public" %}
         <div class="card-body">
           <h5 class="card-title">{{ _("House Owner") }}</h5>
@@ -41,18 +41,21 @@
               <p>Your photo:</p>
               <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
             {% endif %}
-          {% endif %}
+         {% endif %}
 
         
-          
+        {% if request_is_approved %}
           <!-- Reserve Now button -->
           <button class="btn btn-success btn-md btn-block my-2" onclick="confirmReservation()">Reserve Now</button>
         </div>
-      {% endif %}
+        {% endif %}
+     {% endif %}
+
       {% if request.user.profile.userType == "Owner" and request.user == listing.seller.user %}
-      <a href="{% url 'inbox_view' %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
-    {% endif %}
-    {% else %}
+      <a href="{% url 'message:inbox_view' %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
+      {% endif %}
+
+{% else %}
       <h5 class="p-2 text-green text-center">
         <b>{{ _("Please login or register to get in touch") }}</b>
       </h5>
@@ -63,7 +66,7 @@
       <a href="{% url 'register' %}" target="_blank" class="btn btn-block btn-outline-secondary">
         Register
       </a>
-    {% endif %}
+{% endif %}
   </div>
 </div>
 
@@ -91,6 +94,7 @@
 <script>
   function confirmReservation() {
     var idDocumentUrl = "{{ id_document_url }}";
+    {% if request_is_approved %}
     {% if user_has_sent_request %}
       // User has sent a request
       location.href = "{% url 'product-view' product_id=listing.id %}"; // Replace 'request-view' with the appropriate URL name for the request view
@@ -108,5 +112,7 @@
         location.href = "{% url 'product-view' product_id=listing.id %}"; // Replace 'product-view' with the appropriate URL name for the product view
       }
     {% endif %}
+    {% endif %}
   }
 </script>
+

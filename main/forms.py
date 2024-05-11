@@ -19,7 +19,7 @@ class ListingForm(forms.ModelForm):
         
     class Meta:
         model = Listing
-        fields = ['house_kind', 'price','address', 'available_start', 'available_end']
+        fields = ['house_kind', 'price','address', 'available_start', 'available_end','id_photo','house_map']
         labels = {
             'house_kind': _('House Kind'),
             'price': _('Price'),

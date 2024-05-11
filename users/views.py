@@ -21,11 +21,10 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-
+from django.contrib import messages
 
 
 def LoginPage(request):
@@ -42,7 +41,7 @@ def LoginPage(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'You are now logged in as {username}')
-                return redirect('home')
+                return redirect('main:home')
             else:
                 messages.error(request, f'error occured during tying to login')
         else:
@@ -71,7 +70,42 @@ def SignPage(request):
         email = request.POST.get('email')
         contact = request.POST.get('contact')
         address = request.POST.get('address')
-
+        
+        
+        phone_number = contact
+        country_code = 'ET'
+        if not validate_phone_number(phone_number, country_code): 
+            messages.error(request, 'Invalid Phone Number')
+            return render(request,'users/sign.html')
+            # Replace 'US' with the appropriate country code
+             
+        if not is_strong_password(pass1):
+            messages.warning(request, 'Password Must be Strong')
+            return render(request,'users/sign.html')
+        
+        if not is_strong_password(pass2):
+            messages.warning(request, 'Password Must be Strong')
+            return render(request,'users/sign.html')
+        
+        if not validate_name(username): 
+            messages.warning(request, 'Not Valid Name')
+            return render(request,'users/sign.html')
+        
+        if not validate_name(first_name): 
+            messages.warning(request, 'Not Valid Name')
+            return render(request,'users/sign.html')
+        
+        if not validate_name(last_name): 
+            messages.warning(request, 'Not Valid Name')
+            return render(request,'users/sign.html')
+            
+        if not validate_email(email):
+            messages.warning(request, 'Invalid Email Address')
+            return render(request,'users/sign.html')
+        
+        
+        
+        
         if pass1 != pass2:
             msg = _('Password should be same.')
             return render(request, 'users/sign.html', {'msg': msg})
@@ -111,30 +145,40 @@ def SignPage(request):
 
 
     
-from django.core.validators import validate_email
+from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-    
-import requests
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
 
 def validate_email(email):
-    url = "https://emailvalidation.abstractapi.com/v1/"
-    params = {
-        "api_key": "a6f76d710c2e4dd28b34f14742bfa9ed",
-        "email": email
-    }
+    email_validator = EmailValidator()
 
     try:
-        response = requests.get(url, params=params)
-        data = response.json()
+        email_validator(email)
+    except ValidationError:
+        # Email is not valid
+        return False
 
-        # Check the response for validity
-        if response.status_code == 200 and data.get('valid'):
-            return True
-        else:
-            return False
-    except requests.exceptions.RequestException as e:
-        print(f"Error occurred during email validation: {e}")
-        return None
+    # Email is valid
+    return True
+
+
+
+def validate_name(name):
+    name_validator = RegexValidator(
+        regex=r'^[A-Za-z]+$',
+        message='Name should only contain alphabets.'
+    )
+
+    try:
+        name_validator(name)
+    except ValidationError:
+        # Name is not valid
+        return False
+
+    # Name is valid
+    return True
+
 
 
 def OwnerSign(request):
@@ -149,13 +193,24 @@ def OwnerSign(request):
         photo = request.FILES.get('pic')
         address= request.POST.get('address')
         
-        
         phone_number = contact
         country_code = 'ET'
         if not validate_phone_number(phone_number, country_code): 
             messages.warning(request, 'Invalid Phone Number')
             return render(request,'users/owner-sign.html')
             # Replace 'US' with the appropriate country code
+            
+        if not validate_name(username): 
+            messages.warning(request, 'Not Valid Name')
+            return render(request,'users/owner-sign.html')
+        
+        if not validate_name(first_name): 
+            messages.warning(request, 'Not Valid Name')
+            return render(request,'users/owner-sign.html')
+        
+        if not validate_name(last_name): 
+            messages.warning(request, 'Not Valid Name')
+            return render(request,'users/owner-sign.html')
              
         if not is_strong_password(pass1):
             messages.warning(request, 'Password Must be Strong')
@@ -166,9 +221,9 @@ def OwnerSign(request):
             return render(request,'users/owner-sign.html')
             
             
-        # if not validate_email(email):
-        #     messages.warning(request, 'Invalid Email Address')
-        #     return render(request,'users/owner-sign.html')
+        if not validate_email(email):
+            messages.warning(request, 'Invalid Email Address')
+            return render(request,'users/owner-sign.html')
         
         
         if pass1!=pass2:
@@ -201,6 +256,10 @@ def OwnerSign(request):
         return redirect('/login/')
     return render(request, 'users/owner-sign.html')
 
+
+name = 'israel'
+is_valid = validate_name(name)
+print(is_valid)
 
 
 
@@ -362,41 +421,7 @@ def ForgotPassword(request):
     return render(request, 'users/forgotpassword.html', {'msg': msg})
 
 
-        
-@method_decorator(login_required, name='dispatch')
-class ProfileView(View):
-    def get(self, request):
-        user_listings = Listing.objects.filter(seller=request.user.profile)
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm()
-        location_form = LocationForm()
-        
-        
-        return render(request, 'users/profile.html', {'user_form': user_form, 
-                                                      'profile_form': profile_form,
-                                                      'location_form': location_form, 'user_listings': user_listings, 'user_liked_listings': user_liked_listings})
-        
-    
-    def post(self, request):
-        user_listings = Listing.objects.filter(seller=request.user.profile)
-        user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).all()
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        location_form = LocationForm(request.POST, instance=request.user.profile.location)
-        
-        if user_form.is_valid() and profile_form.is_valid() and location_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            location_form.save()
-            messages.success(request, 'Profile Updated successfully!')
-            
-        else:
-            messages.error(request, 'Error updating profile')
 
-        return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form, 
-                                                      'location_form': location_form, 'user_listings': user_listings,'user_liked_listings': user_liked_listings })
-        
 
 
 

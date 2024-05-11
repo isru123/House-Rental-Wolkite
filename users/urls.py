@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import LoginPage, Logout, activate_account,ProfileView, SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword
+from .views import LoginPage, Logout, activate_account,SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword
 from main.views import master_view
 from django.contrib.auth import views as auth_view
 
 urlpatterns = [
     path('master/', master_view , name='master'),
-    path('profile/', ProfileView.as_view(), name='profile'),
+    
     path('login/', LoginPage, name='login'),
     path('sign/', SignPage , name='sign'),
     path('owner-sign/', OwnerSign, name='owner-sign'),

@@ -43,7 +43,8 @@
                                                 <th>Available From</th>
                                                 <th>House Owner</th>
                                                 <th>Created At</th>
-            
+                                                <th>Government ID</th>
+                                                <th>House Document</th>
                                                 <th>Approve</th>
                                                 <th>Images</th>
                                             </tr>
@@ -60,11 +61,21 @@
                                                 <td>{{L.available_start}}</td>
                                                 <td>{{L.seller.user.first_name}} {{ L.seller.user.last_name }}</td>
                                                 <td>{{L.created_at}}</td>
-                                             
                                                 <td>
-                                                    <a href="/approve-owner-request/{{L.id}}/" class="btn btn-success text-white" title="Verify"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                                    <a href="/delete-user/{{L.seller.user.id}}/" class="btn btn-danger text-white" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showModalImage('{{ L.id_photo.url }}')">
+                                                    <img src="{{ L.id_photo.url }}" alt="Government Id" width="50" height="50">
+                                                </button>
                                                 </td>
+                                                <td>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showModalImage('{{ L.house_map.url }}')">
+                                                    <img src="{{ L.house_map.url }}" alt="Government Id" width="50" height="50">
+                                                </button>
+                                                </td> 
+                                                <td>
+                                                    <a href="/approve-owner-request/{{L.id}}/" class="btn btn-success text-white" title="Approve" style="width:100px">Approve</a>
+                                                    <a href="/reject-owner-request/{{L.id}}/" class="btn btn-danger text-white" title="reject" style="width:100px">Reject</a>
+                                                </td>
+                                                {% comment %} <a href="/reject-owner-request/{{L.seller.user.id}}/" class="btn btn-danger text-white" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a> {% endcomment %}
                                                 <td>
                                                     <a href="{% url 'retrieve_images' L.id %}" class="btn btn-secondary text-white "><i class="fa fa-eye"></i> See Images</a>
                                                 </td>
@@ -124,47 +135,51 @@
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar bg-dark">
+       <div class="nk-sidebar" style="background-color:#0F3057">
            <div class="">
                <br>
                <br>
                <br>
-               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
+               <ul class="metismenu" id="menu" style=" background-color: #0F3057;">
                    <li>
                        <a href="{% url 'board' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-clipboard"></i> Dashboard</span>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-2"></i>    Dashboard</span>
                        </a>
                    </li>
-                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
+                
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #0F3057;">
+                      
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-user-circle"></i> Admin</span>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-user-circle mr-3"></i>Admin</span>
                        </a>
-                       <ul style=" background-color: #1877F2;">
-                        {% if user.is_superuser or user.is_staff  %} 
-                        <li><a href="/all-user/" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
+                      
+
+                       <ul style=" background-color: #0F3057;">
+                        {% if user.is_superuser %} 
+                        <li><a href="/all-user/" class="ml-0" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    All User</a></li>
                         {% endif %}
-                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                        <li><a href="{% url 'approve-owner' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
+                     
+                        <li><a href="{% url 'approve-owner' %}"  style="color:white" class="text-decoration-none"><i class="fa fa-list-alt" style="color: white;"></i>    Approve Listings</a></li>
                         
-                        <li><a href="/approve-admin/" style="color:white; font-family: sans-serif;"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
-                        {% comment %} {% endif %} {% endcomment %}
+                        <li><a href="/approve-admin/" style="color:white" class="text-decoration-none"><i class="fa fa-columns" style="color: white;"></i>    Admin Panel</a></li>
                         
-                        <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
-                        <li><a href="" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Manage Tenant Task</a></li>
-                        <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
+                        
+                        <li><a href="{% url 'manage-owner-task' %}" style="color:white" class="text-decoration-none"><i class="fa fa-home" style="color: white;"></i>    Manage Owner Task</a></li>
+                        <li><a href="" style="color:white" class="text-decoration-none"><i class="fa fa-building" style="color: white;"></i>    Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    Manage Users</a></li>
                         <li>
-                            <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
+                            <a href="/admin-helpdesk/" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Admin Helpdesk</a>
                         </li>
 
                         <li>
                             {% if user.is_superuser or user.is_staff  %}
-                            <a href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;" ><i class="fa fa-user" style="color: white;"></i> Add admin</a>
+                            <a href="{% url 'add-admin' %}" style="color:white" class="text-decoration-none"><i class="fa fa-user" style="color: white;"></i>    Add admin</a>
                             {% endif %}
                         </li>
                         <li class="list-group-item"> <a href="{% url 'admin_tenant' recipient_username=request.user %}"
                             class="text-decoration-none text-black">Messages</a> </li>
-                       </ul> 
+                       </ul>
                    </li>
                    {% comment %} {% endif %} {% endcomment %}
                </ul>
@@ -172,6 +187,32 @@
        </div>
        <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
    </section>
+
+
+    
+ <!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img id="modalImage" src="" alt="User Photo" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <script>
+    function showModalImage(imageUrl) {
+      var modalImage = document.getElementById('modalImage');
+      modalImage.src = imageUrl;
+    }
+    function showFile(fileUrl) {
+        var fileIframe = document.getElementById('fileIframe');
+        fileIframe.src = fileUrl;
+      }
+  </script>
 
     {% endblock %}
 

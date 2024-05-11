@@ -78,12 +78,15 @@
                                     </button>
                                     </td>
                                 {% comment %} <td>{{L.created_at}}</td> {% endcomment %}
-                                <td><button class="btn btn-success text-white" style="width:100px;height:40px;">{{R.get_status_display}}</button></td>
+                                <td>
+                                    <button class="btn text-white {% if R.status == 'Pending' %}btn-warning{% elif R.status == 'Accepted' %}btn-success{% elif R.status == 'Rejected' %}btn-danger{% endif %}" style="width: 100px; height: 40px;">
+                                      {{ R.get_status_display }}
+                                    </button>
+                                  </td>
                                 <td>
                                    
-                                    <a href="" class="btn btn-info text-white"
-                                        title="Edit"><i class="fa fa-pencil-square-o"
-                                            aria-hidden="true"></i></a>
+                                    <a href="{% url 'main:single_house_view' id=R.listing.id %}" class="btn btn-info text-white"
+                                    title="View"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
                                     <a href="" title="Delete"
                                         class="btn btn-danger text-white"><i class="fa fa-trash"

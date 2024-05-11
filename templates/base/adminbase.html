@@ -49,6 +49,18 @@
             </div>
            
         </div>
+        <div class="nav-header bg-primary" style="margin-top:70px">
+            <div class="brand-logo">
+                <a href="/">
+                <span class="brand-title align-item-start">
+                    {% comment %} <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt=""> {% endcomment %}
+                    <span class="text-white" style="font-family:serif"><i class="fas fa-house"></i>OHR</span>
+                    </span>
+                </a>
+                
+            </div>
+           
+        </div>
 
 
         {% if messages %}
@@ -68,8 +80,10 @@
             Header start
         ***********************************-->
         <div class="header" style="background-color:#0F3057 ; height:150px">
+           
+
             <div class="header-content clearfix">
-    
+                   
                 <div class="nav-control">
                     <div class="hamburger">
                         <span class="toggle-icon"><i  class="icon-menu"></i></span>
@@ -87,6 +101,11 @@
                             <input type="text" name="search" class="form-control" placeholder="Search By City...">
                             {% endblock %}
                         </form>
+                        {% if request.user.profile.userType == 'Owner' %}
+                        <div style="align-center; margin-top:65px; margin-left:40px;">
+                            <a href="{% url 'main:multistepformsubmission' %}"  class="btn btn-primary my-2">Make Listing</a>
+                            </div>
+                            {% endif %}
                         <div class="drop-down animated flipInX d-md-none">
                             
                         </div>
@@ -97,17 +116,20 @@
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative" data-toggle="dropdown">
                                 <span class="activity active"></span>
-                                {% comment %} {% if request.user.userprofile_set.first.profilePicture %}
-                                <img src="{{request.user.userprofile_set.first.profilePicture.url}}" style="border-radius: 50%;" height="100" width="100" alt="">
-                                {% else %} {% endcomment %}
-                                <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
-                                {% comment %} {% endif %} {% endcomment %}
+                                <div class="d-flex align-items-center" style="width:100px">
+                                    <p class="text-white" >{{ request.user.username|capfirst }}</p>
+                                    {% if request.user.profile.photo %}
+                                    <img class="ml-3 rounded-circle " src="{{ request.user.profile.photo.url }}" height="40" width="40" alt="">
+                                    {% else %}
+                                    <img class="ml-3 rounded-circle" src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="/profile/"><i class="icon-user"></i> <span>Profile</span></a>
+                                            <a href="{% url 'profile' %}"><i class="icon-user"></i> <span>Profile</span></a>
                                         </li>
                                         <li>
                                             <a href="/change-password/"><i class="icon-lock"></i> <span>Change Password</span></a>

@@ -6,117 +6,108 @@
 
 {% block 'body' %}
 
-{% comment %} <div class="col-sm">
-  <div class="btn-group dropright translate">
-<button id="langSel" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Translate to
-</button>
-<div class="dropdown-menu translate-option">
-  <a class="dropdown-item" href="#" tolang="en">English (default)</a>
-  <a class="dropdown-item" href="#" tolang="it">Italian</a>
-  <a class="dropdown-item" href="#" tolang="es">Spanish</a>
-  <a class="dropdown-item" href="#" tolang="de">German</a>
-  <a class="dropdown-item" href="#" tolang="am">Amharic</a>
-</div>
-</div> {% endcomment %}
-
-
-
 <div class="text-center">
-  <section  style="background-color: white; height:1100px">
+  <section  style="background-color: white; height:1100px; background-image: url('{% static 'images/na.jpg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="container py-5" >
-      <div class="row d-flex justify-content-center align-items-center">
-        <div class="col col-xl-10">
-          <div class="card" style="border-radius: 1rem; width:500px">
-            <div class="row g-0">
+      <div class="d-flex justify-content-center align-items-center">
+      
+          <div class="card mt-5" style="border-radius: 0rem; width:500px; background-color:#0F3057">
+
               
-                   <h1>{% trans "Sign up" %}</h1>>
-                  {% comment %} <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p {% endcomment %}
+                   <h1 class="text-white">{% trans "Sign up" %}</h1>
+                
               
             <div class="login-page">
              <div class="form">
                         <div class="login">
                             <div class="login-header">
-                                <h3><a href="/"><i class="fas fa-home"></i></a></h3>
+                                <h3><a href="/" title="Home" class="text-white"><i class="fas fa-home"></i></a></h3>
                                 
-                                <p>Please enter your credentials.</p>
-                                <h6 > Are you an a House Owner?? Then for Signup <a href="/owner-sign/">Click here..</a></h6>
-                            </div>
+                                
+                                <h6 class="text-white"> Are you a House Owner??    Then for Signup <a href="/owner-sign/">Click here..</a></h6>
+                                <p class="text-white">Please enter your credentials.</p>
+                              </div>
                         </div>
                         <br>
                 <div class="row register-form">
                  <div class="text-center">
                   <form action="/sign/" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                {% if messages %}
+                             <ul class="messages">
+                          {% for message in messages %}
+                          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                           {% endfor %}
+                            </ul>
+                             {% endif %}
                                 {% if msg %}
                                 <center style="color: red;">{{msg}}</center>
                                 {% endif %}
-                                <div class="col-md-6">
-                                    <div class="form-group col-md-12" >
+                                <div class="row-md-12">
+                                  <div class="col-6">
+                                  
                                         <input style="width:300px" type="text" class="form-control" placeholder="First Name *" value=""
                                             name="first_name" required />
-                                    </div>
-                                    <br>
-                                    <div class="form-group col-md-12" >
-                                        <input  style="width:300px" type="text" class="form-control" placeholder="Last Name *" value=""
-                                            name="last_name" required />
-                                    </div>
-                                    <br>
-                                    <div class="form-group col-md-12" >
-                                        <input style="width:300px"  type="email" class="form-control" placeholder="Email *" value="" name="email"
-                                            required />
-                                    </div>
-                                    <br>
-                                    <div class="form-group col-md-12" >
-                                        <input style="width:300px"  type="number"  minlength="10" maxlength="10" name="contact"
-                                            class="form-control" placeholder="Your Phone " value="" required />
-                                    </div>
+                                
                                     <br>
                                  
-                                    <div class="col-md-12">
-                                       
-                                        <div class="form-group" >
-                                            <input style="width:300px" type="text" class="form-control" placeholder="Address*" value="" name="address"
-                                                required />
-                                        </div>
-                  
-                                     <br>
-                  
-                                    </div>
-                                    <div class="form-group col-md-12" >
-                                        <input style="width:300px" type="text" class="form-control" placeholder="User Name*" value=""
-                                            name="username" required />
-                                    </div>
+                                        <input  style="width:300px" type="text" class="form-control" placeholder="Last Name *" value=""
+                                            name="last_name" required />
+                                
                                     <br>
-                                    <div class="form-group col-md-12" >
-                                        <input  style="width:300px"  type="password" minlength="4" maxlength="10" class="form-control"
-                                            placeholder="Password*" value="" name="pass1" required />
-                                    </div>
-                  
-                                     <br>
-                                    <div class="form-group col-md-12" >
-                                        <input style="width:300px" type="password" minlength="4" maxlength="10" class="form-control" placeholder="Confirm Password*" value=""
-                                            name="pass2" required />
-                                    </div>
+                                    
+                                        <input style="width:300px"  type="email" class="form-control" placeholder="Email *" value="" name="email"
+                                            required />
+                                 
+                                    <br>
+                                  
+                                        <input style="width:300px"  type="number"  minlength="10" maxlength="10" name="contact"
+                                            class="form-control" placeholder="Your Phone " value="" required />
                                     
                                     <br>
-                                    <div class="col-md-12">
+                                  </div>
+                                  <div class="col-6">
+                                   
+                                       
+                                     
+                                            <input style="width:300px" type="text" class="form-control" placeholder="Address*" value="" name="address"
+                                                required />
+                                     
+                  
+                                     <br>
+                  
+                                  
+                                        <input style="width:300px" type="text" class="form-control" placeholder="User Name*" value=""
+                                            name="username" required />
+                                 
+                                    <br>
+                                
+                                        <input  style="width:300px"  type="password" minlength="10" maxlength="100" class="form-control"
+                                            placeholder="Password*" value="" name="pass1" required />
+                                    
+                  
+                                     <br>
+                                  
+                                        <input style="width:300px" type="password" minlength="10" maxlength="100" class="form-control" placeholder="Confirm Password*" value=""
+                                            name="pass2" required />
+                                   
+                                    
+                                    <br>
+                              
                                     <input style="width:300px" type="submit" style="color:white; width:400px" value="Register" class="btn btn-primary">
-                                    <!--  <input type="submit" class="btnRegister"  value="Register"/> -->
-                                    </div>
+                                   
+                                  </div>
                                 </div>
                                 <br>
                         
-                        <h6> Already have an Account??<a href="/login/">Login here..</a></p>
+                        <h6 style="margin-left:0px" class="text-white"> Already have an Account??<a href="/login/" class="text-info">  login here..</a></p>
                         
                     </div>
                   </form>
                 </div>
                 </div>
               </div>
-            </div>
-          
-        </div>
+            
       </div>
     </div>
   </div>
@@ -125,187 +116,7 @@
 </div>
 </section>
 </div>
-{% comment %} 
-<script
-    src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-    crossorigin="anonymous"></script>
 
-
-<style type="text/css">
-  body {
-  background-color: #2ecc71;
-  font-family: source-sans-pro, sans-serif;
-}
-
-h1 {
-  margin-left: auto;
-  margin-top: 50px;
-  text-align: center;
-  font-weight: 100;
-  font-size: 2.8em;
-  color: #ffffff;
-}
-
-div {
-  width: 500px;
-  margin: auto;
-}
-
-.formStyle { 
-  background-color: #2ecc71;
-  padding: 20px; 
-  width: 400px; 
-  margin-bottom: 20px; 
-  border-bottom-width: 1px; 
-  border-bottom-style: solid; 
-  border-bottom-color: #ecf0f1; 
-  border-top-style: none; 
-  border-right-style: none; 
-  border-left-style: none; 
-  font-size: 1em;
-  font-weight: 100;
-  color: #ffffff;
-}
-
-.formButton {
-  float: right;
-  background-color:#ffffff;
-  display:inline-block;
-  color:#2ecc71;
-  font-size:28px;
-  font-weight: 500;
-  padding:6px 24px;
-  margin-top: 15px;
-  margin-right: 60px;
-  text-decoration:none;
-}
-
-.formButton:hover {
-  background-color: #27ae60;
-  color:#ffffff;
-}
-
-.formButton:active {
-  position:relative;
-  top:3px;
-}
-
-.translate {
-  margin-left: auto;
-  margin-top: 50px;
-  text-align: center;
-  font-weight: 100;
-  font-size: 2.8em;
-  width:50%;
-  
-}
-
-.translate-option {
-  width:50%;
-  
-}
-
-/*To remove the outline that appears on clicking the input textbox*/
-input:focus {
-  outline: none;
-}
-
-/* To format the placeholder text color */
-::-webkit-input-placeholder {
-   color: #ecf0f1;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-   color: #ecf0f1;  
-}
-
-::-moz-placeholder {  /* Firefox 19+ */
-   color: #ecf0f1;  
-}
-
-:-ms-input-placeholder {  
-   color: #ecf0f1;  
-}
-</style>
-
-
-
-    <script type="text/javascript">
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://google-translate1.p.rapidapi.com/language/translate/v2",
-        "method": "POST",
-        "headers": {
-          "x-rapidapi-host": "google-translate1.p.rapidapi.com",
-          "x-rapidapi-key": "<41bf648085msh064da0a40c524c0p18fb1cjsn79660b9868ab>",
-          "content-type": "application/x-www-form-urlencoded"
-        },
-        "data": {
-          "source": "en",
-          "q": "Sign up | User Name | First Name | Last Name | Email",
-          "target": ""
-        }
-          
-      }
-      
-      $(document).ready(function(){
-  
-        $(".dropdown-item").click(function(e){
-       
-          if($(this).attr("tolang") != 'en'){
-
-            settings.data.target = $(this).attr("tolang");
-            
-            fetchTranslation();
-
-            $('button').html($(this).html());
-
-          } else {
-
-            updatePlaceholders(settings.data.q);
-
-            $('#langSel').html("Translate to");
-
-          }	
-            });
-     });
-
-    function fetchTranslation(){
-      
-      $.ajax(settings).done(function (response) {
-            
-        console.log(response);
-    
-          var translatedText = response.data.translations[0].translatedText;
-            
-          updatePlaceholders(translatedText);
-            
-    
-      });
-    
-    }
-
-      function updatePlaceholders(updateString){
-
-        var comp = updateString.split('|')
-      
-        $('form > input').each(function(idx){
-      
-          $(this).prop("placeholder", comp[idx+1].trim() );
-      
-        });
-      
-        $("#formHeading").html(comp[0]);
-      
-      }
-
-      
-
-      
-  
-  </script> {% endcomment %}
     
 
 {% endblock %}

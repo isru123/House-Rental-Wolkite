@@ -148,34 +148,39 @@
         Scripts
     ***********************************-->
 
-    <section style="height:400px">
+    <section style="height:290px">
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar bg-dark">
+       <div class="nk-sidebar" style="background-color:#0F3057">
            <div class="">
                <br>
                <br>
                <br>
-               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
+               <ul class="metismenu" id="menu" style=" background-color: #0F3057;">
                    <li>
                        <a href="{% url 'board' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-3"></i> Dashboard</span>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-2"></i>    Dashboard</span>
                        </a>
                    </li>
-              
-                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
+                
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #0F3057;">
+                      
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-user-circle mr-3"></i> Admin</span>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-user-circle mr-3"></i>Admin</span>
                        </a>
-                       <ul style=" background-color: #1877F2;">
-                        <li><a href="/all-user/" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    All User</a></li>
-                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                        <li><a href="{% url 'approve-owner' %}" style="color:white" class="text-decoration-none"><i class="fa fa-list-alt" style="color: white;"></i>    Approve Listings</a></li>
+                      
+
+                       <ul style=" background-color: #0F3057;">
+                        {% if user.is_superuser %} 
+                        <li><a href="/all-user/" class="ml-0" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    All User</a></li>
+                        {% endif %}
+                     
+                        <li><a href="{% url 'approve-owner' %}"  style="color:white" class="text-decoration-none"><i class="fa fa-list-alt" style="color: white;"></i>    Approve Listings</a></li>
                         
                         <li><a href="/approve-admin/" style="color:white" class="text-decoration-none"><i class="fa fa-columns" style="color: white;"></i>    Admin Panel</a></li>
-                        {% comment %} {% endif %} {% endcomment %}
+                        
                         
                         <li><a href="{% url 'manage-owner-task' %}" style="color:white" class="text-decoration-none"><i class="fa fa-home" style="color: white;"></i>    Manage Owner Task</a></li>
                         <li><a href="" style="color:white" class="text-decoration-none"><i class="fa fa-building" style="color: white;"></i>    Manage Tenant Task</a></li>
@@ -183,14 +188,14 @@
                         <li>
                             <a href="/admin-helpdesk/" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Admin Helpdesk</a>
                         </li>
+
+                        <li>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white" class="text-decoration-none"><i class="fa fa-user" style="color: white;"></i>    Add admin</a>
+                            {% endif %}
+                        </li>
                         <li class="list-group-item"> <a href="{% url 'admin_tenant' recipient_username=request.user %}"
                             class="text-decoration-none text-black">Messages</a> </li>
-                        {% comment %} <li>
-                            {% if user.is_superuser or user.is_staff  %}
-                            <a href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;" ><i class="fa fa-user" style="color: white;"></i> Add admin</a>
-                            {% endif %}
-
-                        </li> {% endcomment %}
                        </ul>
                    </li>
                    {% comment %} {% endif %} {% endcomment %}

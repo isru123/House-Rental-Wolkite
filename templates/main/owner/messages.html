@@ -19,32 +19,32 @@
 <br>
 <hr>
     <body>
-        <div class="container-fluid ml-4">
+        <div class="container-fluid ml-1">
             <div class="row flex-nowrap">
                 <div class="col-auto px-0">
-                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm">
-                        <div id="sidebar-nav" class="list-group border-0 rounded-0">
+                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm" style=" background-color: #0F3057;">
+                        <div id="sidebar-nav" class="list-group border-0 rounded-0" style=" background-color: #0F3057;">
                             <div class="p-2">
-                                <h4 style="color:black">House Owner Dashboard</h4>
+                                <h5 class="text-info">House Owner Dashboard</h5>
                             </div>
                             
-                            <ul class="list-group">
-                                <li class="list-group-item"><a href="{% url 'dashboard_owner' %}" class="text-decoration-none text-black">
-                                        Dashboard</a></li>
-                                <li class="list-group-item"> <a href="{% url 'owner-listings' %}"
-                                        class="text-decoration-none text-black">Listings</a> </li>
-                                <li class="list-group-item"> <a href="#"
-                                        class="text-decoration-none text-black">Bookings</a> </li>
-                                <li class="list-group-item"> <a href="{% url 'Request' %}"
-                                            class="text-decoration-none text-black">Booking Request</a> </li>
-                                <li class="list-group-item"> <a href="#"
-                                        class="text-decoration-none text-black">Payments</a> </li>
-                                <li class="list-group-item"> <a href="{% url 'MIDI' %}"
-                                            class="text-decoration-none text-black">Messages</a> </li>
-                                <li class="list-group-item"> <a href="#"
-                                        class="text-decoration-none text-black">Reviews</a> </li>
-                                <li class="list-group-item"><a href="{% url 'helpdesk' %}"
-                                            class="text-decoration-none text-black">Helpdesk</a></li>
+                            <ul class="list-group" style=" background-color: #0F3057;">
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"><a href="{% url 'main:dashboard_owner' %}" class="text-decoration-none text-black"
+                                  style="color:white"><i class="fa fa-tachometer" style="color: white;"></i><span style="margin-left: 10px;">Dashboard</a></span></li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:owner-listings' %}"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-list " style="color: white;"></i><span style="margin-left: 10px;">Listings</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="#"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-calendar" style="color: white;"></i><span style="margin-left: 10px;">Bookings</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:Request' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-clipboard " style="color: white;"></i><span style="margin-left: 10px;">Booking Request</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="#"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-money" style="color: white;"></i><span style="margin-left: 10px;">Payments</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:MIDI' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-envelope " style="color: white;"></i><span style="margin-left: 10px;">Messages</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="#"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-star " style="color: white;"></i><span style="margin-left: 10px;">Reviews</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"><a href="{% url 'helpdesk' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-question-circle" style="color: white;"></i><span style="margin-left: 10px;">Helpdesk</span></a></li>
                             </ul>
                         </div>
                     </div>

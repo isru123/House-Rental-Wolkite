@@ -50,22 +50,6 @@
 </head> 
 <body> 
   
-<div>
-    {{ message }}
-</div>
-
-<div>
-  {{ message }}
-</div>
-
-  {% if messages %}
-  {% for message in messages %}
-  <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-      {{ message }}
-      {{ message.tags }}
-  </div>
-  {% endfor %}
-  {% endif %}
         
       
 
@@ -82,7 +66,7 @@
           </button>
           <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
               <div class="navbar-nav mx-auto">
-                  <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                  <a href="{% url 'main:home' %}" class="nav-item nav-link active">Home</a>
                   <a href="shop.html" class="nav-item nav-link">How it works</a>
                   <a href="" class="nav-item nav-link">Pricing</a>
                   <a href="" class="nav-item nav-link">Help</a>
@@ -90,7 +74,7 @@
 
                   <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
                   <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
-                  <a href="{% url 'dashboard_owner' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
+                  <a href="{% url 'main:dashboard_owner' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
 
               </div>
               <div class="d-flex m-3 me-0">
@@ -122,11 +106,26 @@
    <br>
    <br>
    
-<section style="background-color: #eee; background-image: url('{% static 'images/geo.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
-  <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
+   <section class="vh-50" style="background-color: #eee; background-image: url('{% static 'images/house1.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
+    <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
   <div class="container text-start col-lg-4" style="margin-left:290px">
-      <h2 style="text-center">Listing options</h2>
-      <p>Select one of the options below to start listing your property.</p>
+  
+<div>
+  {{ message }}
+</div>
+
+<div>
+{{ message }}
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+    {{ message }}
+    {{ message.tags }}
+</div>
+{% endfor %}
+{% endif %}
   </div>
   <br>
   
@@ -137,17 +136,17 @@
                 <div class="col-12">
                       <div class="row">
                         <div class="col-6">
-                                   {% comment %} <div class="card-deck ">  {% endcomment %}
+                  
                                     <div id="elephant-card" class="row-4 card mb-4 active">
                                       <br>
                                       <h5 class="container col-lg-8" style="margin-left:10px; color: #000333;">First You have to upload your
                                          government Id and the address of your House</h5>
                                          <br>
-                                      <form method="POST" action="{% url 'my-form' id=listing_id %}" enctype="multipart/form-data" style="margin-left:80px;width:300px">
-                                     {% csrf_token %}
+                                      <form method="POST" enctype="multipart/form-data" style="margin-left:80px;width:300px">
+                                            {% csrf_token %}
                                      
-                                     {{ form|crispy }}
-                                     <button type="submit" style="width:200px" class="btn btn-primary my-2">Upload</button>
+                                              {{ form|crispy }}
+                                            <button type="submit" style="width:200px" class="btn btn-primary my-2">Upload</button>
                                       </form>
                                         <div class="card-body" role="button">
                                             <h5 class="card-title">
@@ -161,7 +160,7 @@
                                         <div class="card-body" role="button">
                                           <h5 style="color:#000333">Select Your Houses Potential address</h5> 
                                           <div style="width:300px" class="input-group">
-                                            <form method="POST" action="{% url 'my-form' id=listing_id %}">
+                                            <form method="POST" action="{% url 'main:my-form' id=listing_id %}">
                                               {% csrf_token %}
                                               {{ mss }}
                                               <div class="form-group">
@@ -226,7 +225,7 @@
             </div>
         </div>
         {% comment %} <div class="container text-start col-lg-4">  {% endcomment %}
-          <button href="{% url 'master' %}"  style="margin-left:350px;width:300px" class="btn btn-primary my-2">Finish</button>
+          <a href="{% url 'master' %}"  style="margin-left:350px;width:300px" class="btn btn-primary my-2">Finish</a>
       {% comment %} </div>  {% endcomment %}
          
 

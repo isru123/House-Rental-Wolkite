@@ -19,39 +19,42 @@
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-         <a href="{% url 'home' %}">{{ _("Home") }}</a>
+         <a href="{% url 'main:home' %}">{{ _("Home") }}</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+          <a href="{% url 'main:master' %}">{{ _("Listings") }}</a>
         </li>
         <li class="breadcrumb-item active">{{ listing.house_kind }}</li>
       </ol>
     </nav>
   </div>
 </section>
+<hr>
 
 <!-- Alerts -->
 {% include 'includes/_alerts.html' %}
 
 <!-- Listing -->
-<section id="listing" class="py-4">
+<section id="listing" class="py-4 bg-light">
   <div class="container">
 
     <div class="row col-12 px-0">
       <div class="col-8">
         <a href="{% url 'master' %}" class="btn btn-primary mb-4">{{ _("Back To Listings") }}</a>
+        
       </div>
+      <hr>
       <div class="col-2 text-right mr-0 pr-0">
-
+{% comment %} 
 	{% if user.is_authenticated %}
           {% if listing.seller.user == request.user %}
           
-        <a href="{% url 'edit_listing'   id=listing.id %}" target="_blank"
+        <a href="{% url 'main:edit_listing'   id=listing.id %}" target="_blank"
           class="btn btn-primary text-white mr-2 ">
           Edit
         </a>
 	{% endif %}
-	{% endif%}
+	{% endif%} {% endcomment %}
       </div>
     </div>
  <br>
@@ -139,76 +142,183 @@
         <br>
         <br>
         <br>
-        <h2 class="ml-3"><strong style="color:#000333">Birr {{ listing.price }}</strong></h2><h6 class="ml-4">per month</h6>
+        <h2 class="ml-3"><strong style="color:#000333">Birr {{ listing.price }}</strong></h2><h6 class="ml-4 text-info">per month</h6>
         <div class="col-12" style="margin-left:0px">
-          <div id="elephant-card" class="row-4 card mb-4 active">
+          <div class="row-4 card mb-4 active">
             <span class="mb-3">
               <i class="fas fa-map-marker text-primary mt-3 ml-3"></i>
               {{ listing.address }}
             </span>
               <div class="card-body" role="button">
                   <h6 class="card-title">
-                     
-                  <p class="card-text">{{ listing.description }}.</p>
-                  <br>
-                  <a>See More</a>
+                  {% for img in listing.image.all %}
+                        <span class="float-right">{{ img.description | capfirst }}</span>
+                        {% endfor %}
               </div>
           </div>
         </div>
        <br>
-       <h5 style="color:#000333">Facilites</h5>
+     
+       <h5 style="color:#000333">Amenities</h5>
        <br>
        <div class="col-12" style="margin-left:0px">
         <div id="elephant-card" class="row-4 card mb-4 active">
-          <span class="mb-3">
-            <i class="fas fa-map-marker text-primary mt-3 ml-3"></i>
-            {{ listing.address }}
-          </span>
+         
             <div class="card-body" role="button">
                 <h6 class="card-title">
                    
-                <p class="card-text">{{ listing.description }}.</p>
-                <br>
-                <a>See More</a>
+               
+                <div class="card">
+                  <ul class="list-group list-group-flush">
+      
+                    <li class="list-group-item">
+                      <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("Bed") }}
+                      {% for amenity in listing.amenities.all %}
+                      <span class="float-right">{{ amenity.bed | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+      
+                    <li class="list-group-item">
+                      <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Wifi") }}:
+                      {% for amenity in listing.amenities.all %}
+                      <span class="float-right">{{ amenity.wifi | capfirst }}</span>
+                      {% endfor %}
+      
+                      </span>
+                    </li>
+                   
+                    <li class="list-group-item">
+                      <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Desk") }}:
+                      {% for amenity in listing.amenities.all %}
+                      <span class="float-right">{{ amenity.desk | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+                   
+                    <li class="list-group-item">
+                      <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Living Room Furnished") }}:
+                      {% for amenity in listing.amenities.all %}
+                      <span class="float-right">{{ amenity.living_room_furnished | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+      
+      
+                  </ul>
+      
+                </div>
             </div>
         </div>
       </div>
       <br>
-      <h5 style="color:#000333">Rules and Preferences</h5>
+      <h5 style="color:#000333">Preferences</h5>
       <br>
+    
+      
       <div class="col-12" style="margin-left:0px">
         <div id="elephant-card" class="row-4 card mb-4 active">
-          <span class="mb-3">
-            <i class="fas fa-map-marker text-primary mt-3 ml-3"></i>
-            {{ listing.address }}
-          </span>
+          
             <div class="card-body" role="button">
                 <h6 class="card-title">
                    
                 <p class="card-text">{{ listing.description }}.</p>
-                <br>
-                <a>See More</a>
+                <div class="card">
+                  <ul class="list-group list-group-flush">
+      
+                    <li class="list-group-item">
+                      <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("Gender") }}
+                      {% for rules in listing.rules_and_preferences.all %}
+                      <span class="float-right">{{ rules.gender | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+      
+                    <li class="list-group-item">
+                      <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Tenant Type") }}:
+                      {% for rules in listing.rules_and_preferences.all %}
+                      <span class="float-right">{{ rules.tenant | capfirst }}</span>
+                      {% endfor %}
+      
+                      </span>
+                    </li>
+                   
+                    <li class="list-group-item">
+                      <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Maximum Age") }}:
+                      {% for rules in listing.rules_and_preferences.all %}
+                      <span class="float-right">{{ rules.maximum_age | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+                   
+                    <li class="list-group-item">
+                      <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Minimum Age") }}:
+                      {% for rules in listing.rules_and_preferences.all %}
+                      <span class="float-right">{{ rules.minimum_age | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+      
+      
+                  </ul>
+      
+                </div>
             </div>
         </div>
       </div>
-
+    
+      
 
       <div class="col-12" style="margin-left:0px">
-        <div id="elephant-card" class="row-4 card bg-primary mb-4 active">
+        <div id="elephant-card" class="row-4 card bg-info mb-4 active">
           <h4 class="ml-3 mt-3" style="color:white">Your money is safe up to 48 hours after you move in</h4>
             <div class="card-body" role="button">
                 <h6 class="card-title">
                    
                   <h5 class="ml-3 mt-3" style="color:white">When you move in, if the property doesn’t 
                   match its listing description, let us know within 48 hours and you could get a refund.</h5>
-                  <div class="card row-3  bg-white rounded" style="height:40px">
-                    <i class="fas fa-key text-primary mt-3 mb-2 ml-3">   Your money is safe</i>
+                 
+                  <div class="card">
+                    <ul class="list-group list-group-flush">
+        
+                      <li class="list-group-item">
+                        <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("Kitchen") }}
+                        {% for house_area in listing.listing_house_area.all %}
+                        <span class="float-right">{{ house_area.kitchen | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+        
+                      <li class="list-group-item">
+                        <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Toilet") }}:
+                        {% for house_area in listing.listing_house_area.all %}
+                        <span class="float-right">{{ house_area.toilet | capfirst }}</span>
+                        {% endfor %}
+        
+                        </span>
+                      </li>
+                     
+                      <li class="list-group-item">
+                        <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Bathroom") }}:
+                        {% for house_area in listing.listing_house_area.all %}
+                        <span class="float-right">{{ house_area.bathroom | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+                     
+                      <li class="list-group-item">
+                        <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Living Room") }}:
+                        {% for house_area in listing.listing_house_area.all %}
+                        <span class="float-right">{{ house_area.living_room | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+                      <li class="list-group-item">
+                        <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Garden") }}:
+                        {% for house_area in listing.listing_house_area.all %}
+                        <span class="float-right">{{ house_area.garden | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+        
+        
+                    </ul>
+        
                   </div>
-                <br>
-                <a>See More</a>
             </div>
         </div>
       </div>
+
       <br>
       <h5 style="color:#000333">Documents Required to Book</h5>
       <br>
@@ -227,135 +337,181 @@
       </div>
  
       <br>
-      <h5 style="color:#000333">Contract Type</h5>
+      <h5 style="color:#000333">RentalConditions And Costs</h5>
       <br>
 
 
       <div class="col-12" style="margin-left:0px">
-        <div id="elephant-card" class="row-4 card bg-primary mb-4 active">
+        <div id="elephant-card" class="row-4 card bg-info mb-4 active">
           <h4 class="ml-3 mt-3" style="color:white">Your money is safe up to 48 hours after you move in</h4>
             <div class="card-body" role="button">
                 <h6 class="card-title">
                    
                   <h5 class="ml-3 mt-3" style="color:white">When you move in, if the property doesn’t 
                   match its listing description, let us know within 48 hours and you could get a refund.</h5>
-                  <div class="card row-3  bg-white rounded" style="height:40px">
-                    <i class="fas fa-key text-dark mt-3 mb-2 ml-3">             Your money is safe</i>
+                
+                  <div class="card">
+                    <ul class="list-group list-group-flush">
+                  
+                      <li class="list-group-item">
+                        <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("Contract Type") }}
+                        {% for conditions in listing.rental_condtion.all %}
+                        <span class="float-right">{{ conditions.contract | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+        
+                      <li class="list-group-item">
+                        <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Cost") }}:
+                        {% for conditions in listing.rental_condtion.all %}
+                        <span class="float-right">{{ conditions.price | capfirst }}</span>
+                        {% endfor %}
+        
+                        </span>
+                      </li>
+                     
+                      <li class="list-group-item">
+                        <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Cancellation") }}:
+                        {% for conditions in listing.rental_condtion.all %}
+                        <span class="float-right">{{ conditions.cancellation | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+                     
+                      <li class="list-group-item">
+                        <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Utility Cost") }}:
+                        {% for conditions in listing.rental_condtion.all %}
+                        <span class="float-right">{{ conditions.utility_costs | capfirst }}</span>
+                        {% endfor %}
+                      </li>
+        
+        
+                    </ul>
+        
                   </div>
-                <br>
-                <a>See More</a>
             </div>
         </div>
       </div>
-       
+
+
+
+
+      <br>
+      <h5 style="color:#000333">House Information</h5>
+      <br>
+    
+      
+      {% comment %} <div class="col-12" style="margin-left:0px">
+        <div id="elephant-card" class="row-4 card mb-4 active">
+          
+            <div class="card-body" role="button">
+                <h6 class="card-title">
+                   
+                <p class="card-text">{{ listing.description }}.</p> {% endcomment %}
+                {% comment %} <div class="card"> {% endcomment %}
+                  <ul class="list-group list-group-flush">
+      
+                    <li class="list-group-item">
+                      <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("House Size") }}
+                      {% for space in listing.listing_space_overview.all %}
+                      <span class="float-right">{{ space.house_size | capfirst }} m</span>
+                      {% endfor %}
+                    </li>
+      
+                    <li class="list-group-item">
+                      <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("House Mate Number") }}:
+                      {% for space in listing.listing_space_overview.all %}
+                      <span class="float-right">{{ space.house_mate_no | capfirst }}</span>
+                      {% endfor %}
+      
+                      </span>
+                    </li>
+                   
+                    <li class="list-group-item">
+                      <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Bedroom Size") }}:
+                      {% for space in listing.listing_space_overview.all %}
+                      <span class="float-right">{{ space.bedroom_size | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+                   
+                    <li class="list-group-item">
+                      <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Bedroom Furnished") }}:
+                      {% for space in listing.listing_space_overview.all %}
+                      <span class="float-right">{{ space.bedroom_furnished | capfirst }}</span>
+                      {% endfor %}
+                    </li>
+      
+      
+                  </ul>
+      
+                {% comment %} </div> {% endcomment %}
+            {% comment %} </div>
+        </div>
+      </div> {% endcomment %}
+    
+            
+      <br>
+      <br>
+<div class="col-md-3">
+  <div class="card mb-5" style="width:700px;height:400px">
+    
+         
+         
+
+          
+
+        
+
+
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card mb-5" style="width:700px;height:400px">
+    
+         
+         
+
+          
+
+        
+
+
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card mb-5" style="width:700px;height:400px">
+    
+         
+         
+
+          
+
+        
+
+
+  </div>
+</div>
+
+
+
+
+
+
         <!-- Fields -->
         <div class="row fields">
           <div class="col-12 ">
 
-            <h2 class="listing-second-title mt-3 mb-3">
-              {{ listing.house_kind }}
-            </h2>
-
-            <span class="mb-3">
-              <i class="fas fa-map-marker text-secondary mb-5"></i>
-              {{ listing.address }}
-            </span>
+           
 
           </div>
 
 
-          <!-- Description -->
-          <div class="col-md-12 mb-5">
-            <h5 class="mb-3">{{ _("Description") }}</h5>
-            <p class="mb-2">{{ listing.description }}</p>
-
-            {% if listing.protected %}
-            <small class="uppercase">
-              {{ _("This object is listed") }}
-            </small>
-
-            {% else %}
-
-            <small>
-              {{ _("This object is not listed") }}
-            </small>
-
-            {% endif %}
-
-          </div>
-
-
-          <div class="col-md-6 p-0">
-            <ul class="list-group list-group-flush">
-
-
-              <li class="list-group-item">
-                <i class="fas fa-bed text-secondary pr-2"></i> {{ _("Bedrooms") }}:
-                <span class="float-right">{{ listing.bedrooms }}</span>
-              </li>
-
-              <li class="list-group-item">
-                <i class="fas fa-bath text-secondary pr-2"></i> {{ _("Bathrooms") }}:
-                <span class="float-right">{{ listing.bathrooms }}</span>
-              </li>
-
-
-              <li class="list-group-item">
-                <i class="fas fa-arrows-alt-v text-secondary pr-2"></i> {{ _("Ceiling height") }}:
-                <span class="float-right">{{ listing.ceiling_height }} {{ _("m") }}
-                </span>
-              </li>
-              
-              <li class="list-group-item">
-                <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Available From") }}:
-                <span class="float-right">{{ listing.available_start }}</span>
-              </li>
-             
-
-
-            </ul>
-          </div>
-
-
-          <div class="col-md-6 p-0">
-            <ul class="list-group list-group-flush">
-
-              <li class="list-group-item">
-                <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("Price") }}
-                <span class="float-right">{{ listing.price | intcomma }} €</span>
-              </li>
-
-              <li class="list-group-item">
-                <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Square Feet") }}:
-                <span class="float-right">{{ listing.sqft }} {{ _("m²") }}
-
-                </span>
-              </li>
-             
-              <li class="list-group-item">
-                <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Free from") }}:
-                <span class="float-right">{{ listing.free_date }}</span>
-              </li>
-             
-              <li class="list-group-item">
-                <i class="fas fa-calendar text-secondary pr-2"></i> {{ _("Available To") }}:
-                <span class="float-right">{{ listing.available_end }}</span>
-              </li>
-
-
-            </ul>
-
-          </div>
+         
 
 
         </div>
 
-        <div>
-          <small>{{ _("Object from the ") }}
-            <span>{{ listing.created_at|date:"d M Y" }}</span>
-
-          </small>
-        </div>
+        
 
       </div>
 
@@ -373,7 +529,7 @@
   
 
 
-</section>
+
 
 
   
@@ -409,7 +565,7 @@
       <div class="col-sm-5 mt-2">
         <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
         <div id="review-form-container">
-      <form method="POST" action="{% url 'single_house_view' id=listing.id %}">
+      <form method="POST" action="{% url 'main:single_house_view' id=listing.id %}">
           {% csrf_token %}
           {{ review_form.media }} 
           {{ review_form.as_p }}
@@ -461,7 +617,7 @@
 </div>
 <br>
 <br>
-
+</section>
 
 
 

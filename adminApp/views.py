@@ -412,7 +412,7 @@ def approve_owner_request(request, listing_id):
     
     subject = 'Listing Approved'
     from_email = settings.EMAIL_HOST_USER
-    to_email = ['lema2127@gmail.com']
+    to_email = ['israelbeyene92@gmail.com']
     
     messages.info(request, 'Welcome To Housing At Wolkite')
     messages.success(request, 'Listing has been verified.')
@@ -423,7 +423,106 @@ def approve_owner_request(request, listing_id):
     email_message.attach_alternative(html_content, "text/html")
     email_message.send()
     # Redirect to a success page or back to the listing details page
-    return redirect('master')
+    return redirect('approve-owner')
+
+
+
+def reject_owner_request(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
+
+    # Perform logic to approve the owner request, such as updating the verified flag
+    listing.approved = False
+    listing.save()
+    
+    subject = 'Listing Rejected'
+    from_email = settings.EMAIL_HOST_USER
+    to_email = ['israelbeyene92@gmail.com']
+    
+    messages.info(request, 'Welcome To Housing At Wolkite')
+    messages.success(request, 'Listing has been verified.')
+    
+    html_content = render_to_string('adminApp/email_template.html', {'variable1': 'Welcome To Housing At Wolkite', 'variable2': 'Listing has been verified.'})
+    # Create the email message
+    email_message = EmailMultiAlternatives(subject, body=None, from_email=from_email, to=to_email)
+    email_message.attach_alternative(html_content, "text/html")
+    email_message.send()
+    # Redirect to a success page or back to the listing details page
+    return redirect('approve-owner')
+
+from django.contrib.auth import authenticate, login
+
+def ChangePassword(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    msg = ''
+    if request.method == "POST":
+        username = request.user.username
+        oldpass = request.POST.get('oldpass')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        if password1!=password2:
+            msg='New and Confirm Password should be same.'
+            return render(request,'adminApp/changepass.html', {'msg':msg})
+              
+        user = User.objects.get(username=username)
+        newpass = user.check_password(oldpass)
+        
+        if newpass:
+            user.set_password(password1)
+            user.save()
+            data=authenticate(username=username,password=password1)
+            if data !=None:
+                login(request,data)
+                return redirect('profile')
+        msg='Old Password should be same.'
+    return render(request,'adminApp/changepass.html', {'msg':msg})
+
+
+
+
+
+
+
+
+def EditProfile(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    u = User.objects.get(id=id)
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        photo = request.FILES.get('pic')
+        contact = request.POST.get('contact')
+
+        if len(contact)!=10:
+            msg = "Contact number should be 10 digit"
+            return render(request,'adminApp/edit-profile.html', {'details':u, 'msg':msg})
+        
+        if photo:
+            u.photo = photo
+ 
+        u.address = address
+        u.contact_No = contact
+
+        u.user.email = email
+        u.user.first_name = first_name
+        u.user.last_name = last_name
+        u.user.save()
+        u.save()
+        return redirect('profile')
+    return render(request,'adminApp/edit-profile.html', {'details':u})
+
+
+
+
+
+def Profile(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return render(request,'adminApp/profile.html')
 
 
 
