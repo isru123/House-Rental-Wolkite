@@ -58,50 +58,95 @@
 {% endblock %}
 
 {% block 'body' %}
+
+<section style="background-color: #eee; background-image: url('{% static 'images/geo.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
 <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
-<div class="container text-center col-lg-4">
+<div class="container text-start col-lg-4" style="margin-left:290px">
     <h2 style="text-center">Listing options</h2>
     <p>Select one of the options below to start listing your property.</p>
 </div>
 <br>
-<h5 class="container text-center col-lg-4" style="text-center">Regular listings</h5>
+<h5 class="container col-lg-4" style="margin-left:290px; color: #000333;">First You have to upload your government Id and the address of your House</h5>
 
            <br>       
         <div class="container">
           <div class="col mt-2">
               <div class="col-12">
-                  <form>
-                      <div class="form-group row">
-                          <div>
-                              <div class="card-deck">
+                
+                      <div class="col-8">
+                                 {% comment %} <div class="card-deck ">  {% endcomment %}
                                   <div id="elephant-card" class="row-4 card mb-4 active">
+                                      
+                                   <form method="POST" action="{% url 'second' id=listing.id %}" enctype="multipart/form-data" style="margin-left:80px;width:300px">
+                                   {% csrf_token %}
+                                   
+                                   {{ form|crispy }}
+                                   <button type="submit" style="width:200px" class="btn btn-primary my-2">Upload</button>
+                                    </form>
                                       <div class="card-body" role="button">
-                                          <h5 class="card-title"><input id="elephant" type="radio" checked="">
-                                              <label for="elephant">Create new listing</label></h5>
+                                          <h5 class="card-title">
+                                             
                                           <p class="card-text">Select this option to create a new listing from scratch.</p>
                                       </div>
                                   </div>
                                   
                                   <div id="meerkat-card" class="card mb-4 row-4 ">
+                                    
                                       <div class="card-body" role="button">
-                                          <h5 class="card-title"><input id="meerkat" type="radio"> <label
-                                                  for="meerkat">Duplicate an existing listing</label></h5>
+                                       
+                                          
+                                               
                                           <p class="card-text">Select this option if you want to create 
                                             a listing that is quite similar to a listing that you already listed.</p>
                                       </div>
                                   </div>
-                              </div>
-                          </div>
-                      </div>
-                  </form>
+                                {% comment %} </div> {% endcomment %}
+                          
+                        </div>
+                  
+
+                  
               </div>
           </div>
       </div>
-      <div class="container text-center col-lg-4">
-        <a href="{% url 'multistepformsubmission' %}"  class="btn btn-primary my-2">Continue</a>
-    </div>
+      {% comment %} <div class="container text-start col-lg-4">  {% endcomment %}
+        <button href="{% url 'multistepformsubmission' %}"  style="margin-left:350px;width:200px" class="btn btn-primary my-2">Continue</button>
+    {% comment %} </div>  {% endcomment %}
+       
+
+    <input type="text" id="tags"> 
+	<script>
+        $(function() {
+          var availableTags = [
+            {% for add in showaddress %}
+              "{{ add.Address }}",
+            {% endfor %}
+          ];
       
+          $("#tags").autocomplete({
+            source: availableTags,
+            select: function(event, ui) {
+              // When an option is selected from the autocomplete dropdown
+              $("#warning").hide(); // Hide the warning message
+            },
+            change: function(event, ui) {
+              // When the input value is changed
+              if (!ui.item) {
+                // If the selected item is not from the autocomplete options
+                $("#tags").val(""); // Clear the input value
+                $("#warning").show(); // Show the warning message
+              }
+            }
+          });
+        });
+      </script>
+     
+      
+
+
     
+
+</section>
 {% endblock %}
 
 

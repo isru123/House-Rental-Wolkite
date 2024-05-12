@@ -22,37 +22,118 @@
         <!--**********************************
             Content body start
         ***********************************-->
-
-<section class="vh-50" style="background-color: #eee;">
-    <div class="container align-left w-150 py-5 h-100" style="margin-left: 300px;">
-      <div class="row d-flex justify-content-start align-items-right h-100">
-        <div class="col col-xl-6">
-          <div class="card d-flex align-items-center" style=" width: 700px;">
-                <div class="row">
-                    <div class="col-12">
+ <div class="text-center">
+ <section  style="background-color:white; height:500px;">
+ <div class="container py-5" >
+  <div class="row d-flex justify-content-center align-items-center">
+     <div class="col col-xl-10">
+      <div class="card" style="border-radius: 0rem; width:600px">
+          <div class="row g-0">
+         <div class="login-page">
+            <div class="form" style="margin-left:50px">
+                <div class="row register-form" >
+                    <form action="/add-admin/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if msg %}
+                        <center style="color: red;">{{msg}}</center>
+                        {% endif %}
                         <br>
-                        <form action="" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-12">
-                                  {{profile_form|crispy}}
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="text" class="form-control" placeholder="First Name *" value=""
+                                    name="first_name" required />
+                            </div>
+                            </div>
+                            <br>
+        
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="text" class="form-control" placeholder="Last Name *" value=""
+                                    name="last_name" required />
+                            </div>
+                            </div>
+                            <br>
+        
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="email" class="form-control" placeholder="Email *" value="" name="email"
+                                    required />
+                            </div>
+                            </div>
+        
+                            <br>
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="number" min="10" minlength="10" maxlength="10" name="contact"
+                                    class="form-control" placeholder="User Phone " value="" required />
+                            </div>
+                            </div> 
+                            <br>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group ">
+                                    <input  style="width:400px" type="text" class="form-control" placeholder="Address*" value="" name="address"
+                                        required />
                                 </div>
-                               </div>
-                               <button style="width:200px;" class="btn btn-lg btn-primary" type="submit" value="Submit">Submit</button>
-                               <br>
-                               <br>
-                               <br> 
-                         </form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<br>
-<br>
-<br> 
+                            </div>
+                            <br>
+                           
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="text" class="form-control" placeholder="User Name*" value=""
+                                    name="username" required />
+                            </div>
+                            </div>
+        
+                            <br>
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="password" minlength="4" maxlength="10" class="form-control"
+                                    placeholder="Password*" value="" name="pass1" required />
+                            </div>
+                            </div>
+        
+                            <br>
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input  style="width:400px" type="password" class="form-control" placeholder="Confirm Password*" value=""
+                                    name="pass2" required />
+                            </div>
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <input style="width:400px" type="file" name="pic" class="form-control" placeholder="upload your photo"
+                                    value="" required />
+                            </div> 
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                            <input type="submit" style="color: white; width:400px" value="Register" class="btn btn-primary">
+                            <!--  <input type="submit" class="btnRegister"  value="Register"/> -->
+                            </div>
+                        </div>
+                        <br>
+                </div>
+                {% comment %} <p class="message"> Already have an Account??<a href="/login/">Login here..</a></p> {% endcomment %}
+            </div>
+          
+        
+        
+        </div>
+        </div>
+        </div>
+        </div>
+        </form>
+        
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+        </div>
     <!--**********************************
         Main wrapper end
     ***********************************-->
@@ -61,42 +142,48 @@
         Scripts
     ***********************************-->
 
-    <section style="height:50px ">
+    <section style="height:400px">
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar">
+       <div class="nk-sidebar bg-dark">
            <div class="">
-               <br>
-               <ul class="metismenu" id="menu">
+            <br>
+            <br>
+            <br>
+               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
                    <li>
                        <a href="{% url 'board' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-clipboard"></i> Dashboard</span>
                        </a>
                    </li>
-              
-                   <li class="mega-menu mega-menu-sm">
+                    <br>
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text">Admin</span>
+                           <span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-user-circle"></i> Admin</span>
                        </a>
-                       <ul>
-                        <li><a href="/all-user/">All User</a></li>
+                       <ul style=" background-color: #1877F2;">
+                        <li><a href="/all-user/" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
                         {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                        <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                        <li><a href="{% url 'approve-owner' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
                         
-                        <li><a href="/approve-admin/">Admin Panel</a></li>
+                        <li><a href="/approve-admin/" style="color:white; font-family: sans-serif;"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
                         {% comment %} {% endif %} {% endcomment %}
                         
-                        <li><a href="/rent-house/">Manage Owner</a></li>
-                        <li><a href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
+                        <li><a href="" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
                         <li>
-                            <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                            <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
                         </li>
 
-                        <li>
-                            <a href="{% url 'add-admin' %}">Add admin</a>
-                        </li>
+                        {% comment %} <li>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;" ><i class="fa fa-user" style="color: white;"></i> Add admin</a>
+                            {% endif %}
+
+                        </li> {% endcomment %}
                        </ul>
                    </li>
                    {% comment %} {% endif %} {% endcomment %}

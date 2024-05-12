@@ -1,7 +1,14 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
+<<<<<<< HEAD
 from .models import Image,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
 
+=======
+from .models import Image,Review,Listing,Document,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from dal import autocomplete
+>>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 
 
 class ListingForm(forms.ModelForm):
@@ -10,16 +17,16 @@ class ListingForm(forms.ModelForm):
     # image = forms.ImageField(label=_("Image"), widget=forms.ClearableFileInput(attrs={'multiple': False, 'class': 'image-input', 'id': 'id_image'}))
     # house_kind = forms.ChoiceField(label=_("House Kind"), choices=AVAILABLE_HOUSE_KINDS, widget=forms.Select(attrs={'class': 'bold-input','placeholder': 'House Type'}))
     address = forms.CharField(label=_("Address"), widget=forms.TextInput)
+    
     price = forms.DecimalField(label=_("Price"), widget=forms.TextInput(attrs={'class': 'bold-input'}))
     # minimum_rental_period = forms.ChoiceField(label=_("Minimum Rental Period"), choices=AVAILABLE_HOUSE_KINDS, widget=forms.Select(attrs={'class': 'bold-input','placeholder': 'Minimum Rental Perio'}))
     # maximum_rental_period = forms.ChoiceField(label=_("Maximum Rental Period"), choices=AVAILABLE_HOUSE_KINDS, widget=forms.Select(attrs={'class': 'bold-input','placeholder': 'Maximum Rental Period'}))
         
     class Meta:
         model = Listing
-        fields = ['house_kind', 'address', 'price', 'available_start', 'available_end', 'minimum_rental_period','maximum_rental_period']
+        fields = ['house_kind', 'price','address', 'available_start', 'available_end']
         labels = {
             'house_kind': _('House Kind'),
-            'address': _('Address'),
             'price': _('Price'),
         }
         
@@ -56,7 +63,18 @@ class RentalConditionsForm(forms.ModelForm):
 
 class RulesAndPreferencesForm(forms.ModelForm):
     
-     class Meta:
+    RADIO_CHOICES3 = [
+    ('proof of identity', 'Proof of Identity'),
+    ('proof of income', 'Proof of Income'),
+    ('proof of occupation', 'Proof of Occupation'),
+         ]
+    
+    Document = forms.MultipleChoiceField(
+        choices=RADIO_CHOICES3,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
+    )
+    
+    class Meta:
          model = RulesAndPreferences
          fields = '__all__'
          exclude = ['seller']
@@ -66,7 +84,7 @@ class RulesAndPreferencesForm(forms.ModelForm):
  
 
 class ImageForm(forms.ModelForm):
-    description = forms.CharField(label=_("Description"), widget=forms.Textarea)
+    description = forms.CharField(label=_("Description"), widget=forms.Textarea(attrs={'style':'width: 300px; height: 100px;'}))
     image1 = forms.ImageField(widget=forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 100px;'}))
     image2 = forms.ImageField(widget=forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 50px;'}))
     image3 = forms.ImageField(widget=forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 50px;'}))
@@ -89,6 +107,7 @@ class RentalFilterForm(forms.Form):
     )
 
 
+<<<<<<< HEAD
 # class ReviewForm(forms.ModelForm):
 #     review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
 #     rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
@@ -106,3 +125,58 @@ class UploadForm(forms.ModelForm):
         fields = ['document', 'photo']
 
          
+=======
+class ReviewForm(forms.ModelForm):
+    RATING_CHOICES = (
+        ('1', '1 Star'),
+        ('2', '2 Stars'),
+        ('3', '3 Stars'),
+        ('4', '4 Stars'),
+        ('5', '5 Stars'),
+    )
+
+    rating = forms.ChoiceField(
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect(attrs={'class': 'rating-input'})
+    )
+    review_text = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'})
+    )
+    hidden_rating = forms.CharField(widget=forms.HiddenInput(), required=False)
+    class Meta:
+        model = Review
+        fields = ['rating', 'review_text']
+        
+    
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit Review'))
+         
+
+# class AddressForm(forms.Form):
+#     address = forms.ModelChoiceField(
+#         queryset=AddressOfListing.objects.all(),
+#         widget=autocomplete.ModelSelect2(url='address-autocomplete')
+#     )
+    
+#     class Meta:
+#         model = AddressOfListing
+#         fields = ['Address']
+        
+
+class DocumentForm(forms.ModelForm):
+    id_photo = forms.ImageField()
+    house_map = forms.ImageField()
+    class Meta:
+        model = Document
+        fields = ('id_photo', 'house_map')
+        
+        
+    
+        
+    
+        
+>>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e

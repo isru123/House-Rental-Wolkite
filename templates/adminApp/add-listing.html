@@ -1,0 +1,611 @@
+{% extends 'base/adminbase.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block 'search' %}
+<input type="text" name="search" class="form-control" placeholder="Search First Name...">
+{% endblock %}
+
+{% block 'body' %}
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<!--**********************************
+            Content body start
+        ***********************************-->
+
+
+
+<section class="vh-105" style="background-color: #eee;">
+<div class="container-fluid mt-3">
+    <div class="container" style="margin-left: 300px;">
+            <div class="col-md-12">
+              <br>
+                <div class="card" style="width: 1000px;">
+                    <div class="card-body" >
+
+<form method="post">
+                            {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6" style="width:100px">
+                <div class="form-group">
+                                <label for="profile">Profile:</label>
+                    <div class="input-group">
+                                <select name="profile" id="profile" class="form-control" onchange="handleProfileSelection()">
+                                <option value="">select ------------</option>
+                                {% for profile in profiles %}
+                                <option value="{{ profile.user.username }}">{{ profile.user.username }}</option>
+                                {% endfor %}
+                                </select>
+
+                                <script>
+                            function handleProfileSelection() {
+                              var selectedProfile = document.getElementById("profile").value;
+                              listing.seller = selectedProfile;
+                              console.log("Selected Profile: " + selectedProfile);
+                              console.log("Listing Seller: " + listing.seller);
+                              // You can perform further actions with the selected profile value
+                             // For example, you can update another input field or make an AJAX request
+                             }
+                            </script>
+
+                           
+                        <div style="margin-left:5px" class="input-group-append">
+                            <div class="action-icons">
+                                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal0" title="Create Profile">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="Edit Profile">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="View Profile">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                            
+                            {{ form|crispy }}
+            </div>
+                
+
+            <div class="col-md-6" style="border-left: 1px solid black; height: 600px;">
+                <div class="form-group">
+                                <label for="amenity">Amenities:</label>
+                    <div class="input-group">
+                                <select name="amenity" id="amenity" class="form-control">
+                                    <option value="">select ------------</option>
+                                    {% for amenity in amenities %}
+                                    <option value="{{ amenity.id }}">Amenities of {{ amenity.seller.user.username }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <script>
+                                    function handleProfileSelection() {
+                                      var selectedAmenity = document.getElementById("amenity").value;
+                                      listing.amenities = selectedAmenity;
+                                      console.log("Selected Profile: " + selectedAmenity);
+                                      console.log("Listing Seller: " + listing.amenities);
+                                      // You can perform further actions with the selected profile value
+                                     // For example, you can update another input field or make an AJAX request
+                                     }
+                                </script>
+                           
+                        <div style="margin-left:5px" class="input-group-append">
+                            <div class="action-icons">
+                                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" title="Create Profile">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="Edit Profile">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="View Profile">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                                <label for="profile">House Overview:</label>
+                    <div class="input-group">
+                                <select name="profile" id="profile" class="form-control">
+                                    <option value="">select ------------</option>
+                                    {% for over in overview %}
+                                    <option value="{{ over.id }}">Listing Overview of {{ over.seller.user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                           
+                        <div style="margin-left:5px" class="input-group-append">
+                            <div class="action-icons">
+                                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" title="Create Profile">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="Edit Profile">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="View Profile">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %}
+                <div class="form-group">
+                                <label for="profile">House Area:</label>
+                    <div class="input-group">
+                                <select name="profile" id="profile" class="form-control">
+                                    <option value="">select ------------</option>
+                                    {% for a in area %}
+                                    <option value="{{ a.id }}">Listing area of {{ a.seller.user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                           
+                        <div style="margin-left:5px" class="input-group-append">
+                            <div class="action-icons">
+                                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3" title="Create Profile">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="Edit Profile">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="View Profile">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            <div class="form-group">
+                            <label for="profile">Rental Condition:</label>
+                <div class="input-group">
+                            <select name="profile" id="profile" class="form-control">
+                                <option value="">select ------------</option>
+                                {% for con in condition %}
+                                <option value="{{ con.id }}">Rental Codition of {{ con.seller.user.username }}</option>
+                                {% endfor %}
+                            </select>
+                       
+                    <div style="margin-left:5px" class="input-group-append">
+                        <div class="action-icons">
+                            <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal4" title="Create Profile">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a href="" class="btn btn-primary" title="Edit Profile">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="" class="btn btn-primary" title="View Profile">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+
+
+
+            <div class="form-group">
+                                <label for="profile">Preferences:</label>
+                <div class="input-group">
+                                <select name="profile" id="profile" class="form-control">
+                                    <option value="">select ------------</option>
+                                    {% for pref in preferences %}
+                                    <option value="{{ pref.id }}">Listing Preferences of {{ pref.seller.user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                           
+                        <div style="margin-left:5px" class="input-group-append">
+                            <div class="action-icons">
+                                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal5" title="Create Profile">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="Edit Profile">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-primary" title="View Profile">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+
+
+
+
+        <div class="form-group">
+               <label for="profile">Images:</label>
+            <div class="input-group">
+                     <select name="profile" id="profile" class="form-control">
+                        <option value="">select ------------</option>
+                      {% for image in images %}
+                      <option value="{{ image.id }}">Listing Images of {{ image.seller.user.username }}</option>
+                      {% endfor %}
+                      </select>
+   
+                 <div style="margin-left:5px" class="input-group-append">
+                    <div class="action-icons">
+                      <a href="" class="btn btn-primary " data-toggle="modal" data-target="#exampleModal6"  title="Create Profile">
+                      <i class="fa fa-plus"></i>
+                      </a>
+                      <a href="" class="btn btn-primary" title="Edit Profile">
+                      <i class="fa fa-edit"></i>
+                      </a>
+                      <a href="" class="btn btn-primary" title="View Profile">
+                      <i class="fa fa-eye"></i>
+                      </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+                            
+                    
+                            <br> {% endcomment %}
+                  
+                            {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Open Modal
+                            </button> {% endcomment %}
+
+                            <button style="width: 450px; margin-left:250px;" class="btn btn-primary btn-rounded float-right" type="submit">Save</button>
+ </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+      
+
+</section>
+
+<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+
+    <section style="height:50px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       <div class="nk-sidebar bg-dark">
+           <div class="">
+               <br>
+               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-clipboard"></i> Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
+                       <a class="has-arrow">
+                           <i class="icon-screen-tablet menu-icon"></i>
+                           <span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-user-circle"></i> Admin</span>
+                       </a>
+                       <ul style=" background-color: #1877F2;">
+                        {% if user.is_superuser or user.is_staff  %} 
+                        <li><a href="/all-user/" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
+                        {% endif %}
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a href="{% url 'approve-owner' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
+                        
+                        <li><a href="/approve-admin/" style="color:white; font-family: sans-serif;"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        
+                        <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
+                        <li><a href="" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
+                        <li>
+                            <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
+                        </li>
+
+                        <li>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;" ><i class="fa fa-user" style="color: white;"></i> Add admin</a>
+                            {% endif %}
+                        </li>
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
+
+
+   
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Amenities</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ amenity_form |crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listing Overview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form3|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listing Area</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form4|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listing Condition</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form5|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listing Preferences</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form6|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="exampleModal6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listing Images</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form7|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal0" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+    <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+        <div style="width:400px">
+            <div class="form-group">
+                    <label for="profile">Users:</label>
+                <div class="input-group">
+                           <select name="user" id="user" class="form-control" onchange="handleProfileSelection()">
+                            <option value="">select ------------</option>
+                           {% for user in users %}
+                           <option value="{{ user.id }}">{{ user.username }}</option>
+                           {% endfor %}
+                            </select>
+
+                         <script>
+                            function handleProfileSelection() {
+                            var selectedProfile = document.getElementById("user").value;
+                            listing.seller = selectedProfile;
+                            console.log("Selected Profile: " + selectedProfile);
+                            console.log("Listing Seller: " + listing.seller);
+                          // You can perform further actions with the selected profile value
+                          // For example, you can update another input field or make an AJAX request
+                               }
+                           </script>
+
+                      
+                    <div style="margin-left:5px" class="input-group-append">
+                       <div class="action-icons">
+                           <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal10" title="Create Profile">
+                               <i class="fa fa-plus"></i>
+                           </a>
+                           <a href="" class="btn btn-primary" title="Edit Profile">
+                               <i class="fa fa-edit"></i>
+                           </a>
+                           <a href="" class="btn btn-primary" title="View Profile">
+                               <i class="fa fa-eye"></i>
+                           </a>
+                       </div>
+                    </div>
+                </div> 
+            </div>
+                    {{ user_profile|crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+        </div>
+    </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="exampleModal10" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ user_form |crispy }}
+                    {% comment %} <input type="submit" value="Submit Form 2"> {% endcomment %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock %}
+
+
+{% block 'footer2' %}
+{% endblock %}
+

@@ -1,0 +1,267 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html> 
+<html> 
+<head> 
+	  <title>AutoComplete</title> 
+
+    <meta charset="utf-8">
+
+ 
+ 
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+     <!-- Google Web Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+
+     <!-- Icon Font Stylesheet -->
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+     <!-- Libraries Stylesheet -->
+     <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+     <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+      <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+ 
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ 
+     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  
+     <!-- Template Stylesheet -->
+     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+     <link rel="stylesheet" href="{% static 'jquery/jquery.rateyo.css' %}"/>
+	<script src= 
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"> 
+	</script> 
+	
+	<script src= 
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"> 
+	</script> 
+	
+	<link href= 
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+		rel="stylesheet" type="text/css" /> 
+</head> 
+<body> 
+  
+<div>
+    {{ message }}
+</div>
+
+<div>
+  {{ message }}
+</div>
+
+  {% if messages %}
+  {% for message in messages %}
+  <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+      {{ message }}
+      {{ message.tags }}
+  </div>
+  {% endfor %}
+  {% endif %}
+        
+      
+
+{% block 'header' %}
+
+    
+ <!-- Navbar start -->
+ <div class="container-fluid fixed-top"> 
+  <div class="container px-0">
+      <nav class="navbar navbar-light bg-white navbar-expand-xl">
+          <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
+          <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+              <span class="fa fa-bars text-primary"></span>
+          </button>
+          <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+              <div class="navbar-nav mx-auto">
+                  <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                  <a href="shop.html" class="nav-item nav-link">How it works</a>
+                  <a href="" class="nav-item nav-link">Pricing</a>
+                  <a href="" class="nav-item nav-link">Help</a>
+                  <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+
+                  <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
+                  <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
+                  <a href="{% url 'dashboard_owner' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
+
+              </div>
+              <div class="d-flex m-3 me-0">
+                  <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                 
+          
+              </div>
+              <div class="nav-item dropdown">
+                  <a href="#" class="nav-link" id="accountTrigger">
+                    <i class="fas fa-user fa-2x"></i>
+                  </a>
+                  <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
+                      <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
+                      <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
+
+                    <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
+                  </div>
+                </div>
+                {% comment %} <div id="google_translate_element"></div> {% endcomment %}
+
+      </nav>
+  </div>
+</div>
+<!-- Navbar End -->
+   {% endblock %}
+  
+   <br>
+   <br>
+   <br>
+   <br>
+   
+<section style="background-color: #eee; background-image: url('{% static 'images/geo.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
+  <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
+  <div class="container text-start col-lg-4" style="margin-left:290px">
+      <h2 style="text-center">Listing options</h2>
+      <p>Select one of the options below to start listing your property.</p>
+  </div>
+  <br>
+  
+  
+             <br>       
+          <div class="container">
+            <div class="col mt-2">
+                <div class="col-12">
+                      <div class="row">
+                        <div class="col-6">
+                                   {% comment %} <div class="card-deck ">  {% endcomment %}
+                                    <div id="elephant-card" class="row-4 card mb-4 active">
+                                      <br>
+                                      <h5 class="container col-lg-8" style="margin-left:10px; color: #000333;">First You have to upload your
+                                         government Id and the address of your House</h5>
+                                         <br>
+                                      <form method="POST" action="{% url 'my-form' id=listing_id %}" enctype="multipart/form-data" style="margin-left:80px;width:300px">
+                                     {% csrf_token %}
+                                     
+                                     {{ form|crispy }}
+                                     <button type="submit" style="width:200px" class="btn btn-primary my-2">Upload</button>
+                                      </form>
+                                        <div class="card-body" role="button">
+                                            <h5 class="card-title">
+                                               
+                                            <p class="card-text">Select this option to create a new listing from scratch.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="meerkat-card" class="card mb-4 row-4 ">
+                                      
+                                        <div class="card-body" role="button">
+                                          <h5 style="color:#000333">Select Your Houses Potential address</h5> 
+                                          <div style="width:300px" class="input-group">
+                                            <form method="POST" action="{% url 'my-form' id=listing_id %}">
+                                              {% csrf_token %}
+                                              {{ mss }}
+                                              <div class="form-group">
+                                                <div class="col-6">
+                                                
+                                                  <input type="text" style="width:300px" id="tags" name="addloc" class="form-control" placeholder="Enter address" value="">
+                                                  <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                      <i class="fas fa-search"></i>
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                              function handleProfileSelection() {
+                                                var selectedAddress = document.getElementById("tags").value;
+                                                listing.address = selectedAddress;
+                                                console.log("Selected Profile: " + selectedAddress);
+                                                console.log("Listing Address: " + listing.address);
+                                                // You can perform further actions with the selected profile value
+                                                // For example, you can update another input field or make an AJAX request
+                                              }
+                                            </script>
+                                          <button type="submit" class="btn btn-primary">Save</button>
+                                          </form>
+                                            
+                                          </div>
+                                            <br>
+                                            <br>
+                                                 
+                                            <p class="card-text">Select this option if you want to create 
+                                              a listing that is quite similar to a listing that you already listed.</p>
+                                        </div>
+                                    </div>
+                                  {% comment %} </div> {% endcomment %}
+                            
+                            </div>
+                          {% comment %} <div class="col-4">
+                            <div id="elephant-card" class="row-4 card mb-4 active">
+                              <form action="" method="post" enctype="multipart/form-data" style="margin-left:5px">
+                                {% csrf_token %}
+                                <div class="row">
+                                 <div class="col-6">
+                                   {{location_form|crispy}}
+                                 </div>
+                                </div>
+                                <button href="{% url 'my-form' %}" class="btn btn-lg btn-primary" type="submit">
+                                 Save
+                                </button>
+                             </form>
+                                <div class="card-body" role="button">
+                                    <h5 class="card-title">
+                                       
+                                    <p class="card-text">Select this option to create a new listing from scratch.</p>
+                                </div>
+                            </div>
+                          </div> {% endcomment %}
+                        </div>
+  
+                    
+                </div>
+            </div>
+        </div>
+        {% comment %} <div class="container text-start col-lg-4">  {% endcomment %}
+          <button href="{% url 'master' %}"  style="margin-left:350px;width:300px" class="btn btn-primary my-2">Finish</button>
+      {% comment %} </div>  {% endcomment %}
+         
+
+      
+        
+  
+  
+      
+  
+  </section>
+	
+	<script>
+        $(function() {
+          var availableTags = [
+            {% for add in showaddress %}
+              "{{ add.Address }}",
+            {% endfor %}
+          ];
+      
+          $("#tags").autocomplete({
+            source: availableTags,
+            select: function(event, ui) {
+              // When an option is selected from the autocomplete dropdown
+              $("#warning").hide(); // Hide the warning message
+            },
+            change: function(event, ui) {
+              // When the input value is changed
+              if (!ui.item) {
+                // If the selected item is not from the autocomplete options
+                $("#tags").val(""); // Clear the input value
+                $("#warning").show(); // Show the warning message
+              }
+            }
+          });
+        });
+      </script>
+</body> 
+</html>

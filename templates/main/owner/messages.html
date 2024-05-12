@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+    {% block 'body' %}
+     <!-- Single Page Header start -->
+ <div class="container-fluid page-header py-5" style="background-color: #1877F2; height:50px">
+    <h1 class="text-center text-white display-6">Dashboard</h1>
+    <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active">Post</li>
+    </ol>
+</div> 
+
+<br>
+<br>
+<br>
+<br>
+<hr>
+    <body>
+        <div class="container-fluid">
+            <div class="row flex-nowrap">
+                <div class="col-auto px-0">
+                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm">
+                        <div id="sidebar-nav" class="list-group border-0 rounded-0">
+                            <div class="p-2">
+                                <h4 style="color:black">House Owner Dashboard</h4>
+                            </div>
+                            <form class="d-flex p-2">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </form>
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="{% url 'dashboard_owner' %}" class="text-decoration-none text-black">
+                                        Dashboard</a></li>
+                                <li class="list-group-item"> <a href="{% url 'owner-listings' %}"
+                                        class="text-decoration-none text-black">Listings</a> </li>
+                                <li class="list-group-item"> <a href="#"
+                                        class="text-decoration-none text-black">Bookings</a> </li>
+                                <li class="list-group-item"> <a href="#"
+                                        class="text-decoration-none text-black">Payments</a> </li>
+                                <li class="list-group-item"> <a href="{% url 'inbox_view' %}"
+                                            class="text-decoration-none text-black">Messages</a> </li>
+                                <li class="list-group-item"> <a href="#"
+                                        class="text-decoration-none text-black">Reviews</a> </li>
+                                <li class="list-group-item"><a href="{% url 'helpdesk' %}"
+                                            class="text-decoration-none text-black">Helpdesk</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="mb-6 text-3xl">Inbox</h1>
+
+                <div class="space-y-6">
+                    {% for conversation in conversations %}
+                    <h1>Hi</h1>
+                        <a href="{% url 'detail' conversation.id %}">
+                            <div class="p-6 flex bg-gray-100 rounded-xl">
+                                <div class="pr-6">
+                                    <img src="{{ conversation.list.image.url }}" class="w-20 rounded-xl">
+                                </div>
+                
+                                <div>
+                                    {% for member in conversation.members.all %}
+                                        {% if member != request.user %}
+                                            <p class="mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
+                                            <p>{{ conversation.list.name }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+              
+            </div>
+        </div>
+
+
+
+      
+     
+    </body>
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}
+
+
+

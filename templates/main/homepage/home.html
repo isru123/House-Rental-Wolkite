@@ -31,32 +31,33 @@
 <!-- Modal Search End -->
 
 <!-- Hero Start -->
-<div class="container-fluid py-5 mb-5 hero-header">
+<section class="vh-50" style="background-color: #eee; background-image: url('{% static 'images/gurag.jpeg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
+<div class="container-fluid py-5 mb-5 hero-header" style="background-color: #0F3057 ">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-3 text-secondary">100% Stay Safe</h4>
-                <h1 class="mb-5 display-3 text-primary">Find Your  Home</h1>
+                <h5 class="mb-5 display-3 text-white" style="font-family: sans-serif;">Endless Search Ends Now</h5>
                 <div class="position-relative mx-auto">
-                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
-                    <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
+                    <input class="form-control border-1 border-white w-75 py-3 px-4 rectangle-pill" type="text" placeholder="Search">
+                    <button type="submit" class="btn btn-success border-2 border-white py-2 px-4 position-absolute rectangle-pill text-white h-100" style="top:0; right: 25%;background-color: #1877F2;"><span style="margin-bottom:2px">SEARCH</span></button>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-5">
-                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+            <div class="col-md-12 col-lg-5" >
+                <div id="carouselId"  class="carousel slide bg-white position-relative" data-bs-ride="carousel" >
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="{% static 'img/img4.jpg' %}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Apartama</a>
+                            <img src="{% static 'images/R.png' %}" class="img-fluid w-100 h-100 bg-success rounded" alt="First slide">
+                           
                         </div>
                         <div class="carousel-item rounded">
-                            <img src="{% static 'img/vila.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Villa</a>
+                            <img src="{% static 'images/house1.jfif' %}" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                           
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="visually-hidden" >Previous</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
@@ -67,15 +68,16 @@
         </div>
     </div>
 </div>
+</section>
 <!-- Hero End -->
 
 
 <!-- Featurs Section Start -->
-<div class="container-fluid featurs py-5">
+<div class="container-fluid featurs py-0">
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
+                <div class="featurs-item text-center rounded  p-4" style="background-color: #008080">
                     <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
                         <i class="fas fa-car-side fa-3x text-white"></i>
                     </div>
@@ -86,7 +88,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
+                <div class="featurs-item text-center rounded  p-4" style="background-color: #0098FF">
                     <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
                         <i class="fas fa-user-shield fa-3x text-white"></i>
                     </div>
@@ -97,18 +99,18 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
+                <div class="featurs-item text-center rounded  p-4" style="background-color: #FF7F50">
                     <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
                         <i class="fas fa-exchange-alt fa-3x text-white"></i>
                     </div>
-                    <div class="featurs-content text-center">
+                    <div class="featurs-content text-center" >
                         <h5>Full Refund</h5>
                         <p class="mb-0">If not Agree</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="featurs-item text-center rounded bg-light p-4">
+                <div class="featurs-item text-center rounded  p-4" style="background-color: #FFC107">
                     <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
                         <i class="fa fa-phone-alt fa-3x text-white"></i>
                     </div>
@@ -163,13 +165,13 @@
                     <div class="album py-5 bg-light">
                         <div class="container">
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                                {% for listing in listing_filter.qs %}
+                                {% comment %} {% for listing in listing_filter.qs %}
                                 <div class="col">
                                     <div class="hover-zoom">
                                         {% include "components/home_page_list_card.html"  %}
                                     </div>
                                 </div>
-                                {% endfor %}
+                                {% endfor %} {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -179,11 +181,11 @@
                             <div class="album py-5 bg-light ">
                                 <div class="container ">
                                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 ">
-                                        {% for listing in listing_filter.qs %}
+                                        {% comment %} {% for listing in listing_filter.qs %}
                                         <div class="col">
                                         {% include "components/home_page_list_card.html"  %}
                                         </div>
-                                        {% endfor %}
+                                        {% endfor %} {% endcomment %}
                                     </div>
                                 </div>
                              </div> 
@@ -212,7 +214,7 @@
             <div class="col-md-6 col-lg-4">
                 <a href="#">
                     <div class="service-item bg-secondary rounded border border-secondary">
-                        <img src="{% static 'img/img10.jpg' %}" class="img-fluid rounded-top w-100" alt="">
+                        <img src="{% static 'img/img10.jpg' %}" style="height:235px" class="img-fluid rounded-top w-100" alt="">
                         <div class="px-4 rounded-bottom">
                             <div class="service-content bg-primary text-center p-4 rounded">
                                 <h5 class="text-white">Comfortable Houses</h5>

@@ -17,6 +17,7 @@
     <!-- Custom Stylesheet -->
     <link href="{% static 'AdminStatic/css/style.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         tr,td,th{
             padding-left: 15px;
@@ -27,14 +28,7 @@
 
 <body>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-        {{ message }}
-        {{ message.tags }}
-    </div>
-    {% endfor %}
-    {% endif %}
+   
           
        
 
@@ -42,20 +36,35 @@
 
         <!--**********************************
             Nav header start
+<<<<<<< HEAD
         ***********************************-->    
 
         <div class="nav-header bg-primary">
+=======
+        ***********************************-->
+        <div class="nav-header bg-white">
+>>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
             <div class="brand-logo">
                 <a href="/">
                 <span class="brand-title align-item-start">
-                    
-                        <h4 style="padding: 10px; " class="text-white  icon-home"> <span>HOME</span></h4>
+                    {% comment %} <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt=""> {% endcomment %}
+                    <span><i class="fa fa-house"></i>HOME</span>
                     </span>
                 </a>
-             
+                
             </div>
-            
+           
         </div>
+
+
+        {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+            {{ message }}
+            {{ message.tags }}
+        </div>
+        {% endfor %}
+        {% endif %}
         
         <!--**********************************
             Nav header end
@@ -76,6 +85,9 @@
                     <div class="input-group icons">
                         
                         <form action="/rent-house/" method="POST">
+                            <br>
+                            <br>
+                            <br>
                             {% csrf_token %}
                             {% block 'search' %}
                             <input type="text" name="search" class="form-control" placeholder="Search By City...">

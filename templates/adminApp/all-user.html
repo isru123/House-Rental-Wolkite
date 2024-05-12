@@ -17,7 +17,7 @@
 <!--**********************************
             Content body start
         ***********************************-->
-<section class="vh-100" style="background-color: #eee;">
+<section  style="height:500px;background-color: #fff;">
 <div class="container-fluid mt-3">
     <div class="container" style="margin-left: 300px;">
         <div class="row">
@@ -39,10 +39,10 @@
 
                             <div class="col-sm-8 col-9 text-right m-b-20">
 
-                                {% if request.user.profile.verified == True %}
+                                {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
                                 <a href="/add-admin/" class="btn btn-primary btn-rounded float-right"><i
                                         class="fa fa-plus"></i> Add Admin</a>
-                                {% endif %}
+                                {% comment %} {% endif %} {% endcomment %}
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -74,11 +74,11 @@
                                             <a href="/edit-profile/{{u.id}}/" class="btn btn-info text-white"
                                                 title="Edit"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i></a>
-                                            {% if request.user.profile.verified == True %}
+                                            {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
                                             <a href="{% url 'delete_user' u.id %}" title="Delete"
                                                 class="btn btn-danger text-white"><i class="fa fa-trash"
                                                     aria-hidden="true"></i></a>
-                                            {% endif %}
+                                            {% comment %} {% endif %} {% endcomment %}
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -130,41 +130,49 @@
         Scripts
     ***********************************-->
 
-    <section style="height:50px">
+    <section style="height:290px">
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar">
+       <div class="nk-sidebar bg-dark">
            <div class="">
                <br>
-               <ul class="metismenu" id="menu">
+               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
                    <li>
                        <a href="{% url 'board' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-clipboard"></i> Dashboard</span>
                        </a>
                    </li>
                 
-                   <li class="mega-menu mega-menu-sm">
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
+                      
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text">Admin</span>
+                           <span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-user-circle"></i> Admin</span>
                        </a>
-                       <ul>
-                        <li><a href="/all-user/">All User</a></li>
-                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                        <li><a href="{% url 'approve-owner' %}">Approve Owner Listing</a></li>
+                      
+
+                       <ul style=" background-color: #1877F2;">
+                        {% if user.is_superuser or user.is_staff  %} 
+                        <li><a href="/all-user/" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
+                        {% endif %}
+                     
+                        <li><a href="{% url 'approve-owner' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
                         
-                        <li><a href="/approve-admin/">Admin Panel</a></li>
-                        {% comment %} {% endif %} {% endcomment %}
+                        <li><a href="/approve-admin/" style="color:white; font-family: sans-serif;"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
                         
-                        <li><a href="/rent-house/">Manage Owner</a></li>
-                        <li><a href="{% url 'manage-customer' %}">Manage Customer</a></li>
+                        
+                        <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
+                        <li><a href="" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Manage Tenant Task</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
                         <li>
-                            <a href="/admin-helpdesk/">Admin Helpdesk</a>
+                            <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
                         </li>
 
                         <li>
-                            <a href="{% url 'add-admin' %}">Add admin</a>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-user" style="color: white;"></i> Add admin</a>
+                            {% endif %}
                         </li>
                        </ul>
                    </li>

@@ -46,7 +46,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # "daphne",
+    
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'formtools',
     "crispy_forms",
+    
     "crispy_bootstrap5",
     'message',
     'paymnet',
@@ -76,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'house_rental.urls'
@@ -91,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -104,14 +107,14 @@ ASGI_APPLICATION = 'house_rental.asgi.application'
 
 DATABASES = {
     'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-          'NAME': BASE_DIR / 'db.sqlite3',
-        #   'ENGINE': 'django.db.backends.postgresql',
-        #   'NAME': 'mydb',
-        #   'USER': 'israel',
-        #   'PASSSWORD': '326598',
-        #   'HOST': 'localhost',
-        #   'PORT': '5431', 
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+            # 'ENGINE': 'django.db.backends.postgresql',
+            # 'NAME': 'mydb',
+            # 'USER': 'israel',
+            # 'PASSSWORD': '326598',
+            # 'HOST': 'localhost',
+            # 'PORT': '5431', 
     }
 }
 
@@ -142,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'am'
 
 TIME_ZONE = 'UTC'
 
@@ -150,9 +153,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+# LOCALE_PATHS = [
+#     os.path.join(BASE_DIR, 'locale')
+# ]
+
 LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale')
+    os.path.join(BASE_DIR, 'users/locale')
 ]
+
+LANGUAGES = [('en', 'English'), ('am', 'Amharic')]
 
 OPENCAGE_API_KEY = '48277b56842b40d0af342b24c3833c15'
 
@@ -192,24 +201,16 @@ PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
 PAYPAL_TEST = True  # Set to False for production
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'lematadese670@gmail.com'
-# EMAIL_HOST_PASSWORD = os.environ.get('@21_Lema+tadese')
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER ='fikefiresew1234@gmail.com'
-EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp-mail.outlook.com'
 # EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'israelbeyene92@gmail.com'  # Replace with your Outlook.com email address
 # EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-PAYPAL_CLIENT_ID = 'ASpVRva-ULnnV2IyPtUzeQMWOoXNChmGDj6E1QFpUIf6AcWbt-fr9OgdCFeMX7hnYdhbIXdHN7UgMX36'
-PAYPAL_CLIENT_SECRET = 'EOFfUC7tmXwGPBMA8SXUpn27fq1WQwAJs8F-qchzPhUipIDj1Vmrvso3Ecwf4EizgiK3B_hs6y8Gt8EN'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER ='fikefiresew1234@gmail.com'
+EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'

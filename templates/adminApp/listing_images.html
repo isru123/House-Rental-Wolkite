@@ -1,0 +1,38 @@
+
+
+
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container-fluid mt-3">
+        <div class="container" style="margin-left: 500px; margin-top: 100px;">
+            <div class="row">
+                <div class="col-12" style="height: 1300px;">
+                    <br>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            
+                        <!-- Display other listing details -->
+{% for image in listing.image.all %}
+<img style="width:400px;height:400px;" src="{{ image.image1.url }}" class="d-block w-100" alt="...">
+<img style="width:400px;height:400px;" src="{{ image.image2.url }}" class="d-block w-100" alt="...">
+<img style="width:400px;height:400px;" src="{{ image.image3.url }}" class="d-block w-100" alt="...">
+<img style="width:400px;height:400px;" src="{{ image.image4.url }}" class="d-block w-100" alt="...">
+<img style="width:400px;height:400px;" src="{{ image.image5.url }}" class="d-block w-100" alt="...">
+<img style="width:400px;height:400px;" src="{{ image.image1.url }}" class="d-block w-100" alt="...">
+<br>
+<br>
+<div style="width:400px;height:400px; font-size: 25px;">{{ image.description}}</div>
+{% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+</section>

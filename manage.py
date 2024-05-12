@@ -3,6 +3,14 @@
 import os
 import sys
 
+os.environ.setdefault(
+  'DJANGO_SETTINGS_MODULE',
+  'house_rental.settings'
+)
+
+import django
+
+django.setup()
 
 def main():
     """Run administrative tasks."""

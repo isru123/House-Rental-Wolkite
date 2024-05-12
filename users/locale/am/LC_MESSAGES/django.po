@@ -1,0 +1,374 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-29 01:43-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\adminApp\models.py:19 .\adminApp\models.py:29
+msgid "Country"
+msgstr ""
+
+#: .\adminApp\models.py:20
+msgid "Countries"
+msgstr ""
+
+#: .\adminApp\models.py:30 .\adminApp\models.py:35 .\adminApp\models.py:54
+#: .\templates\includes\_search.html:37
+msgid "State"
+msgstr ""
+
+#: .\adminApp\models.py:36
+msgid "States"
+msgstr ""
+
+#: .\adminApp\models.py:50
+msgid "Street"
+msgstr ""
+
+#: .\adminApp\models.py:51
+msgid "House number"
+msgstr ""
+
+#: .\adminApp\models.py:52
+msgid "Zipcode"
+msgstr ""
+
+#: .\adminApp\models.py:53 .\templates\includes\_search.html:23
+#: .\templates\includes\_search.html:30
+msgid "City"
+msgstr ""
+
+#: .\adminApp\models.py:58
+msgid "Addresses"
+msgstr ""
+
+#: .\adminApp\models.py:85
+msgid "The Email must be set"
+msgstr ""
+
+#: .\adminApp\models.py:101
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+#: .\adminApp\models.py:103
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+#: .\adminApp\models.py:110
+msgid "Firstname"
+msgstr ""
+
+#: .\adminApp\models.py:112
+msgid "Lastname"
+msgstr ""
+
+#: .\adminApp\models.py:115 .\adminApp\models.py:159
+msgid "Phone"
+msgstr ""
+
+#: .\adminApp\models.py:117 .\main\forms.py:14 .\main\forms.py:25
+msgid "Address"
+msgstr ""
+
+#: .\adminApp\models.py:118
+msgid "Email"
+msgstr ""
+
+#: .\adminApp\models.py:148
+msgid "Groups"
+msgstr ""
+
+#: .\adminApp\models.py:156
+msgid "Photo"
+msgstr ""
+
+#: .\adminApp\models.py:158 .\main\forms.py:72
+#: .\templates\components\single_house_view.html:147
+msgid "Description"
+msgstr ""
+
+#: .\adminApp\models.py:163
+msgid "Hire date"
+msgstr ""
+
+#: .\adminApp\models.py:169
+msgid "Realtor"
+msgstr ""
+
+#: .\adminApp\models.py:170
+msgid "Realtors"
+msgstr ""
+
+#: .\adminApp\views.py:114 .\adminApp\views.py:156 .\adminApp\views.py:197
+#: .\users\views.py:66 .\users\views.py:122
+msgid "Password should be same."
+msgstr ""
+
+#: .\adminApp\views.py:117 .\adminApp\views.py:159 .\adminApp\views.py:200
+#: .\users\views.py:125
+msgid "Contact should be 10 digit."
+msgstr ""
+
+#: .\adminApp\views.py:128 .\adminApp\views.py:170 .\adminApp\views.py:211
+#: .\users\views.py:136
+msgid "Usename already exist."
+msgstr ""
+
+#: .\main\forms.py:10
+msgid "Available Start"
+msgstr ""
+
+#: .\main\forms.py:11
+msgid "Available End"
+msgstr ""
+
+#: .\main\forms.py:16 .\main\forms.py:26
+#: .\templates\components\single_house_view.html:202
+msgid "Price"
+msgstr ""
+
+#: .\main\forms.py:24
+msgid "House Kind"
+msgstr ""
+
+#: .\main\models.py:179
+msgid "Short description"
+msgstr ""
+
+#: .\main\models.py:181
+msgid "Created"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:22
+#: .\templates\conversation\conversationpage.html:51
+#: .\templates\conversation\messages_history.html:26
+#: .\templates\conversation\new.html:18 .\templates\main\major\master.html:195
+#: .\templates\main\owner\_search.html:26
+msgid "Home"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:25
+#: .\templates\conversation\conversationpage.html:54
+#: .\templates\conversation\new.html:21
+msgid "Listings"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:42
+msgid "Back To Listings"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:152
+msgid "This object is listed"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:158
+msgid "This object is not listed"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:171
+msgid "Bedrooms"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:176
+msgid "Bathrooms"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:182
+msgid "Ceiling height"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:183
+msgid "m"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:188
+#: .\templates\includes\_listing-box.html:83
+msgid "Available From"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:207
+msgid "Square Feet"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:208
+msgid "m²"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:214
+msgid "Free from"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:219
+#: .\templates\includes\_listing-box.html:94
+msgid "Available To"
+msgstr ""
+
+#: .\templates\components\single_house_view.html:236
+msgid "Object from the "
+msgstr ""
+
+#: .\templates\conversation\messages_history.html:31
+msgid "Dashboard"
+msgstr ""
+
+#: .\templates\conversation\messages_history.html:34
+#: .\templates\conversation\messages_history.html:81
+msgid "History"
+msgstr ""
+
+#: .\templates\conversation\messages_history.html:53
+msgid "Send new message"
+msgstr ""
+
+#: .\templates\conversation\messages_history.html:61
+msgid "Enter message here please..."
+msgstr ""
+
+#: .\templates\conversation\messages_history.html:70
+msgid "Go back"
+msgstr ""
+
+#: .\templates\conversation\messages_history.html:104
+msgid "Nothing to display"
+msgstr ""
+
+#: .\templates\includes\_alerts.html:8
+msgid "Error"
+msgstr ""
+
+#: .\templates\includes\_listing-box.html:76
+msgid "House Size"
+msgstr ""
+
+#: .\templates\includes\_listing-box.html:88
+msgid "Cancellation"
+msgstr ""
+
+#: .\templates\includes\_search.html:10
+msgid "Keywords"
+msgstr ""
+
+#: .\templates\includes\_search.html:18
+msgid "Keyword (Pool, Garage, etc)"
+msgstr ""
+
+#: .\templates\includes\_search.html:45
+msgid "States (All)"
+msgstr ""
+
+#: .\templates\includes\_search.html:56
+msgid "Type"
+msgstr ""
+
+#: .\templates\includes\_search.html:64
+msgid "Type (All)"
+msgstr ""
+
+#: .\templates\includes\_search.html:75
+msgid "Min Bedrooms"
+msgstr ""
+
+#: .\templates\includes\_search.html:90
+msgid "Min Bathrooms"
+msgstr ""
+
+#: .\templates\includes\_search.html:105 .\templates\includes\_search.html:112
+msgid "Min m²"
+msgstr ""
+
+#: .\templates\includes\_search.html:119 .\templates\includes\_search.html:126
+msgid "Max price"
+msgstr ""
+
+#: .\templates\includes\_search.html:133
+msgid "Search"
+msgstr ""
+
+#: .\templates\includes\contact-box.html:17
+#: .\templates\includes\contact-box.html:39
+msgid "House Owner"
+msgstr ""
+
+#: .\templates\includes\contact-box.html:35
+msgid "Get in touch"
+msgstr ""
+
+#: .\templates\includes\contact-box.html:53
+msgid "Please login or register to get in touch"
+msgstr ""
+
+#: .\templates\includes\user_contact_form.html:9
+msgid "Message"
+msgstr ""
+
+#: .\templates\includes\user_contact_form.html:10
+#: .\templates\includes\user_inquiry_form.html:17
+msgid "Please enter message here..."
+msgstr ""
+
+#: .\templates\includes\user_contact_form.html:13
+msgid "Send message"
+msgstr ""
+
+#: .\templates\includes\user_contact_form.html:14
+msgid "View history"
+msgstr ""
+
+#: .\templates\includes\user_inquiry_form.html:20
+msgid "Make an Inquiry"
+msgstr ""
+
+#: .\templates\main\major\master.html:197
+#: .\templates\main\owner\_search.html:29
+msgid "Browse Listings"
+msgstr ""
+
+#: .\templates\main\major\master.html:222
+#: .\templates\main\owner\_search.html:47
+msgid "No Listings Available"
+msgstr ""
+
+#: .\templates\main\owner\_search.html:31
+msgid "Search Results"
+msgstr ""
+
+#: .\templates\main\owner\multistep.html:57
+msgid "first step"
+msgstr ""
+
+#: .\templates\main\owner\multistep.html:58
+msgid "prev step"
+msgstr ""
+
+#: .\templates\main\owner\multistep.html:60
+msgid "submit"
+msgstr "አስረክብ"
+
+#: .\templates\users\login.html:35 .\templates\users\owner-sign.html:26
+msgid "Welcome to our website!"
+msgstr "ወደ ድረ ገጻችን እንኳን ደህና መጡ!"
+
+#: .\templates\users\login.html:36 .\templates\users\owner-sign.html:27
+msgid "Please log in to continue."
+msgstr "እባክዎ ለመቀጠል ይግባ"
+
+#: .\users\views.py:69
+msgid "Contact should be 10 digits."
+msgstr "10 ዲጂት መሆን አለበት"
+
+#: .\users\views.py:87
+msgid "Username already exists."
+msgstr "የተጠቃሚ ስም ቀድሞውኑ አለ"

@@ -55,10 +55,11 @@
       </div>
     </div>
  <br>
+ 
     <div class="row">
       <div class="col-md-9">
         <!-- Home Main Image -->
-        <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-body rounded" data-bs-ride="true">
+        <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-secondary rounded" data-bs-ride="true">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -100,21 +101,34 @@
           {% for img in listing.image.all %}
           <div class="row">
               <div class="col-2">
-                <img style="width:200px;height:130px;" src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing">
+                <a href="{{ img.image2.url }}" style="width:1000px; height:1000px;" data-lightbox="home-images">
+                <img style="width:300px;height:100px;" src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing">
+                </a>
               </div>
               <div class="col-2">
-                <img style="width:200px;height:130px;" src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
+                <a href="{{ img.image3.url }}" style="width:1000px; height:1000px;" data-lightbox="home-images">
+                <img style="width:300px;height:100px;" src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
+                </a>
               </div>
               <div class="col-2">
-                <img style="width:200px;height:130px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+                <a href="{{ img.image1.url }}" style="width:1000px; height:1000px;" data-lightbox="home-images">
+                <img style="width:300px;height:100px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+                </a>
               </div>
               <div class="col-2">
-                <img style="width:200px;height:130px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+                <a href="{{ img.image1.url }}" style="width:1000px; height:1000px;" data-lightbox="home-images">
+                <img style="width:300px;height:100px;" src="{{ img.image1.url }}" alt="" class="img-fluid img-inline-listing">
+                </a>
+              </div>
+              <div class="col-2">
+                <a href="{{ img.image3.url }}" style="width:1000px; height:1000px;" data-lightbox="home-images">
+                <img style="width:300px;height:100px;" src="{{ img.image3.url }}" alt="" class="img-fluid img-inline-listing">
+                </a>
               </div>
             <div class="col-2">
              
-             <a href="{{ img.image2.url }}" data-lightbox="home-images">
-              <img src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing" style="width:250px;height:130px;">
+             <a href="{{ img.image2.url }}" style="width:1000px; height:1000px;" data-lightbox="home-images">
+              <img src="{{ img.image2.url }}" alt="" class="img-fluid img-inline-listing" style="width:400px;height:100px;">
             </a> 
           </div>
           </div>
@@ -122,9 +136,118 @@
           {% endfor%}
         </div>
 
+        <br>
+        <br>
+        <br>
+        <h2 class="ml-3"><strong style="color:#000333">Birr {{ listing.price }}</strong></h2><h6 class="ml-4">per month</h6>
+        <div class="col-12" style="margin-left:0px">
+          <div id="elephant-card" class="row-4 card mb-4 active">
+            <span class="mb-3">
+              <i class="fas fa-map-marker text-primary mt-3 ml-3"></i>
+              {{ listing.address }}
+            </span>
+              <div class="card-body" role="button">
+                  <h6 class="card-title">
+                     
+                  <p class="card-text">{{ listing.description }}.</p>
+                  <br>
+                  <a>See More</a>
+              </div>
+          </div>
+        </div>
+       <br>
+       <h5 style="color:#000333">Facilites</h5>
+       <br>
+       <div class="col-12" style="margin-left:0px">
+        <div id="elephant-card" class="row-4 card mb-4 active">
+          <span class="mb-3">
+            <i class="fas fa-map-marker text-primary mt-3 ml-3"></i>
+            {{ listing.address }}
+          </span>
+            <div class="card-body" role="button">
+                <h6 class="card-title">
+                   
+                <p class="card-text">{{ listing.description }}.</p>
+                <br>
+                <a>See More</a>
+            </div>
+        </div>
+      </div>
+      <br>
+      <h5 style="color:#000333">Rules and Preferences</h5>
+      <br>
+      <div class="col-12" style="margin-left:0px">
+        <div id="elephant-card" class="row-4 card mb-4 active">
+          <span class="mb-3">
+            <i class="fas fa-map-marker text-primary mt-3 ml-3"></i>
+            {{ listing.address }}
+          </span>
+            <div class="card-body" role="button">
+                <h6 class="card-title">
+                   
+                <p class="card-text">{{ listing.description }}.</p>
+                <br>
+                <a>See More</a>
+            </div>
+        </div>
+      </div>
 
 
+      <div class="col-12" style="margin-left:0px">
+        <div id="elephant-card" class="row-4 card bg-primary mb-4 active">
+          <h4 class="ml-3 mt-3" style="color:white">Your money is safe up to 48 hours after you move in</h4>
+            <div class="card-body" role="button">
+                <h6 class="card-title">
+                   
+                  <h5 class="ml-3 mt-3" style="color:white">When you move in, if the property doesn’t 
+                  match its listing description, let us know within 48 hours and you could get a refund.</h5>
+                  <div class="card row-3  bg-white rounded" style="height:40px">
+                    <i class="fas fa-key text-primary mt-3 mb-2 ml-3">   Your money is safe</i>
+                  </div>
+                <br>
+                <a>See More</a>
+            </div>
+        </div>
+      </div>
+      <br>
+      <h5 style="color:#000333">Documents Required to Book</h5>
+      <br>
 
+
+      <div class="col-12" style="margin-left:0px">
+        <div id="elephant-card" class="row-4 card mb-4 active">
+          <h5 class="ml-3 mt-3 text-dark">The landlord will ask for them to accept your booking request.</h5>
+            <div class="card-body" role="button">
+                <h6 class="card-title">
+                   
+                  <h5><i class="fas fa-user text-dark mt-3 mb-2 ml-3"><strong>      Proof Of Identity</strong></i></h5>
+                  <h6 class="ml-3 mt-3 text-dark"> Government issued ID</h6>
+            </div>
+        </div>
+      </div>
+ 
+      <br>
+      <h5 style="color:#000333">Contract Type</h5>
+      <br>
+
+
+      <div class="col-12" style="margin-left:0px">
+        <div id="elephant-card" class="row-4 card bg-primary mb-4 active">
+          <h4 class="ml-3 mt-3" style="color:white">Your money is safe up to 48 hours after you move in</h4>
+            <div class="card-body" role="button">
+                <h6 class="card-title">
+                   
+                  <h5 class="ml-3 mt-3" style="color:white">When you move in, if the property doesn’t 
+                  match its listing description, let us know within 48 hours and you could get a refund.</h5>
+                  <div class="card row-3  bg-white rounded" style="height:40px">
+                    <i class="fas fa-key text-dark mt-3 mb-2 ml-3">             Your money is safe</i>
+                  </div>
+                <br>
+                <a>See More</a>
+            </div>
+        </div>
+      </div>
+       
         <!-- Fields -->
         <div class="row fields">
           <div class="col-12 ">
@@ -225,147 +348,46 @@
           </div>
 
 
-          <div class="col-12 px-3 my-5">
-            <div id="map" style="width:100%;height:400px;"></div>
-          </div>
-
         </div>
 
         <div>
           <small>{{ _("Object from the ") }}
-            <span>{{ listing.created|date:"d M Y" }}</span>
+            <span>{{ listing.created_at|date:"d M Y" }}</span>
 
           </small>
         </div>
 
       </div>
 
+      
+
 
       {% include 'includes/contact-box.html' %}
 
     </div>
   </div>
+
+ <br>
+ <br>
+  
+  
+
+
 </section>
 
-{% comment %} 
-<script>
-  function myMap() {
-    const myLatLng = {
-      lat: {{ listing.get_coordinates.latitude|stringformat:"f"}},
-      lng: {{ listing.get_coordinates.longitude|stringformat:"f" }}
-    };
-  var mapProp = { center: new google.maps.LatLng(myLatLng), zoom: 14 };
-  var map = new google.maps.Map(document.getElementById("map"), mapProp);
-  const marker = new google.maps.Marker({
-    position: myLatLng,
-    map,
-    title: "{{ listing.get_coordinates.address }}"
-  });
-  }
 
-</script>
-
-<script
-  src="https://maps.googleapis.com/maps/api/js?key=[YOUR-API-KEY]&callback=myMap"></script> {% endcomment %}
   
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4EQgBHPzdD6kyxE82LlK03ApvscEJZ9A&callback=initMap" async defer></script>
-  <h2>{{ listing.title }}</h2>
-  <p>{{ listing.description }}</p>
 
-  <div id="map"></div>
-
-  <script>
-    function initMap() {
-      var latitude = {{ latitude }};
-      var longitude = {{ longitude }};
-
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: latitude, lng: longitude},
-        zoom: 13
-      });
-
-      var marker = new google.maps.Marker({
-        position: {lat: latitude, lng: longitude},
-        map: map
-      });
-    }
-  </script>
-
-
-  <h2>Reviews</h2>
-  {% for review in reviews %}
-  <div class="review-card" style="width: 800px; height: 200px; border: 1px solid #ccc; padding: 10px;">
-    <div class="review-card" style="width: 700px; height: 80px; border: 1px solid #ccc; padding: 10px;">
-      <div class="review-header" style="display: flex; align-items: center;">
-        {% if review.reviewer.photo %}
-        <img src="{{ review.reviewer.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
-        {% else %}
-        <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
-        {% endif %}
-        <h4>{{ review.reviewer.user.username }}</h4>
-      </div>
-      {% comment %} <div class="review-content">
-        <p>{{ review.review_text }}</p>
-      </div> {% endcomment %}
-    </div>
-    {% comment %} <div class="card" style="width:50px:height:300px">
-      <h3>{{ review.reviewer.user.username }}</h3>
-    </div> {% endcomment %}
-      <p>Rating: {{ review.rating }}</p>
-      <p>{{ review.review_text }}</p>
-      <p>Submitted at: {{ review.created_at }}</p>
-  </div>
-  {% empty %}
-  <p>No reviews yet.</p>
-  {% endfor %}
   
 
-  {% comment %} <div class="col-sm-5 mt-2">
-    <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
-    <form class="review-form" method="POST" action="{% url 'single_house_view' id=listing.id %}"> 
-       {% for listing in listing_filter.qs %}
-      <input type="hidden" name="list_id" id="list_id" value="{{ listing.id }}"/>
-      {% endfor %} 
-      <div class="form-group">
-        <textarea class="input" type="text" name="review_text" placeholder="Your Review"></textarea>
-      </div>
-      <div class="form-group">
-        <div class="input rating">
-          <p class="text-uppercase font-weight-bold">Your Rating: </p>
-          <div class="rating-wrapper">
-            {% for i in 5|get_range %}
-              <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star"></label>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      {% if user.is_authenticated and request.user.profile.userType == "Public" %}
-        <button class="btn btn-danger btn-md m-0" type="submit">Post</button>
-      {% else %}
-        <p>You must be logged in to post a review, <a href="{% url 'login' %}">Login</a></p>
-      {% endif %}
-    </form>
-  </div> {% endcomment %}
-
-
-  <div class="col-sm-5 mt-2">
-    <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
-  <form method="POST" action="{% url 'single_house_view' id=listing.id %}">
-      {% csrf_token %}
-      {{ review_form.as_p }}
-      <button type="submit">Submit Review</button>
-  </form>
-</div>
-<hr>
 
 
 
 
 
-{% comment %} 
 <div class="container mt-5">
-  <h5 class="text-uppercase font-weight-bold">Review({{ reviews|length }})</h5>
+  <h5 class="text-camelcase text-dark font-weight-bold">Review and Ratings ({{ reviews|length }})</h5>
   <hr class="mt-0 pt-0">
   <div class="row">
     <div class="col-sm-7 mt-2">
@@ -378,13 +400,36 @@
         {% endfor %}
       </div>
       <div class="review-body mt-2">
-        <p>{{ review.comment }}</p>
+        <p>{{ review.review_text }}</p>
       </div>
       {% endfor %}
     </div>
-    <div class="col-sm-5 mt-2">
-      <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
-      <form class="review-form" method="GET" action="/review"> 
+
+         {% if request.user.profile.userType == 'Public' %}
+      <div class="col-sm-5 mt-2">
+        <h5 class="text-uppercase font-weight-bold">Write Your Review</h5>
+      <form method="POST" action="{% url 'single_house_view' id=listing.id %}">
+          {% csrf_token %}
+          {{ review_form.media }} 
+          {{ review_form.as_p }}
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              var ratingInputs = document.querySelectorAll('.rating-input');
+              var hiddenRatingInput = document.getElementById('id_hidden_rating');
+        
+              ratingInputs.forEach(function(ratingInput) {
+                ratingInput.addEventListener('change', function() {
+                  hiddenRatingInput.value = document.querySelector('input[name=rating]:checked').value;
+                });
+              });
+            });
+          </script>
+          <button type="submit" class="btn btn-sm bg-primary text-white btn-outline-primary">Submit Review</button>
+      </form>
+    </div>
+      {% endif %}
+      
+      {% comment %} <form class="review-form" method="GET" action="{% url 'single_house_view' id=listing.id %}"> 
         {% for listing in listing_filter.qs %}
         <input type="hidden" name="list_id" id="list_id" value="{{ listing.id }}"/>
         {% endfor %}
@@ -395,8 +440,10 @@
           <div class="input rating">
             <p class="text-uppercase font-weight-bold">Your Rating: </p>
             <div class="rating-wrapper">
+
               {% for i in 5|get_range %}
-                <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star"></label>
+                 
+                <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star fa-2x my-btn"></label>
               {% endfor %}
             </div>
           </div>
@@ -406,10 +453,21 @@
         {% else %}
           <p>You must be logged in to post a review, <a href="{% url 'login' %}">Login</a></p>
         {% endif %}
-      </form>
+      </form> {% endcomment %}
     </div>
   </div>
-</div> {% endcomment %}
+</div>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
 {% endblock %}
 
 {% block 'footer' %}
