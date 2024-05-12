@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,owner_second_view, upload,identity_page
+from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view, upload,identity_page
 from .views import multistepformsubmission,payement,edit_listing_view
 
-from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,owner_second_view
-from .views import multistepformsubmission,payement,map_view,edit_listing_view,search,owner_listings,review_view,rate_image,my_view
-from .autocomplete import AddressAutocomplete
+from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view
+from .views import multistepformsubmission,payement,edit_listing_view
+# from .autocomplete import AddressAutocomplete
 
 urlpatterns = [
      path("", main_view, name="home"), 
@@ -13,7 +13,7 @@ urlpatterns = [
      path('dashboard_owner/', dashboard_view, name='dashboard_owner'),
      # path('listing/', list_view, name='listing'),
      path('payement/', payement, name='payement'),
-     path('second/<str:id>/', owner_second_view , name='second'),
+     # path('second/<str:id>/', owner_second_view , name='second'),
      path('detail-view/', detail_list_view, name='detail_product_view'), 
      path('single_house_view/<str:id>/', single_house_view , name='single_house_view'),
      path('upload/', upload, name='upload'),
@@ -25,10 +25,10 @@ urlpatterns = [
      path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
      # path('review/', review_view , name='review'),
      # path('map/<str:id>/', map_view, name='map'),
-     path('search/', search, name='search'),
-     path('owner-listings/', owner_listings , name='owner-listings'),
-     path('address-autocomplete/', AddressAutocomplete.as_view(), name='address-autocomplete'),
-     path('my-form/<uuid:id>/', my_view, name='my-form'),
+     # path('search/', search, name='search'),
+     # path('owner-listings/', owner_listings , name='owner-listings'),
+     # path('address-autocomplete/', AddressAutocomplete.as_view(), name='address-autocomplete'),
+     # path('my-form/<uuid:id>/', my_view, name='my-form'),
      
      # path('done/', done_view , name='done'),
      # path('second/', upload_documents, name='upload_documents'),

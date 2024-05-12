@@ -22,16 +22,6 @@ from django.utils.translation import gettext_lazy as _
 import uuid
 from datetime import datetime
 from message.models import ConversationMessage
-import requests
-# import folium
-# import pandas as pd
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from geopy.geocoders import Nominatim
-from users.models import Profile
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -42,8 +32,7 @@ from .models import (
     RentalConditions,
     RulesAndPreferences,
     Image,
-    Review,
-    AddressOfListing,
+ 
 )
 
 from .forms import (
@@ -54,9 +43,7 @@ from .forms import (
     RentalConditionsForm,
     RulesAndPreferencesForm,
     ImageForm,
-    ReviewForm,
     
-    DocumentForm,
 )
 
 
@@ -131,24 +118,24 @@ def dashboard_view(request):
 
 
 
-def owner_second_view(request):
-    message = None
-    address = AddressOfListing.objects.all()
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
+# def owner_second_view(request):
+#     message = None
+#     address = AddressOfListing.objects.all()
+#     if request.method == 'POST':
+#         form = DocumentForm(request.POST, request.FILES)
+#         if form.is_valid():
             
-            listing = get_object_or_404(Listing, id=id)
-            document = form.save(commit=False)
-            document.seller = listing.seller  # Assign the seller object to the document
-            document.listing = listing  # Assign the listing object to the document
-            document.save()
+#             listing = get_object_or_404(Listing, id=id)
+#             document = form.save(commit=False)
+#             document.seller = listing.seller  # Assign the seller object to the document
+#             document.listing = listing  # Assign the listing object to the document
+#             document.save()
                 
-            message = messages.success(request, 'You successfully submitted.')
-            return redirect('second')
+#             message = messages.success(request, 'You successfully submitted.')
+#             return redirect('second')
             
-    else:
-        form = DocumentForm()
+#     else:
+#         form = DocumentForm()
     
     return render(request, 'main/owner/second.html', {'form': form,'message':message,'showaddress': address})
     
@@ -159,10 +146,9 @@ def owner_second_view(request):
 
 
 
-# def map_view(request, id):
-    
+# def map_view(request):
 #     listings = Listing.objects.all()
-#     # geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
+#     geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
 
 #     for listing in listings:
 #         if not listing.latitude or not listing.longitude:
@@ -172,18 +158,9 @@ def owner_second_view(request):
 #                 listing.latitude = first_result['geometry']['lat']
 #                 listing.longitude = first_result['geometry']['lng']
 #                 listing.save()
-    
-#     listing = get_object_or_404(Listing, id=id)
-#     # address_listing = AddressOfListing.objects.get(all)
-    
-#     # for address_of in address_listing:
-#     #     if listing.address == address_of.Address:
-#     #         listing.latitude = address_of.lat
-#     #         listing.longitude = address_of.long
-            
-#     #         pass
+
 #     context = {
-#         'listing': listing,
+#         'listings': listings,
 #         'opencage_api_key': settings.OPENCAGE_API_KEY,
 #     }
     
@@ -191,86 +168,86 @@ def owner_second_view(request):
 
 
 
-def my_view(request, id):
-    mss = None
-    message = None
-    address = AddressOfListing.objects.all()
-    try:
+# def my_view(request, id):
+#     mss = None
+#     message = None
+#     address = AddressOfListing.objects.all()
+#     try:
         
-        listing = get_object_or_404(Listing, id=id)
+#         listing = get_object_or_404(Listing, id=id)
     
-    except Listing.DoesNotExist:
-        messages.error(request, "First, you need to create a listing.")
-        return redirect('multistepformsubmission')
+#     except Listing.DoesNotExist:
+#         messages.error(request, "First, you need to create a listing.")
+#         return redirect('multistepformsubmission')
     
-    if request.method == 'POST':
-        try:
-            form = DocumentForm(request.POST, request.FILES)
+#     if request.method == 'POST':
+#         try:
+#             form = DocumentForm(request.POST, request.FILES)
             
-            location_form = LocationForm(request.POST)
-            address_1 = request.POST.get('addloc')
-            address = request.POST.get('addloc')
-            listing = Listing.objects.get(pk=id)  # Replace `listing_id` with the appropriate value
+#             location_form = LocationForm(request.POST)
+#             address_1 = request.POST.get('addloc')
+#             address = request.POST.get('addloc')
+#             listing = Listing.objects.get(pk=id)  # Replace `listing_id` with the appropriate value
             
-            address_listing = get_object_or_404(AddressOfListing, Address=address)
+#             address_listing = get_object_or_404(AddressOfListing, Address=address)
         
-            latitude = address_listing.lat
-            longitude = address_listing.long
+#             latitude = address_listing.lat
+#             longitude = address_listing.long
             
-            listing.latitude = latitude
-            listing.longitude = longitude
+#             listing.latitude = latitude
+#             listing.longitude = longitude
             
-            listing.address = address
-            listing.save()
-            
-            
+#             listing.address = address
+#             listing.save()
             
             
             
-            if location_form.is_valid():
+            
+            
+#             if location_form.is_valid():
                 
                 
-                listing = Listing() 
-                listing.seller = request.user.profile
-                listing_location = location_form.save(commit=False)
-                listing_location.listing = listing
-                listing_location.address_1 = address_1 
-                listing_location.save()
+#                 listing = Listing() 
+#                 listing.seller = request.user.profile
+#                 listing_location = location_form.save(commit=False)
+#                 listing_location.listing = listing
+#                 listing_location.address_1 = address_1 
+#                 listing_location.save()
                 
-            else:
-                messages.info(request, 'You have to fill the form')
-                return redirect('my-form', id=listing.id)
+#             else:
+#                 messages.info(request, 'You have to fill the form')
+#                 return redirect('my-form', id=listing.id)
             
-            if form.is_valid():
-                try:
+#             if form.is_valid():
+#                 try:
                     
-                    listing = get_object_or_404(Listing, id=id)
-                except Listing.DoesNotExist:
-                    messages.error(request, "First, you need to create a listing.")
-                    return redirect('multistepformsubmission')
+#                     listing = get_object_or_404(Listing, id=id)
+#                 except Listing.DoesNotExist:
+#                     messages.error(request, "First, you need to create a listing.")
+#                     return redirect('multistepformsubmission')
 
-                document = form.save(commit=False)
-                document.seller = listing.seller  # Assign the seller object to the document
-                document.listing = listing  # Assign the listing object to the document
-                document.save()
+#                 document = form.save(commit=False)
+#                 document.seller = listing.seller  # Assign the seller object to the document
+#                 document.listing = listing  # Assign the listing object to the document
+#                 document.save()
                 
-                message = messages.success(request, 'You successfully submitted.')
-                return redirect('my-form', id=listing.id)
-            else:
-                messages.info(request, 'You have to fill the form')
-                return redirect('my-form', id=listing.id)
+#                 message = messages.success(request, 'You successfully submitted.')
+#                 return redirect('my-form', id=listing.id)
+#             else:
+#                 messages.info(request, 'You have to fill the form')
+#                 return redirect('my-form', id=listing.id)
             
-        except Exception as e:
-            print(e)
-            messages.error(
-                request, 'an error occured will submitting'
-            )
+#         except Exception as e:
+#             print(e)
+#             messages.error(
+#                 request, 'an error occured will submitting'
+#             )
             
-    else:
-        form = DocumentForm()
-        location_form = LocationForm()
+#     else:
+#         form = DocumentForm()
+#         location_form = LocationForm()
     
-    return render(request, 'main/major/my_form.html', {'location_form':location_form, 'form': form,'showaddress': address, 'mss':mss,'message':message, 'listing_id': listing.id})
+#     return render(request, 'main/major/my_form.html', {'location_form':location_form, 'form': form,'showaddress': address, 'mss':mss,'message':message, 'listing_id': listing.id})
     
 
     # if request.method == 'POST':
@@ -591,26 +568,26 @@ from django.views import View
 
 
 
-def review_view(request):
-    obj = Review.objects.filter(score=0).order_by("?").first()
-    context ={
-        'object': obj
-    }
-    return render(request, 'ratings/main.html', context)
+# def review_view(request):
+#     obj = Review.objects.filter(score=0).order_by("?").first()
+#     context ={
+#         'object': obj
+#     }
+#     return render(request, 'ratings/main.html', context)
 
 
 
 
-def rate_image(request):
-    if request.method == 'POST':
-        el_id = request.POST.get('el_id')
-        val = request.POST.get('val')
-        print(val)
-        obj = Review.objects.get(id=el_id)
-        obj.score = val
-        obj.save()
-        return JsonResponse({'success':'true', 'score': val}, safe=False)
-    return JsonResponse({'success':'false'})
+# def rate_image(request):
+#     if request.method == 'POST':
+#         el_id = request.POST.get('el_id')
+#         val = request.POST.get('val')
+#         print(val)
+#         obj = Review.objects.get(id=el_id)
+#         obj.score = val
+#         obj.save()
+#         return JsonResponse({'success':'true', 'score': val}, safe=False)
+#     return JsonResponse({'success':'false'})
 
 
 
@@ -785,49 +762,114 @@ class multistepformsubmission(SessionWizardView):
 #         listing_house.save()
         
         
-def search(request):
-    queryset_list = Listing.objects.order_by('created_at')
+#         listing_amenities = ListingHouseAmenities(
+#             bed = form_data[3]['bed'],
+#             wifi = form_data[3]['wifi'],
+#             desk = form_data[3]['desk'],
+#             living_room_furnished = form_data[3]['living_room_furnished'],
+#             seller=seller
+#         )
+        
+#         listing_amenities.save()
+        
+        
+#         rental_condition = RentalConditions(
+#             contract = form_data[4]['contract'],
+#             cancellation = form_data[4]['cancellation'],
+#             price = form_data[4]['price'],
+#             utility_costs = form_data[4]['utility_costs'],
+#             seller=seller
+#         )
+        
+#         rental_condition.save()
+        
+        
+#         rules_preferences = RulesAndPreferences(
+#             gender =  form_data[5]['gender'],
+#             minimum_age = form_data[5]['minimum_age'],
+#             maximum_age = form_data[5]['maximum_age'],
+#             tenant = form_data[5]['tenant'],
+#             proof = form_data[5]['proof'],
+#             seller=seller
+#         )
+        
+#         rules_preferences.save()
+        
+#         images = Image(
+#             image1 =  form_data[6]['image1'],
+#             image2 = form_data[6]['image2'],
+#             image3 = form_data[6]['image3'],
+#             image4 = form_data[6]['image4'],
+#             image5 = form_data[6]['image5'],
+#             description = form_data[6]['description'],
+#             seller=seller
+#         )
+        
+#         images.save()
+        
+#         # data = Listing.objects.all()
+#         # return render(self.request, 'main/owner/done.html', {'data': data})
+        
+#         return redirect('master')
+    
+
+
 
     
-    address = request.GET.get('address', "")
-    price = request.GET.get('price')
+# def search(request):
+#     res = Listing.objects.order_by('-created')
 
-    # Convert price to a Decimal if it's a valid number, otherwise use a default value
-    if price:
-        try:
-            max_price = Decimal(price)
-        except (ValueError, TypeError):
-            max_price = Decimal(10000000)
-    else:
-        max_price = Decimal(10000000)
-        price = ""  # Set an empty string as the default value for the template
+    # keywords = request.GET.get('keywords', "")
+    # city = request.GET.get('city', "")
+    # state = request.GET.get('state', "")
+    # listing_type = request.GET.get('listing_type', 0)
+    # min_sqft = request.GET.get('sqft', 0)
+    # max_price = request.GET.get('price', Decimal(10000000))
+    # min_bedrooms = request.GET.get('bedrooms', 0)
+    # min_bathrooms = request.GET.get('bathrooms', 0)
 
-    queryset_list = queryset_list.filter(
-        address__icontains=address,
-        price__lte=max_price,
-    )
+#     if not min_sqft:
+#         min_sqft = 0
+#     if not max_price:
+#         max_price = 1000000000
+#     if not min_bedrooms:
+#         min_bedrooms = 0
+#     if not min_bathrooms:
+#         min_bathrooms = 0
 
-    # Filter based on the button clicked for price
-    price_button = request.GET.get('price_button')
-    if price_button == 'low':
-        queryset_list = queryset_list.order_by('price')
-    elif price_button == 'high':
-        queryset_list = queryset_list.order_by('-price')
+#     queryset_list = res.filter(
+#         (Q(description__icontains=keywords) |
+#          Q(title__icontains=keywords)),
+#         address__city__icontains=city,
+#         bedrooms__gte=min_bedrooms,
+#         bathrooms__gte=min_bathrooms,
+#         sqft__gte=min_sqft,
+#         price__lte=max_price,
+#     )
 
-    # Filter based on the button clicked for address
-    address_button = request.GET.get('address_button')
-    if address_button == 'asc':
-        queryset_list = queryset_list.order_by('address')
-    elif address_button == 'desc':
-        queryset_list = queryset_list.order_by('-address')
+#     try:
+#         if isinstance(int(listing_type), int):
+#             queryset_list = queryset_list.filter(listing_type=listing_type)
+#     except Exception:
+#         pass
 
-    context = {
-        'listing_filter': queryset_list,
-        'values': request.GET,
-        'price': price  # Include the price variable in the context
-    }
+#     try:
+#         if isinstance(int(state), int):
+#             queryset_list = queryset_list.filter(address__state=state)
+#     except Exception:
+#         pass
 
-    return render(request, 'main/major/master.html', context)
+#     context = {
+#         'states': State.objects.all(),
+#         'list_types': ListingType.objects.all(),
+#         'listings': queryset_list,
+#         'values': request.GET
+#     }
+
+#     return render(request, 'listings/_partials/_search.html', context)
+    
+    
+    
     
     
     
@@ -888,43 +930,43 @@ def payement(request):
 
 
 
-def owner_listings(request):
-    L = Listing.objects.filter(approved=True)
-    if request.method == "POST":
-        search = request.POST.get("search")
-        # seller = seller.user.username
-        # seller = request.user.profile 
-        L = Listing.objects.filter(user__house_kind__icontains=search, approved=True)
+# def owner_listings(request):
+#     L = Listing.objects.filter(approved=True)
+#     if request.method == "POST":
+#         search = request.POST.get("search")
+#         # seller = seller.user.username
+#         # seller = request.user.profile 
+#         L = Listing.objects.filter(user__house_kind__icontains=search, approved=True)
     
-    page = request.GET.get('page', 1)
+#     page = request.GET.get('page', 1)
 
-    paginator = Paginator(L, 7)
-    try:
-        L = paginator.page(page)
-    except PageNotAnInteger:
-        L = paginator.page(1)
-    except EmptyPage:
-        L = paginator.page(paginator.num_pages)
+#     paginator = Paginator(L, 7)
+#     try:
+#         L = paginator.page(page)
+#     except PageNotAnInteger:
+#         L = paginator.page(1)
+#     except EmptyPage:
+#         L = paginator.page(paginator.num_pages)
 
-    # return render(request, 'adminApp/approve-owner.html',  {'listing':L})
-    return render(request, 'main/owner/owner-listings.html',  {'listing':L})
-
-
+#     # return render(request, 'adminApp/approve-owner.html',  {'listing':L})
+#     return render(request, 'main/owner/owner-listings.html',  {'listing':L})
 
 
 
-def upload_documents(request):
-    message = None
-    address = AddressOfListing.objects.all()
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            message = messages.success(request, 'You Successfully submited')
-    else:
-        form = DocumentForm()
+
+
+# def upload_documents(request):
+#     message = None
+#     address = AddressOfListing.objects.all()
+#     if request.method == 'POST':
+#         form = DocumentForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             message = messages.success(request, 'You Successfully submited')
+#     else:
+#         form = DocumentForm()
     
-    return render(request, 'main/owner/second.html', {'form': form,'message':message,'showaddress': address})
+#     return render(request, 'main/owner/second.html', {'form': form,'message':message,'showaddress': address})
 
 
 

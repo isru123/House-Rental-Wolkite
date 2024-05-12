@@ -264,17 +264,14 @@ class LikedListing(models.Model):
 
     
 
-class Document(models.Model):
-    seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    listing = models.OneToOneField(Listing, on_delete=models.CASCADE)
-    id_photo = models.ImageField(upload_to=user_listing_path)
-    house_map = models.ImageField(upload_to=user_listing_path)
-    
-    def __str__(self):
-        return f'{self.seller.user.username}/s Document'
-    
-    
-    
+class Upload(models.Model):
+    TENANT_CHOICES = (
+        ('Document', 'Document'),
+        ('Photo', 'Photo')
+    )
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    document = models.FileField(upload_to='uploads/documents/')
+    photo = models.ImageField(upload_to='uploads/photos/')
 
     def __str__(self):
         return f"{self.document.name} - {self.photo.name}"

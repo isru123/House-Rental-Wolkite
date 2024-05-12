@@ -1,9 +1,7 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
-from .models import Image,Review,Listing,Document,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-# from dal import autocomplete
+from .models import Image,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
+
 
 
 class ListingForm(forms.ModelForm):
@@ -102,56 +100,20 @@ class RentalFilterForm(forms.Form):
     )
 
 
-class ReviewForm(forms.ModelForm):
-    RATING_CHOICES = (
-        ('1', '1 Star'),
-        ('2', '2 Stars'),
-        ('3', '3 Stars'),
-        ('4', '4 Stars'),
-        ('5', '5 Stars'),
-    )
-
-    rating = forms.ChoiceField(
-        choices=RATING_CHOICES,
-        widget=forms.RadioSelect(attrs={'class': 'rating-input'})
-    )
-    review_text = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'})
-    )
-    hidden_rating = forms.CharField(widget=forms.HiddenInput(), required=False)
-    class Meta:
-        model = Review
-        fields = ['rating', 'review_text']
-        
-    
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Submit Review'))
-         
-
-# class AddressForm(forms.Form):
-#     address = forms.ModelChoiceField(
-#         queryset=AddressOfListing.objects.all(),
-#         widget=autocomplete.ModelSelect2(url='address-autocomplete')
-#     )
+# class ReviewForm(forms.ModelForm):
+#     review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
+#     rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
     
 #     class Meta:
-#         model = AddressOfListing
-#         fields = ['Address']
-        
+#         model = Review
+#         fields = ['rating', 'review_text']
+         
+from django import forms
+from .models import Upload
 
-class DocumentForm(forms.ModelForm):
-    id_photo = forms.ImageField()
-    house_map = forms.ImageField()
+class UploadForm(forms.ModelForm):
     class Meta:
-        model = Document
-        fields = ('id_photo', 'house_map')
-        
-        
-    
-        
-    
-        
+        model = Upload
+        fields = ['document', 'photo']
+
+         
