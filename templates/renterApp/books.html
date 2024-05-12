@@ -60,13 +60,12 @@
                         <th>ID</th>
                         <th>House</th>
                         <th>house_id</th>
-
                         <th>Total Price</th>
                         <th>Booking Status</th>
                         <th>Payment Status</th>
-                        <th>Confirmation Code</th>
                         <th>Payment ID</th>
-                       
+                        <th>Action</th>
+                        <th>Send Email</th> <!-- New column for sending email notification -->
                     </tr>
                 </thead>
                 <tbody>
@@ -78,19 +77,35 @@
                             <td>{{ booking.total_price }}</td>
                             <td>{{ booking.booking_status }}</td>
                             <td>{{ booking.payment_status }}</td>
-                            <td>{{ booking.confirmation_code }}</td>
                             <td>{{ booking.payment_id }}</td>
-                          
+                            <td>
+                                {% if booking.booking_status == 'pending' %}
+                                    <form id="cancel_form_{{ booking.id }}" action="{% url 'cancel_booking' booking.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger cancel-button" data-booking-id="{{ booking.id }}">Cancel</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.booking_status == 'pending' %}
+                                    <form id="send_email_form_{{ booking.id }}" action="{% url 'send_email_notification' booking.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary send-email-button" data-booking-id="{{ booking.id }}">Send Report</button>
+                                    </form>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         {% if not all_bookings %}
-        <p>No booking history available.</p>
+            <p>No booking history available.</p>
         {% endif %}
     </div>
 </section>
+
+
 
 
 
@@ -136,4 +151,5 @@
    </section>
     {% endblock %}
 
-    
+   
+     

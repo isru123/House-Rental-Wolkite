@@ -1,8 +1,8 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Inbox{% endblock %}
+{% comment %} {% block title %}Inbox{% endblock %}
 
-{% block header %}
+{% block 'header' %}
     <!-- Header content goes here -->
 {% endblock %}
 
@@ -38,14 +38,14 @@
     </div>
 {% endblock %}
 
-{% block footer %}
+{% block 'footer' %}
     <!-- Footer content goes here -->
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 
 
 
-{% comment %} {% extends 'base/base.html' %}
+ 
 
 {% block 'title' %}{% endblock %}
 
@@ -100,4 +100,4 @@
     </div>
 {% endblock %}
 {% block 'footer' %}
-{% endblock %} {% endcomment %}
+{% endblock %} 

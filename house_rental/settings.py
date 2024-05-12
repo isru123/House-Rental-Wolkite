@@ -16,6 +16,14 @@ import os
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+# Import timezone module
+from django.utils import timezone
+
+# Set the TIME_ZONE to your desired timezone
+TIME_ZONE = 'Africa/Addis_Ababa'
+
+# Enable timezone support
+USE_TZ = True
 
 
 
@@ -203,3 +211,5 @@ EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'
 # EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+PAYPAL_CLIENT_ID = 'ASpVRva-ULnnV2IyPtUzeQMWOoXNChmGDj6E1QFpUIf6AcWbt-fr9OgdCFeMX7hnYdhbIXdHN7UgMX36'
+PAYPAL_CLIENT_SECRET = 'EOFfUC7tmXwGPBMA8SXUpn27fq1WQwAJs8F-qchzPhUipIDj1Vmrvso3Ecwf4EizgiK3B_hs6y8Gt8EN'

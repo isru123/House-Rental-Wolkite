@@ -44,8 +44,14 @@
             <form action="{% url 'checkout' product_id=product.id %}" method="post">
                 {% csrf_token %}
                 {{ paypal.as_p }}
-                <button type="submit" class="btn btn-primary">Checkout</button>
+                {% if not payment_processed %}
+                    <button type="submit" class="btn btn-primary">Checkout</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary" disabled>Payment Processed</button>
+                {% endif %}
             </form>
+            
+            
         </div>
     </div>
 </div>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Acceptance Notification</title>
+</head>
+<body>
+    <p>Hello Admin,</p>
+    <p>This is to notify you that a booking has been accepted:</p>
+    <ul>
+        <li><strong>Booking ID:</strong> {{ booking.id }}</li>
+        <li><strong>House:</strong> {{ booking.house }}</li>
+        <li><strong>House ID:</strong> {{ booking.house_id }}</li>
+        <li><strong>Total Price:</strong> {{ booking.total_price }}</li>
+        <li><strong>Booking Status:</strong> {{ booking.booking_status }}</li>
+        <li><strong>Payment Status:</strong> {{ booking.payment_status }}</li>
+        <li><strong>Payment ID:</strong> {{ booking.payment_id }}</li>
+    </ul>
+    <p>House Address: {{ house_address }}</p>
+    <p>Thank you!</p>
+</body>
+</html>

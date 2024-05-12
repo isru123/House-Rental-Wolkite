@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import inbox_view,detail,new_conversation,edit_message,delete_message,dashboard_view,messages, listigs, books, payments
+from .views import inbox_view,detail,new_conversation,edit_message,delete_message,dashboard_view,messages, listigs, books, payments,update_seen
 
 urlpatterns = [
     # Other URL patterns
@@ -16,6 +16,7 @@ urlpatterns = [
 
                   path('books/', books, name='books'),
 
+    path('update_seen/<int:conversation_id>/', update_seen, name='update_seen'),
 
 
 ]

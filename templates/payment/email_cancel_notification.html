@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Cancellation Notification</title>
+</head>
+<body>
+    <h2>Booking Cancellation Notification</h2>
+    <p>Hello,</p>
+    <p>This is to inform you that the booking with the following details has been cancelled:</p>
+    <ul>
+        <li><strong>Booking ID:</strong> {{ booking.id }}</li>
+        <li><strong>House:</strong> {{ booking.house }}</li>
+        <li><strong>House ID:</strong> {{ booking.house_id }}</li>
+        <li><strong>Total Price:</strong> {{ booking.total_price }}</li>
+       
+        <li><strong>Payment ID:</strong> {{ booking.payment_id }}</li>
+    </ul>
+    <p>If you have any questions, please feel free to contact us.</p>
+    <p>Thank you.</p>
+</body>
+</html>

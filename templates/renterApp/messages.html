@@ -37,7 +37,7 @@
 <section class="vh-100" style="background-color: #eee;">
     <br>
     <br>
-    <div class="content-body">
+    {% comment %} <div class="content-body">
         {% for conversation in conversations %}
             <div>
                 <p><strong>Conversation ID: {{ conversation.id }}, conversation with {{ conversation.item.seller.username }}</strong></p>
@@ -54,7 +54,144 @@
                 {% endfor %}
             </div>
         {% endfor %}
+    </div> {% endcomment %}
+    {% comment %} <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for conversation in conversations %}
+                <a href="{% url 'detail' conversation.id %}" class="block">
+                    <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
+                        <div class="p-4">
+                            <!-- Display conversation content here -->
+                            <!-- For example, conversation item image and name -->
+
+                            <!-- Display uploads associated with the conversation -->
+                            {% for message in conversation.conversationmessage_set.all %}
+                                <p>{{ message.content }}</p>
+                                {% if member != request.user %}
+                                        <p class="text--700 mb-2"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
+                                    {% endif %}
+                             
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div> {% endcomment %}
+    {% comment %} <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for conversation in conversations %}
+                <a href="{% url 'detail' conversation.id %}" class="block">
+                    <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
+                        <div class="p-4">
+                            <img src="{{ conversation.list.image.url }}" alt="{{ conversation.list.name }}" class="w-full h-auto rounded-t-xl">
+                            <div class="mt-4">
+                                {% for member in conversation.members.all %}
+                                    {% if member != request.user %}
+                                        <p class="text-gray-700 mb-2"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                                <p class="text-gray-600">{{ conversation.list.name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div> {% endcomment %}
+  <!-- messages.html -->
+  <!-- messages.html -->
+<!-- messages.html -->
+<!-- messages.html -->
+
+    <style>
+        /* CSS for styling the "New Message!" indicator */
+        .new-message-indicator {
+            color: #ff0000; /* Red color for indicating new messages */
+            font-weight: bold; /* Bold text */
+            margin-left: 0.5rem; /* Add some space between the indicator and the button text */
+        }
+    </style>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for conversation in conversations %}
+                <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
+                    <div class="p-4">
+                        <img src="{{ conversation.list.image.url }}" alt="{{ conversation.list.name }}" class="w-full h-auto rounded-t-xl">
+                        <div class="mt-4">
+                            {% for member in conversation.members.all %}
+                                {% if member != request.user %}
+                                    <p class="text-gray-700 mb-2"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            <p class="text-gray-600">{{ conversation.list.name }}</p>
+
+                            <!-- Anchor tag for "View Conversation" button -->
+                            <a href="#" class="view-conversation button" data-conversation-id="{{ conversation.id }}">
+                                View Conversation
+                                {% if conversation.has_new_messages %}
+                                    <span class="new-message-indicator">(New Message!)</span>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listeners to "View Conversation" buttons
+            const viewConversationButtons = document.querySelectorAll('.view-conversation');
+            viewConversationButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const conversationId = button.getAttribute('data-conversation-id');
+                    // Update conversation status via AJAX
+                    updateConversationStatus(conversationId);
+                    // Remove the "New Message!" indicator
+                    const newMessageIndicator = button.querySelector('.new-message-indicator');
+                    if (newMessageIndicator) {
+                        newMessageIndicator.remove();
+                    }
+                    // Redirect to the conversation detail page
+                    window.location.href = "{% url 'detail' 0 %}".replace('0', conversationId);
+                });
+            });
+
+            // Function to update conversation status
+            function updateConversationStatus(conversationId) {
+                // Make AJAX request to update conversation status
+                fetch(`/update_seen/${conversationId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to update conversation status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    </script>
+
+
+
+  
 </section>
 
 

@@ -32,7 +32,7 @@ from .models import (
     RentalConditions,
     RulesAndPreferences,
     Image,
-    Review,
+ 
 )
 
 from .forms import (
@@ -43,7 +43,7 @@ from .forms import (
     RentalConditionsForm,
     RulesAndPreferencesForm,
     ImageForm,
-    ReviewForm,
+    
 )
 
 
@@ -566,7 +566,7 @@ class multistepformsubmission(SessionWizardView):
         
         # Send email notification to seller
         subject = 'Listing Submitted'
-        message = 'Your listing has been submitted successfully.'
+        message = 'The admin has certified the post as ready for publication.'
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = seller.user.email
         send_mail(subject, message, from_email, [to_email])
@@ -668,14 +668,14 @@ class multistepformsubmission(SessionWizardView):
 # def search(request):
 #     res = Listing.objects.order_by('-created')
 
-#     keywords = request.GET.get('keywords', "")
-#     city = request.GET.get('city', "")
-#     state = request.GET.get('state', "")
-#     listing_type = request.GET.get('listing_type', 0)
-#     min_sqft = request.GET.get('sqft', 0)
-#     max_price = request.GET.get('price', Decimal(10000000))
-#     min_bedrooms = request.GET.get('bedrooms', 0)
-#     min_bathrooms = request.GET.get('bathrooms', 0)
+    # keywords = request.GET.get('keywords', "")
+    # city = request.GET.get('city', "")
+    # state = request.GET.get('state', "")
+    # listing_type = request.GET.get('listing_type', 0)
+    # min_sqft = request.GET.get('sqft', 0)
+    # max_price = request.GET.get('price', Decimal(10000000))
+    # min_bedrooms = request.GET.get('bedrooms', 0)
+    # min_bathrooms = request.GET.get('bathrooms', 0)
 
 #     if not min_sqft:
 #         min_sqft = 0
