@@ -22,19 +22,16 @@ from django.utils.translation import gettext_lazy as _
 import uuid
 from datetime import datetime
 from message.models import ConversationMessage
-<<<<<<< HEAD
-=======
 import requests
-import folium
-import pandas as pd
+# import folium
+# import pandas as pd
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 from users.models import Profile
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
 from .models import (
@@ -45,12 +42,8 @@ from .models import (
     RentalConditions,
     RulesAndPreferences,
     Image,
-<<<<<<< HEAD
- 
-=======
     Review,
     AddressOfListing,
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 )
 
 from .forms import (
@@ -61,13 +54,9 @@ from .forms import (
     RentalConditionsForm,
     RulesAndPreferencesForm,
     ImageForm,
-<<<<<<< HEAD
-    
-=======
     ReviewForm,
     
     DocumentForm,
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 )
 
 
@@ -170,10 +159,10 @@ def owner_second_view(request):
 
 
 
-<<<<<<< HEAD
-# def map_view(request):
+# def map_view(request, id):
+    
 #     listings = Listing.objects.all()
-#     geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
+#     # geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
 
 #     for listing in listings:
 #         if not listing.latitude or not listing.longitude:
@@ -183,40 +172,20 @@ def owner_second_view(request):
 #                 listing.latitude = first_result['geometry']['lat']
 #                 listing.longitude = first_result['geometry']['lng']
 #                 listing.save()
-
+    
+#     listing = get_object_or_404(Listing, id=id)
+#     # address_listing = AddressOfListing.objects.get(all)
+    
+#     # for address_of in address_listing:
+#     #     if listing.address == address_of.Address:
+#     #         listing.latitude = address_of.lat
+#     #         listing.longitude = address_of.long
+            
+#     #         pass
 #     context = {
-#         'listings': listings,
+#         'listing': listing,
 #         'opencage_api_key': settings.OPENCAGE_API_KEY,
 #     }
-=======
-def map_view(request, id):
-    
-    listings = Listing.objects.all()
-    geocoder = OpenCageGeocode(settings.OPENCAGE_API_KEY)
-
-    for listing in listings:
-        if not listing.latitude or not listing.longitude:
-            results = geocoder.geocode(listing.address)
-            if results and len(results):
-                first_result = results[0]
-                listing.latitude = first_result['geometry']['lat']
-                listing.longitude = first_result['geometry']['lng']
-                listing.save()
-    
-    listing = get_object_or_404(Listing, id=id)
-    # address_listing = AddressOfListing.objects.get(all)
-    
-    # for address_of in address_listing:
-    #     if listing.address == address_of.Address:
-    #         listing.latitude = address_of.lat
-    #         listing.longitude = address_of.long
-            
-    #         pass
-    context = {
-        'listing': listing,
-        'opencage_api_key': settings.OPENCAGE_API_KEY,
-    }
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
     
 #     return render(request, 'main/major/location.html', context)
 
@@ -767,7 +736,6 @@ class multistepformsubmission(SessionWizardView):
         listing.image.add(images)
         # data = Listing.objects.all()
         # return render(self.request, 'main/owner/done.html', {'data': data})
-<<<<<<< HEAD
         
         
         # Send email notification to seller
@@ -779,85 +747,6 @@ class multistepformsubmission(SessionWizardView):
 
         return redirect('master')
 
-=======
-        messages.add_message(self.request, messages.INFO, "We will give you a reminder when your listing is approved in 24 hours")
-        return render(self.request, 'main/owner/done.html',  {'listing_id': listing.id})
-    
-    def form_invalid(self, form):
-        messages.info(self.request, "Please fill in all the required fields.")
-        return super().form_invalid(form)
-    
-        
-            
-        # return redirect('master')
-    
-# def done_view(request):
-#     return render(request, 'main/major/done.html')
-
-
-def save_listing(request):
-    if request.method == 'POST':
-        address = request.POST.get('address')
-        listing = Listing(address=address)
-        listing.save()
-        return redirect('success')  # Redirect to a success page
-
-    return render(request, 'form.html')
-
-
-
-
-# def send_email(request):
-#     subject = 'Subject here'
-#     from_email = 'from@example.com'
-#     to_email = ['to@example.com']
-    
-#     # Load the HTML template
-#     html_template = get_template('email_template.html')
-#     context = {'variable1': 'value1', 'variable2': 'value2'}
-#     html_content = html_template.render(Context(context))
-
-#     # Create the email message
-#     email_message = EmailMultiAlternatives(subject, '', from_email, to_email)
-#     email_message.attach_alternative(html_content, "text/html")
-#     email_message.send()
-    
-    
-    
-# def review_view(request):
-    # if request.method == 'GET':
-    #     form = ReviewForm(request.GET)
-    #     if form.is_valid():
-    #         review_text = form.cleaned_data['review_text']
-    #         rating = form.cleaned_data['rating']
-    #         # Perform further processing with the submitted data
-            
-    #         review = Review.objects.create(
-    #             reviewer=request.user,
-    #             comment=review_text,
-    #             rating=rating,
-    #             created_at=datetime.datetime.now()
-    #         )
-            
-    #         return redirect('single_house_view', {'review':review})
-            
-    # else:
-    #     form = ReviewForm()
-    # if request.method == "GET":
-    #     list_id = request.GET.get('list_id')
-    #     listing = Listing.objects.get(id=list_id)
-    #     review_text = request.GET.get('review_text')
-    #     rating = request.GET.get('rating')
-    #     reviewer = request.user.profile
-    #     Review(reviewer=reviewer, listing=listing, review_text=review_text,rating=rating).save()
-    #     render(request, 'single_house_view', id=list_id)
-    
-# def review_view(request):
-#     if request.method == "GET":
-#         list_id = request.GET.get('list_id')
-#         review_text = request.GET.get('review_text')
-#         rating = request.GET.get('rating')
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
         
 # @method_decorator(login_required, name='dispatch')
 # class multistepformsubmission(SessionWizardView):
@@ -896,116 +785,6 @@ def save_listing(request):
 #         listing_house.save()
         
         
-<<<<<<< HEAD
-#         listing_amenities = ListingHouseAmenities(
-#             bed = form_data[3]['bed'],
-#             wifi = form_data[3]['wifi'],
-#             desk = form_data[3]['desk'],
-#             living_room_furnished = form_data[3]['living_room_furnished'],
-#             seller=seller
-#         )
-        
-#         listing_amenities.save()
-        
-        
-#         rental_condition = RentalConditions(
-#             contract = form_data[4]['contract'],
-#             cancellation = form_data[4]['cancellation'],
-#             price = form_data[4]['price'],
-#             utility_costs = form_data[4]['utility_costs'],
-#             seller=seller
-#         )
-        
-#         rental_condition.save()
-        
-        
-#         rules_preferences = RulesAndPreferences(
-#             gender =  form_data[5]['gender'],
-#             minimum_age = form_data[5]['minimum_age'],
-#             maximum_age = form_data[5]['maximum_age'],
-#             tenant = form_data[5]['tenant'],
-#             proof = form_data[5]['proof'],
-#             seller=seller
-#         )
-        
-#         rules_preferences.save()
-        
-#         images = Image(
-#             image1 =  form_data[6]['image1'],
-#             image2 = form_data[6]['image2'],
-#             image3 = form_data[6]['image3'],
-#             image4 = form_data[6]['image4'],
-#             image5 = form_data[6]['image5'],
-#             description = form_data[6]['description'],
-#             seller=seller
-#         )
-        
-#         images.save()
-        
-#         # data = Listing.objects.all()
-#         # return render(self.request, 'main/owner/done.html', {'data': data})
-        
-#         return redirect('master')
-    
-
-
-
-    
-# def search(request):
-#     res = Listing.objects.order_by('-created')
-
-    # keywords = request.GET.get('keywords', "")
-    # city = request.GET.get('city', "")
-    # state = request.GET.get('state', "")
-    # listing_type = request.GET.get('listing_type', 0)
-    # min_sqft = request.GET.get('sqft', 0)
-    # max_price = request.GET.get('price', Decimal(10000000))
-    # min_bedrooms = request.GET.get('bedrooms', 0)
-    # min_bathrooms = request.GET.get('bathrooms', 0)
-
-#     if not min_sqft:
-#         min_sqft = 0
-#     if not max_price:
-#         max_price = 1000000000
-#     if not min_bedrooms:
-#         min_bedrooms = 0
-#     if not min_bathrooms:
-#         min_bathrooms = 0
-
-#     queryset_list = res.filter(
-#         (Q(description__icontains=keywords) |
-#          Q(title__icontains=keywords)),
-#         address__city__icontains=city,
-#         bedrooms__gte=min_bedrooms,
-#         bathrooms__gte=min_bathrooms,
-#         sqft__gte=min_sqft,
-#         price__lte=max_price,
-#     )
-
-#     try:
-#         if isinstance(int(listing_type), int):
-#             queryset_list = queryset_list.filter(listing_type=listing_type)
-#     except Exception:
-#         pass
-
-#     try:
-#         if isinstance(int(state), int):
-#             queryset_list = queryset_list.filter(address__state=state)
-#     except Exception:
-#         pass
-
-#     context = {
-#         'states': State.objects.all(),
-#         'list_types': ListingType.objects.all(),
-#         'listings': queryset_list,
-#         'values': request.GET
-#     }
-
-#     return render(request, 'listings/_partials/_search.html', context)
-    
-    
-    
-=======
 def search(request):
     queryset_list = Listing.objects.order_by('created_at')
 
@@ -1049,7 +828,6 @@ def search(request):
     }
 
     return render(request, 'main/major/master.html', context)
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
     
     
     

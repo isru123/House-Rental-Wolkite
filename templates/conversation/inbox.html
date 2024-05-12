@@ -1,11 +1,8 @@
 {% extends 'base/base.html' %}
-<<<<<<< HEAD
-=======
 {% load crispy_forms_tags %}
 {% load static %}
 
 
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 
 {% comment %} {% block title %}Inbox{% endblock %}
 
@@ -14,19 +11,8 @@
 {% endblock %}
 
 {% block 'body' %}
-<<<<<<< HEAD
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
-=======
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1 class="mb-6 mt-10 text-3xl">Inbox</h1>
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for conversation in conversations %}
@@ -36,7 +22,6 @@
                             <!-- Display conversation content here -->
                             <!-- For example, conversation item image and name -->
 
-<<<<<<< HEAD
                             <!-- Display uploads associated with the conversation -->
                             {% for message in conversation.conversationmessage_set.all %}
                                 <p>{{ message.content }}</p>
@@ -120,21 +105,3 @@
 {% endblock %}
 {% block 'footer' %}
 {% endblock %} 
-=======
-                <div>
-                    {% for member in conversation.members.all %}
-                        {% if member != request.user %}
-                            <p class="mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>
-                            <p>{{ conversation.list.name }}</p>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </a>
-    {% endfor %}
-</div>
-{% endblock %}
-
-{% block 'footer' %}
-{% endblock %}
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e

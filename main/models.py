@@ -234,8 +234,6 @@ class AddressOfListing(models.Model):
 
     
 
-<<<<<<< HEAD
-=======
 # This model is used to store reviews made by users for properties
 class Review(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='reviews')
@@ -254,7 +252,6 @@ class Review(models.Model):
     
     
 
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 class LikedListing(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
@@ -267,16 +264,6 @@ class LikedListing(models.Model):
 
     
 
-<<<<<<< HEAD
-class Upload(models.Model):
-    TENANT_CHOICES = (
-        ('Document', 'Document'),
-        ('Photo', 'Photo')
-    )
-    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    document = models.FileField(upload_to='uploads/documents/')
-    photo = models.ImageField(upload_to='uploads/photos/')
-=======
 class Document(models.Model):
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.OneToOneField(Listing, on_delete=models.CASCADE)
@@ -288,7 +275,6 @@ class Document(models.Model):
     
     
     
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 
     def __str__(self):
         return f"{self.document.name} - {self.photo.name}"

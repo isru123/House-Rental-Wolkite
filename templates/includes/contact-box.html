@@ -10,35 +10,10 @@
     {% endif %}
 
     {% if user.is_authenticated %}
-<<<<<<< HEAD
-      {% if request.user.profile.userType == "Public" %}
-        <div class="card-body">
-          <h5 class="card-title">{{ _("House Owner") }}</h5>
-          <h6 class="mb-4">{{ listing.seller.user.username }}</h6>
-
-          <hr>
-          <form method="post" action="{% url 'new' product_id=listing.id %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary my-2 btn-block" type="submit">Contact {{listing.seller.user.username}}</button>
-          </form>
-
-          {% if id_document_url %}
-            <div class="alert alert-success my- mx-auto">
-              You have successfully send your identity to {{listing.seller.user.username}}!
-            </div>
-          {% else %}
-            {% if tenant_photo_url %}
-              <p>Your photo:</p>
-              <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
-            {% endif %}
-          {% endif %}
-=======
     {% if request.user.profile.userType == "Public" %}
     <div class="card-body">
       <h5 class="card-title">{{ _("House Owner") }}</h5>
       <h6 class="mb-4">{{ listing.seller.user.first_name }} {{ listing.seller.user.last_name }}</h6>
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 
         
           

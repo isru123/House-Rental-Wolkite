@@ -1,13 +1,10 @@
 from django.urls import path
-<<<<<<< HEAD
 from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,owner_second_view, upload,identity_page
 from .views import multistepformsubmission,payement,edit_listing_view
 
-=======
 from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,owner_second_view
 from .views import multistepformsubmission,payement,map_view,edit_listing_view,search,owner_listings,review_view,rate_image,my_view
 from .autocomplete import AddressAutocomplete
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
 
 urlpatterns = [
      path("", main_view, name="home"), 
@@ -26,13 +23,8 @@ urlpatterns = [
      # path('listing/<str:id>/like/', like_listing_view , name='like_listing'),
      path('multistepformsubmission', multistepformsubmission.as_view(), name='multistepformsubmission'),
      path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
-<<<<<<< HEAD
-
-     # path('location/', map_view , name='map_view'),
-     # path('search', search, name='search'),
-=======
      # path('review/', review_view , name='review'),
-     path('map/<str:id>/', map_view, name='map'),
+     # path('map/<str:id>/', map_view, name='map'),
      path('search/', search, name='search'),
      path('owner-listings/', owner_listings , name='owner-listings'),
      path('address-autocomplete/', AddressAutocomplete.as_view(), name='address-autocomplete'),
@@ -40,7 +32,6 @@ urlpatterns = [
      
      # path('done/', done_view , name='done'),
      # path('second/', upload_documents, name='upload_documents'),
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
      # path('booking/<str:id>/', booking , name='booking'),
     
     
