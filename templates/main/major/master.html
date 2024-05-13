@@ -181,69 +181,6 @@
     </div>
   </section>
   
-<<<<<<< HEAD
-=======
-
-
-
-  <form method="GET" action="{% url 'search' %}" >
-    <div class="row">
-        <div class="col-lg-6 mb-3">
-            <input type="text" style="margin-left:500px;width:300px" class="form-control" name="address" placeholder="Enter Address" value="{{ values.address }}">
-        </div>
-        
-          <div class="col-lg-6">
-              <button type="submit" class="btn btn-primary">Search</button>
-          </div>
-      
-    </div>
-    
-</form>
-
-<form method="GET" action="{% url 'search' %}">
-  <div class="row">
-  <div class="col-lg-6 mb-3">
-    <input style="margin-left:500px;width:300px" type="number" class="form-control" name="price" placeholder="Enter Max Price" value="{{ values.price }}">
-  </div>
- 
-    <div class="col-lg-3">
-        <button  type="submit" class="btn btn-primary">Search</button>
-    </div>
-</div>
-</form>
-
-
-
-  <div class="row g-4">
-    <div class="col-lg-4 text-start">
-        
-    </div>
-    <div class="col-lg-8 text-end" style="margin-left:120px;">
-        <ul class="nav nav-pills d-inline-flex text-center mb-5">
-            <li class="nav-item">
-                <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
-                    <span class="text-dark" style="width: 130px;">Price</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                    <span class="text-dark" style="width: 130px;">Address</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                    <span class="text-dark" style="width: 130px;">Families</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                    <span class="text-dark" style="width: 130px;">Address</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
->>>>>>> d0dc5131423f75e3fab497133ad31ffb83d5c40e
   {% comment %} <a href="{% url 'map' %}?listing_id={{ listing.id }}">View on Map</a> {% endcomment %}
   
   <!-- Breadcrumb -->

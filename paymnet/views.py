@@ -682,7 +682,7 @@ def cancel_bookings(request, booking_id):
     except Booking.DoesNotExist:
         messages.error(request, "Booking not found.")
     
-    return redirect('admin:paymnet_booking_changelist')
+    return redirect('all_bookings')
 
 
 def send_email_notification(request, booking_id):
@@ -701,7 +701,40 @@ def send_email_notification(request, booking_id):
 
     send_mail(subject, plain_message, from_email, [superuser_email], html_message=html_message)
     return redirect('books')  # Redirect to the booking history page after sending the email
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+def display_all_bookings(request):
+    # Fetch all bookings from the database
+    bookings = Booking.objects.all()
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(bookings, 10)
+    try:
+        bookings = paginator.page(page)
+    except PageNotAnInteger:
+        bookings = paginator.page(1)
+    except EmptyPage:
+        bookings = paginator.page(paginator.num_pages)
+    
+    # Render the template with bookings data
+    return render(request, 'adminApp/manage-owner-task.html', {'bookings': bookings})
+
+def display_all_payments(request):
+    # Fetch all bookings from the database
+    bookings = Booking.objects.all()
+    all_payments = Payment.objects.all()
+    all_bookings = Booking.objects.all()
+
+    context = {
+        'bookings': bookings,
+
+        'all_payments': all_payments,
+        'all_bookings': all_bookings
+    }
+
+    
+    return render(request, 'adminApp/paymenthistory.html', context)    
 # @login_required
 # def CheckOut(request, product_id):
 #     product = Listing.objects.get(id=product_id)
@@ -764,7 +797,7 @@ def approve_payment(request, booking_id):
         booking.save()
     
     # Redirect back to the admin page regardless of payment status
-    return redirect('admin:paymnet_booking_changelist')
+    return redirect('all_bookings')
 
 def confirm_booking(request, booking_id):
     # Get the booking object
@@ -776,8 +809,10 @@ def confirm_booking(request, booking_id):
     print("Current datetime:", current_datetime)
     # Confirm the booking (update booking_status)
     booking.booking_status = 'confirmed'
+    booking.payment_status = 'paid'
+
     booking.save()
-    return redirect('admin:paymnet_booking_changelist')  # Redirect to booking list in admin
+    return redirect('all_bookings')  # Redirect to booking list in admin
 
 def change_booking_status(request, booking_id, new_status):
     # Get the booking object
@@ -785,7 +820,7 @@ def change_booking_status(request, booking_id, new_status):
     # Update booking_status
     booking.booking_status = new_status
     booking.save()
-    return redirect('admin:paymnet_booking_changelist') 
+    return redirect('all_bookings') 
 
 # def cancel_booking(request, booking_id):
 #     booking = get_object_or_404(Booking, id=booking_id)

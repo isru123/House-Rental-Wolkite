@@ -58,32 +58,43 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>House</th>
                         <th>house_id</th>
+                        <th>Payment ID</th>
+                        <th>Owner</th>
                         <th>Total Price</th>
+                        
+
                         <th>Booking Status</th>
                         <th>Payment Status</th>
-                        <th>Payment ID</th>
+                    
                         <th>Action</th>
-                        <th>Send Email</th> <!-- New column for sending email notification -->
+                        <th>Send Re</th> <!-- New column for sending email notification -->
                     </tr>
                 </thead>
                 <tbody>
                     {% for booking in all_bookings %}
-                        <tr>
-                            <td>{{ booking.id }}</td>
-                            <td>{{ booking.house }}</td>
-                            <td>{{ booking.house_id }}</td>
+                        <tr><td>
+                            <span class="badge badge-secondary">{{ booking.id|stringformat:"s"|slice:":3" }}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-secondary">{{ booking.house_id|stringformat:"s"|slice:":3" }}</span>
+                        </td>   
+                            <td>
+                                <span class="badge badge-secondary">{{ booking.payment_id|stringformat:"s"|slice:":3" }}</span>
+                            </td>                               <td>{{ booking.house.seller.user }}</td>
+                   
                             <td>{{ booking.total_price }}</td>
                             <td>{{ booking.booking_status }}</td>
                             <td>{{ booking.payment_status }}</td>
-                            <td>{{ booking.payment_id }}</td>
                             <td>
                                 {% if booking.booking_status == 'pending' %}
                                     <form id="cancel_form_{{ booking.id }}" action="{% url 'cancel_booking' booking.id %}" method="post">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger cancel-button" data-booking-id="{{ booking.id }}">Cancel</button>
                                     </form>
+                                {% else %}
+                                    <!-- If booking status is not pending, display an inactive button -->
+                                    <button type="button" class="btn btn-secondary" disabled>Action</button>
                                 {% endif %}
                             </td>
                             <td>
@@ -92,6 +103,9 @@
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-primary send-email-button" data-booking-id="{{ booking.id }}">Send Report</button>
                                     </form>
+                                {% else %}
+                                    <!-- If booking status is not pending, display an inactive button -->
+                                    <button type="button" class="btn btn-secondary" disabled>Reported</button>
                                 {% endif %}
                             </td>
                         </tr>
@@ -104,6 +118,7 @@
         {% endif %}
     </div>
 </section>
+
 
 
 
@@ -152,4 +167,6 @@
     {% endblock %}
 
    
-     
+    {% block 'footer2' %}
+
+    {% endblock %}

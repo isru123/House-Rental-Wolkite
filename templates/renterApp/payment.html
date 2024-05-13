@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th>Payment ID</th>
-                        <th>Booking ID</th>
                         <th>Amount</th>
                         <th>Payer</th>
                         <th>Recipient</th>
@@ -31,9 +30,9 @@
                     {% for payment in all_payments %}
                         {% for booking in all_bookings %}
                             {% if booking.payment_id == payment.payment_id %}
-                                <tr>
-                                    <td>{{ payment.payment_id }}</td>
-                                    <td>{{ payment.booking_id }}</td>
+                                <tr><td>
+                                    <span class="badge badge-secondary">{{payment.payment_id |stringformat:"s"|slice:":3" }}</span>
+                                </td> 
                                     <td>{{ payment.amount }}</td>
                                     <td>{{ payment.payer }}</td>
                                     <td>{{ payment.recipient }}</td>

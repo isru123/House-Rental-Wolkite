@@ -10,7 +10,6 @@ urlpatterns = [
     path('approve_payment/<uuid:booking_id>/', views.approve_payment, name='approve_payment'),
     path('change-booking-status/<uuid:booking_id>/<str:new_status>/', views.change_booking_status, name='change_booking_status'),
     path('error/', views.error_page, name='error_page'),
-
     path('payment-failed/<uuid:product_id>/', views.paymentFailed, name='payment-failed'),
   path('mark-notification/<int:id>/', views.mark_notification_as_seen, name='mark_notification_as_seen'),
     path('poster/', views.poster, name='poster'),
@@ -19,5 +18,8 @@ urlpatterns = [
     path('cancel-booking/<uuid:booking_id>/', views.cancel_booking, name='cancel_booking'),
     path('cancel-bookings/<uuid:booking_id>/', views.cancel_bookings, name='cancel_bookings'),
 path('send-email-notification/<uuid:booking_id>/', views.send_email_notification, name='send_email_notification'),
+    path('all-bookings/', views.display_all_bookings, name='all_bookings'),
+        path('all-payments/', views.display_all_payments, name='display_all_payments'),
+
 
 ]

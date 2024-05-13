@@ -43,7 +43,9 @@
                             {% comment %} {% endif %} {% endcomment %}
                             
                             <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
-                            <li><a href="" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Manage Tenant Task</a></li>
+                            <li><a href="{% url 'display_all_payments' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Payment History</a></li>
+
+                            <li><a href="{% url 'all_bookings' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Books</a></li>
                             <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
                             <li>
                                 <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>

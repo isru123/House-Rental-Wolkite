@@ -21,98 +21,54 @@
             <br>
             <br>
             <div class="content-body">
-                <!-- Display booking history -->
+                <!-- Display payment history -->
+                <h2>Payment History</h2>
         
                 <div style="overflow-x: auto;">
-                    <table class="table table-striped">
-                        <thead class="thead-dark">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>House Id</th>
-
-                                <th>Tenant</th>
-                                <th>Owner</th>
-                                <th>Total Price</th>
-                                <th>Refund Amount</th>
-                                <th>Booking Status</th>
+                                <th>Payment ID</th>
+                                <th>Amount</th>
+                                <th>Refunded</th>
                                 <th>Payment Status</th>
-                                <th>Actions</th>
+
+                                <th>Payer</th>
+                                <th>Recipient</th>
+                                <th>Timestamp</th>
+                             
                             </tr>
                         </thead>
                         <tbody>
-                            {% for booking in bookings %}
+                            {% for payment in all_payments %}
+                                {% for booking in all_bookings %}
+                                    {% if booking.payment_id == payment.payment_id %}
+                                        <tr><td>
+                                            <span class="badge badge-secondary">{{payment.payment_id |stringformat:"s"|slice:":3" }}</span>
+                                        </td> 
+                                            <td>{{ payment.amount }}</td>
+                                            <td>{{ booking.refund_amount }}</td>
+                                            <td>{{ booking.payment_status }}</td>
+
+                                            <td>{{ payment.payer }}</td>
+                                            <td>{{ payment.recipient }}</td>
+                                            <td>{{ payment.timestamp }}</td>
+                                           
+                                        </tr>
+                                    {% endif %}
+                                {% empty %}
+                                    No booking found
+                                {% endfor %}
+                            {% empty %}
                                 <tr>
-                                    <td>
-                                        <span class="badge badge-secondary">{{ booking.id|stringformat:"s"|slice:":3" }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-secondary">{{ booking.house_id|stringformat:"s"|slice:":3" }}</span>
-                                    </td>
-
-
-                                                                        <td>{{ booking.tenant }}</td>
-                                    <td>{{ booking.house.seller.user }}</td>
-                                    <td>{{ booking.total_price }}</td>
-                                    <td>{{ booking.refund_amount }}</td>
-                                    <td>{{ booking.booking_status }}</td>
-                                    <td>{{ booking.payment_status }}</td>
-                                    <td>
-                                        {% if booking.booking_status == 'pending' %}
-                                            <a href="{% url 'confirm_booking' booking.id %}" class="btn btn-success">Confirm</a>
-                                            <a href="{% url 'cancel_bookings' booking.id %}" class="btn btn-danger">Cancel</a>
-                                        {% else %}
-                                            <button type="button" class="btn btn-secondary" disabled>Action</button>
-                                        {% endif %}
-                                        <!-- Optional: Add button for approving payment -->
-                                        <!--
-                                        {% if booking.payment_status == 'pending' %}
-                                            <a href="{% url 'approve_payment' booking.id %}" class="btn btn-primary">Approve Payment</a>
-                                        {% endif %}
-                                        -->
-                                    </td>
+                                    <td colspan="8">No payment history available.</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% if bookings.has_other_pages %}
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            {% if bookings.has_previous %}
-                                <li class="page-item"><a class="page-link" href="?page={{ bookings.previous_page_number }}">&laquo;</a></li>
-                            {% else %}
-                                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-                            {% endif %}
-                            {% for i in bookings.paginator.page_range %}
-                                {% if bookings.number == i %}
-                                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
-                                {% else %}
-                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                            {% if bookings.has_next %}
-                                <li class="page-item"><a class="page-link" href="?page={{ bookings.next_page_number }}">&raquo;</a></li>
-                            {% else %}
-                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                    {% endif %}
                 </div>
-                {% if not bookings %}
-                    <p>No booking history available.</p>
-                {% endif %}
             </div>
-     
-                
-                
-            </div>
-        </div>
-    </div>
-
-
-</div>
-</div>
-</section>
+        </section>
 <!--**********************************
         Main wrapper end
     ***********************************-->
