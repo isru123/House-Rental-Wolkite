@@ -164,8 +164,7 @@
 
 <br>
 <br>
-<br>
-<br>
+
 
 <section id="showcase-inner" class="py-5 showcase-text" style="margin-left:120px;">
     <div class="container bg-blur" style="margin-left:120px;">
@@ -182,48 +181,6 @@
   </section>
   
 
-
-
-  <form method="GET" action="{% url 'main:search' %}" >
-    <div class="row">
-        <div class="col-lg-6 mb-3">
-            <input type="text" style="margin-left:500px;width:300px" class="form-control" name="address" placeholder="Enter Address" value="{{ values.address }}">
-        </div>
-        
-          <div class="col-lg-6">
-              <button type="submit" class="btn btn-primary">Search</button>
-          </div>
-      
-    </div>
-    
-</form>
-
-<form method="GET" action="{% url 'main:search' %}">
-  <div class="row">
-  <div class="col-lg-6 mb-3">
-    <input style="margin-left:500px;width:300px" type="number" class="form-control" name="price" placeholder="Enter Max Price" value="{{ values.price }}">
-  </div>
- 
-    <div class="col-lg-3">
-        <button  type="submit" class="btn btn-primary">Search</button>
-    </div>
-</div>
-</form>
-
-<div class="col-lg-6 col-md-8 mx-auto">
-   
-  </div>
-
-  <div class="row g-4">
-    <div class="col-lg-4" style="margin-left:150px">
-        <from method="GET">
-            {{listing_filter.form|crispy}}
-            <button class="btn btn-sm btn-danger" type="submit">submit</button>
-           </from> 
-    </div>
-    
-</div>
-  {% comment %} <a href="{% url 'map' %}?listing_id={{ listing.id }}">View on Map</a> {% endcomment %}
   
   <!-- Breadcrumb -->
   <section id="bc" class="mt-3">

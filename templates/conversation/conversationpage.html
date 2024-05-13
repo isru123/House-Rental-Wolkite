@@ -42,10 +42,10 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-           <a href="{% url 'home' %}">{{ _("Home") }}</a>
+           <a href="{% url 'main:home' %}">{{ _("Home") }}</a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+            <a href="{% url 'main:master' %}">{{ _("Listings") }}</a>
           </li>
           <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
         </ol>
@@ -56,7 +56,7 @@
 
   
   <br>
-  <div class="card d-flex flex-column align-items-start">
+  <div class="card d-flex flex-column align-items-start" style="height:700px">
 
    
 <div class="container mt-5 text-start" style="max-width: 50%;">

@@ -1,10 +1,11 @@
 
-{% load static %}
+
 
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
-{% block 'head' %}
+
     <head>
         <meta charset="utf-8">
 
@@ -44,18 +45,10 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
-{% endblock %}
+
 
     <body>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-        {{ message }}
-        {{ message.tags }}
-    </div>
-    {% endfor %}
-    {% endif %}
           
         <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
@@ -63,7 +56,8 @@
         </div>
         <!-- Spinner End -->
 
- {% block 'header' %}
+ {% block 'header' %} 
+                                      
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
@@ -71,7 +65,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
                         <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">lemish@gmail.com</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">islede@gmail.com</a></small>
                     </div>
                     <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
@@ -98,6 +92,7 @@
                             {% if not user.is_authenticated %}
                             <strong><a href="{% url 'sign' %}" class="nav-item nav-link ml-3">Signup</a></strong>
                             {% endif %}
+                            
                             <strong><a href="{% url 'main:master' %}" class="nav-item nav-link ml-3">Browse Listings</a></strong>
                             {% if listing.seller.user == request.user or request.user.profile.userType == "Owner" %}
                             <strong><a href="{% url 'main:owner' %}" class="nav-item nav-link ml-3">Make Listings</a></strong>
@@ -106,8 +101,13 @@
                             {% if user.is_superuser or user.is_staff or request.user.profile.userType == "Admin" %}
                             <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2 ml-3">AdminBoard</a>
                             {% endif %}
+
                             {% if request.user.profile.userType == "Public" %}
                             <a href="{% url 'message:dashboard_renter' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">RenterBoard</a>
+                            {% endif %}
+
+                            {% if request.user.profile.userType == "Owner" %}
+                            <a href="{% url 'main:dashboard_owner' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">Dashboard</a>
                             {% endif %}
                         </div>
                    
@@ -149,6 +149,16 @@
             </div>
         </div>
         <!-- Navbar End -->
+
+        
+    {% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+        {{ message }}
+        {{ message.tags }}
+    </div>
+    {% endfor %}
+    {% endif %}
      {% endblock %}
 
 
@@ -206,7 +216,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="d-flex flex-column text-start footer-item">
                             <h4 class="text-light mb-3">Shop Info</h4>
-                            <a class="btn-link" href="">About Us</a>
+                            <a class="btn-link" href="{% url 'main:about' %}">About Us</a>
                             <a class="btn-link" href="">Contact Us</a>
                             <a class="btn-link" href="">Privacy Policy</a>
                             <a class="btn-link" href="">Terms & Condition</a>
@@ -217,8 +227,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="d-flex flex-column text-start footer-item">
                             <h4 class="text-light mb-3">Account</h4>
-                            <a class="btn-link" href="">My Account</a>
-                            <a class="btn-link" href="">Shop details</a>
+                            <a class="btn-link" href="{% url 'profile' %}">My Account</a>
+                            <a class="btn-link" href="{% url 'service' %}">Service details</a>
 
                         </div>
                     </div>

@@ -59,7 +59,11 @@
                     style="border:1px solid rgb(175, 174, 174);" disabled>
             </div>
         </div>
-
+            <br>
+            <br>
+        <div>
+           <a  class="btn btn-success my-2" href="{% url 'delete-profile' user_id=user.user.id %}"> Delete</a>
+        </div>
 
 
     </form>

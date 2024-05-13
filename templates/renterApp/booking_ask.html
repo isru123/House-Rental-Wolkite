@@ -31,7 +31,7 @@
 
             </div>
         </div>
-
+          <hr>
        
             <div class="table-responsive">
                 <table class="table table-striped table-bordered zero-configuration">
@@ -62,21 +62,20 @@
                                 
     
                                 <td>
-                                 
                                     <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showModalImage('{{ R.id_proof.url }}')">
                                         <img src="{{ R.id_proof.url }}" alt="User Photo" width="50" height="50">
                                     </button>
-                                    </td>
-                                  <td>
-                                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showFile('{{ R.income_proof.url }}')">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal2" onclick="showModalImage2('{{ R.income_proof.url }}')">
                                         <img src="{{ R.income_proof.url }}" alt="User Photo" width="50" height="50">
                                     </button>
-                                    </td>
-                                  <td>
-                                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showFile('{{ R.profession_proof.url }}')">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal3" onclick="showModalImage3('{{ R.profession_proof.url }}')">
                                         <img src="{{ R.profession_proof.url }}" alt="User Photo" width="50" height="50">
                                     </button>
-                                    </td>
+                                </td>
                                 {% comment %} <td>{{L.created_at}}</td> {% endcomment %}
                                 <td>
                                     <button class="btn text-white {% if R.status == 'Pending' %}btn-warning{% elif R.status == 'Accepted' %}btn-success{% elif R.status == 'Rejected' %}btn-danger{% endif %}" style="width: 100px; height: 40px;">
@@ -88,7 +87,7 @@
                                     <a href="{% url 'main:single_house_view' id=R.listing.id %}" class="btn btn-info text-white"
                                     title="View"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
-                                    <a href="" title="Delete"
+                                    <a href="{% url 'main:delete_update' request_id=R.listing.id %}" title="Delete"
                                         class="btn btn-danger text-white"><i class="fa fa-trash"
                                             aria-hidden="true"></i></a>
                                     {% comment %} {% endif %} {% endcomment %}
@@ -189,40 +188,55 @@
    </section>
 
 
-  
- <!-- Image Modal -->
+  <!-- Image Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body">
-          <img id="modalImage" src="" alt="User Photo" class="img-fluid">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImage1" src="" alt="User Photo" class="img-fluid">
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
-  <!-- File Modal -->
-  <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-body">
-          <iframe id="fileIframe" src="" width="100%" height="500px"></iframe>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImage2" src="" alt="User Photo" class="img-fluid">
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal3" tabindex="-1" aria-labelledby="imageModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImage3" src="" alt="User Photo" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
 
-  <script>
+<script>
     function showModalImage(imageUrl) {
-      var modalImage = document.getElementById('modalImage');
-      modalImage.src = imageUrl;
+        var modalImage = document.getElementById('modalImage1');
+        modalImage.src = imageUrl;
     }
-    function showFile(fileUrl) {
-        var fileIframe = document.getElementById('fileIframe');
-        fileIframe.src = fileUrl;
-      }
-  </script>
+
+    function showModalImage2(imageUrl) {
+        var modalImage = document.getElementById('modalImage2');
+        modalImage.src = imageUrl;
+    }
+
+    function showModalImage3(imageUrl) {
+        var modalImage = document.getElementById('modalImage3');
+        modalImage.src = imageUrl;
+    }
+</script>
 
     {% endblock %}
 

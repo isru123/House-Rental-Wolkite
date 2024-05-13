@@ -1,6 +1,6 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
-from .models import Image,Review,Listing,Document,Booking,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing,Upload
+from .models import Image,Review,Listing,Document,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing,Upload
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from dal import autocomplete
@@ -136,15 +136,15 @@ class ReviewForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit Review'))
          
 
-# class AddressForm(forms.Form):
-#     address = forms.ModelChoiceField(
-#         queryset=AddressOfListing.objects.all(),
-#         widget=autocomplete.ModelSelect2(url='address-autocomplete')
-#     )
+class AddressForm(forms.Form):
+    address = forms.ModelChoiceField(
+        queryset=AddressOfListing.objects.all(),
+        widget=autocomplete.ModelSelect2(url='address-autocomplete')
+    )
     
-#     class Meta:
-#         model = AddressOfListing
-#         fields = ['Address']
+    class Meta:
+        model = AddressOfListing
+        fields = ['Address']
         
 
 class DocumentForm(forms.ModelForm):
@@ -157,39 +157,11 @@ class DocumentForm(forms.ModelForm):
 
 
 class UploadForm(forms.ModelForm):
-    move_in_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        label='Move-in Date',
-        required=True,
-    )
-    move_out_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        label='Move-out Date',
-        required=True,
-    )
-    
     class Meta:
         model = Upload
-        fields = ['document', 'photo','move_in_date','move_out_date','id_proof','income_proof','profession_proof']
+        fields = ['photo','id_proof','income_proof','profession_proof']
         
 
-class BookingForm(forms.ModelForm):
-    move_in_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        label='Move-in Date',
-        required=True,
-    )
-    move_out_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        label='Move-out Date',
-        required=True,
-    )
-    
-    
-    class Meta:
-        model = Booking
-        fields = ['move_in_date', 'move_out_date', 'id_proof', 'income_proof', 'profession_proof']
-        
     
         
     

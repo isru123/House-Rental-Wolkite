@@ -1,0 +1,221 @@
+{% extends 'base/adminbase.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+
+
+{% block 'search' %}
+<input type="text" name="search" class="form-control" placeholder="Search By User Name...">
+{% endblock %}
+
+
+{% block 'body' %}
+
+
+
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+<section  style="height:550px; background-color: #fff;">
+       
+    <div class="content-body">
+        <!-- Display booking history -->
+
+        <div style="overflow-x: auto;">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>House Id</th>
+                        <th>Payment  Id</th>
+
+                        <th>Tenant</th>
+                        <th>Owner</th>
+                        <th>Total Price</th>
+                        <th>Refund Amount</th>
+                        <th>Booking Status</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                        <tr>
+                            <td>
+                                <span class="badge badge-secondary">{{ booking.id|stringformat:"s"|slice:":5" }}</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-secondary">{{ booking.house_id|stringformat:"s"|slice:":5" }}</span>
+                            </td>   
+                                <td>
+                                    <span class="badge badge-secondary">{{ booking.payment_id|stringformat:"s"|slice:":5" }}</span>
+                                </td>                     
+                           
+                                <td>{{ booking.tenant}}</td>
+
+                             <td>{{ booking.house.seller.user }}</td>
+                             <td>{{ booking.total_price }}</td>
+                                    <td>{{ booking.refund_amount }}</td>
+                                    <td>{{ booking.booking_status }}</td>
+                                    <td>{{ booking.payment_status }}</td>
+                                    <td>
+                                        {% if booking.booking_status == 'pending' %}
+                                            <a href="{% url 'confirm_booking' booking.id %}" class="btn btn-success">Confirm</a>
+                                            <a href="{% url 'cancel_bookings' booking.id %}" class="btn btn-danger">Cancel</a>
+                                        {% else %}
+                                            <button type="button" class="btn btn-secondary" disabled>Action</button>
+                                        {% endif %}
+                                        <!-- Optional: Add button for approving payment -->
+                                        <!--
+                                        {% if booking.payment_status == 'pending' %}
+                                            <a href="{% url 'approve_payment' booking.id %}" class="btn btn-primary">Approve Payment</a>
+                                        {% endif %}
+                                        -->
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if bookings.has_other_pages %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if bookings.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ bookings.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                            {% endif %}
+                            {% for i in bookings.paginator.page_range %}
+                                {% if bookings.number == i %}
+                                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if bookings.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ bookings.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+                {% if not bookings %}
+                    <p>No booking history available.</p>
+                {% endif %}
+            </div>
+     
+                
+                
+            </div>
+        </div>
+    </div>
+
+
+        </div>
+    </div>
+</section>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+
+    <section style="height:290px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       <div class="nk-sidebar" style="background-color:#0F3057">
+           <div class="">
+               <br>
+               <br>
+               <br>
+               <ul class="metismenu" id="menu" style=" background-color: #0F3057;">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-2"></i>    Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #0F3057;">
+                      
+                       <a class="has-arrow">
+                           <i class="icon-screen-tablet menu-icon"></i>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-user-circle mr-3"></i>Admin</span>
+                       </a>
+                      
+
+                       <ul style=" background-color: #0F3057;">
+                        {% if user.is_superuser %} 
+                        <li><a href="/all-user/" class="ml-0" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    All User</a></li>
+                        {% endif %}
+                     
+                        <li><a href="{% url 'approve-owner' %}"  style="color:white" class="text-decoration-none"><i class="fa fa-list-alt" style="color: white;"></i>    Approve Listings</a></li>
+                        
+                        
+                        
+                        <li><a href="{% url 'display_all_payments' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>    Payment History</a></li>
+                        <li><a href="{% url 'all_bookings' %}" style="color:white" class="text-decoration-none"><i class="fa fa-building" style="color: white;"></i>    Bookings</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    Manage Users</a></li>
+                        <li>
+                            <a href="/admin-helpdesk/" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Admin Helpdesk</a>
+                        </li>
+
+                        <li>
+                            {% if user.is_superuser or user.is_staff  %}
+                            <a href="{% url 'add-admin' %}" style="color:white" class="text-decoration-none"><i class="fa fa-user" style="color: white;"></i>    Add admin</a>
+                            {% endif %}
+                        </li>
+                      
+                       </ul>
+                   </li>
+                   {% comment %} {% endif %} {% endcomment %}
+               </ul>
+           </div>
+       </div>
+       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+   </section>
+
+
+    
+ <!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img id="modalImage" src="" alt="User Photo" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <script>
+    function showModalImage(imageUrl) {
+      var modalImage = document.getElementById('modalImage');
+      modalImage.src = imageUrl;
+    }
+    function showFile(fileUrl) {
+        var fileIframe = document.getElementById('fileIframe');
+        fileIframe.src = fileUrl;
+      }
+  </script>
+
+    {% endblock %}
+
+    {% block 'footer2' %}
+    {% endblock %}
+
+    
+
+
+

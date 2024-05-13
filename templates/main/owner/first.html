@@ -3,80 +3,8 @@
 {% load static %}
 
 
-{% block 'header' %}
 
 
- <!-- Navbar start -->
- <div class="container-fluid fixed-top">
-    <div class="container topbar bg-primary d-none d-lg-block">
-        <div class="d-flex justify-content-between">
-            <div class="top-info ps-2">
-                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
-                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">lemish@gmail.com</a></small>
-            </div>
-            <div class="top-link pe-2">
-                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                <a href="#" class="text-white"><small class="text-white ms-2">Rent and Refunds</small></a>
-            </div>
-        </div>
-    </div>
-     
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="{% url 'main:home' %}" class="nav-item nav-link active">Home</a>
-                    <a href="shop.html" class="nav-item nav-link">How it works</a>
-                    <a href="" class="nav-item nav-link">Pricing</a>
-                    <a href="" class="nav-item nav-link">Help</a>
-                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
-
-                    <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
-                    <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
-                    {% comment %} <a href="{% url 'dashboard' %}" class="nav-item nav-link">Dashboard</a> {% endcomment %}
-
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                   
-            
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link" id="accountTrigger">
-                        <div class="col-1">
-                            {% if listing.seller.photo %}
-                                <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="30" width="30" style="object-fit: cover;">
-                            {% else %}
-                                <!-- Placeholder image or alternative content when 'photo' is not available -->
-                                <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
-                            {% endif %}
-                        </div>
-                    </a>
-
-
-                    <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
-                        <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
-                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
-
-                      <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
-                    </div>
-                  </div>
-                  {% comment %} <div id="google_translate_element"></div> {% endcomment %}
-
-        </nav>
-    </div>
-</div>
-<!-- Navbar End -->
-
-{% endblock %}
-<br>
-<br>
-<br>
 {% block 'body' %}
 
 <div>
@@ -204,9 +132,6 @@
 {% endblock %}
 
 
-{% block 'footer2' %}
-
-{% endblock %}
 
 
 

@@ -32,7 +32,7 @@
             </div>
         </div>
 
-       
+            <hr>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered zero-configuration">
                 <thead>
@@ -47,8 +47,11 @@
                 <tbody>
                     {% if payments  %}
                     {% for A in payments %}
-                        <tr>
-                            <td>{{ A.payment_id }}</td>
+                    <tr>
+                    <td>
+                        <span class="badge badge-secondary">{{A.payment_id |stringformat:"s"|slice:":5" }}</span>
+                    </td> 
+                        
                             <td>{{ A.amount }}</td>
                             <td>{{ A.payer }}</td>
                             <td>{{ A.recipient }}</td>
@@ -61,29 +64,7 @@
                 </tbody>
             </table>
           
-            {% if payments.has_other_pages %}
-                            <ul class="pagination">
-                                {% if payments.has_previous %}
-                                <li><a href="?page={{ payments.previous_page_number }}" class="btn btn-primary" style="width:50px">&laquo;</a>
-                                </li>
-                                {% else %}
-                                <li class="disabled btn btn-primary" style="width:50px"><span>&laquo;</span></li>
-                                {% endif %}
-                                {% for i in payments.paginator.page_range %}
-                                {% if payments.number == i %}
-                                <li class="active btn btn-primary" style="width:50px"><span>{{ i }} <span
-                                            class="sr-only">(current)</span></span></li>
-                                {% else %}
-                                <li><a href="?page={{ i }}" style="width:50px" class="btn btn-primary">{{ i }}</a></li>
-                                {% endif %}
-                                {% endfor %}
-                                {% if payments.has_next %}
-                                <li><a href="?page={{ payments.next_page_number }}" style="width:50px" class="btn btn-primary">&raquo;</a></li>
-                                {% else %}
-                                <li class="disabled btn btn-primary" style="width:50px"><span>&raquo;</span></li>
-                                {% endif %}
-                            </ul>
-                            {% endif %}
+          
 
             </div>
         </div>
@@ -95,6 +76,9 @@
 </div>  
     </div>
 </section>
+
+
+
 
 
 

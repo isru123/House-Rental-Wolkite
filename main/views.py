@@ -48,7 +48,7 @@ from .models import (
     Review,
     AddressOfListing,
     Upload,
-    Booking,
+
 )
 
 from .forms import (
@@ -60,10 +60,11 @@ from .forms import (
     RulesAndPreferencesForm,
     ImageForm,
     ReviewForm,
-    BookingForm,
     DocumentForm,
     UploadForm,
 )
+
+
 
 
 def main_view(request):
@@ -84,25 +85,27 @@ def main_view(request):
 
 
 
+        
+        
+            
+    
+            
+        # return render(request, 'search_results.html', {'listings': listings})
 def master_view(request):
-    all_listings  = Listing.objects.all()
-    listing_filter  = ListingFilter(request.GET, queryset=all_listings )
+    all_listings = Listing.objects.all()
+    listing_filter = ListingFilter(request.GET, queryset=all_listings)
     
-   
-    # listings = listings.prefetch_related('rules_and_preferences')
-    
-    
-    # if hasattr(request.user, 'profile'):
+    filtered_listings = listing_filter.qs  # Use the filtered queryset from the filter
+
+    if request.method == 'GET':
+        address_query = request.GET.get('address')
         
-    #     # user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
+        if address_query:
+            # Apply additional filtering based on address query
+            filtered_listings = filtered_listings.filter(address__icontains=address_query)
     
-    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
-    # else:
-    #     liked_listings_ids = []
-        
-        
-     # Fetch related data using prefetch_related
-    filtered_listings = listing_filter.qs.prefetch_related(
+    # Fetch related data using prefetch_related
+    filtered_listings = filtered_listings.prefetch_related(
         'rules_and_preferences',
         'amenities',
         'listing_space_overview',
@@ -110,20 +113,24 @@ def master_view(request):
         'rental_condition',
         'image',
     )
-    return render(request, 'main/major/master.html',  {'listing_filter': listing_filter,
-                                               'filtered_listings': filtered_listings})
-    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
-    # else:
-    #     liked_listings_ids = []
     
-    # return render(request, 'main/major/master.html',  {'listing_filter': listing_filter
-    #                                         #    'liked_listings_ids': liked_listings_ids
-    #                                         })
+    return render(request, 'main/major/master.html', {
+        'listing_filter': listing_filter,
+        'filtered_listings': filtered_listings
+    })
 
+   
+   
+   
    
 
 def detail_list_view(request):
     return render(request, 'components/detail_list_view.html')
+
+
+
+def about_view(request):
+    return render(request, 'users/about.html')
 
  
 def owner_view(request):
@@ -454,9 +461,18 @@ def upload(request,id):
                 user_profile = Profile.objects.get(user=request.user)
                 upload.tenant = user_profile
                 upload.listing = listing  # Assign the listing object
-                upload.save()
-                messages.success(request, 'You have successfully sent the Documents')
-                return redirect('message:new', product_id=listing.id)
+                existing_request = Upload.objects.filter(tenant=user_profile, listing=listing).exists()
+                if existing_request:
+                    
+    
+                    form.add_error(None, "You have already made a request for this listing.")
+                else:
+    
+                    upload.tenant = user_profile
+            
+                    upload.save()
+                    messages.success(request, 'You have successfully sent the Documents')
+                    return redirect('message:new', product_id=listing.id)
                 
                 # else:
                 #     messages.warning(request, 'You have to Correct The Dates')
@@ -472,10 +488,35 @@ def upload(request,id):
 
 
 
-
-
-def booking_requests(request):
+from paymnet.models import Booking
+#   all_bookings = Booking.objects.filter(tenant=request.user)
+def bookings_made(request):
     profile = request.user.profile
+    
+    
+    
+    bookings = Booking.objects.filter(house__seller=profile)
+    
+    
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(bookings, 7)
+    try:
+        bookings = paginator.page(page)
+    except PageNotAnInteger:
+        bookings = paginator.page(1)
+    except EmptyPage:
+        bookings = paginator.page(paginator.num_pages)
+    
+    
+    return render(request, 'main/owner/bookings.html', {'bookings': bookings})
+  
+ 
+def booking_requests(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    profile = Profile.objects.get(user=request.user)
     U = Upload.objects.filter(listing__seller=profile, status='Pending')
     if request.method == "POST":
         search = request.POST.get("search")
@@ -1138,30 +1179,53 @@ def owner_listings(request):
     return render(request, 'main/owner/owner-listings.html',  {'listing':L})
 
 
+import uuid
+from django.http import Http404
 
+def delete_upload(request, request_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    try:
+        upload = Upload.objects.get(id=request_id)
+    except Upload.DoesNotExist:
+        raise Http404("Upload object not found.")
+    
+    upload.delete()
+    messages.success(request, 'The Request has been deleted successfully.')
+    return redirect('message:ask')
+
+
+# def delete_upload(request, id):
+#     upload = get_object_or_404(Upload, id=id)
+#     if request.method == 'POST':
+#         upload.delete()
+#         messages.success(request, 'The upload has been deleted successfully.')
+#         return redirect('message:ask')
+#     else:
+#         return redirect('message:ask')
 
 
 def approve_tenant_request(request, listing_id):
     
     upload = Upload.objects.filter(listing_id=listing_id).first()
-
     
     upload.status = 'Accepted'
     upload.save() 
  
     
     messages.success(request, 'Request Approved!')
-    return redirect('Request')
+    return redirect('main:Request')
     
 def reject_tenant_request(request, listing_id):
     
-    upload = Upload.objects.filter(listing_id=listing_id).first()
+    upload = Upload.objects.get(listing_id=listing_id)
     
     upload.status ='Rejected'
     upload.save()
     
     messages.info(request, 'You rejected booking request')
-    return redirect('Request')
+    return redirect('main:Request')
 
 
 

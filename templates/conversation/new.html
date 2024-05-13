@@ -2,61 +2,18 @@
 
 {% block title %}New Conversation{% endblock %}
 
-{% block 'header' %}
-{% endblock %}
 
 {% block 'body' %}<br>
 
- <!-- Navbar start -->
- <div class="container-fluid fixed-top"> 
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                    <a href="shop.html" class="nav-item nav-link">How it works</a>
-                    <a href="" class="nav-item nav-link">Pricing</a>
-                    <a href="" class="nav-item nav-link">Help</a>
-                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
-
-                    <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
-                    <a href="{% url 'master' %}" class="nav-item nav-link">Browse Listings</a>
-            
-
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                   
-            
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link" id="accountTrigger">
-                      <i class="fas fa-user fa-2x"></i>
-                    </a>
-                    <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
-                        <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
-                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
-
-                      <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
-                    </div>
-                  </div>
-                  {% comment %} <div id="google_translate_element"></div> {% endcomment %}
-
-        </nav>
-    </div>
-</div>
-<!-- Navbar End -->
-
+<br>
+<br>
+<br>
 
 <!-- Single Page Header start -->
-<div class="container-fluid page-header mt-5 py-5" style="background-color: #1877F2; height:50px">
-    <h1 class="text-center text-white display-6">New Conversation</h1>
+<div class="container-fluid page-header mt-5 py-5" style="background-color: #0F3057; height:50px">
+    <h1 class="text-center text-white display-6">Send Message</h1>
     <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Home</a></li>
         <li class="breadcrumb-item"><a href="#">Listings</a></li>
         <li class="breadcrumb-item active">Conversation</li>
     </ol>
@@ -64,13 +21,17 @@
 <br>
 <br>
 <hr>
+
+
+
+
 <!-- Breadcrumb -->
 <section id="bc" class="mt-5">
     <div class="container">
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-           <a href="{% url 'home' %}">{{ _("Home") }}</a>
+           <a href="{% url 'main:home' %}">{{ _("Home") }}</a>
           </li>
           <li class="breadcrumb-item">
             <a href="{% url 'master' %}">{{ _("Listings") }}</a>
@@ -82,36 +43,12 @@
 
     
   </section>
-<div class="container">
+<div class="container card mb-5" style="height:500px">
     <h1 class="mb-4 text-center">New Conversation</h1>
 
-    <!-- Display tenant's document and photo -->
-    {% if not id_document_url %}
-        <button id="approveButton" class="btn btn-primary btn-lg my-3 mx-auto" onclick="location.href='{% url 'upload' id=listing.id  %}'">
-            Approve your identity
-        </button>
-    {% endif %}
+    
 
-    {% if id_document_url %}
-        <div class="alert alert-success my- mx-auto">
-            You have successfully approved your identity!
-            {% if tenant_photo_url %}
-                <p>Your photo:</p>
-                <a  href="{{ tenant_photo_url }}"  class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
-            {% endif %}
-            {% if id_document_url %}
-                <p>Your document:</p>
-                <a href="{{ id_document_url }}" class="btn btn-success btn-sm" style="text-decoration: none;">View Document</a>
-            {% endif %}
-        </div>
-    {% else %}
-        {% if tenant_photo_url %}
-            <p>Your photo:</p>
-            <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm mx-auto" style="text-decoration: none;">View Photo</a>
-        {% endif %}
-    {% endif %}
-
-    <form method="post" action="." class="mx-auto">
+    <form method="post" action="." class="mx-auto" style="height:300px; width:300px">
       {% csrf_token %}
   
       <div class="mb-3">
@@ -123,7 +60,7 @@
           {% endif %}
       </div>
   
-      <button id="sendButton" class="btn btn-primary btn-lg my-3 mx-auto">Send</button>
+      <button id="sendButton" class="btn btn-primary btn-md my-3 mx-auto">Send</button>
   </form>
   
 </div>

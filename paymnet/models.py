@@ -71,6 +71,8 @@ class Payment(models.Model):
     def __str__(self):
         return f"Payment {self.id} - Amount: ${self.amount}"        
 
+
+
 class Booking(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -92,8 +94,10 @@ class Booking(models.Model):
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
     confirmation_code = models.CharField(max_length=20)
     payment_id = models.CharField(max_length=100)  # Assuming payment_id is used to store payment information
-    id_document = models.FileField(upload_to='tenant_documents/')
-    tenant_photo = models.FileField(upload_to='tenant_photos/')
+ 
+    booking_date = models.DateTimeField()  # Add a field for booking date and time
+    refund_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Added refund_amount field
+   
 
     def save(self, *args, **kwargs):
         if self.house:
@@ -102,6 +106,9 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"Booking ID: {self.id}, Tenant: {self.tenant.username}, House: {self.house.address}"
+    
+    
+    
 # class Booking(models.Model):
 #     STATUS_CHOICES = [
 #         ('pending', 'Pending'),

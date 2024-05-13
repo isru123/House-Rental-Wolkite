@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import LoginPage, Logout, activate_account,SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword
+from .views import LoginPage, Logout,verification_page,service_view, activate_account,SignPage,OwnerSign,SendEmailForForgotPassword,ForgotPage,ForgotPassword
 from main.views import master_view
 from django.contrib.auth import views as auth_view
 
 urlpatterns = [
     path('master/', master_view , name='master'),
-    
+    path('service/', service_view , name="service"),
     path('login/', LoginPage, name='login'),
     path('sign/', SignPage , name='sign'),
     path('owner-sign/', OwnerSign, name='owner-sign'),
@@ -13,7 +13,7 @@ urlpatterns = [
     path('forgot/',ForgotPage),
     path('forgotpassword/', ForgotPassword  , name='forgotpassword'),
     path('logout/', Logout, name='logout'),
-
+    path('verify_email/',verification_page, name='verify-email' ),
     path('activate/<str:uidb64>/<str:token>/', activate_account, name='activate_account'),
 
     path('password_reset/', auth_view.PasswordResetView.as_view(template_name='users/password_reset.html'),

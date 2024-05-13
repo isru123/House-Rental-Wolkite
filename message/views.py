@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect,HttpResponse
 from users.models import Profile,Location
 
-from main.models import Listing,Request,Upload
+from main.models import Listing,Upload
 from django.urls import reverse
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -32,6 +32,7 @@ def is_request_valid(move_in_date, move_out_date, available_start):
 
 @login_required
 def new_conversation(request, product_id):
+
     listing = get_object_or_404(Listing, id=product_id)
     
     
@@ -44,7 +45,7 @@ def new_conversation(request, product_id):
     if conversations.exists():
         return redirect('message:detail', conversation_id=conversations.first().id)
 
-    id_document_url = ''
+ 
     tenant_photo_url = ''
 
     # Fetch tenant's document and photo
@@ -53,7 +54,6 @@ def new_conversation(request, product_id):
     # Assuming you want to use the first upload found
     if tenant_uploads.exists():
         tenant_upload = tenant_uploads.first()
-        id_document_url = tenant_upload.document.url
         tenant_photo_url = tenant_upload.photo.url
 
     if request.method == 'POST':
@@ -78,7 +78,7 @@ def new_conversation(request, product_id):
     context = {
         'form': form,
         'listing': listing,
-        'id_document_url': id_document_url,
+     
         'tenant_photo_url': tenant_photo_url,
     }
     return render(request, 'conversation/new.html', context)
@@ -121,43 +121,6 @@ def send_notification_to_admins():
 
 
 
-# def new_conversation(request, product_id):
-#     listing = get_object_or_404(Listing, id=product_id)
-
-#     if request.user == listing.seller:
-#         return redirect('main:home')
-
-#     # Check if there are existing conversations related to the listing for the current user
-#     conversations = Conversation.objects.filter(item=listing, members=request.user)
-#     if conversations.exists():
-#         return redirect('detail', conversation_id=conversations.first().id)
-
-#     if request.method == 'POST':
-#         form = ConversationMessageForm(request.POST)
-
-#         if form.is_valid():
-#             # Create a new conversation
-#             conversation = Conversation.objects.create(item=listing)
-#             conversation.members.add(request.user, listing.seller.user)
-#             conversation.save()
-
-#             # Create a new conversation message
-#             conversation_message = form.save(commit=False)
-#             conversation_message.conversation = conversation
-#             conversation_message.created_by = request.user
-#             conversation_message.save()
-
-#             return redirect('detail', conversation_id=conversation.id)
-#     else:
-#         form = ConversationMessageForm()
-
-#     context = {
-#         'form': form,
-#         'listing': listing
-#     }
-#     return render(request, 'conversation/new.html', context)
-
-
 
 
 
@@ -172,62 +135,6 @@ def inbox_view(request):
 
 
 
-
-
-# def detail(request, conversation_id):
-#     conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
-
-#     if request.method == 'POST':
-#         form = ConversationMessageForm(request.POST)
-
-#         if form.is_valid():
-#             conversation_message = form.save(commit=False)
-#             conversation_message.conversation = conversation
-#             conversation_message.created_by = request.user
-#             conversation_message.save()
-
-#             return redirect('detail', conversation_id=conversation_id)
-#     else:
-#         form = ConversationMessageForm()
-#         context = {
-#           'conversation': conversation,
-#         'form': form}
-#     return render(request, 'conversation/conversationpage.html', context)
-
-# def detail(request, conversation_id):
-#     conversation = get_object_or_404(Conversation, id=conversation_id, members=request.user)
-
-#     if request.method == 'POST':
-#         form = ConversationMessageForm(request.POST)
-
-#         if form.is_valid():
-#             conversation_message = form.save(commit=False)
-#             conversation_message.conversation = conversation
-#             conversation_message.created_by = request.user
-#             conversation_message.save()
-
-#             # Send the new message to the WebSocket consumer
-#             channel_layer = get_channel_layer()
-#             async_to_sync(channel_layer.group_send)(
-#                 f"conversation_{conversation_id}",
-#                 {
-#                     "type": "chat_message",
-#                     "message": {
-#                         "username": conversation_message.created_by.username,
-#                         "content": conversation_message.content,
-#                         "created_at": conversation_message.created_at.strftime("%Y-%m-%d %H:%M:%S")
-#                     }
-#                 }
-#             )
-
-#             return redirect('detail', conversation_id=conversation_id)
-#     else:
-#         form = ConversationMessageForm()
-#         context = {
-#             'conversation': conversation,
-#             'form': form
-#         }
-#     return render(request, 'conversation/conversationpage.html', context)
 
 
 
@@ -328,6 +235,11 @@ def books(request):
     
     # Filter bookings where the logged-in user is either the tenant or the owner
     all_bookings = Booking.objects.filter(tenant=request.user)
+    if request.method == "POST":
+        search = request.POST.get("search")
+        # seller = seller.user.username
+        # seller = request.user.profile 
+        all_bookings = Booking.objects.filter(guest__user__username=search)
     # all_listing = list(Booking.objects.filter(tenant=request.user))
     # sequential_id = all_listing.index(all_bookings[0]) + 1
    
@@ -335,6 +247,18 @@ def books(request):
     # username = request.user.username
     # payment_id = f"{username.upper()}{sequential_id}"
     # Pass the filtered bookings to the template
+    
+            
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(all_bookings, 7)
+    try:
+        all_bookings = paginator.page(page)
+    except PageNotAnInteger:
+        all_bookings = paginator.page(1)
+    except EmptyPage:
+        all_bookings = paginator.page(paginator.num_pages)
+        
     context = {
         'all_bookings': all_bookings,
         
@@ -378,6 +302,9 @@ def listigs(request):
         # "my_booking":my_booking
         }
     return render(request, 'renterApp/listing.html',Dict)
+
+
+
 from django.shortcuts import render, redirect
 from paymnet.models import Payment
 

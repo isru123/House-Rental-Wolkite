@@ -132,6 +132,8 @@
     </style>
 
 </head>
+<br>
+<br>
 <div class="container mt-5 mb-5">
     <div class="card">
         <div class="row g-0">
@@ -149,23 +151,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="additional-info mt-3">
-                    <h5>Features:</h5>
-                    <ul>
-                        <li>3 Bedrooms</li>
-                        <li>2 Bathrooms</li>
-                        <li>Swimming Pool</li>
-                        <li>Garden Area</li>
-                    </ul>
-                    <h5>Amenities:</h5>
-                    <ul>
-                        <p>rules_and_preferences: {{product.rules_and_preferences}}</p>
-
-                    </ul>
-                    <h5>Location:</h5>
-                    <p>location: {{product.location}}</p>
-
-                </div>
+               
             </div>
             <div class="col-md-6" style="border: 1px solid #ccc; max-height: 600px; overflow-y: auto;">
                 
@@ -178,10 +164,12 @@
             <p>{{product.maximum_rental_period}}</p>
 
             
-            <p>Price: $ {{product.price}}</p>
-            <p>Description: {{product.description}}</p>
+            <p>Price:  {{product.price}} Birr</p>
+            
             <!-- <button>Purchase</button> -->
+           <div class="width:500px;height:500px"> 
             {{paypal.render}}
+           </div>
         </div>  
     </div>
    
@@ -212,4 +200,7 @@
 
     }
 </script>
+{% endblock %}
+
+{% block 'footer' %}
 {% endblock %}

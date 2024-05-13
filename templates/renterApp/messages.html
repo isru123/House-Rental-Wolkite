@@ -39,7 +39,7 @@
     <br>
     <div class="content-body">
         {% if conversations %}
-        <div class="card ml-5 mt-3 bg-light" style="width:500px; height:600px;">
+        <div class="card ml-5 mt-3 bg-light" style="width:600px; height:600px;">
             <div class="space-y-6">
                 {% for conversation in conversations %}
                 {% comment %} <h1>Hi</h1> {% endcomment %}
@@ -53,7 +53,7 @@
                                 {% for member in conversation.members.all %}
                                     {% if member != request.user %}
                                     {% comment %} <div class="card ml-3 mt-5 bg-white"> {% endcomment %}
-                                        <div class="card bg-white text-dark mb-0" ><strong><span class="hover-username">{{ member.username }}</span></strong> | {{ conversation.modified_at }}</div>
+                                        <div class="card bg-white text-dark ml-5 mb-0" ><strong><span class="hover-username">{{ member.username }}</span></strong> | {{ conversation.modified_at }}</div>
                                         <p>{{ conversation.list.name }}</p>
                                          
                                     {% endif %}

@@ -274,12 +274,11 @@ class Upload(models.Model):
         ('Reject', 'Reject'),
         ('Accept', 'Accept'),
     ]
-    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Listing, on_delete=models.DO_NOTHING)
-    document = models.ImageField(upload_to='uploads/documents/')
+
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='uploads')
+    listing = models.ForeignKey(Listing, on_delete=models.DO_NOTHING,related_name='uploads')
     photo = models.ImageField(upload_to='uploads/photos/')
-    move_in_date = models.DateField(default=timezone.now,null=True)
-    move_out_date = models.DateField(default=timezone.now,null=True)
+    # move_in_date = models.DateField(default=timezone.now,null=True)
     id_proof = models.ImageField(upload_to='uploads/Id/')
     income_proof = models.ImageField(upload_to='uploads/Income/')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
@@ -297,20 +296,6 @@ class Upload(models.Model):
 
 
 
-
-class Request(models.Model):
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    move_in_date = models.DateField(default=timezone.now,null=True)
-    # Add more fields as per your requirements
-    requester = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    # Add any additional methods or logic as needed
-
-    
-    def __str__(self):
-        sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
-        return f"Request for Listing ID {sequential_id} Of {self.listing.seller.user.username} by {self.requester.user.username}"
 
 
 
@@ -370,26 +355,29 @@ class Document(models.Model):
     def __str__(self):
         return f'{self.seller.user.username}/s Document'
     
-
-class Booking(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('rejected', 'Rejected'),
-    )
-
-    guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    move_in_date = models.DateField()
-    move_out_date = models.DateField()
-    total_price = models.DecimalField(max_digits=8, decimal_places=2)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    id_proof = models.ImageField(upload_to= user_listing_path)
-    income_proof = models.ImageField(upload_to=user_listing_path)
-    profession_proof = models.ImageField(upload_to=user_listing_path)
     
-    def __str__(self):
-        return f'{self.guest.user.username}/s Booking'
+    
+    
+
+# class Booking(models.Model):
+#     STATUS_CHOICES = (
+#         ('pending', 'Pending'),
+#         ('accepted', 'Accepted'),
+#         ('rejected', 'Rejected'),
+#     )
+
+#     guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
+#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+#     move_in_date = models.DateField()
+#     move_out_date = models.DateField()
+#     total_price = models.DecimalField(max_digits=8, decimal_places=2)
+#     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+#     id_proof = models.ImageField(upload_to= user_listing_path)
+#     income_proof = models.ImageField(upload_to=user_listing_path)
+#     profession_proof = models.ImageField(upload_to=user_listing_path)
+    
+#     def __str__(self):
+#         return f'{self.guest.user.username}/s Booking'
 
     # Other booking attributes and methods
 

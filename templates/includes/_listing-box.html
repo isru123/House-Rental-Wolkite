@@ -41,15 +41,15 @@
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-      {% comment %} <img class="card-img-top listing-img bd-placeholder-img card-img-top"  width="100%" src="{{ listing.photo.url }}" role="img" arial-label="placeholder: Thumbnail"
-      focusable="false"> {% endcomment %}
-{% comment %} 
+     {% comment %} <img class="card-img-top listing-img bd-placeholder-img card-img-top"  width="100%" src="{{ listing.photo.url }}" role="img" arial-label="placeholder: Thumbnail"
+      focusable="false">  {% endcomment %}
+
       {% if listing.seller.photo %}
       <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
   {% else %}
       <!-- Placeholder image or alternative content when 'photo' is not available -->
       <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
-  {% endif %} {% endcomment %}
+  {% endif %} 
 
       <div class="card-img-overlay">
         <h2>
@@ -105,9 +105,7 @@
       {% endif %}
       <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'main:map' id=listing.id %}">Map</a>
      
-      {% if listing.seller.user == request.user %}
-     <a href="{% url 'main:multistepsubmissionEdit' %}"  type="button" class="btn btn-sm bg-secondary text-white btn-outline-secondary">Edit</a>
-     {% endif %}
+     
     </div>
 
       

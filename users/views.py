@@ -27,6 +27,11 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
 
 
+def service_view(request):
+    return render(request, 'users/service.html')
+
+
+
 def LoginPage(request):
     if request.user.is_authenticated:
         logout(request)
@@ -57,9 +62,46 @@ def Logout(request):
 
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.core.mail import send_mail
+import random
+import string
 
+
+
+def verification_page(request):
+    if not hasattr(request.user, 'profile'):
+        messages.error(request, "You don't have a profile. Please sign up first.")
+        return redirect('sign')
+
+    if request.method == 'POST':
+        verification_code = request.POST.get('verification_code')
+        stored_code = request.session.get('verification_code')
+
+        if verification_code == stored_code:
+            # If verification code matches, mark the user as verified
+            request.user.profile.verified = True
+            request.user.profile.save()
+            messages.success(request, 'Your email has been verified.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Invalid verification code. Please try again.')
+
+    return render(request, 'users/verify_phone.html')
+
+
+def generate_verification_code():
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+def send_verification_email(email, verification_code):
+    subject = 'Email Verification'
+    message = f'Your verification code is: {verification_code}'
+    from_email = 'fikefiresew1234@gmail.com'  # Update with your email
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
         
-
 def SignPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -71,53 +113,20 @@ def SignPage(request):
         contact = request.POST.get('contact')
         address = request.POST.get('address')
         
+       
         
-        phone_number = contact
-        country_code = 'ET'
-        if not validate_phone_number(phone_number, country_code): 
-            messages.error(request, 'Invalid Phone Number')
-            return render(request,'users/sign.html')
-            # Replace 'US' with the appropriate country code
-             
-        if not is_strong_password(pass1):
-            messages.warning(request, 'Password Must be Strong')
-            return render(request,'users/sign.html')
-        
-        if not is_strong_password(pass2):
-            messages.warning(request, 'Password Must be Strong')
-            return render(request,'users/sign.html')
-        
-        if not validate_name(username): 
-            messages.warning(request, 'Not Valid Name')
-            return render(request,'users/sign.html')
-        
-        if not validate_name(first_name): 
-            messages.warning(request, 'Not Valid Name')
-            return render(request,'users/sign.html')
-        
-        if not validate_name(last_name): 
-            messages.warning(request, 'Not Valid Name')
-            return render(request,'users/sign.html')
-            
-        if not validate_email(email):
-            messages.warning(request, 'Invalid Email Address')
-            return render(request,'users/sign.html')
-        
-        
-        
-        
+      
+
+        # Perform password and contact number validation
         if pass1 != pass2:
             msg = _('Password should be same.')
             return render(request, 'users/sign.html', {'msg': msg})
+        
         if len(contact) != 10:
             msg = _('Contact should be 10 digits.')
             return render(request, 'users/sign.html', {'msg': msg})
 
-        # try:
-        #     email_object = validate_email(email)
-        # except EmailNotValidError as e:
-        #     messages.warning(request, f'{e}')
-        #     return render(request, 'users/sign.html', {'msg': f'{e}'})
+        # Other validation checks...
 
         try:
             user = User.objects.create_user(
@@ -137,9 +146,15 @@ def SignPage(request):
             address=address,
             verified=False
         )
+         # Generate verification code
+        verification_code = generate_verification_code()
 
+        # Send verification email
+        send_verification_email(email, verification_code)
+        
+        request.session['verification_code'] = verification_code
         messages.success(request, 'You have been successfully Registered')
-        return redirect('login')
+        return redirect('verify-email')
     return render(request, 'users/sign.html')
 
 
@@ -193,6 +208,14 @@ def OwnerSign(request):
         photo = request.FILES.get('pic')
         address= request.POST.get('address')
         
+        
+        
+        if pass1!=pass2:
+            msg= _('Password should be same.')
+            return render(request,'users/owner-sign.html',{'msg':msg})
+        if len(contact)!=10:
+            messages.warning(request, 'Contact should be 10 digit.')
+            return render(request,'users/owner-sign.html')
         phone_number = contact
         country_code = 'ET'
         if not validate_phone_number(phone_number, country_code): 
@@ -226,12 +249,7 @@ def OwnerSign(request):
             return render(request,'users/owner-sign.html')
         
         
-        if pass1!=pass2:
-            msg= _('Password should be same.')
-            return render(request,'users/owner-sign.html',{'msg':msg})
-        if len(contact)!=10:
-            messages.warning(request, 'Contact should be 10 digit.')
-            return render(request,'users/owner-sign.html')
+        
         try:
             user=User.objects.create_user(
                 username=username,
@@ -256,10 +274,6 @@ def OwnerSign(request):
         return redirect('/login/')
     return render(request, 'users/owner-sign.html')
 
-
-name = 'israel'
-is_valid = validate_name(name)
-print(is_valid)
 
 
 

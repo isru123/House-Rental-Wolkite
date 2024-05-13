@@ -17,5 +17,6 @@ urlpatterns = [
     path('submit-tenant-info/', views.submit_tenant_info, name='submit_tenant_info'),
     path('confirm-booking/<uuid:booking_id>/', views.confirm_booking, name='confirm_booking'),
     path('cancel-booking/<uuid:booking_id>/', views.cancel_booking, name='cancel_booking'),
-
+    path('cancel-bookings/<uuid:booking_id>/', views.cancel_bookings, name='cancel_bookings'),
+    path('send-email-notification/<uuid:booking_id>/', views.send_email_notification, name='send_email_notification'),
 ]

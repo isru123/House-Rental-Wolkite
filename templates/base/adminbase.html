@@ -92,15 +92,7 @@
                 <div class="header-left">
                     <div class="input-group icons">
                         
-                        <form action="/rent-house/" method="POST">
-                            <br>
-                            <br>
-                            <br>
-                            {% csrf_token %}
-                            {% block 'search' %}
-                            <input type="text" name="search" class="form-control" placeholder="Search By City...">
-                            {% endblock %}
-                        </form>
+                        
                         {% if request.user.profile.userType == 'Owner' %}
                         <div style="align-center; margin-top:65px; margin-left:40px;">
                             <a href="{% url 'main:multistepformsubmission' %}"  class="btn btn-primary my-2">Make Listing</a>

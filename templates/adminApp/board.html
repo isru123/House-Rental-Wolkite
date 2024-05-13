@@ -14,125 +14,118 @@
             <br>
         <div class="content-body">
              
-            <div class="container-fluid mt-5" style="margin-left: 10px; margin-right: 10px">
-                <div class="row">
-                    {% comment %} {% if request.user.userprofile_set.first.userType == "Public" %} {% endcomment %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">My Total Booking</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{my_booking}}</h2>
+            <div class="col ps-md-2 pt-2">
+                <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse"
+                    class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list"></i></a>
+               
+                <hr>
+                {% comment %} <div class="content-body ml-5 mr-5 bg-light" style="margin-left:3px">
+
+                    <div class="content-body ml-5 mr-5" style="margin-left:3px"> {% endcomment %}
+                        <div class="container-fluid mt-3" style="margin-left:5px">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Your Total Listings</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">{{ total_listings }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Pending Listings</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">{{ pendings }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Accepted Listings</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">{{ accepted_listings}}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Booking Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">{{ booking_requests}}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Accepted Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">{{ accepted_requests }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Rejected Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">{{ rejected_requests }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Total Rejected Request</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">4565</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Total Accepted Request</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">8541</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Total Rejected Request</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">4565</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white" style="font-family: Arial, sans-serif;font-size: 24px;">Total Available Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{available_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% comment %} {% endif %}
-                    {% if request.user.userprofile_set.first.userType == "Owner" %} {% endcomment %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white" >My House</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{my_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Available Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{my_available_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% comment %} {% endif %}
-                    {% if request.user.userprofile_set.first.userType == "Admin" %} {% endcomment %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total No. of Verified House Owner</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_verified_owner}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total No. of Unverified House Owner</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_unverified_owner}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Available Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{available_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Booked Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{booked_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total verified Admin</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_verified_admin}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Unverified Admin</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_unverified_admin}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% comment %} {% endif %} {% endcomment %}
-                    
                 </div>
             </div>
         </div>
@@ -172,11 +165,11 @@
                  
                     <li><a href="{% url 'approve-owner' %}"  style="color:white" class="text-decoration-none"><i class="fa fa-list-alt" style="color: white;"></i>    Approve Listings</a></li>
                     
-                    <li><a href="/approve-admin/" style="color:white" class="text-decoration-none"><i class="fa fa-columns" style="color: white;"></i>    Admin Panel</a></li>
+
                     
                     
-                    <li><a href="{% url 'manage-owner-task' %}" style="color:white" class="text-decoration-none"><i class="fa fa-home" style="color: white;"></i>    Manage Owner Task</a></li>
-                    <li><a href="" style="color:white" class="text-decoration-none"><i class="fa fa-building" style="color: white;"></i>    Manage Tenant Task</a></li>
+                    <li><a href="{% url 'display_all_payments' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>    Payment History</a></li>
+                    <li><a href="{% url 'all_bookings' %}" style="color:white" class="text-decoration-none"><i class="fa fa-building" style="color: white;"></i>    Bookings</a></li>
                     <li><a href="{% url 'manage-customer' %}" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    Manage Users</a></li>
                     <li>
                         <a href="/admin-helpdesk/" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Admin Helpdesk</a>
@@ -187,8 +180,7 @@
                         <a href="{% url 'add-admin' %}" style="color:white" class="text-decoration-none"><i class="fa fa-user" style="color: white;"></i>    Add admin</a>
                         {% endif %}
                     </li>
-                    <li class="list-group-item"> <a href="{% url 'admin_tenant' recipient_username=request.user %}"
-                        class="text-decoration-none text-black">Messages</a> </li>
+              
                    </ul>
                </li>
                {% comment %} {% endif %} {% endcomment %}

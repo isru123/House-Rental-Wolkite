@@ -1,24 +1,68 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from users.models import Profile,Location
+from users.models import Profile
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
-from .forms import AdminProfileForm
-from users.forms import LocationForm,UserForm
-from django.db import models
 from django.conf import settings
-from main.models import Listing,Image,ListingHouseAmenities,ListingSpaceOverview,ListingHouseArea,RentalConditions,RulesAndPreferences
+from main.models import Listing,Image
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from main.forms import ListingForm,ListingHouseAmenitiesForm,ListingSpaceOverviewForm,ListingHouseAreaForm,RentalConditionsForm,RulesAndPreferencesForm,ImageForm
 from django.utils.translation import gettext as _
-from main.models import ListingHouseAmenities
-from users.forms import ProfileForm
 from django.core.mail import send_mail
-# Create your views here.
-from message.models import Conversation,ConversationMessage
-from message.forms import ConversationMessageForm
+from message.models import Conversation
+from paymnet.models import Booking,Payment
+from django.contrib.auth.decorators import login_required
+
+
+def display_all_bookings(request):
+    # Fetch all bookings from the database
+    bookings = Booking.objects.all()
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(bookings, 10)
+    try:
+        bookings = paginator.page(page)
+    except PageNotAnInteger:
+        bookings = paginator.page(1)
+    except EmptyPage:
+        bookings = paginator.page(paginator.num_pages)
+    
+    # Render the template with bookings data
+    return render(request, 'adminApp/bookings.html', {'bookings': bookings})
+
+
+
+def display_all_payments(request):
+    # Fetch all bookings from the database
+    # bookings = Booking.objects.all()
+    all_payments = Payment.objects.all()
+    all_bookings = Booking.objects.all()
+    
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(all_bookings, 1)
+    try:
+        all_bookings = paginator.page(page)
+    except PageNotAnInteger:
+        all_bookings = paginator.page(1)
+    except EmptyPage:
+        all_bookings = paginator.page(paginator.num_pages)
+        
+    context = {
+        
+
+        'all_payments': all_payments,
+        'all_bookings': all_bookings
+    }
+
+    
+    return render(request, 'adminApp/paymenthistory.html', context) 
+
+
+
 
 def admin_view(request):
     return render(request, 'adminApp/adminHome.html')
@@ -28,11 +72,11 @@ def admin_view(request):
 def Dashboard(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    total_verified_owner = Profile.objects.filter(userType="Owner", verified=True).count()
-    total_unverified_owner = Profile.objects.filter(userType="Owner", verified=False).count()
+    # total_verified_owner = Profile.objects.filter(userType="Owner", verified=True).count()
+    # total_unverified_owner = User.objects.filter(userType="Owner", verified=False).count()
 
-    total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
-    total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
+    # total_verified_admin = User.objects.filter(userType="Admin", verified=True).count()
+    # total_unverified_admin = User.objects.filter(userType="Admin", verified=False).count()
 
     # available_house = House.objects.filter(status="Available").count()
     # booked_house = House.objects.filter(status="Booked").count()
@@ -45,10 +89,10 @@ def Dashboard(request):
     # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
 
     Dict = {
-        "total_verified_owner":total_verified_owner,
-        "total_unverified_owner":total_unverified_owner,
-        "total_verified_admin":total_verified_admin,
-        "total_unverified_admin":total_unverified_admin,
+        # "total_verified_owner":total_verified_owner,
+        # "total_unverified_owner":total_unverified_owner,
+        # "total_verified_admin":total_verified_admin,
+        # "total_unverified_admin":total_unverified_admin,
         # "available_house":available_house,
         # "booked_house":booked_house,
         # "customer_request":customer_request,
@@ -65,11 +109,15 @@ def Dashboard(request):
 # def approve_owner_view(request):
 #     return render(request, 'adminApp/approve-owner.html')
 
+
+
+
 def manage_customer_view(request):
-    u = Profile.objects.filter(verified=True).exclude(user=request.user).exclude(user__profile__userType='Admin')
+    
+    u = Profile.objects.exclude(user__profile__userType='Admin')
     if request.method == "POST":
         search = request.POST.get("search")
-        u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user=request.user).exclude(user__profile__userType='Admin')
+        u = Profile.objects.filter(user__first_name__icontains=search, verified=True)
         # exclude(user__profile__userType='Admin')
     page = request.GET.get('page', 1)
 
@@ -80,16 +128,34 @@ def manage_customer_view(request):
         u = paginator.page(1)
     except EmptyPage:
         u = paginator.page(paginator.num_pages)
-    return render(request, 'adminApp/manage-customer.html', {'user':u})
+    return render(request, 'adminApp/manage-users.html', {'user':u})
 
-    # return render(request, 'adminApp/manage-customer.html')
+
 
 def ViewUser(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
     u = Profile.objects.get(id=id)
-
+    
     return render(request, 'adminApp/view_user.html',{'user':u})
+
+
+
+
+@login_required
+def delete_profile(request, user_id):
+    # Retrieve the profile object using the provided user ID
+    profile = get_object_or_404(Profile, user_id=user_id)
+    
+    if request.method == 'POST':
+        # If the request method is POST, delete the profile
+        profile.delete()
+        # Redirect to a success page or another appropriate URL
+        return redirect('all-user')
+    
+    # Render a confirmation page for profile deletion
+    return render(request, 'adminApp/view_user.html', {'user': profile})
+
 
 
 def DeleteUser(request, id):
@@ -98,6 +164,7 @@ def DeleteUser(request, id):
     u = User.objects.get(id=id)
     u.delete()
     return redirect('all-user')
+
 
 
 def add_admin_view(request):
@@ -248,128 +315,11 @@ def add_tenant(request):
 def manage_owner_task(request):
     return render(request, 'adminApp/manage-owner-task.html')
 
- # amenities = None
-    
-    # selected_username = request.POST.get('profile') 
- # try:
-        #     selected_profile = Profile.objects.get(user__username=selected_username)
-        #     amenities = ListingHouseAmenities.objects.filter(profile=selected_profile)
-        # except  Profile.DoesNotExist:
-    
-    
-        #     messages.error(request, "The selected profile does not exist")
-        #     return redirect('add-listing')
-
-def add_listing(request):
-    
-    profiles = Profile.objects.filter(userType='Owner')
-    users = User.objects.all()
-    amenities = ListingHouseAmenities.objects.all()
-    # overview = ListingSpaceOverview.objects.all()
-    # area = ListingHouseArea.objects.all()
-    # condition = RentalConditions.objects.all()
-    # preferences = RulesAndPreferences.objects.all()
-    # images = Image.objects.all()
-    
-    if request.method == 'POST':
-        form = ListingForm(request.POST)
-        user_form = UserForm(request.POST)
-        user_profile = ProfileForm(request.POST)
-        amenity_form = ListingHouseAmenitiesForm(request.POST)
-        # form3 = ListingSpaceOverviewForm(request.POST)
-        # form4 = ListingHouseAreaForm(request.POST)
-        # form5 = RentalConditionsForm(request.POST)
-        # form6 = RulesAndPreferencesForm(request.POST)
-        # form7 = ImageForm(request.POST)
-        # profileForm = ProfileForm(request.POST)
-        if user_form.is_valid():
-            user_form.save()
-            
-        else:
-            messages.info(request, 'Please Fill the forms!  ')
-            return redirect('add-listing')
-        
-        if user_profile.is_valid():
-            profile = user_profile.save(commit=False)
-            selected_user = request.POST.get('user')
-            selected_user = User.objects.get(username=selected_user)
-            profile.user = selected_user
-            profile.save()
-            
-        else:
-            messages.info(request, 'Please Fill the forms!  ')
-            return redirect('add-listing')
-        
-        
-        
-        if amenity_form.is_valid():
-            amenity = amenity_form.save(commit=False)
-            selected_amenity = request.POST.get('amenity')
-            seller = f'Amenities of {seller.user.username}'
-            selected_amenity = ListingHouseAmenities.objects.get(seller=selected_amenity)
-            amenity.seller = selected_amenity
-            amenity.save()
-        
-        else:
-            messages.info(request, 'Please Fill the forms! ')
-            return redirect('add-listing')
-        
-            
-        if form.is_valid(): 
-        # form2.is_valid() and form3.is_valid() and form4.is_valid() and form5.is_valid() and form6.is_valid() and form7.is_valid():
-            listing = form.save(commit=False)
-            selected_profile = request.POST.get('profile')
-            selected_profile = Profile.objects.get(user__username=selected_profile)
-            
-            # listing = Listing(seller=selected_profile)
-            listing.seller = selected_profile # Set the seller_id to the logged-in user's ID
-            listing.save()
-
-            # instances2 = form2.save()
-            # listing.form2.add(*instances2)
-
-            # instances3 = form3.save()
-            # listing.form3.add(*instances3)
-
-            # instances4 = form4.save()
-            # listing.form4.add(*instances4)
-
-            # instances5 = form5.save()
-            # listing.form5.add(*instances5)
-
-            # instances6 = form6.save()
-            # listing.form6.add(*instances6)
-
-            # instances7 = form7.save()
-            # listing.form7.add(*instances7)
-            messages.success(request, "Listing added successfully")
-            return redirect('add-listing')
-        else:
-            messages.info(request, 'Please Fill the forms!')
-            return redirect('add-listing')
-    else:
-        form = ListingForm()
-        user_form = UserForm()
-        user_profile = ProfileForm()
-        amenity_form = ListingHouseAmenitiesForm()
-        # form2 = ListingHouseAmenitiesForm()
-        # form3 = ListingSpaceOverviewForm()
-        # form4 = ListingHouseAreaForm()
-        # form5 = RentalConditionsForm()
-        # form6 = RulesAndPreferencesForm()
-        # form7 = ImageForm()
-        
-    return render(request, 'adminApp/add-listing.html', {'form': form,'profiles': profiles,'users':users,'amenity_form': amenity_form,
-                                                         'user_form':user_form,'user_profile':user_profile,'amenities': amenities})
-
-                                                        #  'form2': form2, 'form3': form3, 'form4': form4, 'form5': form5, 'form6': form6, 'form7': form7,
-                                                        #    'overview': overview, 'area': area, 'condition': condition,
-                                                        #  'preferences': preferences, 'images': images})
-
     
      
 def Approve_listing(request):
     L = Listing.objects.filter(approved=False)
+  
     if request.method == "POST":
         search = request.POST.get("search")
         # seller = seller.user.username
@@ -488,7 +438,7 @@ def ChangePassword(request):
 def EditProfile(request, id):
     if not request.user.is_authenticated:
         return redirect('login')
-    u = User.objects.get(id=id)
+    u = Profile.objects.get(id=id)
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -519,20 +469,23 @@ def EditProfile(request, id):
 
 
 
-def Profile(request):
+def profile_of_users(request):
     if not request.user.is_authenticated:
         return redirect('login')
     return render(request,'adminApp/profile.html')
 
 
 
+from  users.models import Profile
 
 
+@login_required
 def AllUser(request):
-    u = Profile.objects.filter(verified=True).exclude(user=request.user)
+    
+    u = Profile.objects.exclude(user=request.user)
     if request.method == "POST":
         search = request.POST.get("search")
-        u = Profile.objects.filter(user__first_name__icontains=search, verified=True).exclude(user=request.user)
+        u = Profile.objects.filter(user__first_name__icontains=search, verified=True)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(u, 7)
@@ -650,3 +603,11 @@ def landlord_admin_messaging(request):
     return render(request, 'adminApp/out_box.html', context)
 
         
+
+
+
+
+
+def booking_list(request):
+    bookings = Booking.objects.all()
+    return render(request, 'adminApp/manage-customer.html', {'bookings': bookings})

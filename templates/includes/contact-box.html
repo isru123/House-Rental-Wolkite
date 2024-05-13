@@ -24,7 +24,7 @@
       {% else %}
          
           
-            <button class="btn btn-primary my-2 btn-block "><a href="{% url 'upload' id=listing.id %} " class="text-white" >Contact {{listing.seller.user.username}}</a></button>
+            <button class="btn btn-primary my-2 btn-block "><a href="{% url 'main:upload' id=listing.id %} " class="text-white" >Contact {{listing.seller.user.username}}</a></button>
         
       
     </button>
@@ -52,7 +52,7 @@
      {% endif %}
 
       {% if request.user.profile.userType == "Owner" and request.user == listing.seller.user %}
-      <a href="{% url 'message:inbox_view' %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
+      <a href="{% url 'message:new' product_id=listing.id %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
       {% endif %}
 
 {% else %}
