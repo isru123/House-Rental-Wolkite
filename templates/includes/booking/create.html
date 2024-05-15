@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block 'header' %}
+
+
+ <!-- Navbar start -->
+ <div class="container-fluid fixed-top"> 
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                    <a href="shop.html" class="nav-item nav-link">How it works</a>
+                    <a href="" class="nav-item nav-link">Pricing</a>
+                    <a href="" class="nav-item nav-link">Help</a>
+                    <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+
+                    <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
+                    <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
+                    <a href="{% url 'dashboard_owner' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
+
+                </div>
+                <div class="d-flex m-3 me-0">
+                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                   
+            
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link" id="accountTrigger">
+                      <i class="fas fa-user fa-2x"></i>
+                    </a>
+                    <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
+                        <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
+                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
+
+                      <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
+                    </div>
+                  </div>
+                  {% comment %} <div id="google_translate_element"></div> {% endcomment %}
+
+        </nav>
+    </div>
+</div>
+<!-- Navbar End -->
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}
+
+{% block 'body' %}
+
+<section style="background-color: #eee; background-image: url('{% static 'images/geo.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 900px;">
+<br>
+<div id="elephant-card" class="row-4 card ml-5 mt-5 mb-4 active" style="width:600px">
+    <br>
+    <h5 class="container col-lg-8" style="margin-left:10px; color: #000333;">First You have to upload your
+       government Id and the address of your House</h5>
+       <br>
+       <br>
+
+
+<form method="post" enctype="multipart/form-data" style="width:400px; margin-left:100px">
+  {% csrf_token %}
+  {{ form|crispy}}
+
+  <input type="submit" class="btn btn-primary"  value="Send Booking Request">
+</form>
+
+{% comment %} 
+{% if booking.total_price %}
+  <h3>Total Price: ${{ booking.total_price }}</h3>
+{% endif %} {% endcomment %}
+      <div class="card-body" role="button">
+          <h5 class="card-title">
+             
+          <p class="card-text">Select this option to create a new listing from scratch.</p>
+      </div>
+  </div>
+</section>
+
+ 
+
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}

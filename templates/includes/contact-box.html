@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 
 <div class="col-md-3">
-  <div class="card mb-3" style="width:400px">
+  <div class="card mb-5" style="width:400px;height:400px;background-color: #0F3057;">
     {% if listing.seller.photo %}
       <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
     {% else %}
@@ -9,22 +9,61 @@
       <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
     {% endif %}
 
+<<<<<<< HEAD
     {% if user.is_authenticated %}
     {% if request.user.profile.userType == "Public" %}
     <div class="card-body">
       <h5 class="card-title">{{ _("House Owner") }}</h5>
       <h6 class="mb-4">{{ listing.seller.user.first_name }} {{ listing.seller.user.last_name }}</h6>
+=======
+   {% if user.is_authenticated %}
+      {% if request.user.profile.userType == "Public" %}
+        <div class="card-body">
+          <h5 class="card-title text-white">{{ _("House Owner") }}</h5>
+          <h6 class="mb-4 text-info">{{ listing.seller.user.username }}</h6>
+
+          <hr>
+          
+      {% if user_has_sent_request %}
+    <button class="btn btn-primary my-2 btn-block" type="submit">
+        <a class="text-white" href="{% url 'message:new' product_id=listing.id %}">Chat with {{ listing.seller.user.username }}</a>
+    </button>
+      {% else %}
+         
+          
+            <button class="btn btn-primary my-2 btn-block "><a href="{% url 'main:upload' id=listing.id %} " class="text-white" >Contact {{listing.seller.user.username}}</a></button>
+        
+      
+    </button>
+     {% endif %}
+         
+         
+
+          {% if id_document_url %}
+            <div class="alert alert-success my- mx-auto">
+              You have successfully sent your identity to {{listing.seller.user.username}}!
+            </div>
+          {% else %}
+            {% if tenant_photo_url %}
+              <p>Your photo:</p>
+              <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
+            {% endif %}
+         {% endif %}
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
         
-          
+        {% if request_is_approved %}
           <!-- Reserve Now button -->
-          <button class="btn btn-success btn-lg btn-block my-3" onclick="confirmReservation()">Reserve Now</button>
+          <button class="btn btn-success btn-md btn-block my-2" onclick="confirmReservation()">Reserve Now</button>
         </div>
-      {% endif %}
+        {% endif %}
+     {% endif %}
+
       {% if request.user.profile.userType == "Owner" and request.user == listing.seller.user %}
-      <a href="{% url 'inbox_view' %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
-    {% endif %}
-    {% else %}
+      <a href="{% url 'message:new' product_id=listing.id %}" style="width:350px" class="btn btn-primary my-2">See Messages</a>
+      {% endif %}
+
+{% else %}
       <h5 class="p-2 text-green text-center">
         <b>{{ _("Please login or register to get in touch") }}</b>
       </h5>
@@ -35,18 +74,18 @@
       <a href="{% url 'register' %}" target="_blank" class="btn btn-block btn-outline-secondary">
         Register
       </a>
-    {% endif %}
+{% endif %}
   </div>
 </div>
 
 <!-- JavaScript to show popup if document URL is empty -->
-<script>
+{% comment %} <script>
   function confirmReservation() {
     var idDocumentUrl = "{{ id_document_url }}";
     if (!idDocumentUrl) {
       // Show the confirmation popup
       if (confirm("Are you sure you want to proceed? You need to approve your identity before making a reservation.")) {
-        location.href = "{% url 'upload' %}"; // Redirect to the upload page
+        location.href = "{% url 'upload' id=listing.id %}"; // Redirect to the upload page
       } else {
         // User canceled, do nothing
       }
@@ -56,4 +95,32 @@
       location.href = "{% url 'product-view' product_id=listing.id %}";
     }
   }
+</script> {% endcomment %}
+
+
+
+<script>
+  function confirmReservation() {
+    var idDocumentUrl = "{{ id_document_url }}";
+    {% if request_is_approved %}
+    {% if user_has_sent_request %}
+      // User has sent a request
+      location.href = "{% url 'product-view' product_id=listing.id %}"; // Replace 'request-view' with the appropriate URL name for the request view
+    {% else %}
+      // User has not sent a request
+      if (!idDocumentUrl) {
+        // Show the confirmation popup
+        if (confirm("Are you sure you want to proceed? You need to approve your identity before making a reservation.")) {
+          location.href = "{% url 'upload' id=listing.id %}"; // Replace 'upload' with the appropriate URL name for the upload page
+        } else {
+          // User canceled, do nothing
+        }
+      } else {
+        // Document URL is not empty, proceed with reservation
+        location.href = "{% url 'product-view' product_id=listing.id %}"; // Replace 'product-view' with the appropriate URL name for the product view
+      }
+    {% endif %}
+    {% endif %}
+  }
 </script>
+

@@ -1,6 +1,10 @@
 from django.contrib import admin
 
+<<<<<<< HEAD
 from .models import Listing,LikedListing,Image,ListingSpaceOverview, ListingHouseArea,Upload, ListingHouseAmenities, RentalConditions, RulesAndPreferences,Review,AddressOfListing
+=======
+from .models import Listing,LikedListing,Image,ListingSpaceOverview, ListingHouseArea,Document, ListingHouseAmenities, RentalConditions, RulesAndPreferences,Review,AddressOfListing,Upload
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
 class ListingAdmin(admin.ModelAdmin):
     readonly_fields = ('id', )
@@ -23,8 +27,7 @@ class RentalConditionsAdmin(admin.ModelAdmin):
 class RulesAndPreferencesAdmin(admin.ModelAdmin):
     pass
 
-# class LikedListingAdmin(admin.ModelAdmin):
-#     pass
+
 
 class AmenityAdmin(admin.ModelAdmin):
     pass
@@ -46,16 +49,12 @@ class RulesAdmin(admin.ModelAdmin):
 class ImageAdmin(admin.ModelAdmin):
     pass
 
-# class ImagesAdmin(admin.ModelAdmin):
-#     pass
 
 
+class BookingAdmin(admin.ModelAdmin):
+    pass
 
-# class BookingAdmin(admin.ModelAdmin):
-#     pass
 
-# class RoomBookingAdmin(admin.ModelAdmin):
-#     pass
 
 class ReviewAdmin(admin.ModelAdmin):
     
@@ -69,25 +68,32 @@ class AddressOfListingAdmin(admin.ModelAdmin):
 class DocumentAdmin(admin.ModelAdmin):
     pass
 
+class UploadAdmin(admin.ModelAdmin):
+    pass
+
+
+
+
+
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(ListingSpaceOverview, ListingSpaceOverviewAdmin)
 admin.site.register(ListingHouseArea, ListingHouseAreaAdmin)
 admin.site.register(ListingHouseAmenities, ListingHouseAmenitiesAdmin)
 admin.site.register(RentalConditions, RentalConditionsAdmin)
 admin.site.register(RulesAndPreferences, RulesAndPreferencesAdmin)
-# admin.site.register(LikedListing, LikedListingAdmin)
-# admin.site.register(Amenity, AmenityAdmin)
-# admin.site.register(ListingSpace, ListingSpaceAdmin)
-# admin.site.register(HouseArea, HouseAreaAdmin)
-# admin.site.register(RentalCondition, RentalConditionAdmin)
-# admin.site.register(Rules, RulesAdmin)
+
 
 admin.site.register(Image,ImageAdmin)
 admin.site.register(AddressOfListing,AddressOfListingAdmin)
+<<<<<<< HEAD
 # admin.site.register(Document,DocumentAdmin)
 # admin.site.register(Booking, BookingAdmin)
+=======
+admin.site.register(Document,DocumentAdmin)
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
-admin.site.register(Upload)
+
+admin.site.register(Upload,UploadAdmin)
 
 
 

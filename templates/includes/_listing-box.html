@@ -3,6 +3,8 @@
 
 
 {% if listing.approved %}
+
+
 <div class="col-md-4 col-lg-3 mb-1 floating-div mr-5" style="margin: 10 40px; ">
   <div class="card listing-preview rounded position-relative fruite-item " style="width:310px; height:400px;">
 
@@ -39,15 +41,15 @@
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-      {% comment %} <img class="card-img-top listing-img bd-placeholder-img card-img-top"  width="100%" src="{{ listing.photo.url }}" role="img" arial-label="placeholder: Thumbnail"
-      focusable="false"> {% endcomment %}
-{% comment %} 
+     {% comment %} <img class="card-img-top listing-img bd-placeholder-img card-img-top"  width="100%" src="{{ listing.photo.url }}" role="img" arial-label="placeholder: Thumbnail"
+      focusable="false">  {% endcomment %}
+
       {% if listing.seller.photo %}
       <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
   {% else %}
       <!-- Placeholder image or alternative content when 'photo' is not available -->
       <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
-  {% endif %} {% endcomment %}
+  {% endif %} 
 
       <div class="card-img-overlay">
         <h2>
@@ -77,8 +79,7 @@
         
       </div> {% endcomment %}
       <div class="col-6">
-        <strong>{{ _("Available To") }}:</strong> <br>
-        {{ listing.available_end }}
+        
       </div>
       <div class="col-6">
         <strong> {{ _("Available From") }}:</strong><br>
@@ -99,14 +100,24 @@
     <div class="btn-group">
       {% if request.user.profile.userType == "Owner" or listing.seller.user == request.user or request.user.profile.userType == "Public" or request.user.profile.userType == "Admin" %}
       <a type="button" class="btn btn-sm bg-success text-white btn-outline-success" 
-      href="{% url 'single_house_view' id=listing.id  %}">View</a>
+      href="{% url 'main:single_house_view' id=listing.id  %}">View</a>
       {% endif %}
+<<<<<<< HEAD
       {% comment %} <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'map' id=listing.id %}">Map</a> {% endcomment %}
       {% comment %} <a href="/listing/{{listing.id}}/?lat={{listing.latitude}}&lng={{listing.longitude}}">View Location</a> {% endcomment %}
       {% if listing.seller.user == request.user %}
      <a href=""  type="button" class="btn btn-sm bg-secondary text-white btn-outline-secondary">Edit</a>
      {% endif %}
+=======
+      <a type="button" class="btn btn-sm btn-outline-primary bg-primary text-white" href="{% url 'main:map' id=listing.id %}">Map</a>
+     
+     
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
     </div>
+
+      
+
+
 
      {% comment %} {% for listing in listings %} {% endcomment %}
             {% comment %} <li>

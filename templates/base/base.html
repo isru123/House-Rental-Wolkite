@@ -1,10 +1,11 @@
 
-{% load static %}
+
 
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
-{% block 'head' %}
+
     <head>
         <meta charset="utf-8">
 
@@ -44,34 +45,38 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
-{% endblock %}
+
 
     <body>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-        {{ message }}
+        {% if messages %}
+        {% for message in messages %}
+       <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+         {{ message }}
         {{ message.tags }}
-    </div>
-    {% endfor %}
-    {% endif %}
-          
+          </div>
+       {% endfor %}
+       {% endif %} 
+       
         <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
         </div>
         <!-- Spinner End -->
 
- {% block 'header' %}
+ {% block 'header' %} 
+                   
+ 
+
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <div class="container topbar bg-primary d-none d-lg-block">
+           
+            <div class="container topbar d-none d-lg-block" style="background-color: #0F3057 ">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
                         <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">lemish@gmail.com</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">islede@gmail.com</a></small>
                     </div>
                     <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
@@ -80,6 +85,8 @@
                     </div>
                 </div>
             </div>
+           
+            {% endblock %}
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="" class="navbar-brand"><h1 style="color: #FF7F50" class=" display-6">OHR</h1></a>
@@ -88,30 +95,40 @@
                     </button>
                     <div class="collapse bg-white navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <strong><a href="{% url 'home' %}" class="nav-item nav-link active">Home</a></strong>
-                            <strong><a href="shop.html" class="nav-item nav-link">How it works</a></strong>
-                            <strong> <a href="" class="nav-item nav-link">Pricing</a></strong>
-                            <strong> <a href="" class="nav-item nav-link">Help</a></strong>
+                            <strong><a href="{% url 'main:home' %}" class="nav-item nav-link active">Home</a></strong>
+                            <strong><a href="shop.html" class="nav-item nav-link ml-3">How it works</a></strong>
+                            <strong> <a href="" class="nav-item nav-link ml-3">Pricing</a></strong>
+                            <strong> <a href="" class="nav-item nav-link ml-3">Help</a></strong>
                             {% if not user.is_authenticated %}
-                            <strong><a href="{% url 'login' %}" class="nav-item nav-link">Login</a></strong>
+                            <strong><a href="{% url 'login' %}" class="nav-item nav-link ml-3">Login</a></strong>
                             {% endif %}
                             {% if not user.is_authenticated %}
-                            <strong><a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a></strong>
+                            <strong><a href="{% url 'sign' %}" class="nav-item nav-link ml-3">Signup</a></strong>
                             {% endif %}
-                            <strong><a href="{% url 'master' %}" class="nav-item nav-link">Browse Listings</a></strong>
+                            
+                            <strong><a href="{% url 'main:master' %}" class="nav-item nav-link ml-3">Browse Listings</a></strong>
                             {% if listing.seller.user == request.user or request.user.profile.userType == "Owner" %}
-                            <strong><a href="{% url 'owner' %}" class="nav-item nav-link">Make Listings</a></strong>
+                            <strong><a href="{% url 'main:owner' %}" class="nav-item nav-link ml-3">Make Listings</a></strong>
                             {% endif %}
 
                             {% if user.is_superuser or user.is_staff or request.user.profile.userType == "Admin" %}
+<<<<<<< HEAD
                             <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2">AdminBoard</a>
+=======
+                            <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2 ml-3">AdminBoard</a>
+                            {% endif %}
+
+                            {% if request.user.profile.userType == "Public" %}
+                            <a href="{% url 'message:dashboard_renter' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">RenterBoard</a>
+                            {% endif %}
+
+                            {% if request.user.profile.userType == "Owner" %}
+                            <a href="{% url 'main:dashboard_owner' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">Dashboard</a>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
                             {% endif %}
                         </div>
-                        <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                           
-                    
-                        </div>
+                   
+                        
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link" id="accountTrigger">
                                 <div class="col-1">
@@ -120,7 +137,14 @@
                                         <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
                                     {% else %}
                                         <!-- Placeholder image or alternative content when 'photo' is not available -->
-                                        <img src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                                        <div class="d-flex align-items-center" style="width:100px">
+                                            <p class="text-info" >{{ request.user.username|capfirst }} {{ request.user.first_name }}</p>
+                                            {% if request.user.profile.photo %}
+                                            <img class="ml-3 rounded-circle " src="{{ request.user.profile.photo.url }}" height="40" width="40" alt="">
+                                            {% else %}
+                                            <img class="ml-3 rounded-circle" src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                                            {% endif %}
+                                        </div>
                                     {% endif %}
                                     {% endif %}
                                 </div>
@@ -128,20 +152,23 @@
 
                             {% if user.is_authenticated %}
                             <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
-                                <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
+                                <a href="{% url 'change-password' %}" class="dropdown-item">Change Password</a>
                                 <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
 
                               <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
                             </div>
                             {% endif %}
                           </div>
+                       
                           <div id="google_translate_element"></div>
                           
                 </nav>
             </div>
         </div>
         <!-- Navbar End -->
-     {% endblock %}
+
+        
+    
 
 
 
@@ -198,7 +225,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="d-flex flex-column text-start footer-item">
                             <h4 class="text-light mb-3">Shop Info</h4>
-                            <a class="btn-link" href="">About Us</a>
+                            <a class="btn-link" href="{% url 'main:about' %}">About Us</a>
                             <a class="btn-link" href="">Contact Us</a>
                             <a class="btn-link" href="">Privacy Policy</a>
                             <a class="btn-link" href="">Terms & Condition</a>
@@ -209,8 +236,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="d-flex flex-column text-start footer-item">
                             <h4 class="text-light mb-3">Account</h4>
-                            <a class="btn-link" href="">My Account</a>
-                            <a class="btn-link" href="">Shop details</a>
+                            <a class="btn-link" href="{% url 'profile' %}">My Account</a>
+                            <a class="btn-link" href="{% url 'service' %}">Service details</a>
 
                         </div>
                     </div>

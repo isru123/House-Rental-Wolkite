@@ -1,0 +1,9 @@
+<h1>Landlord-Admin Messaging</h1>
+
+{% for conversation in conversations %}
+    <h3>Conversation ID: {{ conversation.id }}</h3>
+    {% for message in conversation.message_set.all %}
+        <p>{{ message.sender.username }}: {{ message.content }}</p>
+    {% endfor %}
+    <hr>
+{% endfor %}

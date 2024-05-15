@@ -50,83 +50,135 @@
 </head> 
 <body> 
   
-<div>
-    {{ message }}
-</div>
-
-<div>
-  {{ message }}
-</div>
-
-  {% if messages %}
-  {% for message in messages %}
-  <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-      {{ message }}
-      {{ message.tags }}
-  </div>
-  {% endfor %}
-  {% endif %}
         
       
 
 {% block 'header' %}
 
     
- <!-- Navbar start -->
- <div class="container-fluid fixed-top"> 
-  <div class="container px-0">
-      <nav class="navbar navbar-light bg-white navbar-expand-xl">
-          <a href="" class="navbar-brand"><h1 class="text-primary display-6">OHR</h1></a>
-          <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-              <span class="fa fa-bars text-primary"></span>
-          </button>
-          <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-              <div class="navbar-nav mx-auto">
-                  <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                  <a href="shop.html" class="nav-item nav-link">How it works</a>
-                  <a href="" class="nav-item nav-link">Pricing</a>
-                  <a href="" class="nav-item nav-link">Help</a>
-                  <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+<!-- Navbar start -->
+<div class="container-fluid fixed-top">
+   
+    <div class="container topbar d-none d-lg-block" style="background-color: #0F3057 ">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">islede@gmail.com</a></small>
+            </div>
+            <div class="top-link pe-2">
+                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+                <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
+                <a href="#" class="text-white"><small class="text-white ms-2">Rent and Refunds</small></a>
+            </div>
+        </div>
+    </div>
+   
+    {% endblock %}
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="" class="navbar-brand"><h1 style="color: #FF7F50" class=" display-6">OHR</h1></a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse bg-white navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <strong><a href="{% url 'main:home' %}" class="nav-item nav-link active">Home</a></strong>
+                    <strong><a href="shop.html" class="nav-item nav-link ml-3">How it works</a></strong>
+                    <strong> <a href="" class="nav-item nav-link ml-3">Pricing</a></strong>
+                    <strong> <a href="" class="nav-item nav-link ml-3">Help</a></strong>
+                    {% if not user.is_authenticated %}
+                    <strong><a href="{% url 'login' %}" class="nav-item nav-link ml-3">Login</a></strong>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                    <strong><a href="{% url 'sign' %}" class="nav-item nav-link ml-3">Signup</a></strong>
+                    {% endif %}
+                    
+                    <strong><a href="{% url 'main:master' %}" class="nav-item nav-link ml-3">Browse Listings</a></strong>
+                    {% if listing.seller.user == request.user or request.user.profile.userType == "Owner" %}
+                    <strong><a href="{% url 'main:owner' %}" class="nav-item nav-link ml-3">Make Listings</a></strong>
+                    {% endif %}
 
-                  <a href="{% url 'sign' %}" class="nav-item nav-link">Signup</a>
-                  <a href="{% url 'master' %}" class="nav-item nav-link">Rent</a>
-                  <a href="{% url 'dashboard_owner' %}"  class="btn btn-primary my-2 " class="nav-item nav-link">Go to Dashboard</a> 
+                    {% if user.is_superuser or user.is_staff or request.user.profile.userType == "Admin" %}
+                    <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2 ml-3">AdminBoard</a>
+                    {% endif %}
 
-              </div>
-              <div class="d-flex m-3 me-0">
-                  <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                 
-          
-              </div>
-              <div class="nav-item dropdown">
-                  <a href="#" class="nav-link" id="accountTrigger">
-                    <i class="fas fa-user fa-2x"></i>
-                  </a>
-                  <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
-                      <a href="{% url 'sign' %}" class="dropdown-item">Sign Up</a>
-                      <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
+                    {% if request.user.profile.userType == "Public" %}
+                    <a href="{% url 'message:dashboard_renter' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">RenterBoard</a>
+                    {% endif %}
 
-                    <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
-                  </div>
+                    {% if request.user.profile.userType == "Owner" %}
+                    <a href="{% url 'main:dashboard_owner' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">Dashboard</a>
+                    {% endif %}
                 </div>
-                {% comment %} <div id="google_translate_element"></div> {% endcomment %}
+           
+                
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link" id="accountTrigger">
+                        <div class="col-1">
+                            {% if user.is_authenticated %}
+                            {% if listing.seller.photo %}
+                                <img src="{{ listing.seller.photo.url }}" class="rounded-circle" height="40" width="40" style="object-fit: cover;">
+                            {% else %}
+                                <!-- Placeholder image or alternative content when 'photo' is not available -->
+                                <div class="d-flex align-items-center" style="width:100px">
+                                    <p class="text-info" >{{ request.user.username|capfirst }} {{ request.user.first_name }}</p>
+                                    {% if request.user.profile.photo %}
+                                    <img class="ml-3 rounded-circle " src="{{ request.user.profile.photo.url }}" height="40" width="40" alt="">
+                                    {% else %}
+                                    <img class="ml-3 rounded-circle" src="{% static 'AdminStatic/images/user.png' %}" height="40" width="40" alt="">
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </a>
 
-      </nav>
-  </div>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown-menu m-0 bg-secondary rounded-0" id="accountDropdown">
+                        <a href="{% url 'change-password' %}" class="dropdown-item">Change Password</a>
+                        <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
+
+                      <a href="{% url 'logout' %}" class="dropdown-item">Sign out</a>
+                    </div>
+                    {% endif %}
+                  </div>
+               
+                  <div id="google_translate_element"></div>
+                  
+        </nav>
+    </div>
 </div>
 <!-- Navbar End -->
-   {% endblock %}
+
+
+<!-- Navbar End -->
+   
   
    <br>
    <br>
    <br>
    <br>
    
-<section style="background-color: #eee; background-image: url('{% static 'images/geo.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
-  <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
+   <section class="vh-50" style="background-color: #eee; background-image: url('{% static 'images/house1.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
+    <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px;">
   <div class="container text-start col-lg-4" style="margin-left:290px">
-      <h2 style="text-center">Listing options</h2>
-      <p>Select one of the options below to start listing your property.</p>
+  
+<div>
+  {{ message }}
+</div>
+
+<div>
+{{ message }}
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+    {{ message }}
+    {{ message.tags }}
+</div>
+{% endfor %}
+{% endif %}
   </div>
   <br>
   
@@ -137,31 +189,15 @@
                 <div class="col-12">
                       <div class="row">
                         <div class="col-6">
-                                   {% comment %} <div class="card-deck ">  {% endcomment %}
-                                    <div id="elephant-card" class="row-4 card mb-4 active">
-                                      <br>
-                                      <h5 class="container col-lg-8" style="margin-left:10px; color: #000333;">First You have to upload your
-                                         government Id and the address of your House</h5>
-                                         <br>
-                                      <form method="POST" action="{% url 'my-form' id=listing_id %}" enctype="multipart/form-data" style="margin-left:80px;width:300px">
-                                     {% csrf_token %}
-                                     
-                                     {{ form|crispy }}
-                                     <button type="submit" style="width:200px" class="btn btn-primary my-2">Upload</button>
-                                      </form>
-                                        <div class="card-body" role="button">
-                                            <h5 class="card-title">
-                                               
-                                            <p class="card-text">Select this option to create a new listing from scratch.</p>
-                                        </div>
-                                    </div>
+                  
+                                    
                                     
                                     <div id="meerkat-card" class="card mb-4 row-4 ">
                                       
                                         <div class="card-body" role="button">
                                           <h5 style="color:#000333">Select Your Houses Potential address</h5> 
                                           <div style="width:300px" class="input-group">
-                                            <form method="POST" action="{% url 'my-form' id=listing_id %}">
+                                            <form method="POST" action="{% url 'main:my-form' id=listing_id %}">
                                               {% csrf_token %}
                                               {{ mss }}
                                               <div class="form-group">
@@ -170,7 +206,7 @@
                                                   <input type="text" style="width:300px" id="tags" name="addloc" class="form-control" placeholder="Enter address" value="">
                                                   <div class="input-group-append">
                                                     <span class="input-group-text">
-                                                      <i class="fas fa-search"></i>
+                                                      
                                                     </span>
                                                   </div>
                                                 </div>
@@ -199,26 +235,7 @@
                                   {% comment %} </div> {% endcomment %}
                             
                             </div>
-                          {% comment %} <div class="col-4">
-                            <div id="elephant-card" class="row-4 card mb-4 active">
-                              <form action="" method="post" enctype="multipart/form-data" style="margin-left:5px">
-                                {% csrf_token %}
-                                <div class="row">
-                                 <div class="col-6">
-                                   {{location_form|crispy}}
-                                 </div>
-                                </div>
-                                <button href="{% url 'my-form' %}" class="btn btn-lg btn-primary" type="submit">
-                                 Save
-                                </button>
-                             </form>
-                                <div class="card-body" role="button">
-                                    <h5 class="card-title">
-                                       
-                                    <p class="card-text">Select this option to create a new listing from scratch.</p>
-                                </div>
-                            </div>
-                          </div> {% endcomment %}
+                          
                         </div>
   
                     
@@ -226,7 +243,7 @@
             </div>
         </div>
         {% comment %} <div class="container text-start col-lg-4">  {% endcomment %}
-          <button href="{% url 'master' %}"  style="margin-left:350px;width:300px" class="btn btn-primary my-2">Finish</button>
+          <a href="{% url 'master' %}"  style="margin-left:350px;width:300px" class="btn btn-primary my-2">Finish</a>
       {% comment %} </div>  {% endcomment %}
          
 

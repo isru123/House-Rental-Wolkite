@@ -37,6 +37,7 @@
 <section class="vh-100" style="background-color: #eee;">
     <br>
     <br>
+<<<<<<< HEAD
     {% comment %} <div class="content-body">
         {% for conversation in conversations %}
             <div>
@@ -146,6 +147,39 @@
                 </div>
             {% endfor %}
         </div>
+=======
+    <div class="content-body">
+        {% if conversations %}
+        <div class="card ml-5 mt-3 bg-light" style="width:600px; height:600px;">
+            <div class="space-y-6">
+                {% for conversation in conversations %}
+                {% comment %} <h1>Hi</h1> {% endcomment %}
+                    <a href="{% url 'message:detail' conversation.id %}">
+                        <div class="p-6 flex bg-gray-100 rounded-xl">
+                            <div class="pr-6">
+                                <img src="{{ conversation.list.image.url }}" class="w-40 rounded-xl">
+                            </div>
+            
+                            <div>
+                                {% for member in conversation.members.all %}
+                                    {% if member != request.user %}
+                                    {% comment %} <div class="card ml-3 mt-5 bg-white"> {% endcomment %}
+                                        <div class="card bg-white text-dark ml-5 mb-0" ><strong><span class="hover-username">{{ member.username }}</span></strong> | {{ conversation.modified_at }}</div>
+                                        <p>{{ conversation.list.name }}</p>
+                                         
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div> 
+
+        </div>
+        {% else %}
+        <div class="ml-5"> You have no messages yet</div>
+        {% endif%}
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
     </div>
 
     <script>
@@ -195,38 +229,49 @@
 </section>
 
 
-
+<style>
+    .hover-username:hover {
+      text-decoration: none;
+    }
+    </style>
+    
 
 
     <section style="height:50px">
         <!--**********************************
            Sidebar start
        ***********************************-->
-       <div class="nk-sidebar">
+       <div class="nk-sidebar" style="background-color:#0F3057">
            <div class="">
                <br>
-               <ul class="metismenu" id="menu">
+               <ul class="metismenu" id="menu" style="background-color:#0F3057">
+                <br>
+                <br>
+                <br>
                    <li>
-                       <a href="{% url 'dashboard_renter' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                       <a href="{% url 'message:dashboard_renter' %}" aria-expanded="false">
+                        <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-2"></i>    Dashboard</span>
                        </a>
                    </li>
                 
-                   <li class="mega-menu mega-menu-sm">
+                   <li class="mega-menu mega-menu-sm" style="background-color:#0F3057">
                        <a class="has-arrow">
                            <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text">Tenant</span>
+                           <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Tenant</span>
                        </a>
-                       <ul>
+                       <ul style=" background-color: #0F3057;">
                     
-                        <li><a href="{% url 'messages' %}">messages</a></li>
+                        <li><a href="{% url 'message:messages' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     messages</a></li>
                         <li>
-                            <a href="{% url 'payments' %}">Payment history</a>
+                            <a href="{% url 'message:payments' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Payment history</a>
                         </li>
 
                        
                         <li>
-                            <a href="{% url 'books' %}">Books</a>
+                            <a href="{% url 'message:books' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Booking</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'message:ask' %}" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>     Booking Request</a>
                         </li>
                        </ul>
                    </li>

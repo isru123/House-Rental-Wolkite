@@ -27,18 +27,45 @@
     </style>
 </head>
 
-<div class="container mt-5 mb-5">
-    <div class="card d-flex justify-content-center align-items-center">
+
+<div class="container topbar d-none d-lg-block" style="background-color: #0F3057 ">
+    <div class="d-flex justify-content-between">
+        <div class="top-info ps-2">
+            <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Wolkite,Ethiopia</a></small>
+            <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">islede@gmail.com</a></small>
+        </div>
+        <div class="top-link pe-2">
+            <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+            <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
+            <a href="#" class="text-white"><small class="text-white ms-2">Rent and Refunds</small></a>
+        </div>
+    </div>
+</div>
+<br>
+<section class="vh-50" style="background-color: #eee; background-image: url('{% static 'images/house1.jfif' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 1000px;">
+
+<br>
+<div class="container mt-5 mb-5" style="height:950px">
+    <div class="card d-flex justify-content-center align-items-center" style="width:500px; height:700px">
         <div class="card-body text-center">
-            <h1 class="card-title">Payment  Details</h1>
-
-            <p class="card-text">"Making a payment with us is as smooth as a perfectly choreographed dance routine. With just a few clicks, </p>
-            <p class="card-text">you'll be whisked away to a world of secure transactions and seamless checkout experiences. </p>
-            <p class="card-text">So, get ready to make your payment effortlessly and enjoy the show!</p>
-            <p class="card-text">Experience the convenience and security of PayPal, </p>
-            <p class="card-text">the trusted global leader in online payments</p>
-            <p class="card-text">Price: ${{ product.price }}</p>
-
+            <h3 class="card-title display-7 text-info">Payment  Details</h3>
+            <br>
+           <div class="card" style="background-color: #0F3057">
+           
+                <p class="card-text text-white" style="font-family:serif">"Making a payment with us is as smooth as a perfectly choreographed dance routine. With just a few clicks,</p>
+                <p class="card-text text-white">you'll be whisked away to a world of secure transactions and seamless checkout experiences.</p>
+                <p class="card-text text-white">So, get ready to make your payment effortlessly and enjoy the show!</p>
+                <p class="card-text text-white">Experience the convenience and security of PayPal,</p>
+                <p class="card-text text-white">the trusted global leader in online payments</p>
+            
+              
+             
+           </div>
+           <br>
+           <div class="card" style="background-color: #0F3057; height:50px">
+            <p class="card-text text-white">Price: {{ product.price }} Birr</p>
+           </div>
+           <br>
             <!-- Add other product details as needed -->
 
             <form action="{% url 'checkout' product_id=product.id %}" method="post">
@@ -55,6 +82,12 @@
         </div>
     </div>
 </div>
+<section>
+
+    
+
+   
+
 
 {% endblock %}
 

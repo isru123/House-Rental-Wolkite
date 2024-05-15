@@ -6,9 +6,11 @@ from django.contrib.auth.models import User
 from .widgets import CustomPictureImageFieldWidget
 
 class UserForm(forms.ModelForm):
-     username = forms.CharField(disabled=False)
+    username = forms.CharField(widget=forms.TextInput(attrs={'style': 'color: white;'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'style': 'color: white;'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'style': 'color: white;'}))
     
-     class Meta:
+    class Meta:
          model = User
          fields = {'username', 'first_name', 'last_name'}
         

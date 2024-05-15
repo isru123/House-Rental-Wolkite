@@ -1,0 +1,19 @@
+<!-- verification_page.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code Input</title>
+</head>
+<body>
+    <h2>Enter Verification Code</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="verification_code">Verification Code:</label><br>
+        <input type="text" id="verification_code" name="verification_code" required><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

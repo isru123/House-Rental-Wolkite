@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from .models import Booking,Payment
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
+<<<<<<< HEAD
     list_display = ['id', 'amount', 'payer', 'recipient', 'timestamp']
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
@@ -63,3 +64,11 @@ class BookingAdmin(admin.ModelAdmin):
                 self.message_user(request, "Payment already approved for selected bookings.")
 
     approve_payment.short_description = "Approve selected bookings"
+=======
+    pass
+    
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    pass
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

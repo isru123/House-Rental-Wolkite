@@ -28,11 +28,6 @@
 {% endblock %} {% endcomment %}
 
 
-{% block 'header' %}
-{% endblock %}
-
-
-
 {% block 'body' %}
 
 <br>
@@ -42,15 +37,15 @@
 <br>
 
 <!-- Breadcrumb -->
-<section id="bc" class="mt-3">
+<section id="bc" class="mt-5">
     <div class="container">
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-           <a href="{% url 'home' %}">{{ _("Home") }}</a>
+           <a href="{% url 'main:home' %}">{{ _("Home") }}</a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{% url 'master' %}">{{ _("Listings") }}</a>
+            <a href="{% url 'main:master' %}">{{ _("Listings") }}</a>
           </li>
           <li class="breadcrumb-item active">{{ listing_seller.user.username }}</li>
         </ol>
@@ -61,31 +56,36 @@
 
   
   <br>
-  <div class="card d-flex flex-column align-items-start">
+  <div class="card d-flex flex-column align-items-start" style="height:700px">
 
    
 <div class="container mt-5 text-start" style="max-width: 50%;">
-    <h2 style="color:black" class="mb-4">Introduce yourself to {{ listing_seller.user.username }}</h2>
-     <h5 style="color:black">For a faster response, share as much as you can.</h5>
+    {% if request.user.profile.userType == "Public" %}
+    <div class="mb-5 text-end">
+    <a href="{% url 'message:dashboard_renter' %}" class="btn btn-primary text-white btn-width bg-primary" >Dashboard</a>
+    </div>
+    {% endif %}
+    {% comment %} <h2 style="color:black" class="mb-4">Introduce yourself to {{ listing_seller.user.username }}</h2>
+     <h5 style="color:black">For a faster response, share as much as you can.</h5> {% endcomment %}
      <br>
     <div id="conversation-content text-start">
         <div class="space-y-4">
             {% for message in conversation.messages.all %}
-            <div class="p-3 {% if message.created_by == request.user %}bg-primary text-white{% else %}bg-light{% endif %} rounded-lg shadow-sm">
+            <div class="p-3 {% if message.created_by == request.user %}bg-info text-white{% else %}bg-light{% endif %} rounded-lg shadow-sm">
                 <p class="mb-1"><strong>{{ message.created_by.username }}</strong> @ {{ message.created_at }}</p>
                 <p class="mb-0">{{ message.content }}</p>
                 {% if message.created_by == request.user %}
                 <div class="mt-2">
-                    <button class="btn btn-primary btn-sm mr-2 edit-btn" data-message-id="{{ message.id }}"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-danger btn-sm delete-btn" data-message-id="{{ message.id }}"><i class="fas fa-trash-alt"></i></button>
                 </div>
+                
                 {% endif %}
             </div>
             {% endfor %}
         </div>
     </div> 
 
-    <form id="write-form" method="post" action="{% url 'detail' conversation_id=conversation.id %}" style="display: none;">
+    <form id="write-form" method="post" action="{% url 'message:detail' conversation_id=conversation.id %}" style="display: none;">
         {% csrf_token %}
         <div class="input-group mt-2" style="width:1000px;">
             {{ form.content }}
@@ -93,11 +93,10 @@
         <button type="button" class="btn btn-primary mt-3 btn-width" onclick="clearMessage()">Clear</button>
         <button type="submit" class="btn btn-primary mt-3 btn-width">Send</button>
     </form>
-    
-    
+   
 
     <button id="start-writing-btn" class="btn btn-primary mt-3" style="display: inline-block;">Start Writing</button>
-    <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button> 
+    {% comment %} <button id="cancel-btn" class="btn btn-secondary mt-3" style="display: none;">Cancel</button>  {% endcomment %}
 </div>
 <br>
 <br>

@@ -1,0 +1,192 @@
+{% extends 'base/adminbase.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+    {% block 'body' %}
+     <!-- Single Page Header start -->
+ {% comment %} <div class="container-fluid page-header py-5" style="background-color: #1877F2; height:50px">
+    <h1 class="text-center text-white display-6">Dashboard</h1>
+    <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active">Post</li>
+    </ol>
+</div>  {% endcomment %}
+
+
+<br>
+<hr>
+    <body>
+        <div class="container-fluid ml-1">
+            <div class="row flex-nowrap">
+                <div class="col-auto px-0">
+                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm" style=" background-color: #0F3057;">
+                        <div id="sidebar-nav" class="list-group border-0 rounded-0" style=" background-color: #0F3057;">
+                            <div class="p-2">
+                                <h5 class="text-info">House Owner Dashboard</h5>
+                            </div>
+                            
+                            <ul class="list-group" style=" background-color: #0F3057;">
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"><a href="{% url 'main:dashboard_owner' %}" class="text-decoration-none text-black"
+                                  style="color:white"><i class="fa fa-tachometer" style="color: white;"></i><span style="margin-left: 10px;">Dashboard</a></span></li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:owner-listings' %}"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-list " style="color: white;"></i><span style="margin-left: 10px;">Listings</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:bookings_made' %}"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-calendar" style="color: white;"></i><span style="margin-left: 10px;">Bookings</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:Request' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-clipboard " style="color: white;"></i><span style="margin-left: 10px;">Booking Request</span></a> </li>
+                                {% comment %} <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:payment_made' %}" {% endcomment %}
+                                        {% comment %} class="text-decoration-none text-black" style="color:white"><i class="fa fa-money" style="color: white;"></i><span style="margin-left: 10px;">Payments</span></a> </li> {% endcomment %}
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:MIDI' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-envelope " style="color: white;"></i><span style="margin-left: 10px;">Messages</span></a> </li>
+
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"><a href="{% url 'helpdesk' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-question-circle" style="color: white;"></i><span style="margin-left: 10px;">Helpdesk</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-light card " style="margin-left:30px; margin-bottom:5px;">
+                    <div id="meerkat-card" class="card mt-5 mb-4 row-4" style="width:1180px">
+                        <div class="table-responsive">
+                            <table class="table  table-bordered zero-configuration">
+                                <thead>
+                                    <tr>
+                                        <th>Listing ID</th>
+                                        <th>Tenant Name</th>
+                                        <th>Created At</th>
+                                        <th>Tenant Photo</th>
+                                        <th>Government ID</th>
+                                        <th>Proof Of Income</th>
+                                        <th>Proof Of Profession</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    {% if requests %}
+                                            {% for U in requests %}
+                                            <tr>
+                                                <td>{{ U.id }}</td>
+                                                
+                                                <td>{{U.tenant.user.username}}</td>
+                                             
+                                                <td>{{U.created_at}}</td>
+                                                
+                                                <td>
+                                                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal1" onclick="showModalImage('{{ U.photo.url }}')">
+                                                    <img src="{{ U.photo.url }}" alt="User Photo" width="50" height="50">
+                                                  </button>
+                                                </td>
+                                                <td>
+                                                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal2" onclick="showModalImage('{{ U.profession_proof.name }}')">
+                                                    <img src="{{ U.profession_proof.url }}" alt="User Photo" width="50" height="50">
+                                                  </button>
+                                                </td>
+                                                <td>
+                                                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showModalImage('{{ U.profession_proof.name }}')">
+                                                    <img src="{{ U.profession_proof.url }}" alt="User Photo" width="50" height="50">
+                                                  </button>
+                                                </td>
+                                                <td>
+                                                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal" onclick="showModalImage('{{ U.profession_proof.name }}')">
+                                                    <img src="{{ U.profession_proof.url }}" alt="User Photo" width="50" height="50">
+                                                  </button>
+                                                </td>
+                                                {% comment %} <td>{{L.created_at}}</td> {% endcomment %}
+                                             
+                                                <td>
+                                                   <a href="/approve-tenant-request/{{U.listing.id}}/" class="btn btn-primary my-2">Accept</a>
+                                                   <a href="/reject-tenant-request/{{ U.listing.id}}/" class="btn btn-danger my-2">Reject</a>
+                                                      
+                                                </td>
+                                                
+                                            </tr>
+                                           
+                                            {% endfor %}
+                                            {% else %}
+                                            There is No Requests to Approve
+                                            {% endif %}
+                                        
+                                   
+                                </tbody>
+                            </table>
+
+                            {% if requests.has_other_pages %}
+                            <ul class="pagination">
+                                {% if requests.has_previous %}
+                                <li><a href="?page={{ requests.previous_page_number }}" class="btn btn-primary" style="width:50px">&laquo;</a>
+                                </li>
+                                {% else %}
+                                <li class="disabled btn btn-primary" style="width:50px"><span>&laquo;</span></li>
+                                {% endif %}
+                                {% for i in requests.paginator.page_range %}
+                                {% if requests.number == i %}
+                                <li class="active btn btn-primary" style="width:50px"><span>{{ i }} <span
+                                            class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li><a href="?page={{ i }}" style="width:50px" class="btn btn-primary">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if requests.has_next %}
+                                <li><a href="?page={{ requests.next_page_number }}" style="width:50px" class="btn btn-primary">&raquo;</a></li>
+                                {% else %}
+                                <li class="disabled btn btn-primary" style="width:50px"><span>&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                            
+                    </div>
+                   
+                  
+                  </div>
+                </div>
+              
+            </div>
+        </div>
+
+
+
+ <!-- Image Modal -->
+<div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <img id="modalImage" src="" alt="User Photo" class="img-fluid">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <img id="modalImage" src="" alt="User Photo" class="img-fluid">
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+    </body>
+
+    <script>
+        function showModalImage(imageUrl) {
+          var modalImage = document.getElementById('modalImage');
+          modalImage.src = imageUrl;
+        }
+        function showFile(fileUrl) {
+            var fileIframe = document.getElementById('fileIframe');
+            fileIframe.src = fileUrl;
+          }
+      </script>
+
+{% endblock %}
+
+{% block 'footer' %}
+{% endblock %}
+
+
+

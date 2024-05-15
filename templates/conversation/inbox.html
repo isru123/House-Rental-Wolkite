@@ -11,12 +11,24 @@
 {% endblock %}
 
 {% block 'body' %}
+<<<<<<< HEAD
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
+=======
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h1 class="mb-6 mt-10 text-3xl">Inbox</h1>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for conversation in conversations %}
-                <a href="{% url 'detail' conversation.id %}" class="block">
+                <a href="{% url 'message:detail' conversation.id %}" class="block">
                     <div class="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
                         <div class="p-4">
                             <!-- Display conversation content here -->
@@ -104,4 +116,8 @@
     </div>
 {% endblock %}
 {% block 'footer' %}
+<<<<<<< HEAD
 {% endblock %} 
+=======
+{% endblock %} {% endcomment %}
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

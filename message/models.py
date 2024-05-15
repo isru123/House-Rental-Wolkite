@@ -39,8 +39,11 @@ class ConversationMessage(models.Model):
     created_by = models.ForeignKey(User, related_name='created_messages', on_delete=models.CASCADE)
     recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE, null=True)
 
+<<<<<<< HEAD
     def save(self, *args, **kwargs):
         # Update the has_new_messages attribute of the conversation when a new message is received
         self.conversation.has_new_messages = True
         self.conversation.save()
         super().save(*args, **kwargs)
+=======
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

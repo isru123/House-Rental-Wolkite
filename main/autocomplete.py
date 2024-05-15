@@ -13,6 +13,7 @@
 
 #         return qs
     
+<<<<<<< HEAD
     
 #     # def get(self, request, *args, **kwargs):
 #     #     if request.is_ajax():
@@ -23,3 +24,6 @@
 #     #         response_data = json.dumps(suggestions)
 #     #         return HttpResponse(response_data, content_type='application/json')
 #     #     return super().get(request, *args, **kwargs)
+=======
+    
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

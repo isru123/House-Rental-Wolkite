@@ -46,7 +46,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    
+    'channels',
+    'daphne',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,13 +61,22 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'formtools',
     "crispy_forms",
-    
     "crispy_bootstrap5",
     'message',
     'paymnet',
     'paypal.standard.ipn',
+<<<<<<< HEAD
     # 'verify_email',
     # 'crum',
+=======
+    'verify_email',
+    'crum',
+    'dal',
+    'dal_select2',
+    
+    
+    # 'house_rental.custom_filters',
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 ]
 
 MIDDLEWARE = [
@@ -100,8 +110,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'house_rental.wsgi.application'
-ASGI_APPLICATION = 'house_rental.asgi.application'
+# ASGI_APPLICATION = 'house_rental.asgi.application'
 
+
+ASGI_APPLICATION = 'house_rental.asgi.application'
+CHANNEL_LAYERS = {
+	"default": {
+		"BACKEND": "channels.layers.InMemoryChannelLayer"
+	}
+}
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -109,12 +126,7 @@ DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
-            # 'ENGINE': 'django.db.backends.postgresql',
-            # 'NAME': 'mydb',
-            # 'USER': 'israel',
-            # 'PASSSWORD': '326598',
-            # 'HOST': 'localhost',
-            # 'PORT': '5431', 
+          
     }
 }
 
@@ -200,6 +212,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
 PAYPAL_TEST = True  # Set to False for production
 
+<<<<<<< HEAD
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp-mail.outlook.com'
 # EMAIL_PORT = 587
@@ -207,10 +220,17 @@ PAYPAL_TEST = True  # Set to False for production
 # EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+=======
+
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+<<<<<<< HEAD
 EMAIL_HOST_USER ='fikefiresew1234@gmail.com'
+=======
+EMAIL_HOST_USER =''
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'

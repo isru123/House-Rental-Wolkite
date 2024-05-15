@@ -77,21 +77,46 @@
 {% block header %}
 {% endblock %}
 {% block 'body' %}
-<h1 style="margin-top: 20vh; padding-left: 500px;">Payment successful</h1>
+<hr>
+<div class="card text-center mt-5 mb-5" style="width:1000px;margin-left:300px;background-color: #0F2032">
+<h3  class="text-white" style="margin-top: 20vh; padding-left: 500px;">Payment successful</h3>
+<h4 class="text-white">Congratulations on booking a house of {{ product.seller.user.username }} You can 
+    Visit and check the house by being guided by our Map that indicates the Address of the 
+House You Booked </h4>
 <div class="product-container">
     <div class="products">
-        <img class="img" src="{{ product.image }}" alt="">
-        <p>{{ product.name }}</p>
-        <p>Price: $ {{ product.price }}</p>
-        <p>Enjoy your house</p>
+
+        <div class="card">
+            <ul class="list-group list-group-flush">
+          
+              <li class="list-group-item">
+                <i class="fas fa-money-bill-alt text-secondary pr-2"></i> {{ _("House Owner") }}
+               
+                <span class="float-right">{{ product.seller.user.username | capfirst }}</span>
+              
+              </li>
+
+              <li class="list-group-item">
+                <i class="fas fa-th-large text-secondary pr-2"></i> {{ _("Cost") }}:
+          
+                <span class="float-right">{{ product.total_price | capfirst }}</span>
+             
+
+                </span>
+              </li>
+             
+
+
+            </ul>
+
+          </div>
+
+      
+      
+        <h2 class="text-info" style="font-weight:3pl">Enjoy your house</h2>
     </div>
 </div>
-
-<!-- Notification button -->
-<div class="text-center my-3">
-    <a href="#" class="btn btn-success">Notify Admin</a>
 </div>
-
 {% comment %} <!-- Tenant Information Form -->
 <div class="container">
     <h2>Tenant Information</h2>
@@ -152,5 +177,5 @@
 </style>
 {% endblock %}
 
-{% block footer %}
+{% block 'footer' %}
 {% endblock %}

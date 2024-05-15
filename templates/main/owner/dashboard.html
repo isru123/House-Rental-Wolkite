@@ -1,9 +1,9 @@
- {% extends 'base/base.html' %}
+ {% extends 'base/adminbase.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
 
     {% block 'body' %}
-     <!-- Single Page Header start -->
+     {% comment %} <!-- Single Page Header start -->
  <div class="container-fluid page-header py-5" style="background-color: #1877F2; height:50px">
     <h1 class="text-center text-white display-6">Dashboard</h1>
     <ol class="breadcrumb justify-content-center mb-3" style="background-color: #ffffff;">
@@ -15,18 +15,19 @@
 
 <br>
 <br>
-<br>
+<br> {% endcomment %}
 <br>
 <hr>
     <body>
-        <div class="container-fluid ml-5">
+        <div class="container-fluid ml-1">
             <div class="row flex-nowrap">
                 <div class="col-auto px-0">
-                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm">
+                    <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm" style=" background-color: #0F3057;">
                         <div id="sidebar-nav" class="list-group border-0 rounded-0">
                             <div class="p-2">
-                                <h4 style="color:black">House Owner Dashboard</h4>
+                                <h5 class="text-info">House Owner Dashboard</h5>
                             </div>
+<<<<<<< HEAD
                             <form class="d-flex p-2">
                                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                                 <button class="btn btn-primary" type="submit">Search</button>
@@ -46,6 +47,25 @@
                                         class="text-decoration-none text-black">Reviews</a> </li>
                                 <li class="list-group-item"><a href="{% url 'helpdesk' %}"
                                     class="text-decoration-none text-black">Helpdesk</a></li>
+=======
+                          
+                            <ul class="list-group" style=" background-color: #0F3057;">
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"><a href="{% url 'main:dashboard_owner' %}" class="text-decoration-none text-black"
+                                  style="color:white"><i class="fa fa-tachometer" style="color: white;"></i><span style="margin-left: 10px;">Dashboard</a></span></li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:owner-listings' %}"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-list " style="color: white;"></i><span style="margin-left: 10px;">Listings</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:bookings_made' %}"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-calendar" style="color: white;"></i><span style="margin-left: 10px;">Bookings</span></a> </li>
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:Request' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-clipboard " style="color: white;"></i><span style="margin-left: 10px;">Booking Request</span></a> </li>
+                                {% comment %} <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:payment_made' %}"
+                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-money" style="color: white;"></i><span style="margin-left: 10px;">Payments</span></a> </li> {% endcomment %}
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:MIDI' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-envelope " style="color: white;"></i><span style="margin-left: 10px;">Messages</span></a> </li>
+
+                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"><a href="{% url 'helpdesk' %}"
+                                            class="text-decoration-none text-black" style="color:white"><i class="fa fa-question-circle" style="color: white;"></i><span style="margin-left: 10px;">Helpdesk</span></a></li>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
                             </ul>
                         </div>
                     </div>
@@ -56,28 +76,28 @@
                         class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list"></i></a>
                    
                     <hr>
-                    <div class="content-body">
+                    {% comment %} <div class="content-body ml-5 mr-5 bg-light" style="margin-left:3px">
 
-                        <div class="content-body">
-                            <div class="container-fluid mt-5">
+                        <div class="content-body ml-5 mr-5" style="margin-left:3px"> {% endcomment %}
+                            <div class="container-fluid mt-3" style="margin-left:5px">
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-6">
-                                        <div class="card gradient-2">
+                                        <div class="card gradient-3">
                                             <div class="card-body">
-                                                <h3 class="card-title text-white">Total No. of Request</h3>
+                                                <h3 class="card-title text-white">Your Total Listings</h3>
                                                 <div class="d-inline-block">
-                                                    <h2 class="text-white value-float" id="total-request-value">4565</h2>
+                                                    <h2 class="text-white value-float" id="total-rejected-request-value">{{ total_listings }}</h2>
                                                 </div>
-                                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card gradient-1">
                                             <div class="card-body">
-                                                <h3 class="card-title text-white">Total Accepted Request</h3>
+                                                <h3 class="card-title text-white">Pending Listings</h3>
                                                 <div class="d-inline-block">
-                                                    <h2 class="text-white value-float" id="total-accepted-request-value">8541</h2>
+                                                    <h2 class="text-white value-float" id="total-accepted-request-value">{{ pendings }}</h2>
                                                 </div>
                                                 <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
                                             </div>
@@ -86,22 +106,56 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card gradient-3">
                                             <div class="card-body">
-                                                <h3 class="card-title text-white">Total Rejected Request</h3>
+                                                <h3 class="card-title text-white">Accepted Listings</h3>
                                                 <div class="d-inline-block">
-                                                    <h2 class="text-white value-float" id="total-rejected-request-value">4565</h2>
+                                                    <h2 class="text-white value-float" id="total-rejected-request-value">{{ accepted_listings}}</h2>
                                                 </div>
                                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card gradient-1">
+                                            <div class="card-body">
+                                                <h3 class="card-title text-white">Booking Requests</h3>
+                                                <div class="d-inline-block">
+                                                    <h2 class="text-white value-float" id="total-accepted-request-value">{{ booking_requests}}</h2>
+                                                </div>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card gradient-3">
+                                            <div class="card-body">
+                                                <h3 class="card-title text-white">Accepted Requests</h3>
+                                                <div class="d-inline-block">
+                                                    <h2 class="text-white value-float" id="total-rejected-request-value">{{ accepted_requests }}</h2>
+                                                </div>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card gradient-1">
+                                            <div class="card-body">
+                                                <h3 class="card-title text-white">Rejected Requests</h3>
+                                                <div class="d-inline-block">
+                                                    <h2 class="text-white value-float" id="total-accepted-request-value">{{ rejected_requests }}</h2>
+                                                </div>
+                                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 </div>
-            </div>
-        </div>
+            {% comment %} </div>
+        </div> {% endcomment %}
         <style>
             .value-float:hover {
                 transform: translateY(-5px);

@@ -164,8 +164,7 @@
 
 <br>
 <br>
-<br>
-<br>
+
 
 <section id="showcase-inner" class="py-5 showcase-text" style="margin-left:120px;">
     <div class="container bg-blur" style="margin-left:120px;">
@@ -181,7 +180,11 @@
     </div>
   </section>
   
+<<<<<<< HEAD
   {% comment %} <a href="{% url 'map' %}?listing_id={{ listing.id }}">View on Map</a> {% endcomment %}
+=======
+
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
   
   <!-- Breadcrumb -->
   <section id="bc" class="mt-3">
@@ -189,7 +192,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{% url 'home' %}">
+            <a href="{% url 'main:home' %}">
               <i class="fas fa-home"></i> {{ _("Home") }}</a>
           </li>
           <li class="breadcrumb-item active">{{ _("Browse Listings") }} </li>
@@ -198,6 +201,7 @@
     </div>
   </section>
   
+
   <!-- Listings -->
   {% comment %} <section id="listings" class="py-4"> {% endcomment %}
     {% comment %} <div class="container"> {% endcomment %}

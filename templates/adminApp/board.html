@@ -2,9 +2,6 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block 'header' %}
-
-{% endblock %}
 
 
 {% block 'body' %}
@@ -17,125 +14,118 @@
             <br>
         <div class="content-body">
              
-            <div class="container-fluid mt-5" style="margin-left: 10px; margin-right: 10px">
-                <div class="row">
-                    {% comment %} {% if request.user.userprofile_set.first.userType == "Public" %} {% endcomment %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">My Total Booking</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{my_booking}}</h2>
+            <div class="col ps-md-2 pt-2">
+                <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse"
+                    class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list"></i></a>
+               
+                <hr>
+                {% comment %} <div class="content-body ml-5 mr-5 bg-light" style="margin-left:3px">
+
+                    <div class="content-body ml-5 mr-5" style="margin-left:3px"> {% endcomment %}
+                        <div class="container-fluid mt-3" style="margin-left:5px">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Available  Listings</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">{{ available_house }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Booked Listings</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">{{ booked_house }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">{{ customer_request}}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Booking Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">{{ booking_requests}}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Accepted Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value">{{ accepted_requests }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Rejected Requests</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value">{{ rejected_requests }}</h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Total Rejected Request</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value"></h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-1">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Total Accepted Request</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-accepted-request-value"></h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card gradient-3">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white">Total Rejected Request</h3>
+                                            <div class="d-inline-block">
+                                                <h2 class="text-white value-float" id="total-rejected-request-value"></h2>
+                                            </div>
+                                            <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white" style="font-family: Arial, sans-serif;font-size: 24px;">Total Available Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{available_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% comment %} {% endif %}
-                    {% if request.user.userprofile_set.first.userType == "Owner" %} {% endcomment %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white" >My House</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{my_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Available Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{my_available_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% comment %} {% endif %}
-                    {% if request.user.userprofile_set.first.userType == "Admin" %} {% endcomment %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total No. of Verified House Owner</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_verified_owner}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total No. of Unverified House Owner</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_unverified_owner}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Available Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{available_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Booked Room</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{booked_house}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total verified Admin</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_verified_admin}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Unverified Admin</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">{{total_unverified_admin}}</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% comment %} {% endif %} {% endcomment %}
-                    
                 </div>
             </div>
         </div>
@@ -144,52 +134,61 @@
 
 
 
-    <section style="height:400px">
-        <!--**********************************
-           Sidebar start
-       ***********************************-->
-       <div class="nk-sidebar bg-dark">
-           <div class="">
-               <br>
-               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
-                   <li>
-                       <a href="{% url 'board' %}" aria-expanded="false">
-                           <i class="icon-speedometer menu-icon"></i><span class="nav-text"><i class="fa fa-clipboard"></i> Dashboard</span>
-                       </a>
-                   </li>
-                
-                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
-                       <a class="has-arrow">
-                           <i class="icon-screen-tablet menu-icon"></i>
-                           <span class="nav-text"><i class="fa fa-user-circle"></i> Admin</span>
-                       </a>
-                       <ul style=" background-color: #1877F2;">
-                        {% if user.is_superuser or user.is_staff  %} 
-                        <li><a href="/all-user/"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
-                        {% endif %}
-                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
-                        <li><a href="{% url 'approve-owner' %}"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
-                        
-                        <li><a href="/approve-admin/"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
-                        {% comment %} {% endif %} {% endcomment %}
-                        
-                        <li><a href="/rent-house/"><i class="fa fa-building" style="color: white;"></i>Manage Owner</a></li>
-                        <li><a href="{% url 'manage-customer' %}"><i class="fa fa-users" style="color: white;"></i>Manage Customer</a></li>
-                        <li>
-                            <a href="/admin-helpdesk/"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
-                        </li>
+<section style="height:290px">
+    <!--**********************************
+       Sidebar start
+   ***********************************-->
+   <div class="nk-sidebar" style="background-color:#0F3057">
+       <div class="">
+           <br>
+           <br>
+           <br>
+           <ul class="metismenu" id="menu" style=" background-color: #0F3057;">
+               <li>
+                   <a href="{% url 'board' %}" aria-expanded="false">
+                       <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-clipboard mr-2"></i>    Dashboard</span>
+                   </a>
+               </li>
+            
+               <li class="mega-menu mega-menu-sm" style=" background-color: #0F3057;">
+                  
+                   <a class="has-arrow">
+                       <i class="icon-screen-tablet menu-icon"></i>
+                       <span class="nav-text" style="color:white" class="text-decoration-none"><i class="fa fa-user-circle mr-3"></i>Admin</span>
+                   </a>
+                  
 
-                        <li>
-                            <a href="{% url 'add-admin' %}"><i class="fa fa-user" style="color: white;"></i> Add admin</a>
-                        </li>
-                       </ul>
-                   </li>
-                   {% comment %} {% endif %} {% endcomment %}
-               </ul>
-           </div>
+                   <ul style=" background-color: #0F3057;">
+                    {% if user.is_superuser %} 
+                    <li><a href="/all-user/" class="ml-0" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    All User</a></li>
+                    {% endif %}
+                 
+                    <li><a href="{% url 'approve-owner' %}"  style="color:white" class="text-decoration-none"><i class="fa fa-list-alt" style="color: white;"></i>    Approve Listings</a></li>
+                    
+
+                    
+                    
+                    <li><a href="{% url 'display_all_payments' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>    Payment History</a></li>
+                    <li><a href="{% url 'all_bookings' %}" style="color:white" class="text-decoration-none"><i class="fa fa-building" style="color: white;"></i>    Bookings</a></li>
+                    <li><a href="{% url 'manage-customer' %}" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    Manage Users</a></li>
+                    <li>
+                        <a href="/admin-helpdesk/" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Admin Helpdesk</a>
+                    </li>
+
+                    <li>
+                        {% if user.is_superuser or user.is_staff  %}
+                        <a href="{% url 'add-admin' %}" style="color:white" class="text-decoration-none"><i class="fa fa-user" style="color: white;"></i>    Add admin</a>
+                        {% endif %}
+                    </li>
+              
+                   </ul>
+               </li>
+               {% comment %} {% endif %} {% endcomment %}
+           </ul>
        </div>
-       <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
-   </section>
+   </div>
+   <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+</section>
     {% endblock %}
 
     
