@@ -9,6 +9,13 @@
       <img src="/path/to/placeholder-image.jpg" alt="No photo available" class="rounded-circle" height="30" width="30">
     {% endif %}
 
+<<<<<<< HEAD
+    {% if user.is_authenticated %}
+    {% if request.user.profile.userType == "Public" %}
+    <div class="card-body">
+      <h5 class="card-title">{{ _("House Owner") }}</h5>
+      <h6 class="mb-4">{{ listing.seller.user.first_name }} {{ listing.seller.user.last_name }}</h6>
+=======
    {% if user.is_authenticated %}
       {% if request.user.profile.userType == "Public" %}
         <div class="card-body">
@@ -42,6 +49,7 @@
               <a href="#" onclick="showPhoto('{{ tenant_photo_url }}')" class="btn btn-primary btn-sm" style="text-decoration: none;">View Photo</a>
             {% endif %}
          {% endif %}
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
         
         {% if request_is_approved %}

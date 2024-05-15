@@ -187,12 +187,20 @@ def dashboard_view(request):
     user = request.user.id
     bookings = Booking.objects.filter(tenant=request.user)
     payment_history = Payment.objects.filter(payer=request.user)
+<<<<<<< HEAD
+    messages_received = ConversationMessage.objects.all()
+    all_payments = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+    all_bookings = Booking.objects.filter(tenant=request.user)
+=======
     messages_received = ConversationMessage.objects.filter(recipient=user)
     
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
     # Calculate the total number of messages
     
     total_messages_count = messages_received.count()
     context = {
+        'all_bookings': all_bookings,
+        'all_payments': all_payments,
         'bookings': bookings,
         'payment_history': payment_history,
         'messages_received': messages_received,
@@ -204,6 +212,21 @@ def dashboard_view(request):
 
 
 @login_required
+# def messages(request):
+#     if not request.user.is_authenticated:
+#         return redirect('login')
+
+#     # Retrieve conversations where the logged-in user is a member
+#     user = request.user
+#     conversations = Conversation.objects.filter(members=user)
+
+#     # Pass the conversations to the template
+#     return render(request, 'renterApp/messages.html', {'conversations': conversations, 'user': user})
+
+
+
+# Other views...
+
 def messages(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -214,6 +237,18 @@ def messages(request):
 
     # Pass the conversations to the template
     return render(request, 'renterApp/messages.html', {'conversations': conversations, 'user': user})
+
+from django.http import JsonResponse
+
+def update_seen(request, conversation_id):
+    if request.method == 'POST':
+        conversation = get_object_or_404(Conversation, pk=conversation_id)
+        conversation.seen = True
+        conversation.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+
+
 
 
 from paymnet.models import Booking
@@ -278,6 +313,17 @@ def payments(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
+<<<<<<< HEAD
+    all_payments = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+    all_bookings = Booking.objects.filter(tenant=request.user)
+
+    context = {
+        'all_payments': all_payments,
+        'all_bookings': all_bookings
+    }
+
+    return render(request, 'renterApp/payment.html', context)
+=======
     # Filter payments where the logged-in user is either the payer or the recipient
     A = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
     
@@ -323,3 +369,4 @@ def booking_ask(request):
     return render(request,'renterApp/booking_ask.html', {'requests': R})
 
 
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

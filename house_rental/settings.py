@@ -16,6 +16,14 @@ import os
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+# Import timezone module
+from django.utils import timezone
+
+# Set the TIME_ZONE to your desired timezone
+TIME_ZONE = 'Africa/Addis_Ababa'
+
+# Enable timezone support
+USE_TZ = True
 
 
 
@@ -57,6 +65,10 @@ INSTALLED_APPS = [
     'message',
     'paymnet',
     'paypal.standard.ipn',
+<<<<<<< HEAD
+    # 'verify_email',
+    # 'crum',
+=======
     'verify_email',
     'crum',
     'dal',
@@ -64,6 +76,7 @@ INSTALLED_APPS = [
     
     
     # 'house_rental.custom_filters',
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 ]
 
 MIDDLEWARE = [
@@ -199,11 +212,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
 PAYPAL_TEST = True  # Set to False for production
 
+<<<<<<< HEAD
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp-mail.outlook.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'israelbeyene92@gmail.com'  # Replace with your Outlook.com email address
+# EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+=======
 
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+<<<<<<< HEAD
+EMAIL_HOST_USER ='fikefiresew1234@gmail.com'
+=======
 EMAIL_HOST_USER =''
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'

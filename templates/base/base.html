@@ -112,6 +112,9 @@
                             {% endif %}
 
                             {% if user.is_superuser or user.is_staff or request.user.profile.userType == "Admin" %}
+<<<<<<< HEAD
+                            <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2">AdminBoard</a>
+=======
                             <a href="{% url 'admin_home' %}" style="color:white" class="nav-item nav-link btn btn-primary my-2 ml-3">AdminBoard</a>
                             {% endif %}
 
@@ -121,6 +124,7 @@
 
                             {% if request.user.profile.userType == "Owner" %}
                             <a href="{% url 'main:dashboard_owner' %}" style="color:white" class="nav-item nav-link btn btn-info my-2 ml-3">Dashboard</a>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
                             {% endif %}
                         </div>
                    

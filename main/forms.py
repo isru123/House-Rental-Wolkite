@@ -1,9 +1,14 @@
 from  django import forms  
 from django.utils.translation import  gettext_lazy as _
+<<<<<<< HEAD
+from .models import Image,Listing,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences
+
+=======
 from .models import Image,Review,Listing,Document,ListingSpaceOverview,ListingHouseArea,ListingHouseAmenities,RentalConditions, RulesAndPreferences,AddressOfListing,Upload
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from dal import autocomplete
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
 
 class ListingForm(forms.ModelForm):
@@ -86,11 +91,22 @@ class RentalFilterForm(forms.Form):
         widget=forms.DateInput(attrs={'type': 'date'}),
         label='Move-out Date'
     )
+<<<<<<< HEAD
+
+
+# class ReviewForm(forms.ModelForm):
+#     review_text = forms.CharField(widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'}))
+#     rating = forms.ChoiceField(choices=[(str(i), str(i)) for i in range(1, 6)])
+=======
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
     
     class Meta:
         model = Listing
         fields = ['move_in_date', 'move_out_date']
 
+<<<<<<< HEAD
+         
+=======
 class ReviewForm(forms.ModelForm):
     RATING_CHOICES = (
         ('1', '1 Star'),
@@ -153,3 +169,4 @@ class UploadForm(forms.ModelForm):
         
     
         
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

@@ -344,6 +344,16 @@ class LikedListing(models.Model):
 
     
 
+<<<<<<< HEAD
+class Upload(models.Model):
+    TENANT_CHOICES = (
+        ('Document', 'Document'),
+        ('Photo', 'Photo')
+    )
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    document = models.FileField(upload_to='uploads/documents/')
+    photo = models.ImageField(upload_to='uploads/photos/')
+=======
 class Document(models.Model):
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
     listing = models.OneToOneField(Listing, on_delete=models.CASCADE)
@@ -358,6 +368,7 @@ class Document(models.Model):
     
     
 
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
     
     

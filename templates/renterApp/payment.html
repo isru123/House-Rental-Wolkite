@@ -2,11 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-
-
-
 {% block 'body' %}
- 
 <!--**********************************
     Content body start
 ***********************************-->
@@ -42,9 +38,33 @@
                         <th>Payer</th>
                         <th>Recipient</th>
                         <th>Timestamp</th>
+                        <th>Payment Status</th>
+                        <th>Refund Amount</th>
                     </tr>
                 </thead>
                 <tbody>
+<<<<<<< HEAD
+                    {% for payment in all_payments %}
+                        {% for booking in all_bookings %}
+                            {% if booking.payment_id == payment.payment_id %}
+                                <tr><td>
+                                    <span class="badge badge-secondary">{{payment.payment_id |stringformat:"s"|slice:":3" }}</span>
+                                </td> 
+                                    <td>{{ payment.amount }}</td>
+                                    <td>{{ payment.payer }}</td>
+                                    <td>{{ payment.recipient }}</td>
+                                    <td>{{ payment.timestamp }}</td>
+                                    <td>{{ booking.payment_status }}</td>
+                                    <td>{{ booking.refund_amount }}</td>
+                                </tr>
+                            {% endif %}
+                        {% empty %}
+                            No booking found
+                        {% endfor %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="8">No payment history available.</td>
+=======
                     {% if payments  %}
                     {% for A in payments %}
                     <tr>
@@ -56,6 +76,7 @@
                             <td>{{ A.payer }}</td>
                             <td>{{ A.recipient }}</td>
                             <td>{{ A.timestamp }}</td>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
                         </tr>
                     {% endfor %}
                     {% else %}
@@ -68,6 +89,42 @@
 
             </div>
         </div>
+<<<<<<< HEAD
+    </div>
+</section>
+
+<section style="height:50px">
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <div class="nk-sidebar">
+        <div class="">
+            <br>
+            <ul class="metismenu" id="menu">
+                <li>
+                    <a href="{% url 'dashboard_renter' %}" aria-expanded="false">
+                        <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+            
+                <li class="mega-menu mega-menu-sm">
+                    <a class="has-arrow">
+                        <i class="icon-screen-tablet menu-icon"></i>
+                        <span class="nav-text">Tenant</span>
+                    </a>
+                    <ul>
+                        <li><a href="{% url 'messages' %}">Messages</a></li>
+                        <li><a href="{% url 'payments' %}">Payment history</a></li>
+                        <li><a href="{% url 'books' %}">Books</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
+</section>
+{% endblock %}
+=======
     </div> 
 </div>  
 </div>
@@ -130,3 +187,4 @@
     {% endblock %}
 
     
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9

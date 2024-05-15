@@ -1,8 +1,18 @@
 from django.urls import path
+<<<<<<< HEAD
+from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view, upload,identity_page
+from .views import multistepformsubmission,payement,edit_listing_view
+
+from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,payment_made
+from .views import multistepformsubmission,payement,edit_listing_view
+# from .autocomplete import AddressAutocomplete
+
+=======
 from .views import main_view,about_view,detail_list_view,delete_listing,owner_view,dashboard_view,single_house_view,master_view,owner_second_view,upload,identity_page
 from .views import multistepformsubmission,multistepsubmissionEdit,payment_made,bookings_made,delete_upload,reject_tenant_request,approve_tenant_request,payement,map_view,messages_view,booking_requests,edit_listing_view,search,owner_listings,review_view,rate_image,my_view,create_booking,booking_confirmation_view
 from .autocomplete import AddressAutocomplete
 app_name = 'main'
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 urlpatterns = [
      path("", main_view, name="home"), 
      path('about/' , about_view , name='about'),
@@ -11,7 +21,7 @@ urlpatterns = [
      path('dashboard_owner/', dashboard_view, name='dashboard_owner'),
      # path('listing/', list_view, name='listing'),
      path('payement/', payement, name='payement'),
-     path('second/<str:id>/', owner_second_view , name='second'),
+     # path('second/<str:id>/', owner_second_view , name='second'),
      path('detail-view/', detail_list_view, name='detail_product_view'), 
      path('single_house_view/<str:id>/', single_house_view , name='single_house_view'),
      path('upload/<str:id>/', upload, name='upload'),
@@ -22,6 +32,19 @@ urlpatterns = [
      path('multistepformsubmission', multistepformsubmission.as_view(), name='multistepformsubmission'),
      path('multistepsubmissionEdit/', multistepsubmissionEdit.as_view(), name='multistepsubmissionEdit'),
      path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
+<<<<<<< HEAD
+     path('payment_made/', payment_made , name='payment_made'),
+     # path('map/<str:id>/', map_view, name='map'),
+     # path('search/', search, name='search'),
+     # path('owner-listings/', owner_listings , name='owner-listings'),
+     # path('address-autocomplete/', AddressAutocomplete.as_view(), name='address-autocomplete'),
+     # path('my-form/<uuid:id>/', my_view, name='my-form'),
+     
+     # path('done/', done_view , name='done'),
+     # path('second/', upload_documents, name='upload_documents'),
+     # path('booking/<str:id>/', booking , name='booking'),
+    
+=======
   
      path('map/<str:id>/', map_view, name='map'),
      path('search/', search, name='search'),
@@ -39,6 +62,7 @@ urlpatterns = [
      path('bookings_made/', bookings_made, name='bookings_made'),
      path('payment_made/', payment_made, name='payment_made'),
      path('delete-listing/<str:id>/', delete_listing, name='delete_listing'),
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
     
 ]
 

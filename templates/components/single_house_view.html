@@ -507,7 +507,7 @@
 
 {% comment %} 
 
-<div class="container mt-5">
+{% comment %} <div class="container mt-5">
   <h5 class="text-camelcase text-dark font-weight-bold">Review and Ratings ({{ reviews|length }})</h5>
   <hr class="mt-0 pt-0">
   <div class="row">
@@ -524,7 +524,7 @@
         <p>{{ review.review_text }}</p>
       </div>
       {% endfor %}
-    </div>
+    </div> {% endcomment %}
 
          {% if request.user.profile.userType == 'Public' %}
       <div class="col-sm-5 mt-2">

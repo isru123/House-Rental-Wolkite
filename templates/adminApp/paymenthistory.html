@@ -1,5 +1,8 @@
 {% extends 'base/adminbase.html' %}
+<<<<<<< HEAD
+=======
 {% load crispy_forms_tags %}
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 {% load static %}
 
 
@@ -7,6 +10,12 @@
 
 
 {% block 'search' %}
+<<<<<<< HEAD
+<input type="text" name="search" class="form-control" placeholder="Search First Name...">
+{% endblock %}
+
+{% block 'body' %}
+=======
 <input type="text" name="search" class="form-control" placeholder="Search By User Name...">
 {% endblock %}
 
@@ -15,10 +24,114 @@
 
 
 
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 <!--**********************************
             Sidebar end
         ***********************************-->
 
+<<<<<<< HEAD
+<!--**********************************
+            Content body start
+        ***********************************-->
+        <section class="vh-100" style="background-color: #eee;">
+            <br>
+            <br>
+            <div class="content-body">
+                <!-- Display payment history -->
+                <h2>Payment History</h2>
+        
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+
+                                <th>Amount</th>
+                                <th>Refunded</th>
+                                <th>Payment Status</th>
+
+                                <th>Payer</th>
+                                <th>Recipient</th>
+                                <th>Timestamp</th>
+                             
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in all_payments %}
+                                {% for booking in all_bookings %}
+                                    {% if booking.payment_id == payment.payment_id %}
+                                        <tr><td>
+                                            <span class="badge badge-secondary">{{payment.payment_id |stringformat:"s"|slice:":3" }}</span>
+                                        </td> 
+                                    
+                                            <td>{{ payment.amount }}</td>
+                                            <td>{{ booking.refund_amount }}</td>
+                                            <td>{{ booking.payment_status }}</td>
+
+                                            <td>{{ payment.payer }}</td>
+                                            <td>{{ payment.recipient }}</td>
+                                            <td>{{ payment.timestamp }}</td>
+                                           
+                                        </tr>
+                                    {% endif %}
+                                {% empty %}
+                                    No booking found
+                                {% endfor %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8">No payment history available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+<!--**********************************
+        Scripts
+    ***********************************-->
+
+    <section style="height:400px">
+        <!--**********************************
+           Sidebar start
+       ***********************************-->
+       <div class="nk-sidebar bg-dark">
+           <div class="">
+               <br>
+               <ul class="metismenu" id="menu" style=" background-color: #1877F2;">
+                   <li>
+                       <a href="{% url 'board' %}" aria-expanded="false">
+                           <i class="icon-speedometer menu-icon"></i><span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-clipboard"></i> Dashboard</span>
+                       </a>
+                   </li>
+                
+                   <li class="mega-menu mega-menu-sm" style=" background-color: #1877F2;">
+                       <a class="has-arrow">
+                           <i class="icon-screen-tablet menu-icon"></i>
+                           <span class="nav-text" style="color:white; font-family: sans-serif;"><i class="fa fa-user-circle"></i> Admin</span>
+                       </a>
+                       <ul style=" background-color: #1877F2;">
+                        {% if user.is_superuser or user.is_staff  %} 
+                        <li><a href="/all-user/" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>All User</a></li>
+                        {% endif %}
+                        {% comment %} {% if request.user.userprofile_set.first.verified == True %} {% endcomment %}
+                        <li><a href="{% url 'approve-owner' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-list-alt" style="color: white;"></i>Approve Listings</a></li>
+                        
+                        <li><a href="/approve-admin/" style="color:white; font-family: sans-serif;"><i class="fa fa-columns" style="color: white;"></i>Admin Panel</a></li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        
+                        <li><a href="{% url 'manage-owner-task' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-home" style="color: white;"></i>Manage Owner Task</a></li>
+                        <li><a href="{% url 'display_all_payments' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Payment History</a></li>
+
+                        <li><a href="{% url 'all_bookings' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-building" style="color: white;"></i>Books</a></li>
+                        <li><a href="{% url 'manage-customer' %}" style="color:white; font-family: sans-serif;"><i class="fa fa-users" style="color: white;"></i>Manage Users</a></li>
+                        <li>
+                            <a href="/admin-helpdesk/" style="color:white; font-family: sans-serif;"><i class="fa fa-life-ring" style="color: white;"></i>Admin Helpdesk</a>
+=======
         <!--**********************************
             Content body start
         ***********************************-->
@@ -149,14 +262,21 @@
                         <li><a href="{% url 'manage-customer' %}" style="color:white" class="text-decoration-none"><i class="fa fa-users" style="color: white;"></i>    Manage Users</a></li>
                         <li>
                             <a href="/admin-helpdesk/" style="color:white" class="text-decoration-none"><i class="fa fa-life-ring" style="color: white;"></i>    Admin Helpdesk</a>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
                         </li>
 
                         <li>
                             {% if user.is_superuser or user.is_staff  %}
+<<<<<<< HEAD
+                            <a  href="{% url 'add-admin' %}" style="color:white; font-family: sans-serif;" ><i class="fa fa-user" style="color: white;"></i> Add admin</a>
+                            {% endif %}
+                        </li>
+=======
                             <a href="{% url 'add-admin' %}" style="color:white" class="text-decoration-none"><i class="fa fa-user" style="color: white;"></i>    Add admin</a>
                             {% endif %}
                         </li>
                       
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
                        </ul>
                    </li>
                    {% comment %} {% endif %} {% endcomment %}
@@ -165,6 +285,9 @@
        </div>
        <hr style="border-color: black; border-width: 2px; margin-top: 20px; margin-bottom: 20px; width:200px;">
    </section>
+<<<<<<< HEAD
+{% endblock %}
+=======
 
 
    
@@ -191,4 +314,5 @@
 
 
 
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 

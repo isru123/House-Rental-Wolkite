@@ -4,13 +4,17 @@
 
 
 
-{% block title %}Inbox{% endblock %}
+{% comment %} {% block title %}Inbox{% endblock %}
 
-{% block header %}
+{% block 'header' %}
     <!-- Header content goes here -->
 {% endblock %}
 
 {% block 'body' %}
+<<<<<<< HEAD
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Welcome to Your Inbox</h1>
+=======
 
 <br>
 <br>
@@ -20,6 +24,7 @@
 <br>
 
 <h1 class="mb-6 mt-10 text-3xl">Inbox</h1>
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for conversation in conversations %}
@@ -49,14 +54,14 @@
     </div>
 {% endblock %}
 
-{% block footer %}
+{% block 'footer' %}
     <!-- Footer content goes here -->
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 
 
 
-{% comment %} {% extends 'base/base.html' %}
+ 
 
 {% block 'title' %}{% endblock %}
 
@@ -111,4 +116,8 @@
     </div>
 {% endblock %}
 {% block 'footer' %}
+<<<<<<< HEAD
+{% endblock %} 
+=======
 {% endblock %} {% endcomment %}
+>>>>>>> 584c1c0a1651ba0eb4c5312543af28bafa21fef9
