@@ -113,12 +113,7 @@ DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
-            # 'ENGINE': 'django.db.backends.postgresql',
-            # 'NAME': 'mydb',
-            # 'USER': 'postgres',
-            # 'PASSSWORD': 'admin',
-            # 'HOST': 'localhost',
-            # 'PORT': '5431', 
+          
     }
 }
 
@@ -204,17 +199,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_RECEIVER_EMAIL = 'lematadese2127@gmail.com'
 PAYPAL_TEST = True  # Set to False for production
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp-mail.outlook.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'israelbeyene92@gmail.com'  # Replace with your Outlook.com email address
-# EMAIL_HOST_PASSWORD = '32is65ra98el!L'  # Replace with your Outlook.com password
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER ='fikefiresew1234@gmail.com'
+EMAIL_HOST_USER =''
 EMAIL_HOST_PASSWORD ='minyvxbzjtyxxwnu'

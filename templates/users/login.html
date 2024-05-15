@@ -13,7 +13,7 @@
 {% block 'body' %}
 
 <div class="text-center">
-  <section style="background-color: white;">
+  <section  style="background-color: white; height:1100px; background-image: url('{% static 'images/na.jpg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center">
         <div class="col col-xl-10">
@@ -24,7 +24,7 @@
                   alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" /> {% endcomment %}
               </div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                <div class="card-body p-4 p-lg-5 text-black" style="background-color:#0F3057">
+                <div class="card-body p-4 p-lg-5 text-white" style="background-color:#0F3057">
                   <div class="login-page">
                     <div class="form">
                       <div class="login">
@@ -52,6 +52,8 @@
                           <input type="password" minlength="4" maxlength="10" class="form-control"
                               placeholder="Password*" value="" name="pass1" required />
                       </div> {% endcomment %}
+                     
+                     
                         <br>
                         <br>
                         <button type="submit" class="btn btn-primary btn-lg" style="color:white; width:400px; font-family:serif;">Login</button>

@@ -3,7 +3,7 @@ import uuid
 from django.utils import timezone
 from users.models import Location,Profile
 from django.utils.translation import gettext_lazy as _
-from .constants import MAXIMUM_AGE, MINMUM_AGE,TRANSMISSION_OPTIONS,CAR_BRANDS
+from .constants import MAXIMUM_AGE, MINMUM_AGE
 from .utils import user_listing_path
 from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import datetime
@@ -48,7 +48,7 @@ class ListingSpaceOverview(models.Model):
     ]
     
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    house_size = models.CharField(max_length=24)
+    house_size = models.CharField(max_length=24, verbose_name='House Size in m square')
     house_mate_no = models.CharField(max_length=24)
     bedroom_size = models.CharField(max_length=24, verbose_name='Bedroom Size')
     bedroom_furnished = models.CharField(max_length=24, choices=RADIO_CHOICES2)
@@ -145,7 +145,7 @@ class RulesAndPreferences(models.Model):
     minimum_age = models.CharField(max_length=24, choices=MINMUM_AGE, default=None)
     maximum_age = models.CharField(max_length=24, choices=MAXIMUM_AGE, default=None)
     tenant = models.CharField(max_length=24, choices=RADIO_CHOICES2, verbose_name='Tenant Type')
-    proof = models.CharField(max_length=24, verbose_name='Proof for Tenant')
+    
     
 
     
@@ -198,12 +198,12 @@ class Listing(models.Model):
       description = models.TextField()
       price = models.PositiveSmallIntegerField()
       available_start = models.DateField(default=timezone.now,null=True)
-      available_end = models.DateField(default=timezone.now,null=True)
+  
       photo = models.ImageField(upload_to=user_listing_path)
       address = models.CharField(max_length=255)
       approved = models.BooleanField(default=False)
       status = models.CharField(max_length=200, choices=RADIO_CHOICES1, default='pending')
-    #   rooms = models.ManyToManyField(Room)
+
       move_in_date = models.DateField(default=timezone.now,null=True)
       move_out_date = models.DateField(default=timezone.now,null=True)
       id_photo = models.ImageField(upload_to='uploads/gov_id/')
@@ -226,8 +226,7 @@ class Listing(models.Model):
           return str(self.id)
         
       
-    
-    # sequential_id = Listing.objects.filter(created_at__lte=self.created_at).count()
+
     
     
     
@@ -358,28 +357,6 @@ class Document(models.Model):
     
     
     
-
-# class Booking(models.Model):
-#     STATUS_CHOICES = (
-#         ('pending', 'Pending'),
-#         ('accepted', 'Accepted'),
-#         ('rejected', 'Rejected'),
-#     )
-
-#     guest = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-#     move_in_date = models.DateField()
-#     move_out_date = models.DateField()
-#     total_price = models.DecimalField(max_digits=8, decimal_places=2)
-#     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-#     id_proof = models.ImageField(upload_to= user_listing_path)
-#     income_proof = models.ImageField(upload_to=user_listing_path)
-#     profession_proof = models.ImageField(upload_to=user_listing_path)
-    
-#     def __str__(self):
-#         return f'{self.guest.user.username}/s Booking'
-
-    # Other booking attributes and methods
 
 
     

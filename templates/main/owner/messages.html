@@ -37,8 +37,8 @@
                                         class="text-decoration-none text-black" style="color:white"><i class="fa fa-calendar" style="color: white;"></i><span style="margin-left: 10px;">Bookings</span></a> </li>
                                 <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:Request' %}"
                                             class="text-decoration-none text-black" style="color:white"><i class="fa fa-clipboard " style="color: white;"></i><span style="margin-left: 10px;">Booking Request</span></a> </li>
-                                <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="#"
-                                        class="text-decoration-none text-black" style="color:white"><i class="fa fa-money" style="color: white;"></i><span style="margin-left: 10px;">Payments</span></a> </li>
+                                {% comment %} <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:payment_made' %}" {% endcomment %}
+                                        {% comment %} class="text-decoration-none text-black" style="color:white"><i class="fa fa-money" style="color: white;"></i><span style="margin-left: 10px;">Payments</span></a> </li> {% endcomment %}
                                 <li class="list-group-item ml-3" style=" background-color: #0F3057;"> <a href="{% url 'main:MIDI' %}"
                                             class="text-decoration-none text-black" style="color:white"><i class="fa fa-envelope " style="color: white;"></i><span style="margin-left: 10px;">Messages</span></a> </li>
 

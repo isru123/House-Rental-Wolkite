@@ -156,19 +156,18 @@
             <div class="col-md-6" style="border: 1px solid #ccc; max-height: 600px; overflow-y: auto;">
                 
             
-                <h1>Checkout for Lists: {{product.seller}}</h1>
+                <h1>Checkout for Lists: {{product.seller.user.username}}</h1>
     <div class="product-container">
         <div class="products">
             <img class="img" src="{{product.image}}" alt="">
-            <p>{{product.seller}}</p>
-            <p>{{product.maximum_rental_period}}</p>
+           
 
             
-            <p>Price:  {{product.price}} Birr</p>
-            
+            <p>Price: {{ product.price }} birr</p>
+            <p>Total Price (including system fee):  {{ total_price }} birr</p>  <!-- Display total_price -->
+            <p>Description: {{ product.description }}</p>
             <!-- <button>Purchase</button> -->
-           <div class="width:500px;height:500px"> 
-            {{paypal.render}}
+            {{ paypal.render }}
            </div>
         </div>  
     </div>

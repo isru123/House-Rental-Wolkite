@@ -11,7 +11,7 @@ from .forms import UserForm,ProfileForm,LocationForm
 from main.models import Listing,LikedListing
 from .models import Profile,OTP
 from django.utils.translation import gettext as _
-# from email_validator import validate_email, EmailNotValidError # type: ignore
+
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
@@ -48,9 +48,10 @@ def LoginPage(request):
                 messages.success(request, f'You are now logged in as {username}')
                 return redirect('main:home')
             else:
-                messages.error(request, f'error occured during tying to login')
+               pass
         else:
              messages.error(request, f'error occured during tying to login')
+             return redirect('login')
     elif request.method == 'GET':
         login_form = AuthenticationForm()
     return render(request, 'users/login.html', {'login_form': login_form})
@@ -72,9 +73,7 @@ import string
 
 
 def verification_page(request):
-    if not hasattr(request.user, 'profile'):
-        messages.error(request, "You don't have a profile. Please sign up first.")
-        return redirect('sign')
+   
 
     if request.method == 'POST':
         verification_code = request.POST.get('verification_code')
@@ -216,6 +215,8 @@ def OwnerSign(request):
         if len(contact)!=10:
             messages.warning(request, 'Contact should be 10 digit.')
             return render(request,'users/owner-sign.html')
+        
+        
         phone_number = contact
         country_code = 'ET'
         if not validate_phone_number(phone_number, country_code): 

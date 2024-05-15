@@ -33,7 +33,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from geopy.geocoders import Nominatim
 from users.models import Profile
 from message.models import Conversation
-
+from paymnet.models import Payment
 
 # Now you can use 'formatted_datetime' for serialization or JSON conversion
 
@@ -71,16 +71,8 @@ def main_view(request):
     listings = Listing.objects.all()
     listing_filter = ListingFilter(request.GET, queryset=listings)
     
-    # if hasattr(request.user, 'profile'):
-        
-    #     user_liked_listings = LikedListing.objects.filter(profile=request.user.profile).values_list('listing')
-    
-    #     liked_listings_ids = [l[0] for l in user_liked_listings ]
-    # else:
-    #     liked_listings_ids = []
     
     return render(request, 'main/homepage/home.html',  {'listing_filter': listing_filter,
-                                            #    'liked_listings_ids': liked_listings_ids
                                             })
 
 
@@ -145,17 +137,14 @@ def dashboard_view(request):
     booking_requests = Upload.objects.filter(listing__seller=profile)
     accepted_requests = Upload.objects.filter(listing__seller=profile, status='Accepted')
     rejected_requests = Upload.objects.filter(listing__seller=profile, status='Rejected')
-    # payment_history = Payment.objects.filter(payer=request.user)
-    # messages_received = ConversationMessage.objects.filter(recipient=user)
-    
-    # Calculate the total number of messages
+   
     total_listings = listings.count()
     pendings = pending_listing.count()
     accepted_listings = accepted_listings.count()
     booking_requests = booking_requests.count()
     accepted_requests = accepted_requests.count()
     rejected_requests = rejected_requests.count()
-    # total_messages_count = messages_received.count()
+   
     context = {
         'total_listings': total_listings,
         'pendings':pendings,
@@ -166,8 +155,6 @@ def dashboard_view(request):
     }
     return render(request, 'main/owner/dashboard.html', context)
 
-# def listing_view(request):
-#     return render(request, 'main/owner/listing.html')
 
 
 
@@ -238,10 +225,7 @@ def my_view(request, id):
     
     if request.method == 'POST':
         try:
-            # form = DocumentForm(request.POST, request.FILES)
-            
-            # location_form = LocationForm(request.POST)
-            # address_1 = request.POST.get('addloc')
+        
             address = request.POST.get('addloc')
             listing = Listing.objects.get(pk=id)  # Replace `listing_id` with the appropriate value
             
@@ -258,55 +242,12 @@ def my_view(request, id):
             messages.success(request= 'we will give you a remainder when the listing is approved')
             return redirect('main:upload_file' , id=listing.id)
             
-            
-            
-            
-            
-            # if location_form.is_valid():
-                
-            #     listing = Listing.objects.get(pk=id) 
-            #     listing.seller = request.user.profile
-            #     listing_location = location_form.save(commit=False)
-            #     listing_location.listing = listing
-            #     listing_location.address_1 = address_1 
-            #     listing_location.save()
-                
-            # else:
-            #     messages.info(request, 'You have to fill the form')
-            #     return redirect('my-form', id=listing.id)
-            
-            # if form.is_valid():
-            #     try:
-                    # upload = form.save(commit=False)
-                    # user_profile = Profile.objects.get(user=request.user)
-                    # upload.seller = user_profile
-                    # upload.listing = listing  # Assign the listing object
-                    # upload.save()
-                    # messages.success(request, 'You have successfully sent the Documents')
-                    # return redirect('main:my-form', id=listing.id)
-                
-                    # listing = get_object_or_404(Listing, id=id)
-                    # document = form.save(commit=False)
-                    # document.seller = listing.seller  # Assign the seller object to the document
-                    # document.listing = listing  # Assign the listing object to the document
-                    # document.save()
-                    
-                # except Listing.DoesNotExist:
-                #     messages.error(request, "First, you need to create a listing.")
-                #     return redirect('multistepformsubmission')
-
-                
-                
-                # message = messages.success(request, 'You successfully submitted.')
-                # return redirect('my-form', id=listing.id)
-            # else:
-            #     messages.info(request, 'You have to fill the form')
-            #     return redirect('my-form', id=listing.id)
+        
             
         except Exception as e:
             print(e)
-            messages.error(
-                request, 'an error occured while submitting'
+            messages.success(
+                request, 'Successfully submitted address'
             )
             
     else:
@@ -315,74 +256,6 @@ def my_view(request, id):
     
     return render(request, 'main/major/my_form.html', {'showaddress': address, 'listing_id': listing.id})
     
-
-
-
-# def single_house_view(request, id):
-#     filtered_listings = None 
-#     if request.method == 'POST':
-#         form = RentalFilterForm(request.POST or None)
-#         if form.is_valid():
-#             move_in_date = form.cleaned_data['move_in_date']
-#             move_out_date = form.cleaned_data['move_out_date']
-#             filtered_listings = Listing.objects.filter(
-#                 Q(available_start=move_in_date, available_end=move_in_date) |
-#                 Q(available_start=move_out_date, available_end=move_out_date)
-#             )
-#             # Render the filtered listings in the template
-#     else:
-#         form = RentalFilterForm()
-#     # return render(request, 'components/rental_search.html', {'form': form , 'filtered_listings':filtered_listings})
-   
-#     try:
-#         listing = get_object_or_404(Listing, id=id)
-#         reviews = listing.reviews.all()
-#         review_form = ReviewForm(request.POST)
-#         # listing = Listing.objects.get(id=id)
-        
-#         conversation_id = uuid.uuid4()  # Generate a UUID
-#         tenant_uploads = Upload.objects.filter(tenant=request.user.profile)
-#         id_document_url = ''
-#         tenant_photo_url = ''
-        
-#         # Assuming you want to use the first upload found
-#         if tenant_uploads.exists():
-#             tenant_upload = tenant_uploads.first()
-#             id_document_url = tenant_upload.document.url
-#             tenant_photo_url = tenant_upload.photo.url
-        
-#         latitude = request.GET.get('lat')
-#         longitude = request.GET.get('lng')
-        
-#         if listing is None:
-#              raise Exception
-         
-#         # review_form = ReviewForm()  # Create a new instance of the review form
-        
-        
-#         # form = ReviewForm(request.GET)
-#         if review_form.is_valid():
-#             review = review_form.save(commit=False)
-#             review.listing = listing
-#             review.reviewer = request.user.profile
-#             review.save()
-#             messages.success(request, 'Review added successfully.')
-#             return redirect('single_house_view', id=id)
-
-#         # reviews = Review.objects.filter(listing=listing)
-        
-#         return render(request, 'components/single_house_view.html', {"listing": listing, 'form': form ,
-#                                         'filtered_listings':filtered_listings, 
-#                                         'conversation_id':conversation_id,'reviews':reviews,'review_form': review_form,
-#                                         'latitude': latitude,'longitude': longitude,
-#                                         'conversation_id': conversation_id,
-#                                         'id_document_url': id_document_url,
-#                                         'tenant_photo_url': tenant_photo_url,})
-        
-#     except Listing.DoesNotExist:
-#         messages.error(request, f'Invalid UID {id} was provided for listing')
-#         # return redirect('home')
-#         return redirect('new', product_id=listing.id, conversation_id=conversation_id)
 
 
 
@@ -490,6 +363,8 @@ def upload(request,id):
 
 from paymnet.models import Booking
 #   all_bookings = Booking.objects.filter(tenant=request.user)
+
+
 def bookings_made(request):
     profile = request.user.profile
     
@@ -512,6 +387,32 @@ def bookings_made(request):
     
     return render(request, 'main/owner/bookings.html', {'bookings': bookings})
   
+  
+  
+  
+def payment_made(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Filter payments where the logged-in user is either the payer or the recipient
+    A = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+    all_bookings = Booking.objects.all()
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(A, 7)
+    try:
+        A = paginator.page(page)
+    except PageNotAnInteger:
+        A = paginator.page(1)
+    except EmptyPage:
+        A = paginator.page(paginator.num_pages)
+    # Pass the filtered payments to the template
+  
+  
+
+    return render(request,'main/owner/payments.html', {'payments': A, 'all_bookings':all_bookings})
+ 
  
 def booking_requests(request):
     if not request.user.is_authenticated:
@@ -584,27 +485,6 @@ def rate_image(request):
 
 
 
-# def single_house_view(request, id):
-#     try:
-#         product = Listing.objects.get(id=id)
-#         conversation_id = uuid.uuid4()  # Generate a UUID
-
-#         # Check if the current user is the seller
-#         user_is_seller = request.user.is_authenticated and request.user.profile == product.seller
-
-#         context = {
-#             'product': product,
-#             'conversation_id': conversation_id,
-#             'user_is_seller': user_is_seller
-#         }
-#         return render(request, 'components/single_house_view.html', context)
-#     except Listing.DoesNotExist:
-#         messages.error(request, f'Invalid UID {id} was provided for listing')
-#         return redirect('home')
-
-
-
-
 
   
 
@@ -618,7 +498,7 @@ def rate_image(request):
 class multistepformsubmission(SessionWizardView):
     file_storage = DefaultStorage()
     template_name = 'main/owner/multistep.html'
-    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RentalConditionsForm,RulesAndPreferencesForm,ImageForm]
+    form_list = [ListingForm, ListingSpaceOverviewForm, ListingHouseAreaForm, ListingHouseAmenitiesForm,RulesAndPreferencesForm,ImageForm]
     
     
     def done(self, form_list, **kwargs):
@@ -628,10 +508,9 @@ class multistepformsubmission(SessionWizardView):
         # address = kwargs.get('address')
         
         listing = Listing(
-                          address = form_data[0]['address'],
                           house_kind = form_data[0]['house_kind'],
                           price = form_data[0]['price'], available_start = form_data[0]['available_start'],
-                          available_end = form_data[0]['available_end'] ,
+                         
                           id_photo = form_data[0]['id_photo'],
                           house_map = form_data[0]['house_map'],
                           seller=seller )
@@ -669,23 +548,23 @@ class multistepformsubmission(SessionWizardView):
         listing_amenities.save()
         listing.amenities.add(listing_amenities)
         
-        rental_condition = RentalConditions(
-            contract = form_data[4]['contract'],
-            cancellation = form_data[4]['cancellation'],
-            price = form_data[4]['price'],
-            utility_costs = form_data[4]['utility_costs'],
-            seller=seller
-        )
+        # rental_condition = RentalConditions(
+        #     # contract = form_data[4]['contract'],
+        #     # cancellation = form_data[4]['cancellation'],
+        #     # price = form_data[4]['price'],
+        #     # utility_costs = form_data[4]['utility_costs'],
+        #     seller=seller
+        # )
         
-        rental_condition.save()
-        listing.rental_condtion.add(rental_condition)
+        # rental_condition.save()
+        # listing.rental_condtion.add(rental_condition)
         
         rules_preferences = RulesAndPreferences(
-            gender =  form_data[5]['gender'],
-            minimum_age = form_data[5]['minimum_age'],
-            maximum_age = form_data[5]['maximum_age'],
-            tenant = form_data[5]['tenant'],
-            proof = form_data[5]['proof'],
+            gender =  form_data[4]['gender'],
+            minimum_age = form_data[4]['minimum_age'],
+            maximum_age = form_data[4]['maximum_age'],
+            tenant = form_data[4]['tenant'],
+            # proof = form_data[4]['proof'],
             seller=seller
         )
         
@@ -693,12 +572,12 @@ class multistepformsubmission(SessionWizardView):
         listing.rules_and_preferences.add(rules_preferences)
         
         images = Image(
-            image1 =  form_data[6]['image1'],
-            image2 = form_data[6]['image2'],
-            image3 = form_data[6]['image3'],
-            image4 = form_data[6]['image4'],
-            image5 = form_data[6]['image5'],
-            description = form_data[6]['description'],
+            image1 =  form_data[5]['image1'],
+            image2 = form_data[5]['image2'],
+            image3 = form_data[5]['image3'],
+            image4 = form_data[5]['image4'],
+            image5 = form_data[5]['image5'],
+            description = form_data[5]['description'],
             seller=seller,
         )
         
@@ -715,6 +594,44 @@ class multistepformsubmission(SessionWizardView):
         messages.info(self.request, "Please fill in all the required fields.")
         return super().form_invalid(form)
     
+
+
+
+
+
+
+
+
+
+from django.shortcuts import get_object_or_404, redirect
+
+def delete_listing(request, id):
+    # Get the listing object or return a 404 error if it doesn't exist
+    listing = get_object_or_404(Listing, id=id)
+    
+    # Check if the user has permission to delete the listing
+    if request.user.profile != listing.seller:
+        # You can customize the error message or redirect the user to another page
+        messages.error(request, "You don't have permission to delete this listing.")
+        return redirect('main:home')  # Redirect the user to the homepage or another appropriate page
+    
+    # Delete the listing
+    listing.delete()
+    
+    # Optionally, you can add a success message
+    messages.success(request, "Listing deleted successfully.")
+    
+    # Redirect the user to another page, such as the user's profile or homepage
+    return redirect('main:owner-listings')  # Redirect the user to the homepage or another appropriate page
+
+
+
+
+
+
+
+
+
 
             
         # return redirect('master')

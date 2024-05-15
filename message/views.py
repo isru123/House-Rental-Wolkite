@@ -88,11 +88,6 @@ def new_conversation(request, product_id):
 
 
 def send_notification_to_seller(seller):
-    # Implement your notification logic here
-    # This function could send an email, push notification, or any other form of notification to the seller
-    # You can use a library like Django's EmailMessage or any other notification service
-
-    # Example using Django's EmailMessage
     from django.core.mail import EmailMessage
 
     subject = "New Request for Your Listing"
@@ -103,11 +98,6 @@ def send_notification_to_seller(seller):
 
 
 def send_notification_to_admins():
-    # Implement your notification logic here
-    # This function could send an email, push notification, or any other form of notification to the administrators
-    # You can use a library like Django's EmailMessage or any other notification service
-
-    # Example using Django's EmailMessage
     from django.core.mail import EmailMessage
     from django.contrib.auth.models import User
 
@@ -237,17 +227,8 @@ def books(request):
     all_bookings = Booking.objects.filter(tenant=request.user)
     if request.method == "POST":
         search = request.POST.get("search")
-        # seller = seller.user.username
-        # seller = request.user.profile 
         all_bookings = Booking.objects.filter(guest__user__username=search)
-    # all_listing = list(Booking.objects.filter(tenant=request.user))
-    # sequential_id = all_listing.index(all_bookings[0]) + 1
    
-    # print(sequential_id)
-    # username = request.user.username
-    # payment_id = f"{username.upper()}{sequential_id}"
-    # Pass the filtered bookings to the template
-    
             
     page = request.GET.get('page', 1)
 
@@ -277,29 +258,11 @@ def listigs(request):
     total_verified_admin = Profile.objects.filter(userType="Admin", verified=True).count()
     total_unverified_admin = Profile.objects.filter(userType="Admin", verified=False).count()
 
-    # available_house = House.objects.filter(status="Available").count()
-    # booked_house = House.objects.filter(status="Booked").count()
-
-    # customer_request = BookingRequest.objects.filter(status="Pending").count()
-
-    # my_house = House.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-    # my_available_house = House.objects.filter(user=UserProfile.objects.get(user=request.user), status="Available").count()
-
-    # my_booking = BookingRequest.objects.filter(user=UserProfile.objects.get(user=request.user)).count()
-
     Dict = {
         "total_verified_owner":total_verified_owner,
         "total_unverified_owner":total_unverified_owner,
         "total_verified_admin":total_verified_admin,
         "total_unverified_admin":total_unverified_admin,
-        # "available_house":available_house,
-        # "booked_house":booked_house,
-        # "customer_request":customer_request,
-
-        # "my_house": my_house,
-        # "my_available_house":my_available_house,
-
-        # "my_booking":my_booking
         }
     return render(request, 'renterApp/listing.html',Dict)
 
@@ -307,6 +270,9 @@ def listigs(request):
 
 from django.shortcuts import render, redirect
 from paymnet.models import Payment
+
+
+
 
 def payments(request):
     if not request.user.is_authenticated:
@@ -334,8 +300,6 @@ def booking_ask(request):
     R = Upload.objects.filter(tenant=profile)
     if request.method == "POST":
         search = request.POST.get("search")
-        # seller = seller.user.username
-        # seller = request.user.profile 
         R = Upload.objects.filter(listing__price=search)
         
     for ask in R:

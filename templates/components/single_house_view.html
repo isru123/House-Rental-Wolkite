@@ -35,7 +35,7 @@
 {% include 'includes/_alerts.html' %}
 
 <!-- Listing -->
-<section id="listing" class="py-4 bg-light">
+<section id="listing" class="py-4">
   <div class="container">
 
     <div class="row col-12 px-0">
@@ -62,7 +62,7 @@
     <div class="row">
       <div class="col-md-9">
         <!-- Home Main Image -->
-        <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-secondary rounded" data-bs-ride="true">
+        <div id="carouselExampleIndicators"  class="carousel slide shadow p-1 mb-2 bg-info rounded" data-bs-ride="true">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -260,9 +260,9 @@
             </div>
         </div>
       </div>
-    
-      
-
+       <br>
+      <h5 style="color:#000333">Utilityies</h5>
+      <br>
       <div class="col-12" style="margin-left:0px">
         <div id="elephant-card" class="row-4 card bg-info mb-4 active">
           <h4 class="ml-3 mt-3" style="color:white">Your money is safe up to 48 hours after you move in</h4>
@@ -326,13 +326,17 @@
 
       <div class="col-12" style="margin-left:0px">
         <div id="elephant-card" class="row-4 card mb-4 active">
-          <h5 class="ml-3 mt-3 text-dark">The landlord will ask for them to accept your booking request.</h5>
+          <h5 class="ml-3 mt-3 text-dark">The House Owner will ask for them to accept your booking request.</h5>
             <div class="card-body" role="button">
                 <h6 class="card-title">
                    
                   <h5><i class="fas fa-user text-dark mt-3 mb-2 ml-3"><strong>      Proof Of Identity</strong></i></h5>
                   <h6 class="ml-3 mt-3 text-dark"> Government issued ID</h6>
-            </div>
+                  <h5><i class="fas fa-money-bill-alt text-dark mt-3 mb-2 ml-3"><strong>      Proof Of Income</strong></i></h5>
+                  <h6 class="ml-3 mt-3 text-dark"> Captured Image of any bank book</h6>
+                  <h5><i class="fas fa-user-tie text-dark mt-3 mb-2 ml-3"><strong>      Proof Of Profession</strong></i></h5>
+                  <h6 class="ml-3 mt-3 text-dark"> Captured Image of any proof</h6>
+                </div>
         </div>
       </div>
  
@@ -399,14 +403,14 @@
       <br>
     
       
-      {% comment %} <div class="col-12" style="margin-left:0px">
+      <div class="col-12" style="margin-left:0px">
         <div id="elephant-card" class="row-4 card mb-4 active">
           
             <div class="card-body" role="button">
                 <h6 class="card-title">
                    
-                <p class="card-text">{{ listing.description }}.</p> {% endcomment %}
-                {% comment %} <div class="card"> {% endcomment %}
+               
+                  <div class="card">
                   <ul class="list-group list-group-flush">
       
                     <li class="list-group-item">
@@ -442,55 +446,16 @@
       
                   </ul>
       
-                {% comment %} </div> {% endcomment %}
-            {% comment %} </div>
+                 </div>
+            </div>
         </div>
-      </div> {% endcomment %}
+      </div>
     
             
       <br>
       <br>
-<div class="col-md-3">
-  <div class="card mb-5" style="width:700px;height:400px">
-    
-         
-         
-
-          
-
-        
 
 
-  </div>
-</div>
-
-<div class="col-md-3">
-  <div class="card mb-5" style="width:700px;height:400px">
-    
-         
-         
-
-          
-
-        
-
-
-  </div>
-</div>
-
-<div class="col-md-3">
-  <div class="card mb-5" style="width:700px;height:400px">
-    
-         
-         
-
-          
-
-        
-
-
-  </div>
-</div>
 
 
 
@@ -540,7 +505,7 @@
 
 
 
-
+{% comment %} 
 
 <div class="container mt-5">
   <h5 class="text-camelcase text-dark font-weight-bold">Review and Ratings ({{ reviews|length }})</h5>
@@ -587,38 +552,54 @@
     </div>
       {% endif %}
       
-      {% comment %} <form class="review-form" method="GET" action="{% url 'single_house_view' id=listing.id %}"> 
-        {% for listing in listing_filter.qs %}
-        <input type="hidden" name="list_id" id="list_id" value="{{ listing.id }}"/>
-        {% endfor %}
-        <div class="form-group">
-          <textarea class="input" type="text" name="review_text" placeholder="Your Review"></textarea>
-        </div>
-        <div class="form-group">
-          <div class="input rating">
-            <p class="text-uppercase font-weight-bold">Your Rating: </p>
-            <div class="rating-wrapper">
-
-              {% for i in 5|get_range %}
-                 
-                <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}"/><label for="star-{{ i }}" class="fas fa-star fa-2x my-btn"></label>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-        {% if user.is_authenticated and request.user.profile.userType == "Public" %}
-          <button class="btn btn-danger btn-md m-0" type="submit">Post</button>
-        {% else %}
-          <p>You must be logged in to post a review, <a href="{% url 'login' %}">Login</a></p>
-        {% endif %}
-      </form> {% endcomment %}
+     
     </div>
   </div>
-</div>
+</div> {% endcomment %}
 <br>
 <br>
 </section>
 
+
+<style>
+  /* Style form fields */
+form p {
+    margin-bottom: 1rem;
+}
+
+/* Style labels */
+form label {
+    font-weight: bold;
+}
+
+/* Style input fields */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style submit button */
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+</style>
 
 
 

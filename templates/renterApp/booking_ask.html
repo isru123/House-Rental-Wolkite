@@ -87,9 +87,9 @@
                                     <a href="{% url 'main:single_house_view' id=R.listing.id %}" class="btn btn-info text-white"
                                     title="View"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
-                                    <a href="{% url 'main:delete_update' request_id=R.listing.id %}" title="Delete"
+                                    {% comment %} <a href="{% url 'main:delete_update' request_id=R.listing.id %}" title="Delete"
                                         class="btn btn-danger text-white"><i class="fa fa-trash"
-                                            aria-hidden="true"></i></a>
+                                            aria-hidden="true"></i></a> {% endcomment %}
                                     {% comment %} {% endif %} {% endcomment %}
                                 </td>
                                 

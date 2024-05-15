@@ -49,7 +49,15 @@
 
     <body>
 
-          
+        {% if messages %}
+        {% for message in messages %}
+       <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+         {{ message }}
+        {{ message.tags }}
+          </div>
+       {% endfor %}
+       {% endif %} 
+       
         <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
@@ -57,10 +65,13 @@
         <!-- Spinner End -->
 
  {% block 'header' %} 
-                                      
+                   
+ 
+
 
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
+           
             <div class="container topbar d-none d-lg-block" style="background-color: #0F3057 ">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
@@ -74,6 +85,8 @@
                     </div>
                 </div>
             </div>
+           
+            {% endblock %}
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="" class="navbar-brand"><h1 style="color: #FF7F50" class=" display-6">OHR</h1></a>
@@ -151,15 +164,7 @@
         <!-- Navbar End -->
 
         
-    {% if messages %}
-    {% for message in messages %}
-    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-        {{ message }}
-        {{ message.tags }}
-    </div>
-    {% endfor %}
-    {% endif %}
-     {% endblock %}
+    
 
 
 

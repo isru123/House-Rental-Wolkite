@@ -30,61 +30,70 @@ from django.utils.html import strip_tags
 def CheckOut(request, product_id):
     product = Listing.objects.get(id=product_id)
     host = request.get_host()
-    
-    all_listings = list(Listing.objects.all())
-    sequential_id = all_listings.index(product) + 1
-   
-    username = request.user.username
-    payment_id = f"{username.upper()}{sequential_id}"
-    # Get the seller's user object
-    recipient_user = product.seller.user  # Assuming the seller is associated with a user
+
+    # Calculate system fee (0.2% of the product price)
+    system_fee = round((0.2 / 100) * product.price, 2)
+
+    # Calculate total price including system fee
+    total_price = round(product.price + system_fee, 2)
+
+    # Generate a UUID for the payment ID
+    payment_id = uuid.uuid4().hex
 
     # Save payment information to the database
+    # You need to adjust this based on your Payment model structure
     payment = Payment.objects.create(
-        amount=product.price,
+        amount=total_price,
         payer=request.user,
-        recipient=recipient_user,
+        recipient=product.seller.user,
         payment_id=payment_id,
     )
 
     # Create a booking object
+    # Adjust this based on your Booking model structure
+    booking_date = timezone.now()  # Set booking date to current datetime
     booking = Booking.objects.create(
         tenant=request.user,
         house_id=product.id,
         house=product,
-
-        total_price=product.price,
+        total_price=total_price,
         booking_status='pending',
         payment_status='pending',
         confirmation_code=uuid.uuid4().hex,
-        payment_id=payment_id,  # Use the generated payment_id
-        id_document='',  # Add appropriate values
-        tenant_photo='',  # Add appropriate values
+        payment_id=payment_id,
+        booking_date=booking_date,  # Set booking date here
+      
     )
 
     # Send email notification to seller
+    # Adjust this based on your email notification logic
     subject = 'Payment Received'
+    # You need to adjust the email template path and context data
     html_message = render_to_string('payment/email_payment_notification.html', {'product': product})
     plain_message = strip_tags(html_message)
     from_email = 'fikefiresew1234@gmail.com'  # Update with your email address
     to_email = product.seller.user.email
     send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
 
+    # PayPal checkout parameters
     paypal_checkout = {
         'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': product.price,
-        'invoice': payment_id,  # Pass the generated payment ID to PayPal
+        'amount': "{:.2f}".format(total_price),  # Format total_price to two decimal places
+        'invoice': payment_id,
         'currency_code': 'USD',
         'notify_url': f"http://{host}{reverse('paypal-ipn')}",
         'return_url': f"http://{host}{reverse('payment-success', kwargs={'product_id': product.id})}",
         'cancel_url': f"http://{host}{reverse('payment-failed', kwargs={'product_id': product.id})}",
     }
 
+    # Create PayPalPaymentsForm
     paypal_payment = PayPalPaymentsForm(initial=paypal_checkout)
 
     context = {
         'product': product,
-        'paypal': paypal_payment
+        'paypal': paypal_payment,
+        'system_fee': "{:.2f}".format(system_fee),  # Format system_fee to two decimal places
+        'total_price': "{:.2f}".format(total_price)  # Format total_price to two decimal places
     }
 
     return render(request, 'payment/checkout.html', context)
@@ -134,13 +143,22 @@ def change_booking_status(request, booking_id, new_status):
 
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
-    if request.method == 'POST':
-        # Update the booking status to 'canceled'
-        booking.booking_status = 'canceled'
-        booking.save()
-        return redirect('admin:paymnet_booking_changelist')  # Redirect to the booking change list in admin
-    return redirect('admin:paymnet_booking_changelist')  # Redirect to the booking change list in admin
 
+    subject = 'Booking Cancellation Notification'
+    html_message = render_to_string('payment/email_cancel_notification.html', {
+        'booking': booking,
+        # Pass additional information here, such as house address or any other relevant details
+        'house_address': booking.house.address if booking.house else 'N/A',
+    })
+    plain_message = strip_tags(html_message)
+    from_email = 'fikefiresew1234@gmail.com'  # Update with your email address
+
+    # Get superuser email
+    superuser_email = User.objects.filter(is_superuser=True).first().email
+
+    send_mail(subject, plain_message, from_email, [superuser_email], html_message=html_message)
+
+    return redirect('message:books')
 def error_page(request):
     return HttpResponseBadRequest("Payment is already approved.")
 
@@ -211,9 +229,7 @@ def send_email_notification(request, booking_id):
     superuser_email = User.objects.filter(is_superuser=True).first().email
 
     send_mail(subject, plain_message, from_email, [superuser_email], html_message=html_message)
-    return redirect('books')  
-
-
+    return redirect('message:books')
 
 
 

@@ -75,9 +75,7 @@
                                                 title="Edit"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i></a>
                                             {% comment %} {% if request.user.profile.verified == True %} {% endcomment %}
-                                            <a href="{% url 'delete_user' u.id %}" title="Delete"
-                                                class="btn btn-danger text-white"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
+                                           
                                             {% comment %} {% endif %} {% endcomment %}
                                         </td>
                                     </tr>

@@ -10,7 +10,7 @@ urlpatterns = [
     path('admin_home/', admin_view, name='admin_home'),
     path('all-user/', AllUser, name='all-user'),
     path('dashboard/', Dashboard, name='board'),
-    # path('approve-owner/', approve_owner_view , name='approve-owner' ),
+
     path('add-admin/', add_admin_view , name='add-admin'),
     path('manage-customer/', manage_customer_view , name='manage-customer'),
     path('view-user/<int:id>/', ViewUser , name='view_user'),
@@ -26,13 +26,13 @@ urlpatterns = [
     path('helpdesk/', HelpDesk , name='helpdesk'),
     path('admin-tenant/<str:recipient_username>/', admin_tenant_messaging, name='admin_tenant'),
     path('landlord-admin/', landlord_admin_messaging, name='landlord_admin'),
-    # path('chat/<str:recipient_username>/', views.chat_view, name='chat'),
+    
     path('change-password/', ChangePassword, name='change-password'),
     path('edit-profile/<int:id>/', EditProfile, name='edit-profile'),
     path('profile/',profile_of_users,name='profile'),
    
     path('delete-profile/<int:user_id>/', delete_profile, name='delete-profile'),
-     path('all-bookings/', display_all_bookings, name='all_bookings'),
-        path('all-payments/', display_all_payments, name='display_all_payments'),
+    path('all-bookings/', display_all_bookings, name='all_bookings'),
+    path('all-payments/', display_all_payments, name='display_all_payments'),
 ]
 

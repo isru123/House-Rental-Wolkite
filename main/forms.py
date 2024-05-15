@@ -8,18 +8,13 @@ from dal import autocomplete
 
 class ListingForm(forms.ModelForm):
     available_start = forms.DateField(label=_("Available Start"), widget=forms.DateInput(attrs={'type': 'date', 'class': 'datepicker', 'id': 'id_available_start'}))
-    available_end = forms.DateField(label=_("Available End"), widget=forms.DateInput(attrs={'type': 'date', 'class': 'datepicker', 'id': 'id_available_end'}))
-    # image = forms.ImageField(label=_("Image"), widget=forms.ClearableFileInput(attrs={'multiple': False, 'class': 'image-input', 'id': 'id_image'}))
-    # house_kind = forms.ChoiceField(label=_("House Kind"), choices=AVAILABLE_HOUSE_KINDS, widget=forms.Select(attrs={'class': 'bold-input','placeholder': 'House Type'}))
-    address = forms.CharField(label=_("Address"), widget=forms.TextInput)
-    
+   
+ 
     price = forms.DecimalField(label=_("Price"), widget=forms.TextInput(attrs={'class': 'bold-input'}))
-    # minimum_rental_period = forms.ChoiceField(label=_("Minimum Rental Period"), choices=AVAILABLE_HOUSE_KINDS, widget=forms.Select(attrs={'class': 'bold-input','placeholder': 'Minimum Rental Perio'}))
-    # maximum_rental_period = forms.ChoiceField(label=_("Maximum Rental Period"), choices=AVAILABLE_HOUSE_KINDS, widget=forms.Select(attrs={'class': 'bold-input','placeholder': 'Maximum Rental Period'}))
-        
+  
     class Meta:
         model = Listing
-        fields = ['house_kind', 'price','address', 'available_start', 'available_end','id_photo','house_map']
+        fields = ['house_kind', 'price', 'available_start','id_photo','house_map']
         labels = {
             'house_kind': _('House Kind'),
             'price': _('Price'),
@@ -53,21 +48,12 @@ class RentalConditionsForm(forms.ModelForm):
      class Meta:
         model = RentalConditions
         fields = '__all__'
-        exclude = ['seller']
+        exclude = ['seller','contract','cancellation','price','utility_costs']
 
 
 class RulesAndPreferencesForm(forms.ModelForm):
     
-    RADIO_CHOICES3 = [
-    ('proof of identity', 'Proof of Identity'),
-    ('proof of income', 'Proof of Income'),
-    ('proof of occupation', 'Proof of Occupation'),
-         ]
     
-    Document = forms.MultipleChoiceField(
-        choices=RADIO_CHOICES3,
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
-    )
     
     class Meta:
          model = RulesAndPreferences
@@ -105,7 +91,6 @@ class RentalFilterForm(forms.Form):
         model = Listing
         fields = ['move_in_date', 'move_out_date']
 
-
 class ReviewForm(forms.ModelForm):
     RATING_CHOICES = (
         ('1', '1 Star'),
@@ -117,15 +102,17 @@ class ReviewForm(forms.ModelForm):
 
     rating = forms.ChoiceField(
         choices=RATING_CHOICES,
-        widget=forms.RadioSelect(attrs={'class': 'rating-input'})
+        widget=forms.RadioSelect(attrs={'class': 'rating-input', 'style': 'display: inline-block;'})
     )
     review_text = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Your Review'})
     )
     hidden_rating = forms.CharField(widget=forms.HiddenInput(), required=False)
+
     class Meta:
         model = Review
         fields = ['rating', 'review_text']
+
         
     
     

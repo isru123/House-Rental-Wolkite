@@ -22,7 +22,7 @@
             <table  class="table table-striped table-bordered zero-configuration">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th> Book ID</th>
                         <th>house_id</th>
                         <th>Payment ID</th>
                         <th>Owner</th>
@@ -55,18 +55,18 @@
                                 {% if booking.booking_status == 'pending' %}
                                     <form id="cancel_form_{{ booking.id }}" action="{% url 'cancel_booking' booking.id %}" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger cancel-button" data-booking-id="{{ booking.id }}">Cancel</button>
+                                        <button type="submit" class="btn btn-danger cancel-button" data-booking-id="{{ booking.id }}">Unsatisfied</button>
                                     </form>
                                 {% else %}
                                     <!-- If booking status is not pending, display an inactive button -->
-                                    <button type="button" class="btn btn-secondary" disabled>Done</button>
+                                    <button type="button" class="btn btn-secondary" disabled>Reported</button>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if booking.booking_status == 'pending' %}
                                     <form id="send_email_form_{{ booking.id }}" action="{% url 'send_email_notification' booking.id %}" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary send-email-button" data-booking-id="{{ booking.id }}">Send Report</button>
+                                        <button type="submit" class="btn btn-primary send-email-button" data-booking-id="{{ booking.id }}">Satisfied</button>
                                     </form>
                                 {% else %}
                                     <!-- If booking status is not pending, display an inactive button -->
