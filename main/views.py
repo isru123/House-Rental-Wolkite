@@ -968,8 +968,19 @@ def payement(request):
     
 #     return render(request, 'main/owner/second.html', {'form': form,'message':message,'showaddress': address})
 
+from paymnet.models import Payment,Booking
+def payment_made(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # Filter payments where the logged-in user is either the payer or the recipient
+    all_payments = Payment.objects.filter(payer=request.user) | Payment.objects.filter(recipient=request.user)
+    all_bookings = Booking.objects.filter(reciever=request.profile.user.seller)
 
+  
+  
 
+    return render(request,'main/major/payments.html', {'all_payments': all_payments, 'all_bookings':all_bookings})
 
 
 def search_listings(request):

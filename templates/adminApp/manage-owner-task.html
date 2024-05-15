@@ -27,8 +27,9 @@
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
-                                <th>ID</th>
+                                <th>Booking ID</th>
                                 <th>House Id</th>
+                                <th>Payment  Id</th>
 
                                 <th>Tenant</th>
                                 <th>Owner</th>
@@ -47,11 +48,16 @@
                                     </td>
                                     <td>
                                         <span class="badge badge-secondary">{{ booking.house_id|stringformat:"s"|slice:":3" }}</span>
-                                    </td>
+                                    </td>   
+                                        <td>
+                                            <span class="badge badge-secondary">{{ booking.payment_id|stringformat:"s"|slice:":3" }}</span>
+                                        </td>                     
+                                   
+                                        <td>{{ booking.tenant}}</td>
 
+                                     <td>{{ booking.house.seller.user }}</td>
+                                    
 
-                                                                        <td>{{ booking.tenant }}</td>
-                                    <td>{{ booking.house.seller.user }}</td>
                                     <td>{{ booking.total_price }}</td>
                                     <td>{{ booking.refund_amount }}</td>
                                     <td>{{ booking.booking_status }}</td>

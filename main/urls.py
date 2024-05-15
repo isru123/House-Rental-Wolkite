@@ -2,7 +2,7 @@ from django.urls import path
 from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view, upload,identity_page
 from .views import multistepformsubmission,payement,edit_listing_view
 
-from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view
+from .views import main_view,detail_list_view,owner_view,dashboard_view,single_house_view,master_view,payment_made
 from .views import multistepformsubmission,payement,edit_listing_view
 # from .autocomplete import AddressAutocomplete
 
@@ -23,7 +23,7 @@ urlpatterns = [
      # path('listing/<str:id>/like/', like_listing_view , name='like_listing'),
      path('multistepformsubmission', multistepformsubmission.as_view(), name='multistepformsubmission'),
      path('edit_listing/<str:id>/', edit_listing_view , name='edit_listing'),
-     # path('review/', review_view , name='review'),
+     path('payment_made/', payment_made , name='payment_made'),
      # path('map/<str:id>/', map_view, name='map'),
      # path('search/', search, name='search'),
      # path('owner-listings/', owner_listings , name='owner-listings'),
