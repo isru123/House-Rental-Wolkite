@@ -132,7 +132,7 @@ In the project directory, run:
 ### 👤 **Israel Beyene**
 
 - GitHub: [isru123 Israel Beyene](https://github.com/isru123 Israel Beyene)
-- Linkdin: [Israel Beyene](https://www.linkedin.com/in/Israel Beyene/)
+- Linkdin: [Israel Beyene]([https://www.linkedin.com/in/Israel Beyene/](https://www.linkedin.com/in/israel-beyene-6a51a8247/overlay/about-this-profile/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BQ5L5CPtsSAK%2BFQ9%2FGmdbMw%3D%3D))
 
 ### 👤 **Lemma Tadese**
 
